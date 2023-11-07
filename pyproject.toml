@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["CHAPPIE"]
+
+[project]
+name = "CHAPPIE"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License ::  MIT",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/USEPA/CHAPPIE"
+"Bug Tracker" = "https://github.com/USEPA/CHAPPIE/issues"
