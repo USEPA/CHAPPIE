@@ -48,6 +48,6 @@ jobs:
           #pip freeze >> ~\tests\expected\git_env.txt
 
       - name: Run pytest
-        run: pytest -v -s os_package
+        run: pytest -v -s CHAPPIE
 
       # upload artifact if results of run are needed, e.g., for freeze, deploy, etc.
