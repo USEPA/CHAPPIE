@@ -1,1 +1,1 @@
-from .vulnerability import SVI
+from . import vulnerability
