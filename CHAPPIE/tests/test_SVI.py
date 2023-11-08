@@ -6,6 +6,7 @@ Created on Mon Sep 25 16:33:15 2023
 """
 import pandas
 import CHAPPIE
+import CHAPPIE.vulnerability
 from CHAPPIE.vulnerability.SVI import SVI
 
 
