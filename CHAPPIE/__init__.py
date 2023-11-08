@@ -1,1 +1,0 @@
-from CHAPPIE import vulnerability
