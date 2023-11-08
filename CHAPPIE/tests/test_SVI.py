@@ -5,10 +5,11 @@ Created on Mon Sep 25 16:33:15 2023
 @author: jbousqui
 """
 import pandas
-import SVI
+#import CHAPPIE
+from CHAPPIE.vulnerability.SVI import SVI
 
 
-def get_SVI_by_county_all_tracts():
+def test_get_SVI_by_county_all_tracts():
     gdf = SVI.get_SVI('12033', level='tract', year=2020)
     # check for columns
     check_cols = ['Poverty150', 'Unemploy', 'HouseBurd', 'NoHSDiplo', 'NoHlthIns',
@@ -48,10 +49,8 @@ def get_SVI_by_county_all_tracts():
     
     pandas.testing.assert_frame_equal(actual_df, expected_df)
 
-    print('success')
 
-
-def get_SVI_by_county_all_BG():
+def test_get_SVI_by_county_all_BG():
     gdf_bg = SVI.get_SVI('12033', level='block group', year=2021)
     assert len(gdf_bg)==199
     
