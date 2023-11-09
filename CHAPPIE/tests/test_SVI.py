@@ -5,13 +5,11 @@ Created on Mon Sep 25 16:33:15 2023
 @author: jbousqui
 """
 import pandas
-import CHAPPIE
-import CHAPPIE.vulnerability
-from CHAPPIE.vulnerability.SVI import SVI
+from CHAPPIE.vulnerability import svi
 
 
 def test_get_SVI_by_county_all_tracts():
-    gdf = SVI.get_SVI('12033', level='tract', year=2020)
+    gdf = svi.get_SVI('12033', level='tract', year=2020)
     # check for columns
     check_cols = ['Poverty150', 'Unemploy', 'HouseBurd', 'NoHSDiplo', 'NoHlthIns',
                   '65andover', '17andbelow', 'DisableCiv', 'SPH', 'ELP', 'Hisp',
@@ -52,6 +50,6 @@ def test_get_SVI_by_county_all_tracts():
 
 
 def test_get_SVI_by_county_all_BG():
-    gdf_bg = SVI.get_SVI('12033', level='block group', year=2021)
+    gdf_bg = svi.get_SVI('12033', level='block group', year=2021)
     assert len(gdf_bg)==199
     
