@@ -4,8 +4,18 @@ Created on Mon Sep 25 16:33:15 2023
 
 @author: jbousqui
 """
+
+import os
+import geopandas
 import pandas
+from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.vulnerability import svi
+
+# CI inputs/expected
+DIRPATH = os.path.dirname(os.path.realpath(__file__))
+#DIRPATH = r'D:\code\CHAPPIE\CHAPPIE\tests'
+
+expected_dir = os.path.join(DIRPATH, 'expected')  # Expected
 
 
 def test_get_SVI_by_county_all_tracts():
@@ -50,6 +60,9 @@ def test_get_SVI_by_county_all_tracts():
 
 
 def test_get_SVI_by_county_all_BG():
-    gdf_bg = svi.get_SVI('12033', level='block group', year=2021)
-    assert len(gdf_bg)==199
+    actual = svi.get_SVI('12033', level='block group', year=2021)
+    expected_file = os.path.join(expected_dir, 'bg_12033_2021.geojson')
+    expected = geopandas.read_file(expected_file)
+    #assert len(gdf_bg)==199
+    assert_geodataframe_equal(actual, expected, check_like=True)
     
