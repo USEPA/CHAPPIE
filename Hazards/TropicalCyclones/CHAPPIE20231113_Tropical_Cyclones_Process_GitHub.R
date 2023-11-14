@@ -226,8 +226,7 @@ sf::st_write(hurr_path_buffer_comb, "L:\\Priv\\SHC_1012\\Florida ROAR\\Data\\Haz
 # Example with one AOI boundary: Determine which tropical cyclones impacted the state of Alabama from 2000 to 2010 -----
 hurr_pts_al <- hurr_pts <- sf::read_sf("L:\\Priv\\SHC_1012\\Florida ROAR\\Data\\Hazards\\TropicalCyclones\\IBTrACS.NA.list.v04r00.points", "IBTrACS.NA.list.v04r00.points") |>
   dplyr::filter(SEASON > 2000, SEASON < 2010) |>
-  dplyr::mutate(ISO_TIME = lubridate::ymd_hms(ISO_TIME),
-                Date = lubridate::ymd(paste(lubridate::year(ISO_TIME), lubridate::month(ISO_TIME), lubridate::day(ISO_TIME), sep = "-")))
+  dplyr::mutate(Date = lubridate::ymd_hms(ISO_TIME))
 hurr_pts_proj_al <- project_hurr_pts(hurr_pts_al, 16)
 aoi_al <- dplyr::filter(spData::us_states, NAME == "Alabama")
 hurr_pts_al_int <- sf::st_drop_geometry(closest_hurr_pt(find_hurr_pts(hurr_pts_proj_al, aoi_al, name = "State of AL"), aoi_al))
