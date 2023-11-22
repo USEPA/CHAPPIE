@@ -17,14 +17,14 @@ DIRPATH = os.path.dirname(os.path.realpath(__file__))
 
 EXPECTED_DIR = os.path.join(DIRPATH, 'expected')  # Expected
 DATA_DIR = os.path.join(DIRPATH, 'data')  # inputs
-TEST_DIR = os.path.join(DIRPATH, 'results')  # test results
+# TEST_DIR = os.path.join(DIRPATH, 'results')  # test results (have to create)
 
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 
 
 @pytest.fixture(scope='session')
 def test_get_tornadoes():
-    actual = tornadoes.get_tornadoes(TEST_DIR)
+    actual = tornadoes.get_tornadoes(DATA_DIR)
     #NOTE/TODO: 1950-2022-torn-aspath is too big to save in expected?
     expected_file = os.path.join(EXPECTED_DIR, '1950-2022-torn-aspath')
     expected = geopandas.read_file(expected_file)
