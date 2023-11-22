@@ -7,23 +7,49 @@ Test tropical cyclones
 import os
 import urllib.request
 import zipfile
+import geopandas
 
 
-def get_tornadoes(out_dir):
-    base_url = "https://www.spc.noaa.gov/"
-    URLS = [f"{base_url}gis/svrgis/zipped/1950-2022-torn-aspath.zip",
-            f"{base_url}gis/svrgis/zipped/1950-2022-torn-initpoint.zip",
-            f"{base_url}wcm/data/1950-2022_torn.csv.zip"]
+def get_tornadoes(out_dir, component='torn-aspath', years='1950-2022'):
+    """ Get tornadoes dataframe
+
+    Parameters
+    ----------
+    out_dir : str
+        Directory to save download.
+    component : str, optional
+        The Tornadoe component. The default is 'torn-aspath'.
+    years : str, optional
+        The year range for the tornadoe component url. The default is '1950-2022'.
+
+    Returns
+    -------
+    pandas.core.frame.DataFrame or geopandas.geodataframe.GeoDataFrame
+        Results as in memory dataframe.
+
+    """
+    assert component in ['torn-aspath', 'torn-initpoint', 'torn.csv'], f'"{component}" invalid'
     
-    for url in URLS:
-        temp = os.path.join(out_dir, "temp.zip")
-        urllib.request.urlretrieve(url, temp)
-        
-        with zipfile.ZipFile(temp, 'r') as zip_ref:
-            zip_ref.extractall(out_dir)
+    base_url = "https://www.spc.noaa.gov/"
 
+    
+    if component=='torn.csv':
+        url = f"{base_url}wcm/data/{years}_torn.csv.zip"
+        # Cache the original download?
+        return pandas.read_csv(url)
+    
+    temp = os.path.join(out_dir, "temp.zip")  # temp out_file for zip
+    url = f"{base_url}gis/svrgis/zipped/{years}-{component}.zip"
+    
+    urllib.request.urlretrieve(url, temp)  # Download zip
 
+    # Extract        
+    with zipfile.ZipFile(temp, 'r') as zip_ref:
+        zip_ref.extractall(out_dir)
 
+    # Read component file to geodataframe
+    sub_dir = f'{os.sep}{years}-{component}'
+    return geopandas.read_file(f'{out_dir}{sub_dir}{sub_dir}{sub_dir}.shp')
 
 
 def process_tornadoes(tornadoe_dir, aoi):
