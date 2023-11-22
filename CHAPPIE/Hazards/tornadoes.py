@@ -5,8 +5,10 @@ Test tropical cyclones
 @author: jbousqui
 """
 import os
+import math
 import urllib.request
 import zipfile
+import pandas
 import geopandas
 
 
@@ -52,24 +54,45 @@ def get_tornadoes(out_dir, component='torn-aspath', years='1950-2022'):
     return geopandas.read_file(f'{out_dir}{sub_dir}{sub_dir}{sub_dir}.shp')
 
 
-def process_tornadoes(tornadoe_dir, aoi):
+def process_tornadoes(tornadoe_gdf, aoi_gdf):
+    """ Get buffered (based on 'wid' column) tornadoe paths for AOI
+
+    Parameters
+    ----------
+    tornadoe_gdf : geopandas.geodataframe.GeoDataFrame
+        All tornadoe paths.
+    aoi_gdf : geopandas.geodataframe.GeoDataFrame
+        Area of Interest. CRS must be in meters.
+
+    Returns
+    -------
+    torn_path_aoi : geopandas.geodataframe.GeoDataFrame
+        Buffered tornadoe paths for AOI.
+
+    """
+    # tornadoe_shp = r"L:\Priv\SHC_1012\Florida ROAR\Data\Hazards\Tornadoes\1950-2022-torn-aspath\1950-2022-torn-aspath\1950-2022-torn-aspath.shp"
+    #tornadoe_gdf = geopandas.read_file(tornadoe_shp)
+    # aoi = r"L:\Public\jbousqui\Code\GitHub\CHAPPIE\CHAPPIE\tests\data\FlGulfCoast_ServiceArea.shp"
+    #aoi_gdf = geopandas.read_file(aoi)
     
-    return gdf
+    # Add column for storm path buffer
+    tornadoe_gdf['radM'] = tornadoe_gdf['wid'] / 2.188
+    # project to aoi CRS
+    tornadoe_gdf = tornadoe_gdf.to_crs(aoi_gdf.crs)
+    
+    # Filter on aoi bbox
+    max_buff = math.ceil(max(tornadoe_gdf['radM']))  # distance to add to bbox
+    # NOTE: assumes aoi_gdf in meters
+    xmin, ymin, xmax, ymax = aoi_gdf.total_bounds
+    # index on bbox
+    torn_aoi = tornadoe_gdf.cx[xmin-max_buff:xmax+max_buff, ymin-max_buff:ymax+max_buff]
+    
+    # buffer lines in filtered tornadoes (sf::st_buffer defaults join_style and cap_style are same)
+    torn_path = torn_aoi.buffer(torn_aoi['radM'])
+    
+    # clip buffered paths to aoi
+    torn_path_aoi = torn_path.clip(aoi_gdf)
 
-#import magrittr
-#import sf
-#import purrr
-#import dplyr
-
-torn_path = geopandas.read_file("L:\\Priv\\SHC_1012\\Florida ROAR\\Data\\Hazards\\Tornadoes\\1950-2022-torn-aspath\\1950-2022-torn-aspath", "1950-2022-torn-aspath")
-
-def project_torn_path(paths, zone):
-    if len(zone) > 1:
-        return purrr.map(.x = unlist(lapply(zone, lambda x: paste0("+proj=utm +zone=", x, " +ellps=GRS80 +units=m +no_defs"))),
-                         .f = sf.st_transform,
-                         x = paths) %>%
-               purrr.set_names(unlist(lapply(zone, lambda x: paste0("torn_proj_", x)))) %>%
-               lapply(., lambda x: {cbind(x, radM = (x.wid / 2) / 1.094)})
-    else:
-        return sf.st_transform(paths, paste0("+proj=utm +zone=", zone, " +ellps=GRS80 +units=m +no_defs")) |>
-               dplyr.mutate(radM = (wid / 2) / 1.094)
+    # Do we want full path or just the path that intersects?
+    
+    return torn_path_aoi
