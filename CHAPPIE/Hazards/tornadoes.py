@@ -51,7 +51,8 @@ def get_tornadoes(out_dir, component='torn-aspath', years='1950-2022'):
 
     # Read component file to geodataframe
     sub_dir = f'{os.sep}{years}-{component}'
-    return geopandas.read_file(f'{out_dir}{sub_dir}{sub_dir}{sub_dir}.shp')
+    #return geopandas.read_file(f'{out_dir}{sub_dir}{sub_dir}{sub_dir}.shp')
+    return geopandas.read_file(f'{out_dir}{sub_dir}{sub_dir}.shp')
 
 
 def process_tornadoes(tornadoe_gdf, aoi_gdf):
