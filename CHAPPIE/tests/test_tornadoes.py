@@ -26,7 +26,7 @@ AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 def test_get_tornadoes():
     actual = tornadoes.get_tornadoes(DATA_DIR)
     #NOTE/TODO: 1950-2022-torn-aspath is too big to save in expected?
-    expected_file = os.path.join(EXPECTED_DIR, '1950-2022-torn-aspath')
+    expected_file = os.path.join(EXPECTED_DIR, '1950-2022-torn-aspath.shp')
     expected = geopandas.read_file(expected_file)
     
     assert_geodataframe_equal(actual, expected, check_like=True)
