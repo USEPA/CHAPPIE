@@ -4,5 +4,9 @@
 .RData
 .Ruserdata
 
+.spyderproject
 .spyproject
+
 __pycache__
+
+.pyc

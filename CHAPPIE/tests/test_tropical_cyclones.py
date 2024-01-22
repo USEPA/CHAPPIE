@@ -7,7 +7,7 @@ Test tropical cyclones
 import os
 import geopandas
 from geopandas.testing import assert_geodataframe_equal
-from CHAPPIE.Hazards import tropical_cyclones
+from CHAPPIE.hazards import tropical_cyclones
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
