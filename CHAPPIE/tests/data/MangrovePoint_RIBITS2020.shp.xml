@@ -1,0 +1,595 @@
+<metadata><idinfo><citation><citeinfo><origin>U.S. Army Corps of Engineers</origin><pubdate>2020</pubdate><title>Mitigation Bank and In-Lieu Fee Program Sites in Florida - 2020</title><geoform>vector digital data</geoform><pubinfo><pubplace>Washington DC</pubplace><publish>U.S. Army Corps of Engineers (USACE)</publish></pubinfo><othercit>State of Florida</othercit><onlink>https://ribits.usace.army.mil</onlink></citeinfo></citation><descript><abstract>This dataset contains mitigation bank and in-lieu fee program sites in Florida from the US Army Corps of Engineers Regulatory In-lieu Fee and Bank Information Tracking System (RIBITS). A mitigation bank is a site where resources (e.g., wetlands, streams, riparian areas) are restored, established, enhanced, and/or preserved for the purpose of providing compensatory mitigation for impacts authorized by Department of the Army permits. The U.S. Army Corps of Engineers regulates resources like wetlands and streams under Section 404 of the Clean Water Act and in some cases Section 10 of the Rivers and Harbors Act. The measure of aquatic functions is based on the resources restored, established, enhanced, or preserved. An in-lieu fee program involves the restoration, establishment, enhancement, and/or preservation through funds paid to a governmental or non-profit natural resources management program sponsor to satisfy compensatory mitigation requirements under Department of the Army permits. Funds are often received by the in-lieu fee program sponsor prior to undertaking compensatory mitigation projects. In lieu fee programs can involve multiple mitigation project sites.</abstract><purpose>RIBITS (Regulatory In lieu fee and Bank Information Tracking System) was developed by the U.S. Army Corps of Engineers with support from the Environmental Protection Agency, the U.S. Fish and Wildlife Service, the Federal Highway Administration, and NOAA Fisheries to provide better information on mitigation and conservation banking and in-lieu fee programs across the country. RIBITS allows users to access information on the types and numbers of mitigation and conservation bank and in-lieu fee program sites, associated documents, mitigation credit availability, service areas, as well information on national and local policies and procedures that affect mitigation and conservation bank and in-lieu fee program development and operation.</purpose><supplinf>A mitigation bank is an aquatic resource area that has been restored, created, enhanced, or (in exceptional circumstances) preserved, which is then set aside to compensate for future impacts to aquatic resources for development activities. A mitigation bank may be created when a government agency, a corporation, or a nonprofit organization undertakes such activities under a formal agreement with a regulatory agency. The value of a bank is determined by quantifying the functions or area restored or created in terms of "credits." Benefits of Mitigation Banking: * Banking can provide more cost-effective mitigation and reduce uncertainty and delays for qualified projects, especially when the project is associated with a comprehensive planning effort. * Successful mitigation can be ensured since the aquatic resource can be functional in advance of project impacts. * Banking eliminates the temporal losses of aquatic resource functions that typically occur when mitigation is initiated during or after the development impacts occur * Consolidation of numerous small, isolated or fragmented mitigation projects into a single large parcel may have greater ecological benefit. * A mitigation bank can bring scientific and planning expertise and financial resources together, thereby increasing the likelihood of success in a way not practical for individual mitigation efforts.</supplinf></descript><timeperd><timeinfo><sngdate><caldate>2020</caldate></sngdate></timeinfo><current>publication date</current></timeperd><status><progress>Complete</progress><update>As needed</update></status><spdom><bounding><westbc>-87.386619</westbc><eastbc>-80.068748</eastbc><northbc>30.734352</northbc><southbc>24.637801</southbc></bounding></spdom><keywords><theme><themekey>inlandWaters</themekey><themekey>environment</themekey></theme></keywords><accconst>None</accconst><useconst>The Florida Geographic Data Library is a collection of Geospatial Data compiled by the University of Florida GeoPlan Center with support from the Florida Department of Transportation. GIS data available in FGDL is collected from various state, federal, and other agencies (data sources) who are data stewards, producers, or publishers. The data available in FGDL may not be the most current version of the data offered by the data source. University of Florida GeoPlan Center makes no guarantees about the currentness of the data and suggests that data users check with the data source to see if more recent versions of the data exist. Furthermore, the GIS data available in the FGDL are provided 'as is'. The University of Florida GeoPlan Center makes no warranties, guaranties or representations as to the truth, accuracy or completeness of the data provided by the data sources. The University of Florida GeoPlan Center makes no representations or warranties about the quality or suitability of the materials, either expressly or implied, including but not limited to any implied warranties of merchantability, fitness for a particular purpose, or non-infringement. The University of Florida GeoPlan Center shall not be liable for any damages suffered as a result of using, modifying, contributing or distributing the materials. A note about data scale: Scale is an important factor in data usage. Certain scale datasets are not suitable for some project, analysis, or modeling purposes. Please be sure you are using the best available data. 1:24000 scale datasets are recommended for projects that are at the county level. 1:24000 data should NOT be used for high accuracy base mapping such as property parcel boundaries. 1:100000 scale datasets are recommended for projects that are at the multi-county or regional level. 1:125000 scale datasets are recommended for projects that are at the regional or state level or larger. Vector datasets with no defined scale or accuracy should be considered suspect. Make sure you are familiar with your data before using it for projects or analysis. Every effort has been made to supply the user with data documentation. For additional information, see the References section and the Data Source Contact section of this documentation. For more information regarding scale and accuracy, see our webpage at: http://geoplan.ufl.edu/education.html</useconst><ptcontac><cntinfo><cntorgp><cntorg>U.S. Army Corps of Engineers (USACE)</cntorg></cntorgp><cntaddr><addrtype>unknown</addrtype><address>441 G Street NW</address><city>Washington</city><state>DC</state><postal>20314-1000</postal><country>US</country></cntaddr><cntvoice>202-761-0011</cntvoice></cntinfo></ptcontac><datacred>U.S. Army Corps of Engineers</datacred><native> Version 6.2 (Build 9200) ; Esri ArcGIS 10.7.0.10450</native><crossref><citeinfo><othercit>U.S. Army Corps of Engineers: https://www.usace.army.mil/ Regulatory In-lieu Fee and Bank Information Tracking System: https://ribits.usace.army.mil</othercit></citeinfo></crossref></idinfo><dataqual><attracc><attraccr>GeoPlan relied on the integrity of the attribute information within the original data.</attraccr></attracc><logic>This data is provided 'as is'. GeoPlan relied on the integrity of the original data layer's topology</logic><complete>This data is provided 'as is' by GeoPlan and is complete to our knowledge.</complete><posacc><horizpa><horizpar>This data is provided 'as is' and its horizontal positional accuracy has not been verified by GeoPlan</horizpar></horizpa><vertacc><vertaccr>This data is provided 'as is' and its vertical positional accuracy has not been verified by GeoPlan</vertaccr></vertacc></posacc><lineage><srcinfo><srcscale>Unknown</srcscale><typesrc>Online</typesrc><srccontr>Spatial and Attribute Information</srccontr><srccitea>USACE</srccitea></srcinfo><procstep><procdesc>GeoPlan Center Process Steps: 
+
+Mitigation bank and ILF site data was downloaded from RIBITS on 11/20/2020. 
+
+Download Instructions:
+1. https://ribits.usace.army.mil/
+2. MENU &gt; Banks &amp; Sites
+3. Actions &gt; Select Columns: Add all columns to "Display in Report" 
+   window
+4. Actions &gt; Filter: State Abbrev List contains 'FL'
+5. Actions &gt; Download: As CSV
+6. After making the selections above, download Footprint KML 
+   file from the Google Map window.
+
+Downloaded Files: 
+- banks_and_ilf_sites.csv (178 records)
+- RIBITS_BANKS_ILF_KML_footprint.kmz (430 records - 165 unique records)
+
+Latitude/longitude data from "banks_and_ilf_sites.csv" were mapped and 
+exported as a shapefile and "RIBITS_BANKS_ILF_KML_footprint.kmz" was 
+converted from a kmz file to a shapefile. Footprint shapefile was dissolved 
+based on 'Name' field. Resulting shapefile had 165 unique records. Both datasets 
+were mapped in the GCS_WGS_84 (EPSG: 4326) projection and then reprojected to 
+FGDL Albers NAD83 HARN (EPSG: 3087).
+
+Field changes from source since previous update: 
+- Removed: BANK_NAME, CREDIT_TYPE, TOTAL_ACRE, 
+- Added: ZOOM, APPROVAL_DATE, BANK_SOLD, IS_UMBRELLA
+- STATUS changed to BANK_STATUS
+- YEAR_ESTAB changed to YEAR_EST
+
+Next, "banks_and_ilf_sites" was joined to "RIBITS_BANKS_ILF_KML_footprint"
+via the NAME field. The resulting table join was exported to shapefile.
+Thirteen sites from the csv download had no footprint (polygon) spatial data,
+and thus were not included in the final dataset: 
+*EVERGLADES SCOUTS MB [5736]
+*HATCHINEHA RANCH CONSERVATION BANK PHASE 2 [3526]
+*HATCHINEHA RANCH MB [1040]
+*HEATHER ISLAND MB [290]
+*ILF KEYS ENVIRONMENTAL RESTORATION FUND [2120]
+*ILF-KRF-BAHIA HONDA PROJECT A [3573]
+*ILF-KRF-CRANE POINT HAMMOCK [3385]
+*MARION MB [4438]
+*NATURAL RESOURCE MB [3272]
+*OSPREY UNIT MB [3061]
+*PEPPER RANCH PRESERVE CONSERVATION BANK [5375]
+*RG RESERVE MB [277]
+*TWIN OAKS MB [3553]
+
+Field lengths of existing fields were shortened and fields were upcased. 
+Field ZOOM had no values and was removed from the table. 
+The following fields were added to the table: 
+- URL field populated based on the following field calculation: 
+  "https://ribits.ops.usace.army.mil/ords/f?p=107:10:::NO::P10_BANK_ID:"
+  &amp; [BANK_ID]
+- Added ACRES field and calculated geometry with Acres US (ac). 
+- Added DESCRIPT field populated based on NAME. 
+- Added FGDLAQDATE field populated based on the date the dataset was downloaded
+  from the source. 
+
+Finally, the file was renamed ribits_2020.shp.</procdesc><srcused>GeoPlan</srcused><procdate>20201120</procdate></procstep></lineage></dataqual><spdoinfo><direct>Vector</direct><ptvctinf><esriterm Name="MangrovePoint_RIBITS2020"><efeatyp Sync="TRUE">Simple</efeatyp><efeageom code="4" Sync="TRUE"></efeageom><esritopo Sync="TRUE">FALSE</esritopo><efeacnt Sync="TRUE">0</efeacnt><spindex Sync="TRUE">FALSE</spindex><linrefer Sync="TRUE">FALSE</linrefer></esriterm></ptvctinf></spdoinfo><spref><horizsys><planar><planci><plance>coordinate pair</plance><coordrep><absres>0.000000004429812072714868</absres><ordres>0.000000004429812072714868</ordres></coordrep><plandu>meter</plandu></planci></planar><geodetic><horizdn>D North American 1983 HARN</horizdn><ellips>GRS 1980</ellips><semiaxis>6378137.0</semiaxis><denflat>298.257222101</denflat></geodetic></horizsys></spref><eainfo><detailed Name="MangrovePoint_RIBITS2020"><enttyp><enttypl Sync="TRUE">MangrovePoint_RIBITS2020</enttypl><enttypd>RIBITS_2020.DBF</enttypd><enttypds>USACE</enttypds><enttypt Sync="TRUE">Feature Class</enttypt><enttypc Sync="TRUE">0</enttypc></enttyp><attr><attrlabl Sync="TRUE">FID</attrlabl><attalias Sync="TRUE">FID</attalias><attrtype Sync="TRUE">OID</attrtype><attwidth Sync="TRUE">4</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale><attrdef Sync="TRUE">Internal feature number.</attrdef><attrdefs Sync="TRUE">Esri</attrdefs><attrdomv><udom Sync="TRUE">Sequential unique whole numbers that are automatically generated.</udom></attrdomv></attr><attr><attrlabl>Shape</attrlabl><attrdef>Feature geometry.</attrdef><attrdefs>ESRI</attrdefs><attrdomv><udom>Coordinates defining the features.</udom></attrdomv><attalias Sync="TRUE">Shape</attalias><attrtype Sync="TRUE">Geometry</attrtype><attwidth Sync="TRUE">0</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>NAME</attrlabl><attrdef>[Name] Not defined by source. </attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">NAME</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">60</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>BANK_TYPE</attrlabl><attrdef>[Bank Type] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">BANK_TYPE</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">20</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>BANK_ID</attrlabl><attrdef>[Bank ID] Not defined by source. </attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">BANK_ID</attalias><attrtype Sync="TRUE">Integer</attrtype><attwidth Sync="TRUE">10</attwidth><atprecis Sync="TRUE">10</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>URL</attrlabl><attrdef>URL web address providing general information about the site. </attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">URL</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">254</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>BANK_STATU</attrlabl><attrdef>[Bank Status] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">BANK_STATU</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">10</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>STATE_ABBR</attrlabl><attrdef>[State Abbreviation] Not defined by source. </attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">STATE_ABBR</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">10</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>APPROVAL_D</attrlabl><attrdef>[Approval Date] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">APPROVAL_D</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">15</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>BANK_SOLD</attrlabl><attrdef>[Bank Sold] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">BANK_SOLD</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">15</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>COUNTY_LIS</attrlabl><attrdef>[County List] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">COUNTY_LIS</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">30</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>DISTRICT_L</attrlabl><attrdef>[District List] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">DISTRICT_L</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">15</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>FIELD_OFFI</attrlabl><attrdef>[Field Office] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">FIELD_OFFI</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">15</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>HAS_FOOTPR</attrlabl><attrdef>[Has Footprint] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">HAS_FOOTPR</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">5</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>IS_404</attrlabl><attrdef>[Is 404] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">IS_404</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">5</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>IS_CONSERV</attrlabl><attrdef>[Is Conservation] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">IS_CONSERV</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">5</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>IS_DOT</attrlabl><attrdef>[Is DOT] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">IS_DOT</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">5</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>IS_FWS</attrlabl><attrdef>[Is FWS] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">IS_FWS</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">5</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>IS_ILF</attrlabl><attrdef>[Is ILF] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">IS_ILF</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">5</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>IS_NMFS</attrlabl><attrdef>[Is NMFS] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">IS_NMFS</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">5</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>IS_NRDA</attrlabl><attrdef>[Is NRDA] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">IS_NRDA</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">5</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>IS_USACE</attrlabl><attrdef>[Is USACE] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">IS_USACE</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">5</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>IS_UMBRELL</attrlabl><attrdef>[Is Umbrella] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">IS_UMBRELL</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">5</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>NOAA_FISHE</attrlabl><attrdef>[NOAA Fisheries Region List] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">NOAA_FISHE</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">10</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>X</attrlabl><attrdef>[X] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">X</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">19</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>Y</attrlabl><attrdef>[Y] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">Y</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">19</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>YEAR_EST</attrlabl><attrdef>[Year Established] Not defined by source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">YEAR_EST</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">5</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>ACRES</attrlabl><attrdef>Acres. </attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">ACRES</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">19</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>DESCRIPT</attrlabl><attrdef>GeoPlan added field based on NAME.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">DESCRIPT</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">60</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl>FGDLAQDATE</attrlabl><attrdef>GeoPlan added field based on date downloaded from source.</attrdef><attrdefs>GeoPlan</attrdefs><attalias Sync="TRUE">FGDLAQDATE</attalias><attrtype Sync="TRUE">Date</attrtype><attwidth Sync="TRUE">8</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl Sync="TRUE">AUTOID</attrlabl><attalias Sync="TRUE">AUTOID</attalias><attrtype Sync="TRUE">Integer</attrtype><attwidth Sync="TRUE">10</attwidth><atprecis Sync="TRUE">10</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl Sync="TRUE">Shape_Leng</attrlabl><attalias Sync="TRUE">Shape_Leng</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">19</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr><attr><attrlabl Sync="TRUE">SHAPE_AREA</attrlabl><attalias Sync="TRUE">Shape_Area</attalias><attrtype Sync="TRUE">Double</attrtype><attwidth Sync="TRUE">19</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale><attrdef Sync="TRUE">Area of feature in internal units squared.</attrdef><attrdefs Sync="TRUE">Esri</attrdefs><attrdomv><udom Sync="TRUE">Positive real numbers that are automatically generated.</udom></attrdomv></attr></detailed></eainfo><distinfo><distrib><cntinfo><cntorgp><cntorg>Florida Geographic Data Library (FGDL)</cntorg></cntorgp><cntaddr><addrtype>mailing</addrtype><address>431 Architecture PO Box 115706</address><city>Gainesville</city><state>Florida</state><postal>32611-5706</postal><country>US</country></cntaddr><cntemail>Web site: http://www.fgdl.org</cntemail><cntemail>For FGDL Software: http://www.fgdl.org/software.html</cntemail><cntemail>Mailing list for FGDL: http://www.fgdl.org/fgdl-l.html</cntemail><cntemail>FGDL Frequently Asked Questions: http://www.fgdl.org/fgdlfaq.html</cntemail><cntemail>Technical Support: http://www.fgdl.org/fgdlfeed.html</cntemail></cntinfo></distrib><resdesc>DOWNLOADABLE DATA</resdesc><distliab>The Florida Geographic Data Library is a collection of Geospatial Data compiled by the University of Florida GeoPlan Center with support from the Florida Department of Transportation. GIS data available in FGDL is collected from various state, federal, and other agencies (data sources) who are data stewards, producers, or publishers. The data available in FGDL may not be the most current version of the data offered by the data source. University of Florida GeoPlan Center makes no guarantees about the currentness of the data and suggests that data users check with the data source to see if more recent versions of the data exist. Furthermore, the GIS data available in the FGDL are provided 'as is'. The University of Florida GeoPlan Center makes no warranties, guaranties or representations as to the truth, accuracy or completeness of the data provided by the data sources. The University of Florida GeoPlan Center makes no representations or warranties about the quality or suitability of the materials, either expressly or implied, including but not limited to any implied warranties of merchantability, fitness for a particular purpose, or non-infringement. The University of Florida GeoPlan Center shall not be liable for any damages suffered as a result of using, modifying, contributing or distributing the materials. A note about data scale: Scale is an important factor in data usage. Certain scale datasets are not suitable for some project, analysis, or modeling purposes. Please be sure you are using the best available data. 1:24000 scale datasets are recommended for projects that are at the county level. 1:24000 data should NOT be used for high accuracy base mapping such as property parcel boundaries. 1:100000 scale datasets are recommended for projects that are at the multi-county or regional level. 1:125000 scale datasets are recommended for projects that are at the regional or state level or larger. Vector datasets with no defined scale or accuracy should be considered suspect. Make sure you are familiar with your data before using it for projects or analysis. Every effort has been made to supply the user with data documentation. For additional information, see the References section and the Data Source Contact section of this documentation. For more information regarding scale and accuracy, see our webpage at: http://geoplan.ufl.edu/education.html</distliab></distinfo><metainfo><metd>20201120</metd><metc><cntinfo><cntorgp><cntorg>U.S. Army Corps of Engineers (USACE)</cntorg></cntorgp><cntaddr><addrtype>mailing and physical</addrtype><address>441 G Street NW</address><city>Washington</city><state>DC</state><postal>20314-1000</postal><country>US</country></cntaddr><cntvoice>202-761-0011</cntvoice></cntinfo></metc><metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn><metstdv>FGDC-STD-001-1998</metstdv><mettc>local time</mettc></metainfo><Binary><Thumbnail><Data EsriPropertyType="PictureX">/9j/4AAQSkZJRgABAQEAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0a
+HBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIy
+MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCACFAMgDASIA
+AhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQA
+AAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3
+ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWm
+p6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEA
+AwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSEx
+BhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElK
+U1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3
+uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD3+iii
+gAooooAKKQgkrg4APPvTREiuzgfMxBJJ9sUAOVgwyM9SOQR0OO9LRUDSNHKjScIy4Y5G1W7ckjrn
+HT8qAJ6KhLrDHJMzvIrfMABu4x0UAc9P1qagAopMgkjIyOopaACijpQCCAQcg0AFFI24qdpAbsSM
+ignAJAJ9h3oAAwLMAeV60tQxOzyS5cYV9uzAyvHfBPXg9uCKlGSSe1AC0UUUAFFFFABRRRQAUUUU
+AFFFFABRRRQAUUUUAFBAIwRkGiigCMoY4CkCopVcIMYUenA7U9iQjFV3MBwM4zS0UAQCVzdKggPl
+NHu808c5+6R261K6LIAGUHBDDPqKdRQAjKGUqwyCMEUKoRQqjCgYApaKAGoxZFYqUJGSrYyPY44p
+1FFAFZpYbSYLJsQzuSCq4zhcncfoOtOilQ3DQxhdqoJCQCB8xOMHoc4JP4etT1BMtwZoDC6iMMfN
+Vv4htOMceuPSgCeigZxz1ooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKK
+AGRszxhnjaNuflYgkflT6D04GaQZIGRg9xQAioqbtoxuOT7ml53DgbccnNLTV3h2B5XqDnnPcYx0
+6UARWjFoMM25lZlJ55wT61PWdKLwavCQzGBlxtAyvBJJJzwfu449a0aACiiigAooooAKKKKACiii
+gAooooAKKKKACiiigAooooAKKKKACiiigBrhjGwVtrY4bGcU0SFpgoPyYOcqck8d+mOf84qSo5kW
+SJ0kJEbIQ2CQcH0I5H4UABlBiWRejFcbgRwSOx+tKsqOxVTkgAnjjnpz/n9aYII2jeJlQqWJKquA
+CTuz9cnOfXmo/LVbkIjsr5EjkclgOMMSP/r8exoAWNZXund4Ui2EKrghjImM46ZGGP6e9WRx3zTE
+ZSzbVI55JXGT0/p/KiLaFIVy2GOSTkjnOKAH0UUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFF
+FABRRRQAUUUUAI2Np3dMc1G6sqllLkg7gqkZPHTnipSAQQRkGigBGbaM4J5A4GepqMpsmeZ5SEC4
+2k4VfU/oPpz6mnglj0YAHv3/AM/0poljkDeWVk2vtYKQcEHnP0oAkpjITIGEjABSNoxgk45+ox+p
+p9NAfzCSV2Y4GOc/WgBQwYZByM4paKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK
+KKKACg57UUUAFMkk8vHyO2SB8oz1NOVVQYVQoyTgDHJOT+tRr5zRyB9iNkhCPm47E+/tQBLRUccy
+ylwobCnGSOCfapKACikAbeSSNuBgY6UtABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUA
+FFFFABRRRQAUUUUAFBzjjrRRQAUUgIIyCD24paACiiigAooooAKKKKACiiigAooooAKKKKACiiig
+AooooAKKKKACiiigAooooAKiNrbmV5vJj8112NJtG4r6E9cVLUQgxdGfzZTlNvl7vkHvj196AFhh
+jt4liiXai5wM596koooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACii
+igAooooAKKKKACiiigAooooA/9k=</Data></Thumbnail><Enclosure><Descript>original metadata</Descript><Data SourceMetadata="yes" OriginalFileName="source_metadata.xml" SourceMetadataDigest="7c26d994b43d2b1c5cc04a52907787" EsriPropertyType="Base64" SourceMetadataSchema="fgdc">PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjxtZXRhZGF0YT4NCiAgPGlk
+aW5mbz4NCiAgICA8Y2l0YXRpb24+DQogICAgICA8Y2l0ZWluZm8+DQogICAgICAgIDxvcmlnaW4+
+VS5TLiBBcm15IENvcnBzIG9mIEVuZ2luZWVyczwvb3JpZ2luPg0KICAgICAgICA8cHViZGF0ZT4y
+MDIwPC9wdWJkYXRlPg0KICAgICAgICA8dGl0bGU+TWl0aWdhdGlvbiBCYW5rIGFuZCBJbi1MaWV1
+IEZlZSBQcm9ncmFtIFNpdGVzIGluIEZsb3JpZGEgLSAyMDIwPC90aXRsZT4NCiAgICAgICAgPGdl
+b2Zvcm0+dmVjdG9yIGRpZ2l0YWwgZGF0YTwvZ2VvZm9ybT4NCiAgICAgICAgPHB1YmluZm8+DQog
+ICAgICAgICAgPHB1YnBsYWNlPldhc2hpbmd0b24gREM8L3B1YnBsYWNlPg0KICAgICAgICAgIDxw
+dWJsaXNoPlUuUy4gQXJteSBDb3JwcyBvZiBFbmdpbmVlcnMgKFVTQUNFKTwvcHVibGlzaD4NCiAg
+ICAgICAgPC9wdWJpbmZvPg0KICAgICAgICA8b3RoZXJjaXQ+U3RhdGUgb2YgRmxvcmlkYTwvb3Ro
+ZXJjaXQ+DQogICAgICAgIDxvbmxpbms+aHR0cHM6Ly9yaWJpdHMudXNhY2UuYXJteS5taWw8L29u
+bGluaz4NCiAgICAgIDwvY2l0ZWluZm8+DQogICAgPC9jaXRhdGlvbj4NCiAgICA8ZGVzY3JpcHQ+
+DQogICAgICA8YWJzdHJhY3Q+VGhpcyBkYXRhc2V0IGNvbnRhaW5zIG1pdGlnYXRpb24gYmFuayBh
+bmQgaW4tbGlldSBmZWUgcHJvZ3JhbSBzaXRlcyBpbiBGbG9yaWRhIGZyb20gdGhlIFVTIEFybXkg
+Q29ycHMgb2YgRW5naW5lZXJzIFJlZ3VsYXRvcnkgSW4tbGlldSBGZWUgYW5kIEJhbmsgSW5mb3Jt
+YXRpb24gVHJhY2tpbmcgU3lzdGVtIChSSUJJVFMpLiBBIG1pdGlnYXRpb24gYmFuayBpcyBhIHNp
+dGUgd2hlcmUgcmVzb3VyY2VzIChlLmcuLCB3ZXRsYW5kcywgc3RyZWFtcywgcmlwYXJpYW4gYXJl
+YXMpIGFyZSByZXN0b3JlZCwgZXN0YWJsaXNoZWQsIGVuaGFuY2VkLCBhbmQvb3IgcHJlc2VydmVk
+IGZvciB0aGUgcHVycG9zZSBvZiBwcm92aWRpbmcgY29tcGVuc2F0b3J5IG1pdGlnYXRpb24gZm9y
+IGltcGFjdHMgYXV0aG9yaXplZCBieSBEZXBhcnRtZW50IG9mIHRoZSBBcm15IHBlcm1pdHMuIFRo
+ZSBVLlMuIEFybXkgQ29ycHMgb2YgRW5naW5lZXJzIHJlZ3VsYXRlcyByZXNvdXJjZXMgbGlrZSB3
+ZXRsYW5kcyBhbmQgc3RyZWFtcyB1bmRlciBTZWN0aW9uIDQwNCBvZiB0aGUgQ2xlYW4gV2F0ZXIg
+QWN0IGFuZCBpbiBzb21lIGNhc2VzIFNlY3Rpb24gMTAgb2YgdGhlIFJpdmVycyBhbmQgSGFyYm9y
+cyBBY3QuIFRoZSBtZWFzdXJlIG9mIGFxdWF0aWMgZnVuY3Rpb25zIGlzIGJhc2VkIG9uIHRoZSBy
+ZXNvdXJjZXMgcmVzdG9yZWQsIGVzdGFibGlzaGVkLCBlbmhhbmNlZCwgb3IgcHJlc2VydmVkLiBB
+biBpbi1saWV1IGZlZSBwcm9ncmFtIGludm9sdmVzIHRoZSByZXN0b3JhdGlvbiwgZXN0YWJsaXNo
+bWVudCwgZW5oYW5jZW1lbnQsIGFuZC9vciBwcmVzZXJ2YXRpb24gdGhyb3VnaCBmdW5kcyBwYWlk
+IHRvIGEgZ292ZXJubWVudGFsIG9yIG5vbi1wcm9maXQgbmF0dXJhbCByZXNvdXJjZXMgbWFuYWdl
+bWVudCBwcm9ncmFtIHNwb25zb3IgdG8gc2F0aXNmeSBjb21wZW5zYXRvcnkgbWl0aWdhdGlvbiBy
+ZXF1aXJlbWVudHMgdW5kZXIgRGVwYXJ0bWVudCBvZiB0aGUgQXJteSBwZXJtaXRzLiBGdW5kcyBh
+cmUgb2Z0ZW4gcmVjZWl2ZWQgYnkgdGhlIGluLWxpZXUgZmVlIHByb2dyYW0gc3BvbnNvciBwcmlv
+ciB0byB1bmRlcnRha2luZyBjb21wZW5zYXRvcnkgbWl0aWdhdGlvbiBwcm9qZWN0cy4gSW4gbGll
+dSBmZWUgcHJvZ3JhbXMgY2FuIGludm9sdmUgbXVsdGlwbGUgbWl0aWdhdGlvbiBwcm9qZWN0IHNp
+dGVzLjwvYWJzdHJhY3Q+DQogICAgICA8cHVycG9zZT5SSUJJVFMgKFJlZ3VsYXRvcnkgSW4gbGll
+dSBmZWUgYW5kIEJhbmsgSW5mb3JtYXRpb24gVHJhY2tpbmcgU3lzdGVtKSB3YXMgZGV2ZWxvcGVk
+IGJ5IHRoZSBVLlMuIEFybXkgQ29ycHMgb2YgRW5naW5lZXJzIHdpdGggc3VwcG9ydCBmcm9tIHRo
+ZSBFbnZpcm9ubWVudGFsIFByb3RlY3Rpb24gQWdlbmN5LCB0aGUgVS5TLiBGaXNoIGFuZCBXaWxk
+bGlmZSBTZXJ2aWNlLCB0aGUgRmVkZXJhbCBIaWdod2F5IEFkbWluaXN0cmF0aW9uLCBhbmQgTk9B
+QSBGaXNoZXJpZXMgdG8gcHJvdmlkZSBiZXR0ZXIgaW5mb3JtYXRpb24gb24gbWl0aWdhdGlvbiBh
+bmQgY29uc2VydmF0aW9uIGJhbmtpbmcgYW5kIGluLWxpZXUgZmVlIHByb2dyYW1zIGFjcm9zcyB0
+aGUgY291bnRyeS4gUklCSVRTIGFsbG93cyB1c2VycyB0byBhY2Nlc3MgaW5mb3JtYXRpb24gb24g
+dGhlIHR5cGVzIGFuZCBudW1iZXJzIG9mIG1pdGlnYXRpb24gYW5kIGNvbnNlcnZhdGlvbiBiYW5r
+IGFuZCBpbi1saWV1IGZlZSBwcm9ncmFtIHNpdGVzLCBhc3NvY2lhdGVkIGRvY3VtZW50cywgbWl0
+aWdhdGlvbiBjcmVkaXQgYXZhaWxhYmlsaXR5LCBzZXJ2aWNlIGFyZWFzLCBhcyB3ZWxsIGluZm9y
+bWF0aW9uIG9uIG5hdGlvbmFsIGFuZCBsb2NhbCBwb2xpY2llcyBhbmQgcHJvY2VkdXJlcyB0aGF0
+IGFmZmVjdCBtaXRpZ2F0aW9uIGFuZCBjb25zZXJ2YXRpb24gYmFuayBhbmQgaW4tbGlldSBmZWUg
+cHJvZ3JhbSBkZXZlbG9wbWVudCBhbmQgb3BlcmF0aW9uLjwvcHVycG9zZT4NCiAgICAgIDxzdXBw
+bGluZj5BIG1pdGlnYXRpb24gYmFuayBpcyBhbiBhcXVhdGljIHJlc291cmNlIGFyZWEgdGhhdCBo
+YXMgYmVlbiByZXN0b3JlZCwgY3JlYXRlZCwgZW5oYW5jZWQsIG9yIChpbiBleGNlcHRpb25hbCBj
+aXJjdW1zdGFuY2VzKSBwcmVzZXJ2ZWQsIHdoaWNoIGlzIHRoZW4gc2V0IGFzaWRlIHRvIGNvbXBl
+bnNhdGUgZm9yIGZ1dHVyZSBpbXBhY3RzIHRvIGFxdWF0aWMgcmVzb3VyY2VzIGZvciBkZXZlbG9w
+bWVudCBhY3Rpdml0aWVzLiBBIG1pdGlnYXRpb24gYmFuayBtYXkgYmUgY3JlYXRlZCB3aGVuIGEg
+Z292ZXJubWVudCBhZ2VuY3ksIGEgY29ycG9yYXRpb24sIG9yIGEgbm9ucHJvZml0IG9yZ2FuaXph
+dGlvbiB1bmRlcnRha2VzIHN1Y2ggYWN0aXZpdGllcyB1bmRlciBhIGZvcm1hbCBhZ3JlZW1lbnQg
+d2l0aCBhIHJlZ3VsYXRvcnkgYWdlbmN5LiBUaGUgdmFsdWUgb2YgYSBiYW5rIGlzIGRldGVybWlu
+ZWQgYnkgcXVhbnRpZnlpbmcgdGhlIGZ1bmN0aW9ucyBvciBhcmVhIHJlc3RvcmVkIG9yIGNyZWF0
+ZWQgaW4gdGVybXMgb2YgImNyZWRpdHMuIiBCZW5lZml0cyBvZiBNaXRpZ2F0aW9uIEJhbmtpbmc6
+ICogQmFua2luZyBjYW4gcHJvdmlkZSBtb3JlIGNvc3QtZWZmZWN0aXZlIG1pdGlnYXRpb24gYW5k
+IHJlZHVjZSB1bmNlcnRhaW50eSBhbmQgZGVsYXlzIGZvciBxdWFsaWZpZWQgcHJvamVjdHMsIGVz
+cGVjaWFsbHkgd2hlbiB0aGUgcHJvamVjdCBpcyBhc3NvY2lhdGVkIHdpdGggYSBjb21wcmVoZW5z
+aXZlIHBsYW5uaW5nIGVmZm9ydC4gKiBTdWNjZXNzZnVsIG1pdGlnYXRpb24gY2FuIGJlIGVuc3Vy
+ZWQgc2luY2UgdGhlIGFxdWF0aWMgcmVzb3VyY2UgY2FuIGJlIGZ1bmN0aW9uYWwgaW4gYWR2YW5j
+ZSBvZiBwcm9qZWN0IGltcGFjdHMuICogQmFua2luZyBlbGltaW5hdGVzIHRoZSB0ZW1wb3JhbCBs
+b3NzZXMgb2YgYXF1YXRpYyByZXNvdXJjZSBmdW5jdGlvbnMgdGhhdCB0eXBpY2FsbHkgb2NjdXIg
+d2hlbiBtaXRpZ2F0aW9uIGlzIGluaXRpYXRlZCBkdXJpbmcgb3IgYWZ0ZXIgdGhlIGRldmVsb3Bt
+ZW50IGltcGFjdHMgb2NjdXIgKiBDb25zb2xpZGF0aW9uIG9mIG51bWVyb3VzIHNtYWxsLCBpc29s
+YXRlZCBvciBmcmFnbWVudGVkIG1pdGlnYXRpb24gcHJvamVjdHMgaW50byBhIHNpbmdsZSBsYXJn
+ZSBwYXJjZWwgbWF5IGhhdmUgZ3JlYXRlciBlY29sb2dpY2FsIGJlbmVmaXQuICogQSBtaXRpZ2F0
+aW9uIGJhbmsgY2FuIGJyaW5nIHNjaWVudGlmaWMgYW5kIHBsYW5uaW5nIGV4cGVydGlzZSBhbmQg
+ZmluYW5jaWFsIHJlc291cmNlcyB0b2dldGhlciwgdGhlcmVieSBpbmNyZWFzaW5nIHRoZSBsaWtl
+bGlob29kIG9mIHN1Y2Nlc3MgaW4gYSB3YXkgbm90IHByYWN0aWNhbCBmb3IgaW5kaXZpZHVhbCBt
+aXRpZ2F0aW9uIGVmZm9ydHMuPC9zdXBwbGluZj4NCiAgICA8L2Rlc2NyaXB0Pg0KICAgIDx0aW1l
+cGVyZD4NCiAgICAgIDx0aW1laW5mbz4NCiAgICAgICAgPHNuZ2RhdGU+DQogICAgICAgICAgPGNh
+bGRhdGU+MjAyMDwvY2FsZGF0ZT4NCiAgICAgICAgPC9zbmdkYXRlPg0KICAgICAgPC90aW1laW5m
+bz4NCiAgICAgIDxjdXJyZW50PnB1YmxpY2F0aW9uIGRhdGU8L2N1cnJlbnQ+DQogICAgPC90aW1l
+cGVyZD4NCiAgICA8c3RhdHVzPg0KICAgICAgPHByb2dyZXNzPkNvbXBsZXRlPC9wcm9ncmVzcz4N
+CiAgICAgIDx1cGRhdGU+QXMgbmVlZGVkPC91cGRhdGU+DQogICAgPC9zdGF0dXM+DQogICAgPHNw
+ZG9tPg0KICAgICAgPGJvdW5kaW5nPg0KICAgICAgICA8d2VzdGJjPi04Ny4zODY2MTk8L3dlc3Ri
+Yz4NCiAgICAgICAgPGVhc3RiYz4tODAuMDY4NzQ4PC9lYXN0YmM+DQogICAgICAgIDxub3J0aGJj
+PjMwLjczNDM1Mjwvbm9ydGhiYz4NCiAgICAgICAgPHNvdXRoYmM+MjQuNjM3ODAxPC9zb3V0aGJj
+Pg0KICAgICAgPC9ib3VuZGluZz4NCiAgICA8L3NwZG9tPg0KICAgIDxrZXl3b3Jkcz4NCiAgICAg
+IDx0aGVtZT4NCiAgICAgICAgPHRoZW1la3Q+SVNPIDE5MTE1IFRvcGljIENhdGVnb3J5PC90aGVt
+ZWt0Pg0KICAgICAgICA8dGhlbWVrZXk+aW5sYW5kV2F0ZXJzPC90aGVtZWtleT4NCiAgICAgICAg
+PHRoZW1la2V5PmVudmlyb25tZW50PC90aGVtZWtleT4NCiAgICAgIDwvdGhlbWU+DQogICAgPC9r
+ZXl3b3Jkcz4NCiAgICA8YWNjY29uc3Q+Tm9uZTwvYWNjY29uc3Q+DQogICAgPHVzZWNvbnN0PlRo
+ZSBGbG9yaWRhIEdlb2dyYXBoaWMgRGF0YSBMaWJyYXJ5IGlzIGEgY29sbGVjdGlvbiBvZiBHZW9z
+cGF0aWFsIERhdGEgY29tcGlsZWQgYnkgdGhlIFVuaXZlcnNpdHkgb2YgRmxvcmlkYSBHZW9QbGFu
+IENlbnRlciB3aXRoIHN1cHBvcnQgZnJvbSB0aGUgRmxvcmlkYSBEZXBhcnRtZW50IG9mIFRyYW5z
+cG9ydGF0aW9uLiBHSVMgZGF0YSBhdmFpbGFibGUgaW4gRkdETCBpcyBjb2xsZWN0ZWQgZnJvbSB2
+YXJpb3VzIHN0YXRlLCBmZWRlcmFsLCBhbmQgb3RoZXIgYWdlbmNpZXMgKGRhdGEgc291cmNlcykg
+d2hvIGFyZSBkYXRhIHN0ZXdhcmRzLCBwcm9kdWNlcnMsIG9yIHB1Ymxpc2hlcnMuIFRoZSBkYXRh
+IGF2YWlsYWJsZSBpbiBGR0RMIG1heSBub3QgYmUgdGhlIG1vc3QgY3VycmVudCB2ZXJzaW9uIG9m
+IHRoZSBkYXRhIG9mZmVyZWQgYnkgdGhlIGRhdGEgc291cmNlLiBVbml2ZXJzaXR5IG9mIEZsb3Jp
+ZGEgR2VvUGxhbiBDZW50ZXIgbWFrZXMgbm8gZ3VhcmFudGVlcyBhYm91dCB0aGUgY3VycmVudG5l
+c3Mgb2YgdGhlIGRhdGEgYW5kIHN1Z2dlc3RzIHRoYXQgZGF0YSB1c2VycyBjaGVjayB3aXRoIHRo
+ZSBkYXRhIHNvdXJjZSB0byBzZWUgaWYgbW9yZSByZWNlbnQgdmVyc2lvbnMgb2YgdGhlIGRhdGEg
+ZXhpc3QuIEZ1cnRoZXJtb3JlLCB0aGUgR0lTIGRhdGEgYXZhaWxhYmxlIGluIHRoZSBGR0RMIGFy
+ZSBwcm92aWRlZCAnYXMgaXMnLiBUaGUgVW5pdmVyc2l0eSBvZiBGbG9yaWRhIEdlb1BsYW4gQ2Vu
+dGVyIG1ha2VzIG5vIHdhcnJhbnRpZXMsIGd1YXJhbnRpZXMgb3IgcmVwcmVzZW50YXRpb25zIGFz
+IHRvIHRoZSB0cnV0aCwgYWNjdXJhY3kgb3IgY29tcGxldGVuZXNzIG9mIHRoZSBkYXRhIHByb3Zp
+ZGVkIGJ5IHRoZSBkYXRhIHNvdXJjZXMuIFRoZSBVbml2ZXJzaXR5IG9mIEZsb3JpZGEgR2VvUGxh
+biBDZW50ZXIgbWFrZXMgbm8gcmVwcmVzZW50YXRpb25zIG9yIHdhcnJhbnRpZXMgYWJvdXQgdGhl
+IHF1YWxpdHkgb3Igc3VpdGFiaWxpdHkgb2YgdGhlIG1hdGVyaWFscywgZWl0aGVyIGV4cHJlc3Ns
+eSBvciBpbXBsaWVkLCBpbmNsdWRpbmcgYnV0IG5vdCBsaW1pdGVkIHRvIGFueSBpbXBsaWVkIHdh
+cnJhbnRpZXMgb2YgbWVyY2hhbnRhYmlsaXR5LCBmaXRuZXNzIGZvciBhIHBhcnRpY3VsYXIgcHVy
+cG9zZSwgb3Igbm9uLWluZnJpbmdlbWVudC4gVGhlIFVuaXZlcnNpdHkgb2YgRmxvcmlkYSBHZW9Q
+bGFuIENlbnRlciBzaGFsbCBub3QgYmUgbGlhYmxlIGZvciBhbnkgZGFtYWdlcyBzdWZmZXJlZCBh
+cyBhIHJlc3VsdCBvZiB1c2luZywgbW9kaWZ5aW5nLCBjb250cmlidXRpbmcgb3IgZGlzdHJpYnV0
+aW5nIHRoZSBtYXRlcmlhbHMuIEEgbm90ZSBhYm91dCBkYXRhIHNjYWxlOiBTY2FsZSBpcyBhbiBp
+bXBvcnRhbnQgZmFjdG9yIGluIGRhdGEgdXNhZ2UuIENlcnRhaW4gc2NhbGUgZGF0YXNldHMgYXJl
+IG5vdCBzdWl0YWJsZSBmb3Igc29tZSBwcm9qZWN0LCBhbmFseXNpcywgb3IgbW9kZWxpbmcgcHVy
+cG9zZXMuIFBsZWFzZSBiZSBzdXJlIHlvdSBhcmUgdXNpbmcgdGhlIGJlc3QgYXZhaWxhYmxlIGRh
+dGEuIDE6MjQwMDAgc2NhbGUgZGF0YXNldHMgYXJlIHJlY29tbWVuZGVkIGZvciBwcm9qZWN0cyB0
+aGF0IGFyZSBhdCB0aGUgY291bnR5IGxldmVsLiAxOjI0MDAwIGRhdGEgc2hvdWxkIE5PVCBiZSB1
+c2VkIGZvciBoaWdoIGFjY3VyYWN5IGJhc2UgbWFwcGluZyBzdWNoIGFzIHByb3BlcnR5IHBhcmNl
+bCBib3VuZGFyaWVzLiAxOjEwMDAwMCBzY2FsZSBkYXRhc2V0cyBhcmUgcmVjb21tZW5kZWQgZm9y
+IHByb2plY3RzIHRoYXQgYXJlIGF0IHRoZSBtdWx0aS1jb3VudHkgb3IgcmVnaW9uYWwgbGV2ZWwu
+IDE6MTI1MDAwIHNjYWxlIGRhdGFzZXRzIGFyZSByZWNvbW1lbmRlZCBmb3IgcHJvamVjdHMgdGhh
+dCBhcmUgYXQgdGhlIHJlZ2lvbmFsIG9yIHN0YXRlIGxldmVsIG9yIGxhcmdlci4gVmVjdG9yIGRh
+dGFzZXRzIHdpdGggbm8gZGVmaW5lZCBzY2FsZSBvciBhY2N1cmFjeSBzaG91bGQgYmUgY29uc2lk
+ZXJlZCBzdXNwZWN0LiBNYWtlIHN1cmUgeW91IGFyZSBmYW1pbGlhciB3aXRoIHlvdXIgZGF0YSBi
+ZWZvcmUgdXNpbmcgaXQgZm9yIHByb2plY3RzIG9yIGFuYWx5c2lzLiBFdmVyeSBlZmZvcnQgaGFz
+IGJlZW4gbWFkZSB0byBzdXBwbHkgdGhlIHVzZXIgd2l0aCBkYXRhIGRvY3VtZW50YXRpb24uIEZv
+ciBhZGRpdGlvbmFsIGluZm9ybWF0aW9uLCBzZWUgdGhlIFJlZmVyZW5jZXMgc2VjdGlvbiBhbmQg
+dGhlIERhdGEgU291cmNlIENvbnRhY3Qgc2VjdGlvbiBvZiB0aGlzIGRvY3VtZW50YXRpb24uIEZv
+ciBtb3JlIGluZm9ybWF0aW9uIHJlZ2FyZGluZyBzY2FsZSBhbmQgYWNjdXJhY3ksIHNlZSBvdXIg
+d2VicGFnZSBhdDogaHR0cDovL2dlb3BsYW4udWZsLmVkdS9lZHVjYXRpb24uaHRtbDwvdXNlY29u
+c3Q+DQogICAgPHB0Y29udGFjPg0KICAgICAgPGNudGluZm8+DQogICAgICAgIDxjbnRvcmdwPg0K
+ICAgICAgICAgIDxjbnRvcmc+VS5TLiBBcm15IENvcnBzIG9mIEVuZ2luZWVycyAoVVNBQ0UpPC9j
+bnRvcmc+DQogICAgICAgIDwvY250b3JncD4NCiAgICAgICAgPGNudGFkZHI+DQogICAgICAgICAg
+PGFkZHJ0eXBlPnVua25vd248L2FkZHJ0eXBlPg0KICAgICAgICAgIDxhZGRyZXNzPjQ0MSBHIFN0
+cmVldCBOVzwvYWRkcmVzcz4NCiAgICAgICAgICA8Y2l0eT5XYXNoaW5ndG9uPC9jaXR5Pg0KICAg
+ICAgICAgIDxzdGF0ZT5EQzwvc3RhdGU+DQogICAgICAgICAgPHBvc3RhbD4yMDMxNC0xMDAwPC9w
+b3N0YWw+DQogICAgICAgICAgPGNvdW50cnk+VVM8L2NvdW50cnk+DQogICAgICAgIDwvY250YWRk
+cj4NCiAgICAgICAgPGNudHZvaWNlPjIwMi03NjEtMDAxMTwvY250dm9pY2U+DQogICAgICA8L2Nu
+dGluZm8+DQogICAgPC9wdGNvbnRhYz4NCiAgICA8ZGF0YWNyZWQ+VS5TLiBBcm15IENvcnBzIG9m
+IEVuZ2luZWVyczwvZGF0YWNyZWQ+DQogICAgPG5hdGl2ZT4gVmVyc2lvbiA2LjIgKEJ1aWxkIDky
+MDApIDsgRXNyaSBBcmNHSVMgMTAuNy4wLjEwNDUwPC9uYXRpdmU+DQogICAgPGNyb3NzcmVmPg0K
+ICAgICAgPGNpdGVpbmZvPg0KICAgICAgICA8b3RoZXJjaXQ+VS5TLiBBcm15IENvcnBzIG9mIEVu
+Z2luZWVyczogaHR0cHM6Ly93d3cudXNhY2UuYXJteS5taWwvIFJlZ3VsYXRvcnkgSW4tbGlldSBG
+ZWUgYW5kIEJhbmsgSW5mb3JtYXRpb24gVHJhY2tpbmcgU3lzdGVtOiBodHRwczovL3JpYml0cy51
+c2FjZS5hcm15Lm1pbDwvb3RoZXJjaXQ+DQogICAgICA8L2NpdGVpbmZvPg0KICAgIDwvY3Jvc3Ny
+ZWY+DQogIDwvaWRpbmZvPg0KICA8ZGF0YXF1YWw+DQogICAgPGF0dHJhY2M+DQogICAgICA8YXR0
+cmFjY3I+R2VvUGxhbiByZWxpZWQgb24gdGhlIGludGVncml0eSBvZiB0aGUgYXR0cmlidXRlIGlu
+Zm9ybWF0aW9uIHdpdGhpbiB0aGUgb3JpZ2luYWwgZGF0YS48L2F0dHJhY2NyPg0KICAgIDwvYXR0
+cmFjYz4NCiAgICA8bG9naWM+VGhpcyBkYXRhIGlzIHByb3ZpZGVkICdhcyBpcycuIEdlb1BsYW4g
+cmVsaWVkIG9uIHRoZSBpbnRlZ3JpdHkgb2YgdGhlIG9yaWdpbmFsIGRhdGEgbGF5ZXIncyB0b3Bv
+bG9neTwvbG9naWM+DQogICAgPGNvbXBsZXRlPlRoaXMgZGF0YSBpcyBwcm92aWRlZCAnYXMgaXMn
+IGJ5IEdlb1BsYW4gYW5kIGlzIGNvbXBsZXRlIHRvIG91ciBrbm93bGVkZ2UuPC9jb21wbGV0ZT4N
+CiAgICA8cG9zYWNjPg0KICAgICAgPGhvcml6cGE+DQogICAgICAgIDxob3JpenBhcj5UaGlzIGRh
+dGEgaXMgcHJvdmlkZWQgJ2FzIGlzJyBhbmQgaXRzIGhvcml6b250YWwgcG9zaXRpb25hbCBhY2N1
+cmFjeSBoYXMgbm90IGJlZW4gdmVyaWZpZWQgYnkgR2VvUGxhbjwvaG9yaXpwYXI+DQogICAgICA8
+L2hvcml6cGE+DQogICAgICA8dmVydGFjYz4NCiAgICAgICAgPHZlcnRhY2NyPlRoaXMgZGF0YSBp
+cyBwcm92aWRlZCAnYXMgaXMnIGFuZCBpdHMgdmVydGljYWwgcG9zaXRpb25hbCBhY2N1cmFjeSBo
+YXMgbm90IGJlZW4gdmVyaWZpZWQgYnkgR2VvUGxhbjwvdmVydGFjY3I+DQogICAgICA8L3ZlcnRh
+Y2M+DQogICAgPC9wb3NhY2M+DQogICAgPGxpbmVhZ2U+DQogICAgICA8c3JjaW5mbz4NCiAgICAg
+ICAgPHNyY3NjYWxlPjA8L3NyY3NjYWxlPg0KICAgICAgICA8dHlwZXNyYz5vbkxpbmU8L3R5cGVz
+cmM+DQogICAgICAgIDxzcmNjb250cj5TcGF0aWFsIGFuZCBBdHRyaWJ1dGUgSW5mb3JtYXRpb248
+L3NyY2NvbnRyPg0KICAgICAgPC9zcmNpbmZvPg0KICAgICAgPHByb2NzdGVwPg0KICAgICAgICA8
+cHJvY2Rlc2M+R2VvUGxhbiBDZW50ZXIgUHJvY2VzcyBTdGVwczogDQoNCk1pdGlnYXRpb24gYmFu
+ayBhbmQgSUxGIHNpdGUgZGF0YSB3YXMgZG93bmxvYWRlZCBmcm9tIFJJQklUUyBvbiAxMS8yMC8y
+MDIwLiANCg0KRG93bmxvYWQgSW5zdHJ1Y3Rpb25zOg0KMS4gaHR0cHM6Ly9yaWJpdHMudXNhY2Uu
+YXJteS5taWwvDQoyLiBNRU5VICZndDsgQmFua3MgJmFtcDsgU2l0ZXMNCjMuIEFjdGlvbnMgJmd0
+OyBTZWxlY3QgQ29sdW1uczogQWRkIGFsbCBjb2x1bW5zIHRvICJEaXNwbGF5IGluIFJlcG9ydCIg
+DQogICB3aW5kb3cNCjQuIEFjdGlvbnMgJmd0OyBGaWx0ZXI6IFN0YXRlIEFiYnJldiBMaXN0IGNv
+bnRhaW5zICdGTCcNCjUuIEFjdGlvbnMgJmd0OyBEb3dubG9hZDogQXMgQ1NWDQo2LiBBZnRlciBt
+YWtpbmcgdGhlIHNlbGVjdGlvbnMgYWJvdmUsIGRvd25sb2FkIEZvb3RwcmludCBLTUwgDQogICBm
+aWxlIGZyb20gdGhlIEdvb2dsZSBNYXAgd2luZG93Lg0KDQpEb3dubG9hZGVkIEZpbGVzOiANCi0g
+YmFua3NfYW5kX2lsZl9zaXRlcy5jc3YgKDE3OCByZWNvcmRzKQ0KLSBSSUJJVFNfQkFOS1NfSUxG
+X0tNTF9mb290cHJpbnQua216ICg0MzAgcmVjb3JkcyAtIDE2NSB1bmlxdWUgcmVjb3JkcykNCg0K
+TGF0aXR1ZGUvbG9uZ2l0dWRlIGRhdGEgZnJvbSAiYmFua3NfYW5kX2lsZl9zaXRlcy5jc3YiIHdl
+cmUgbWFwcGVkIGFuZCANCmV4cG9ydGVkIGFzIGEgc2hhcGVmaWxlIGFuZCAiUklCSVRTX0JBTktT
+X0lMRl9LTUxfZm9vdHByaW50LmtteiIgd2FzIA0KY29udmVydGVkIGZyb20gYSBrbXogZmlsZSB0
+byBhIHNoYXBlZmlsZS4gRm9vdHByaW50IHNoYXBlZmlsZSB3YXMgZGlzc29sdmVkIA0KYmFzZWQg
+b24gJ05hbWUnIGZpZWxkLiBSZXN1bHRpbmcgc2hhcGVmaWxlIGhhZCAxNjUgdW5pcXVlIHJlY29y
+ZHMuIEJvdGggZGF0YXNldHMgDQp3ZXJlIG1hcHBlZCBpbiB0aGUgR0NTX1dHU184NCAoRVBTRzog
+NDMyNikgcHJvamVjdGlvbiBhbmQgdGhlbiByZXByb2plY3RlZCB0byANCkZHREwgQWxiZXJzIE5B
+RDgzIEhBUk4gKEVQU0c6IDMwODcpLg0KDQpGaWVsZCBjaGFuZ2VzIGZyb20gc291cmNlIHNpbmNl
+IHByZXZpb3VzIHVwZGF0ZTogDQotIFJlbW92ZWQ6IEJBTktfTkFNRSwgQ1JFRElUX1RZUEUsIFRP
+VEFMX0FDUkUsIA0KLSBBZGRlZDogWk9PTSwgQVBQUk9WQUxfREFURSwgQkFOS19TT0xELCBJU19V
+TUJSRUxMQQ0KLSBTVEFUVVMgY2hhbmdlZCB0byBCQU5LX1NUQVRVUw0KLSBZRUFSX0VTVEFCIGNo
+YW5nZWQgdG8gWUVBUl9FU1QNCg0KTmV4dCwgImJhbmtzX2FuZF9pbGZfc2l0ZXMiIHdhcyBqb2lu
+ZWQgdG8gIlJJQklUU19CQU5LU19JTEZfS01MX2Zvb3RwcmludCINCnZpYSB0aGUgTkFNRSBmaWVs
+ZC4gVGhlIHJlc3VsdGluZyB0YWJsZSBqb2luIHdhcyBleHBvcnRlZCB0byBzaGFwZWZpbGUuIA0K
+U2V2ZW50ZWVuIHNpdGVzIGZyb20gdGhlIGNzdiBkb3dubG9hZCBoYWQgbm8gZm9vdHByaW50IChw
+b2x5Z29uKSBzcGF0aWFsIGRhdGEsDQphbmQgdGh1cyB3ZXJlIG5vdCBpbmNsdWRlZCBpbiB0aGUg
+ZmluYWwgZGF0YXNldDogDQoqREVWSUwnUyBTV0FNUCBNQiBbMjM3XQ0KKkVWRVJHTEFERVMgU0NP
+VVRTIE1CIFs1NzM2XQ0KKkZQJmFtcDtMIEVWRVJHTEFERVMgUEhBU0UgSSBNQiBbNDI5XQ0KKkZQ
+JmFtcDtMIEVWRVJHTEFERVMgUEhBU0UgSUkgTUIgWzQzNF0NCipIQVRDSElORUhBIFJBTkNIIENP
+TlNFUlZBVElPTiBCQU5LIFBIQVNFIDIgWzM1MjZdDQoqSEFUQ0hJTkVIQSBSQU5DSCBNQiBbMTA0
+MF0NCipIRUFUSEVSIElTTEFORCBNQiBbMjkwXQ0KKklMRiBLRVlTIEVOVklST05NRU5UQUwgUkVT
+VE9SQVRJT04gRlVORCBbMjEyMF0NCipJTEYtS1JGLUJBSElBIEhPTkRBIFBST0pFQ1QgQSBbMzU3
+M10NCipJTEYtS1JGLUNSQU5FIFBPSU5UIEhBTU1PQ0sgWzMzODVdDQoqSkFDSydTIEJSQU5DSCBN
+QiBbMTQ0M10NCipNQVJJT04gTUIgWzQ0MzhdDQoqTkFUVVJBTCBSRVNPVVJDRSBNQiBbMzI3Ml0N
+CipPU1BSRVkgVU5JVCBNQiBbMzA2MV0NCipQRVBQRVIgUkFOQ0ggUFJFU0VSVkUgQ09OU0VSVkFU
+SU9OIEJBTksgWzUzNzVdDQoqUkcgUkVTRVJWRSBNQiBbMjc3XQ0KKlRXSU4gT0FLUyBNQiBbMzU1
+M10NCg0KRmllbGQgbGVuZ3RocyBvZiBleGlzdGluZyBmaWVsZHMgd2VyZSBzaG9ydGVuZWQgYW5k
+IGZpZWxkcyB3ZXJlIHVwY2FzZWQuIA0KRmllbGQgWk9PTSBoYWQgbm8gdmFsdWVzIGFuZCB3YXMg
+cmVtb3ZlZCBmcm9tIHRoZSB0YWJsZS4gDQpUaGUgZm9sbG93aW5nIGZpZWxkcyB3ZXJlIGFkZGVk
+IHRvIHRoZSB0YWJsZTogDQotIFVSTCBmaWVsZCBwb3B1bGF0ZWQgYmFzZWQgb24gdGhlIGZvbGxv
+d2luZyBmaWVsZCBjYWxjdWxhdGlvbjogDQogICJodHRwczovL3JpYml0cy5vcHMudXNhY2UuYXJt
+eS5taWwvb3Jkcy9mP3A9MTA3OjEwOjo6Tk86OlAxMF9CQU5LX0lEOiINCiAgJmFtcDsgW0JBTktf
+SURdDQotIEFkZGVkIEFDUkVTIGZpZWxkIGFuZCBjYWxjdWxhdGVkIGdlb21ldHJ5IHdpdGggQWNy
+ZXMgVVMgKGFjKS4gDQotIEFkZGVkIERFU0NSSVBUIGZpZWxkIHBvcHVsYXRlZCBiYXNlZCBvbiBO
+QU1FLiANCi0gQWRkZWQgRkdETEFRREFURSBmaWVsZCBwb3B1bGF0ZWQgYmFzZWQgb24gdGhlIGRh
+dGUgdGhlIGRhdGFzZXQgd2FzIGRvd25sb2FkZWQNCiAgZnJvbSB0aGUgc291cmNlLiANCg0KRmlu
+YWxseSwgdGhlIGZpbGUgd2FzIHJlbmFtZWQgcmliaXRzXzIwMjAuc2hwLjwvcHJvY2Rlc2M+DQog
+ICAgICAgIDxzcmN1c2VkPkdlb1BsYW48L3NyY3VzZWQ+DQogICAgICAgIDxwcm9jZGF0ZT4yMDIw
+MTEyMDwvcHJvY2RhdGU+DQogICAgICA8L3Byb2NzdGVwPg0KICAgIDwvbGluZWFnZT4NCiAgPC9k
+YXRhcXVhbD4NCiAgPHNwZG9pbmZvPg0KICAgIDxkaXJlY3Q+VmVjdG9yPC9kaXJlY3Q+DQogICAg
+PHB0dmN0aW5mPg0KICAgICAgPHNkdHN0ZXJtPg0KICAgICAgICA8c2R0c3R5cGU+R1QtcG9seWdv
+biBjb21wb3NlZCBvZiBjaGFpbnM8L3NkdHN0eXBlPg0KICAgICAgICA8cHR2Y3RjbnQ+MTY1PC9w
+dHZjdGNudD4NCiAgICAgIDwvc2R0c3Rlcm0+DQogICAgPC9wdHZjdGluZj4NCiAgPC9zcGRvaW5m
+bz4NCiAgPHNwcmVmPg0KICAgIDxob3JpenN5cz4NCiAgICAgIDxwbGFuYXI+DQogICAgICAgIDxt
+YXBwcm9qPg0KICAgICAgICAgIDxhbGJlcnM+DQogICAgICAgICAgICA8c3RkcGFybGw+MjQuMDwv
+c3RkcGFybGw+DQogICAgICAgICAgICA8c3RkcGFybGw+MzEuNTwvc3RkcGFybGw+DQogICAgICAg
+ICAgICA8bG9uZ2NtPi04NC4wPC9sb25nY20+DQogICAgICAgICAgICA8bGF0cHJqbz4yNC4wPC9s
+YXRwcmpvPg0KICAgICAgICAgICAgPGZlYXN0PjQwMDAwMC4wPC9mZWFzdD4NCiAgICAgICAgICAg
+IDxmbm9ydGg+MC4wPC9mbm9ydGg+DQogICAgICAgICAgPC9hbGJlcnM+DQogICAgICAgIDwvbWFw
+cHJvaj4NCiAgICAgICAgPHBsYW5jaT4NCiAgICAgICAgICA8cGxhbmNlPmNvb3JkaW5hdGUgcGFp
+cjwvcGxhbmNlPg0KICAgICAgICAgIDxjb29yZHJlcD4NCiAgICAgICAgICAgIDxhYnNyZXM+MC4w
+MDAwMDAwMDQ0Mjk4MTIwNzI3MTQ4Njg8L2Fic3Jlcz4NCiAgICAgICAgICAgIDxvcmRyZXM+MC4w
+MDAwMDAwMDQ0Mjk4MTIwNzI3MTQ4Njg8L29yZHJlcz4NCiAgICAgICAgICA8L2Nvb3JkcmVwPg0K
+ICAgICAgICAgIDxwbGFuZHU+bWV0ZXI8L3BsYW5kdT4NCiAgICAgICAgPC9wbGFuY2k+DQogICAg
+ICA8L3BsYW5hcj4NCiAgICAgIDxnZW9kZXRpYz4NCiAgICAgICAgPGhvcml6ZG4+RCBOb3J0aCBB
+bWVyaWNhbiAxOTgzIEhBUk48L2hvcml6ZG4+DQogICAgICAgIDxlbGxpcHM+R1JTIDE5ODA8L2Vs
+bGlwcz4NCiAgICAgICAgPHNlbWlheGlzPjYzNzgxMzcuMDwvc2VtaWF4aXM+DQogICAgICAgIDxk
+ZW5mbGF0PjI5OC4yNTcyMjIxMDE8L2RlbmZsYXQ+DQogICAgICA8L2dlb2RldGljPg0KICAgIDwv
+aG9yaXpzeXM+DQogIDwvc3ByZWY+DQogIDxlYWluZm8+DQogICAgPGRldGFpbGVkPg0KICAgICAg
+PGVudHR5cD4NCiAgICAgICAgPGVudHR5cGw+cmliaXRzXzIwMjBfdjY8L2VudHR5cGw+DQogICAg
+ICAgIDxlbnR0eXBkPlJJQklUU18yMDIwLkRCRjwvZW50dHlwZD4NCiAgICAgICAgPGVudHR5cGRz
+PlVTQUNFPC9lbnR0eXBkcz4NCiAgICAgIDwvZW50dHlwPg0KICAgICAgPGF0dHI+DQogICAgICAg
+IDxhdHRybGFibD5GSUQ8L2F0dHJsYWJsPg0KICAgICAgICA8YXR0cmRlZj5JbnRlcm5hbCBmZWF0
+dXJlIG51bWJlci48L2F0dHJkZWY+DQogICAgICAgIDxhdHRyZGVmcz5FU1JJPC9hdHRyZGVmcz4N
+CiAgICAgICAgPGF0dHJkb212Pg0KICAgICAgICAgIDx1ZG9tPlNlcXVlbnRpYWwgdW5pcXVlIHdo
+b2xlIG51bWJlcnMgdGhhdCBhcmUgYXV0b21hdGljYWxseSBnZW5lcmF0ZWQuPC91ZG9tPg0KICAg
+ICAgICA8L2F0dHJkb212Pg0KICAgICAgPC9hdHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxh
+dHRybGFibD5TaGFwZTwvYXR0cmxhYmw+DQogICAgICAgIDxhdHRyZGVmPkZlYXR1cmUgZ2VvbWV0
+cnkuPC9hdHRyZGVmPg0KICAgICAgICA8YXR0cmRlZnM+RVNSSTwvYXR0cmRlZnM+DQogICAgICAg
+IDxhdHRyZG9tdj4NCiAgICAgICAgICA8dWRvbT5Db29yZGluYXRlcyBkZWZpbmluZyB0aGUgZmVh
+dHVyZXMuPC91ZG9tPg0KICAgICAgICA8L2F0dHJkb212Pg0KICAgICAgPC9hdHRyPg0KICAgICAg
+PGF0dHI+DQogICAgICAgIDxhdHRybGFibD5OQU1FPC9hdHRybGFibD4NCiAgICAgICAgPGF0dHJk
+ZWY+W05hbWVdIE5vdCBkZWZpbmVkIGJ5IHNvdXJjZS4gPC9hdHRyZGVmPg0KICAgICAgICA8YXR0
+cmRlZnM+R2VvUGxhbjwvYXR0cmRlZnM+DQogICAgICA8L2F0dHI+DQogICAgICA8YXR0cj4NCiAg
+ICAgICAgPGF0dHJsYWJsPkJBTktfVFlQRTwvYXR0cmxhYmw+DQogICAgICAgIDxhdHRyZGVmPltC
+YW5rIFR5cGVdIE5vdCBkZWZpbmVkIGJ5IHNvdXJjZS48L2F0dHJkZWY+DQogICAgICAgIDxhdHRy
+ZGVmcz5HZW9QbGFuPC9hdHRyZGVmcz4NCiAgICAgIDwvYXR0cj4NCiAgICAgIDxhdHRyPg0KICAg
+ICAgICA8YXR0cmxhYmw+QkFOS19JRDwvYXR0cmxhYmw+DQogICAgICAgIDxhdHRyZGVmPltCYW5r
+IElEXSBOb3QgZGVmaW5lZCBieSBzb3VyY2UuIDwvYXR0cmRlZj4NCiAgICAgICAgPGF0dHJkZWZz
+Pkdlb1BsYW48L2F0dHJkZWZzPg0KICAgICAgPC9hdHRyPg0KICAgICAgPGF0dHI+DQogICAgICAg
+IDxhdHRybGFibD5VUkw8L2F0dHJsYWJsPg0KICAgICAgICA8YXR0cmRlZj5VUkwgd2ViIGFkZHJl
+c3MgcHJvdmlkaW5nIGdlbmVyYWwgaW5mb3JtYXRpb24gYWJvdXQgdGhlIHNpdGUuIDwvYXR0cmRl
+Zj4NCiAgICAgICAgPGF0dHJkZWZzPkdlb1BsYW48L2F0dHJkZWZzPg0KICAgICAgPC9hdHRyPg0K
+ICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFibD5CQU5LX1NUQVRVPC9hdHRybGFibD4NCiAg
+ICAgICAgPGF0dHJkZWY+W0JhbmsgU3RhdHVzXSBOb3QgZGVmaW5lZCBieSBzb3VyY2UuPC9hdHRy
+ZGVmPg0KICAgICAgICA8YXR0cmRlZnM+R2VvUGxhbjwvYXR0cmRlZnM+DQogICAgICA8L2F0dHI+
+DQogICAgICA8YXR0cj4NCiAgICAgICAgPGF0dHJsYWJsPlNUQVRFX0FCQlI8L2F0dHJsYWJsPg0K
+ICAgICAgICA8YXR0cmRlZj5bU3RhdGUgQWJicmV2aWF0aW9uXSBOb3QgZGVmaW5lZCBieSBzb3Vy
+Y2UuIDwvYXR0cmRlZj4NCiAgICAgICAgPGF0dHJkZWZzPkdlb1BsYW48L2F0dHJkZWZzPg0KICAg
+ICAgPC9hdHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFibD5BUFBST1ZBTF9EPC9h
+dHRybGFibD4NCiAgICAgICAgPGF0dHJkZWY+W0FwcHJvdmFsIERhdGVdIE5vdCBkZWZpbmVkIGJ5
+IHNvdXJjZS48L2F0dHJkZWY+DQogICAgICAgIDxhdHRyZGVmcz5HZW9QbGFuPC9hdHRyZGVmcz4N
+CiAgICAgIDwvYXR0cj4NCiAgICAgIDxhdHRyPg0KICAgICAgICA8YXR0cmxhYmw+QkFOS19TT0xE
+PC9hdHRybGFibD4NCiAgICAgICAgPGF0dHJkZWY+W0JhbmsgU29sZF0gTm90IGRlZmluZWQgYnkg
+c291cmNlLjwvYXR0cmRlZj4NCiAgICAgICAgPGF0dHJkZWZzPkdlb1BsYW48L2F0dHJkZWZzPg0K
+ICAgICAgPC9hdHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFibD5DT1VOVFlfTElT
+PC9hdHRybGFibD4NCiAgICAgICAgPGF0dHJkZWY+W0NvdW50eSBMaXN0XSBOb3QgZGVmaW5lZCBi
+eSBzb3VyY2UuPC9hdHRyZGVmPg0KICAgICAgICA8YXR0cmRlZnM+R2VvUGxhbjwvYXR0cmRlZnM+
+DQogICAgICA8L2F0dHI+DQogICAgICA8YXR0cj4NCiAgICAgICAgPGF0dHJsYWJsPkRJU1RSSUNU
+X0w8L2F0dHJsYWJsPg0KICAgICAgICA8YXR0cmRlZj5bRGlzdHJpY3QgTGlzdF0gTm90IGRlZmlu
+ZWQgYnkgc291cmNlLjwvYXR0cmRlZj4NCiAgICAgICAgPGF0dHJkZWZzPkdlb1BsYW48L2F0dHJk
+ZWZzPg0KICAgICAgPC9hdHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFibD5GSUVM
+RF9PRkZJPC9hdHRybGFibD4NCiAgICAgICAgPGF0dHJkZWY+W0ZpZWxkIE9mZmljZV0gTm90IGRl
+ZmluZWQgYnkgc291cmNlLjwvYXR0cmRlZj4NCiAgICAgICAgPGF0dHJkZWZzPkdlb1BsYW48L2F0
+dHJkZWZzPg0KICAgICAgPC9hdHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFibD5I
+QVNfRk9PVFBSPC9hdHRybGFibD4NCiAgICAgICAgPGF0dHJkZWY+W0hhcyBGb290cHJpbnRdIE5v
+dCBkZWZpbmVkIGJ5IHNvdXJjZS48L2F0dHJkZWY+DQogICAgICAgIDxhdHRyZGVmcz5HZW9QbGFu
+PC9hdHRyZGVmcz4NCiAgICAgIDwvYXR0cj4NCiAgICAgIDxhdHRyPg0KICAgICAgICA8YXR0cmxh
+Ymw+SVNfNDA0PC9hdHRybGFibD4NCiAgICAgICAgPGF0dHJkZWY+W0lzIDQwNF0gTm90IGRlZmlu
+ZWQgYnkgc291cmNlLjwvYXR0cmRlZj4NCiAgICAgICAgPGF0dHJkZWZzPkdlb1BsYW48L2F0dHJk
+ZWZzPg0KICAgICAgPC9hdHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFibD5JU19D
+T05TRVJWPC9hdHRybGFibD4NCiAgICAgICAgPGF0dHJkZWY+W0lzIENvbnNlcnZhdGlvbl0gTm90
+IGRlZmluZWQgYnkgc291cmNlLjwvYXR0cmRlZj4NCiAgICAgICAgPGF0dHJkZWZzPkdlb1BsYW48
+L2F0dHJkZWZzPg0KICAgICAgPC9hdHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFi
+bD5JU19ET1Q8L2F0dHJsYWJsPg0KICAgICAgICA8YXR0cmRlZj5bSXMgRE9UXSBOb3QgZGVmaW5l
+ZCBieSBzb3VyY2UuPC9hdHRyZGVmPg0KICAgICAgICA8YXR0cmRlZnM+R2VvUGxhbjwvYXR0cmRl
+ZnM+DQogICAgICA8L2F0dHI+DQogICAgICA8YXR0cj4NCiAgICAgICAgPGF0dHJsYWJsPklTX0ZX
+UzwvYXR0cmxhYmw+DQogICAgICAgIDxhdHRyZGVmPltJcyBGV1NdIE5vdCBkZWZpbmVkIGJ5IHNv
+dXJjZS48L2F0dHJkZWY+DQogICAgICAgIDxhdHRyZGVmcz5HZW9QbGFuPC9hdHRyZGVmcz4NCiAg
+ICAgIDwvYXR0cj4NCiAgICAgIDxhdHRyPg0KICAgICAgICA8YXR0cmxhYmw+SVNfSUxGPC9hdHRy
+bGFibD4NCiAgICAgICAgPGF0dHJkZWY+W0lzIElMRl0gTm90IGRlZmluZWQgYnkgc291cmNlLjwv
+YXR0cmRlZj4NCiAgICAgICAgPGF0dHJkZWZzPkdlb1BsYW48L2F0dHJkZWZzPg0KICAgICAgPC9h
+dHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFibD5JU19OTUZTPC9hdHRybGFibD4N
+CiAgICAgICAgPGF0dHJkZWY+W0lzIE5NRlNdIE5vdCBkZWZpbmVkIGJ5IHNvdXJjZS48L2F0dHJk
+ZWY+DQogICAgICAgIDxhdHRyZGVmcz5HZW9QbGFuPC9hdHRyZGVmcz4NCiAgICAgIDwvYXR0cj4N
+CiAgICAgIDxhdHRyPg0KICAgICAgICA8YXR0cmxhYmw+SVNfTlJEQTwvYXR0cmxhYmw+DQogICAg
+ICAgIDxhdHRyZGVmPltJcyBOUkRBXSBOb3QgZGVmaW5lZCBieSBzb3VyY2UuPC9hdHRyZGVmPg0K
+ICAgICAgICA8YXR0cmRlZnM+R2VvUGxhbjwvYXR0cmRlZnM+DQogICAgICA8L2F0dHI+DQogICAg
+ICA8YXR0cj4NCiAgICAgICAgPGF0dHJsYWJsPklTX1VTQUNFPC9hdHRybGFibD4NCiAgICAgICAg
+PGF0dHJkZWY+W0lzIFVTQUNFXSBOb3QgZGVmaW5lZCBieSBzb3VyY2UuPC9hdHRyZGVmPg0KICAg
+ICAgICA8YXR0cmRlZnM+R2VvUGxhbjwvYXR0cmRlZnM+DQogICAgICA8L2F0dHI+DQogICAgICA8
+YXR0cj4NCiAgICAgICAgPGF0dHJsYWJsPklTX1VNQlJFTEw8L2F0dHJsYWJsPg0KICAgICAgICA8
+YXR0cmRlZj5bSXMgVW1icmVsbGFdIE5vdCBkZWZpbmVkIGJ5IHNvdXJjZS48L2F0dHJkZWY+DQog
+ICAgICAgIDxhdHRyZGVmcz5HZW9QbGFuPC9hdHRyZGVmcz4NCiAgICAgIDwvYXR0cj4NCiAgICAg
+IDxhdHRyPg0KICAgICAgICA8YXR0cmxhYmw+Tk9BQV9GSVNIRTwvYXR0cmxhYmw+DQogICAgICAg
+IDxhdHRyZGVmPltOT0FBIEZpc2hlcmllcyBSZWdpb24gTGlzdF0gTm90IGRlZmluZWQgYnkgc291
+cmNlLjwvYXR0cmRlZj4NCiAgICAgICAgPGF0dHJkZWZzPkdlb1BsYW48L2F0dHJkZWZzPg0KICAg
+ICAgPC9hdHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFibD5YPC9hdHRybGFibD4N
+CiAgICAgICAgPGF0dHJkZWY+W1hdIE5vdCBkZWZpbmVkIGJ5IHNvdXJjZS48L2F0dHJkZWY+DQog
+ICAgICAgIDxhdHRyZGVmcz5HZW9QbGFuPC9hdHRyZGVmcz4NCiAgICAgIDwvYXR0cj4NCiAgICAg
+IDxhdHRyPg0KICAgICAgICA8YXR0cmxhYmw+WTwvYXR0cmxhYmw+DQogICAgICAgIDxhdHRyZGVm
+PltZXSBOb3QgZGVmaW5lZCBieSBzb3VyY2UuPC9hdHRyZGVmPg0KICAgICAgICA8YXR0cmRlZnM+
+R2VvUGxhbjwvYXR0cmRlZnM+DQogICAgICA8L2F0dHI+DQogICAgICA8YXR0cj4NCiAgICAgICAg
+PGF0dHJsYWJsPllFQVJfRVNUPC9hdHRybGFibD4NCiAgICAgICAgPGF0dHJkZWY+W1llYXIgRXN0
+YWJsaXNoZWRdIE5vdCBkZWZpbmVkIGJ5IHNvdXJjZS48L2F0dHJkZWY+DQogICAgICAgIDxhdHRy
+ZGVmcz5HZW9QbGFuPC9hdHRyZGVmcz4NCiAgICAgIDwvYXR0cj4NCiAgICAgIDxhdHRyPg0KICAg
+ICAgICA8YXR0cmxhYmw+QUNSRVM8L2F0dHJsYWJsPg0KICAgICAgICA8YXR0cmRlZj5BY3Jlcy4g
+PC9hdHRyZGVmPg0KICAgICAgICA8YXR0cmRlZnM+R2VvUGxhbjwvYXR0cmRlZnM+DQogICAgICA8
+L2F0dHI+DQogICAgICA8YXR0cj4NCiAgICAgICAgPGF0dHJsYWJsPkRFU0NSSVBUPC9hdHRybGFi
+bD4NCiAgICAgICAgPGF0dHJkZWY+R2VvUGxhbiBhZGRlZCBmaWVsZCBiYXNlZCBvbiBOQU1FLjwv
+YXR0cmRlZj4NCiAgICAgICAgPGF0dHJkZWZzPkdlb1BsYW48L2F0dHJkZWZzPg0KICAgICAgPC9h
+dHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFibD5GR0RMQVFEQVRFPC9hdHRybGFi
+bD4NCiAgICAgICAgPGF0dHJkZWY+R2VvUGxhbiBhZGRlZCBmaWVsZCBiYXNlZCBvbiBkYXRlIGRv
+d25sb2FkZWQgZnJvbSBzb3VyY2UuPC9hdHRyZGVmPg0KICAgICAgICA8YXR0cmRlZnM+R2VvUGxh
+bjwvYXR0cmRlZnM+DQogICAgICA8L2F0dHI+DQogICAgPC9kZXRhaWxlZD4NCiAgPC9lYWluZm8+
+DQogIDxkaXN0aW5mbz4NCiAgICA8ZGlzdHJpYj4NCiAgICAgIDxjbnRpbmZvPg0KICAgICAgICA8
+Y250b3JncD4NCiAgICAgICAgICA8Y250b3JnPkZsb3JpZGEgR2VvZ3JhcGhpYyBEYXRhIExpYnJh
+cnkgKEZHREwpPC9jbnRvcmc+DQogICAgICAgIDwvY250b3JncD4NCiAgICAgICAgPGNudGFkZHI+
+DQogICAgICAgICAgPGFkZHJ0eXBlPm1haWxpbmc8L2FkZHJ0eXBlPg0KICAgICAgICAgIDxhZGRy
+ZXNzPjQzMSBBcmNoaXRlY3R1cmUgUE8gQm94IDExNTcwNjwvYWRkcmVzcz4NCiAgICAgICAgICA8
+Y2l0eT5HYWluZXN2aWxsZTwvY2l0eT4NCiAgICAgICAgICA8c3RhdGU+RmxvcmlkYTwvc3RhdGU+
+DQogICAgICAgICAgPHBvc3RhbD4zMjYxMS01NzA2PC9wb3N0YWw+DQogICAgICAgICAgPGNvdW50
+cnk+VVM8L2NvdW50cnk+DQogICAgICAgIDwvY250YWRkcj4NCiAgICAgICAgPGNudGVtYWlsPldl
+YiBzaXRlOiBodHRwOi8vd3d3LmZnZGwub3JnPC9jbnRlbWFpbD4NCiAgICAgICAgPGNudGVtYWls
+PkZvciBGR0RMIFNvZnR3YXJlOiBodHRwOi8vd3d3LmZnZGwub3JnL3NvZnR3YXJlLmh0bWw8L2Nu
+dGVtYWlsPg0KICAgICAgICA8Y250ZW1haWw+TWFpbGluZyBsaXN0IGZvciBGR0RMOiBodHRwOi8v
+d3d3LmZnZGwub3JnL2ZnZGwtbC5odG1sPC9jbnRlbWFpbD4NCiAgICAgICAgPGNudGVtYWlsPkZH
+REwgRnJlcXVlbnRseSBBc2tlZCBRdWVzdGlvbnM6IGh0dHA6Ly93d3cuZmdkbC5vcmcvZmdkbGZh
+cS5odG1sPC9jbnRlbWFpbD4NCiAgICAgICAgPGNudGVtYWlsPlRlY2huaWNhbCBTdXBwb3J0OiBo
+dHRwOi8vd3d3LmZnZGwub3JnL2ZnZGxmZWVkLmh0bWw8L2NudGVtYWlsPg0KICAgICAgPC9jbnRp
+bmZvPg0KICAgIDwvZGlzdHJpYj4NCiAgICA8cmVzZGVzYz5ET1dOTE9BREFCTEUgREFUQTwvcmVz
+ZGVzYz4NCiAgICA8ZGlzdGxpYWI+VGhlIEZsb3JpZGEgR2VvZ3JhcGhpYyBEYXRhIExpYnJhcnkg
+aXMgYSBjb2xsZWN0aW9uIG9mIEdlb3NwYXRpYWwgRGF0YSBjb21waWxlZCBieSB0aGUgVW5pdmVy
+c2l0eSBvZiBGbG9yaWRhIEdlb1BsYW4gQ2VudGVyIHdpdGggc3VwcG9ydCBmcm9tIHRoZSBGbG9y
+aWRhIERlcGFydG1lbnQgb2YgVHJhbnNwb3J0YXRpb24uIEdJUyBkYXRhIGF2YWlsYWJsZSBpbiBG
+R0RMIGlzIGNvbGxlY3RlZCBmcm9tIHZhcmlvdXMgc3RhdGUsIGZlZGVyYWwsIGFuZCBvdGhlciBh
+Z2VuY2llcyAoZGF0YSBzb3VyY2VzKSB3aG8gYXJlIGRhdGEgc3Rld2FyZHMsIHByb2R1Y2Vycywg
+b3IgcHVibGlzaGVycy4gVGhlIGRhdGEgYXZhaWxhYmxlIGluIEZHREwgbWF5IG5vdCBiZSB0aGUg
+bW9zdCBjdXJyZW50IHZlcnNpb24gb2YgdGhlIGRhdGEgb2ZmZXJlZCBieSB0aGUgZGF0YSBzb3Vy
+Y2UuIFVuaXZlcnNpdHkgb2YgRmxvcmlkYSBHZW9QbGFuIENlbnRlciBtYWtlcyBubyBndWFyYW50
+ZWVzIGFib3V0IHRoZSBjdXJyZW50bmVzcyBvZiB0aGUgZGF0YSBhbmQgc3VnZ2VzdHMgdGhhdCBk
+YXRhIHVzZXJzIGNoZWNrIHdpdGggdGhlIGRhdGEgc291cmNlIHRvIHNlZSBpZiBtb3JlIHJlY2Vu
+dCB2ZXJzaW9ucyBvZiB0aGUgZGF0YSBleGlzdC4gRnVydGhlcm1vcmUsIHRoZSBHSVMgZGF0YSBh
+dmFpbGFibGUgaW4gdGhlIEZHREwgYXJlIHByb3ZpZGVkICdhcyBpcycuIFRoZSBVbml2ZXJzaXR5
+IG9mIEZsb3JpZGEgR2VvUGxhbiBDZW50ZXIgbWFrZXMgbm8gd2FycmFudGllcywgZ3VhcmFudGll
+cyBvciByZXByZXNlbnRhdGlvbnMgYXMgdG8gdGhlIHRydXRoLCBhY2N1cmFjeSBvciBjb21wbGV0
+ZW5lc3Mgb2YgdGhlIGRhdGEgcHJvdmlkZWQgYnkgdGhlIGRhdGEgc291cmNlcy4gVGhlIFVuaXZl
+cnNpdHkgb2YgRmxvcmlkYSBHZW9QbGFuIENlbnRlciBtYWtlcyBubyByZXByZXNlbnRhdGlvbnMg
+b3Igd2FycmFudGllcyBhYm91dCB0aGUgcXVhbGl0eSBvciBzdWl0YWJpbGl0eSBvZiB0aGUgbWF0
+ZXJpYWxzLCBlaXRoZXIgZXhwcmVzc2x5IG9yIGltcGxpZWQsIGluY2x1ZGluZyBidXQgbm90IGxp
+bWl0ZWQgdG8gYW55IGltcGxpZWQgd2FycmFudGllcyBvZiBtZXJjaGFudGFiaWxpdHksIGZpdG5l
+c3MgZm9yIGEgcGFydGljdWxhciBwdXJwb3NlLCBvciBub24taW5mcmluZ2VtZW50LiBUaGUgVW5p
+dmVyc2l0eSBvZiBGbG9yaWRhIEdlb1BsYW4gQ2VudGVyIHNoYWxsIG5vdCBiZSBsaWFibGUgZm9y
+IGFueSBkYW1hZ2VzIHN1ZmZlcmVkIGFzIGEgcmVzdWx0IG9mIHVzaW5nLCBtb2RpZnlpbmcsIGNv
+bnRyaWJ1dGluZyBvciBkaXN0cmlidXRpbmcgdGhlIG1hdGVyaWFscy4gQSBub3RlIGFib3V0IGRh
+dGEgc2NhbGU6IFNjYWxlIGlzIGFuIGltcG9ydGFudCBmYWN0b3IgaW4gZGF0YSB1c2FnZS4gQ2Vy
+dGFpbiBzY2FsZSBkYXRhc2V0cyBhcmUgbm90IHN1aXRhYmxlIGZvciBzb21lIHByb2plY3QsIGFu
+YWx5c2lzLCBvciBtb2RlbGluZyBwdXJwb3Nlcy4gUGxlYXNlIGJlIHN1cmUgeW91IGFyZSB1c2lu
+ZyB0aGUgYmVzdCBhdmFpbGFibGUgZGF0YS4gMToyNDAwMCBzY2FsZSBkYXRhc2V0cyBhcmUgcmVj
+b21tZW5kZWQgZm9yIHByb2plY3RzIHRoYXQgYXJlIGF0IHRoZSBjb3VudHkgbGV2ZWwuIDE6MjQw
+MDAgZGF0YSBzaG91bGQgTk9UIGJlIHVzZWQgZm9yIGhpZ2ggYWNjdXJhY3kgYmFzZSBtYXBwaW5n
+IHN1Y2ggYXMgcHJvcGVydHkgcGFyY2VsIGJvdW5kYXJpZXMuIDE6MTAwMDAwIHNjYWxlIGRhdGFz
+ZXRzIGFyZSByZWNvbW1lbmRlZCBmb3IgcHJvamVjdHMgdGhhdCBhcmUgYXQgdGhlIG11bHRpLWNv
+dW50eSBvciByZWdpb25hbCBsZXZlbC4gMToxMjUwMDAgc2NhbGUgZGF0YXNldHMgYXJlIHJlY29t
+bWVuZGVkIGZvciBwcm9qZWN0cyB0aGF0IGFyZSBhdCB0aGUgcmVnaW9uYWwgb3Igc3RhdGUgbGV2
+ZWwgb3IgbGFyZ2VyLiBWZWN0b3IgZGF0YXNldHMgd2l0aCBubyBkZWZpbmVkIHNjYWxlIG9yIGFj
+Y3VyYWN5IHNob3VsZCBiZSBjb25zaWRlcmVkIHN1c3BlY3QuIE1ha2Ugc3VyZSB5b3UgYXJlIGZh
+bWlsaWFyIHdpdGggeW91ciBkYXRhIGJlZm9yZSB1c2luZyBpdCBmb3IgcHJvamVjdHMgb3IgYW5h
+bHlzaXMuIEV2ZXJ5IGVmZm9ydCBoYXMgYmVlbiBtYWRlIHRvIHN1cHBseSB0aGUgdXNlciB3aXRo
+IGRhdGEgZG9jdW1lbnRhdGlvbi4gRm9yIGFkZGl0aW9uYWwgaW5mb3JtYXRpb24sIHNlZSB0aGUg
+UmVmZXJlbmNlcyBzZWN0aW9uIGFuZCB0aGUgRGF0YSBTb3VyY2UgQ29udGFjdCBzZWN0aW9uIG9m
+IHRoaXMgZG9jdW1lbnRhdGlvbi4gRm9yIG1vcmUgaW5mb3JtYXRpb24gcmVnYXJkaW5nIHNjYWxl
+IGFuZCBhY2N1cmFjeSwgc2VlIG91ciB3ZWJwYWdlIGF0OiBodHRwOi8vZ2VvcGxhbi51ZmwuZWR1
+L2VkdWNhdGlvbi5odG1sPC9kaXN0bGlhYj4NCiAgPC9kaXN0aW5mbz4NCiAgPG1ldGFpbmZvPg0K
+ICAgIDxtZXRkPjIwMjAxMTIwPC9tZXRkPg0KICAgIDxtZXRjPg0KICAgICAgPGNudGluZm8+DQog
+ICAgICAgIDxjbnRvcmdwPg0KICAgICAgICAgIDxjbnRvcmc+VS5TLiBBcm15IENvcnBzIG9mIEVu
+Z2luZWVycyAoVVNBQ0UpPC9jbnRvcmc+DQogICAgICAgIDwvY250b3JncD4NCiAgICAgICAgPGNu
+dGFkZHI+DQogICAgICAgICAgPGFkZHJ0eXBlPm1haWxpbmcgYW5kIHBoeXNpY2FsPC9hZGRydHlw
+ZT4NCiAgICAgICAgICA8YWRkcmVzcz40NDEgRyBTdHJlZXQgTlc8L2FkZHJlc3M+DQogICAgICAg
+ICAgPGNpdHk+V2FzaGluZ3RvbjwvY2l0eT4NCiAgICAgICAgICA8c3RhdGU+REM8L3N0YXRlPg0K
+ICAgICAgICAgIDxwb3N0YWw+MjAzMTQtMTAwMDwvcG9zdGFsPg0KICAgICAgICAgIDxjb3VudHJ5
+PlVTPC9jb3VudHJ5Pg0KICAgICAgICA8L2NudGFkZHI+DQogICAgICAgIDxjbnR2b2ljZT4yMDIt
+NzYxLTAwMTE8L2NudHZvaWNlPg0KICAgICAgPC9jbnRpbmZvPg0KICAgIDwvbWV0Yz4NCiAgICA8
+bWV0c3Rkbj5GR0RDIENvbnRlbnQgU3RhbmRhcmQgZm9yIERpZ2l0YWwgR2Vvc3BhdGlhbCBNZXRh
+ZGF0YTwvbWV0c3Rkbj4NCiAgICA8bWV0c3Rkdj5GR0RDLVNURC0wMDEtMTk5ODwvbWV0c3Rkdj4N
+CiAgICA8bWV0dGM+bG9jYWwgdGltZTwvbWV0dGM+DQogIDwvbWV0YWluZm8+DQogIDxCaW5hcnk+
+DQogICAgPFRodW1ibmFpbD4NCiAgICAgIDxEYXRhIEVzcmlQcm9wZXJ0eVR5cGU9IlBpY3R1cmVY
+Ij4vOWovNEFBUVNrWkpSZ0FCQVFFQUFRQUJBQUQvMndCREFBZ0dCZ2NHQlFnSEJ3Y0pDUWdLREJR
+TkRBc0xEQmtTRXc4VUhSb2ZIaDBhDQpIQndnSkM0bklDSXNJeHdjS0RjcExEQXhORFEwSHljNVBU
+Z3lQQzR6TkRMLzJ3QkRBUWtKQ1F3TERCZ05EUmd5SVJ3aE1qSXlNakl5DQpNakl5TWpJeU1qSXlN
+akl5TWpJeU1qSXlNakl5TWpJeU1qSXlNakl5TWpJeU1qSXlNakl5TWpJeU1qTC93QUFSQ0FDRkFN
+Z0RBU0lBDQpBaEVCQXhFQi84UUFId0FBQVFVQkFRRUJBUUVBQUFBQUFBQUFBQUVDQXdRRkJnY0lD
+UW9MLzhRQXRSQUFBZ0VEQXdJRUF3VUZCQVFBDQpBQUY5QVFJREFBUVJCUkloTVVFR0UxRmhCeUp4
+RkRLQmthRUlJMEt4d1JWUzBmQWtNMkp5Z2drS0ZoY1lHUm9sSmljb0tTbzBOVFkzDQpPRGs2UTBS
+RlJrZElTVXBUVkZWV1YxaFpXbU5rWldabmFHbHFjM1IxZG5kNGVYcURoSVdHaDRpSmlwS1RsSldX
+bDVpWm1xS2pwS1dtDQpwNmlwcXJLenRMVzJ0N2k1dXNMRHhNWEd4OGpKeXRMVDFOWFcxOWpaMnVI
+aTQrVGw1dWZvNmVyeDh2UDA5ZmIzK1BuNi84UUFId0VBDQpBd0VCQVFFQkFRRUJBUUFBQUFBQUFB
+RUNBd1FGQmdjSUNRb0wvOFFBdFJFQUFnRUNCQVFEQkFjRkJBUUFBUUozQUFFQ0F4RUVCU0V4DQpC
+aEpCVVFkaGNSTWlNb0VJRkVLUm9iSEJDU016VXZBVlluTFJDaFlrTk9FbDhSY1lHUm9tSnlncEtq
+VTJOemc1T2tORVJVWkhTRWxLDQpVMVJWVmxkWVdWcGpaR1ZtWjJocGFuTjBkWFozZUhsNmdvT0Vo
+WWFIaUltS2twT1VsWmFYbUptYW9xT2twYWFucUttcXNyTzB0YmEzDQp1TG02d3NQRXhjYkh5TW5L
+MHRQVTFkYlgyTm5hNHVQazVlYm42T25xOHZQMDlmYjMrUG42LzlvQURBTUJBQUlSQXhFQVB3RDMr
+aWlpDQpnQW9vb29BS0tRZ2tyZzRBUFB2VFJFaXV6Z2ZNeEJKSjlzVUFPVmd3eU05U09RUjBPTzlM
+UlVEU05IS2pTY0l5NFk1RzFXN2NranJuDQpIVDhxQUo2S2hMckRISk16dklyZk1BQnU0eDBVQWM5
+UDFxYWdBb3BNZ2tqSXlPb3BhQUNpanBRQ0NBUWNnMEFGRkkyNHFkcEFic1NNDQppZ25BSkFKOWgz
+b0FBd0xNQWVWNjB0UXhPenlTNWNZVjl1ekF5dkhmQlBYZzl1Q0tsR1NTZTFBQzBVVVVBRkZGRkFC
+UlJSUUFVVVVVDQpBRkZGRkFCUlJSUUFVVVVVQUZCQUl3UmtHaWlnQ01vWTRDa0NvcFZjSU1ZVWVu
+QTdVOWlRakZWM01Cd000elMwVUFRQ1Z6ZEtnZ1BsDQpOSHU4MDhjNSs2UjI2MUs2TElBR1VIQkRE
+UHFLZFJRQWpLR1Vxd3lDTUVVS29SUXFqQ2dZQXBhS0FHb3haRllxVUpHU3JZeVBZNDRwDQoxRkZB
+RlpwWWJTWUxKc1F6dVNDcTR6aGNuY2ZvT3RPaWxRM0RReGhkcW9KQ1FDQjh4T01Ib2M0SlA0ZXRU
+MUJNdHdab0RDNmlNTWZODQpWdjRodE9NY2V1UFNnQ2VpZ1p4ejFvb0FLS0tLQUNpaWlnQW9vb29B
+S0tLS0FDaWlpZ0Fvb29vQUtLS0tBQ2lpaWdBb29vb0FLS0tLDQpBR1JzenhobmphTnVmbFlna2Zs
+VDZEMDRHYVFaSUdSZzl4UUFpb3FidG94dU9UN21sNTNEZ2JjY25OTFRWM2gyQjVYcURublBjWXgw
+DQo2VUFSV2pGb01NMjVsWmxKNTV3VDYxUFdkS0x3YXZDUXpHQmx4dEF5dkJKSkp6d2Z1NDQ5YTBh
+QUNpaWlnQW9vb29BS0tLS0FDaWlpDQpnQW9vb29BS0tLS0FDaWlpZ0Fvb29vQUtLS0tBQ2lpaWdC
+cmhqR3dWdHJZNGJHY1UwU0ZwZ29QeVlPY3FjazhkK21PZjg0cVNvNWtXDQpTSjBrSkViSVEyQ1Fj
+SDBJNUg0VUFCbEJpV1JlakZjYmdSd1NPeCt0S3NxT3hWVGtnQW5qam5wei9uOWFZSUkyamVKbFFx
+V0pLcXVBDQpDVHV6OWNuT2ZYbW8vTFZia0lqc3I1RWprY2xnT01NU1AvcjhleG9BV05aWHVuZDRV
+aTJFS3JnaGpJbU00NlpHR1A2ZTlXUngzelRFDQpaU3piVkk1NUpYR1QwL3AvS2lMYUZJVnkyR09T
+VGtqbk9LQUgwVVVVQUZGRkZBQlJSUlFBVVVVVUFGRkZGQUJSUlJRQVVVVVVBRkZGDQpGQUJSUlJR
+QVVVVVVBSTJOcDNkTWMxRzZzcWxsTGtnN2dxa1pQSFRuaXBTQVFRUmtHaWdCR2JhTTRKNUE0R2Vw
+cU1wc21lWjVTRUM0DQoyazRWZlUvb1BwejZtbmdsajBZQUh2My9BTS8wcG9samtEZVdWazJ2dFlL
+UWNFSG5QMG9Ba3BqSVRJR0VqQUJTTm94Z2s0NStveCtwDQpwOU5BZnpDU1YyWTRHT2MvV2dCUXdZ
+WkJ5TTRwYUtLQUNpaWlnQW9vb29BS0tLS0FDaWlpZ0Fvb29vQUtLS0tBQ2lpaWdBb29vb0FLDQpL
+S0tBQ2c1N1VVVUFGTWtrOHZIeU8yU0I4b3oxTk9WVlFZVlFveVRnREhKT1QrdFJyNXpSeUI5aU5r
+aENQbTQ3RSsvdFFCTFJVY2N5DQp5bHdvYkNuR1NPQ2ZhcEtBQ2lrQWJlU1NOdUJnWTZVdEFCUlJS
+UUFVVVVVQUZGRkZBQlJSUlFBVVVVVUFGRkZGQUJSUlJRQVVVVVVBDQpGRkZGQUJSUlJRQVVVVVVB
+RkJ6ampyUlJRQVVVZ0lJeUNEMjRwYUFDaWlpZ0Fvb29vQUtLS0tBQ2lpaWdBb29vb0FLS0tLQUNp
+aWlnDQpBb29vb0FLS0tLQUNpaWlnQW9vb29BS2lOcmJtVjV2Smo4MTEyTkp0RzRyNkU5Y1ZMVVFn
+eGRHZnpaVGxOdmw3dmtIdmoxOTZBRmhoDQpqdDRsaWlYYWk1d001OTZrb29vQUtLS0tBQ2lpaWdB
+b29vb0FLS0tLQUNpaWlnQW9vb29BS0tLS0FDaWlpZ0Fvb29vQUtLS0tBQ2lpDQppZ0Fvb29vQUtL
+S0tBQ2lpaWdBb29vb0EvOWs9PC9EYXRhPg0KICAgIDwvVGh1bWJuYWlsPg0KICA8L0JpbmFyeT4N
+CiAgPEVzcmk+DQogICAgPE1vZERhdGU+MjAyMDExMjA8L01vZERhdGU+DQogICAgPE1vZFRpbWU+
+MTczOTMwMDA8L01vZFRpbWU+DQogIDwvRXNyaT4NCjwvbWV0YWRhdGE+</Data></Enclosure></Binary><Esri><ModDate>20230215</ModDate><ModTime>11374500</ModTime><ArcGISFormat>1.0</ArcGISFormat><DataProperties><itemProps><itemName Sync="TRUE">MangrovePoint_RIBITS2020</itemName><nativeExtBox><westBL Sync="TRUE">75849.535688</westBL><eastBL Sync="TRUE">776312.955002</eastBL><southBL Sync="TRUE">76344.386166</southBL><northBL Sync="TRUE">747381.100476</northBL><exTypeCode Sync="TRUE">1</exTypeCode></nativeExtBox><itemSize Sync="TRUE">0.000</itemSize><itemLocation><linkage Sync="TRUE">file://\\AA\ORD\GBR\Data\Priv\SHC_1012\Florida ROAR\Data\Boundary Shapefiles\Updated ROAR MB Boundaries\MangrovePoint_RIBITS2020.shp</linkage><protocol Sync="TRUE">Local Area Network</protocol></itemLocation><imsContentType Sync="TRUE">002</imsContentType></itemProps><coordRef><type Sync="TRUE">Projected</type><geogcsn Sync="TRUE">GCS_North_American_1983_HARN</geogcsn><csUnits Sync="TRUE">Linear Unit: Meter (1.000000)</csUnits><projcsn Sync="TRUE">NAD_1983_HARN_Florida_GDL_Albers</projcsn><peXml Sync="TRUE">&lt;ProjectedCoordinateSystem xsi:type='typens:ProjectedCoordinateSystem' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:typens='http://www.esri.com/schemas/ArcGIS/2.9.0'&gt;&lt;WKT&gt;PROJCS[&amp;quot;NAD_1983_HARN_Florida_GDL_Albers&amp;quot;,GEOGCS[&amp;quot;GCS_North_American_1983_HARN&amp;quot;,DATUM[&amp;quot;D_North_American_1983_HARN&amp;quot;,SPHEROID[&amp;quot;GRS_1980&amp;quot;,6378137.0,298.257222101]],PRIMEM[&amp;quot;Greenwich&amp;quot;,0.0],UNIT[&amp;quot;Degree&amp;quot;,0.0174532925199433]],PROJECTION[&amp;quot;Albers&amp;quot;],PARAMETER[&amp;quot;False_Easting&amp;quot;,400000.0],PARAMETER[&amp;quot;False_Northing&amp;quot;,0.0],PARAMETER[&amp;quot;Central_Meridian&amp;quot;,-84.0],PARAMETER[&amp;quot;Standard_Parallel_1&amp;quot;,24.0],PARAMETER[&amp;quot;Standard_Parallel_2&amp;quot;,31.5],PARAMETER[&amp;quot;Latitude_Of_Origin&amp;quot;,24.0],UNIT[&amp;quot;Meter&amp;quot;,1.0],AUTHORITY[&amp;quot;EPSG&amp;quot;,3087]]&lt;/WKT&gt;&lt;XOrigin&gt;-19550100&lt;/XOrigin&gt;&lt;YOrigin&gt;-7526400&lt;/YOrigin&gt;&lt;XYScale&gt;225743210.67916927&lt;/XYScale&gt;&lt;ZOrigin&gt;-100000&lt;/ZOrigin&gt;&lt;ZScale&gt;10000&lt;/ZScale&gt;&lt;MOrigin&gt;-100000&lt;/MOrigin&gt;&lt;MScale&gt;10000&lt;/MScale&gt;&lt;XYTolerance&gt;0.001&lt;/XYTolerance&gt;&lt;ZTolerance&gt;0.001&lt;/ZTolerance&gt;&lt;MTolerance&gt;0.001&lt;/MTolerance&gt;&lt;HighPrecision&gt;true&lt;/HighPrecision&gt;&lt;WKID&gt;3087&lt;/WKID&gt;&lt;LatestWKID&gt;3087&lt;/LatestWKID&gt;&lt;/ProjectedCoordinateSystem&gt;</peXml></coordRef><copyHistory><copy source="Q:\data_output\erik\geoplan\2020\ribits\final\ribits_2020" dest="\\filesrv.geoplan.ufl.edu\qaqc\finaldata\state\pre_load\ribits_2020" date="20201207" time="16313800"/></copyHistory><lineage><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122136" Name="" export="">CalculateField ribits_2020 NAME Ucase([NAME]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122137" Name="" export="">CalculateField ribits_2020 BANK_TYPE Ucase([BANK_TYPE]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122137" Name="" export="">CalculateField ribits_2020 BANK_STATU Ucase([BANK_STATU]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122137" Name="" export="">CalculateField ribits_2020 STATE_ABBR Ucase([STATE_ABBR]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122139" Name="" export="">CalculateField ribits_2020 APPROVAL_D Ucase([APPROVAL_D]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122140" Name="" export="">CalculateField ribits_2020 BANK_SOLD Ucase([BANK_SOLD]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122140" Name="" export="">CalculateField ribits_2020 COUNTY_LIS Ucase([COUNTY_LIS]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122140" Name="" export="">CalculateField ribits_2020 DISTRICT_L Ucase([DISTRICT_L]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122143" Name="" export="">CalculateField ribits_2020 FIELD_OFFI Ucase([FIELD_OFFI]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122143" Name="" export="">CalculateField ribits_2020 HAS_FOOTPR Ucase([HAS_FOOTPR]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122143" Name="" export="">CalculateField ribits_2020 IS_404 Ucase([IS_404]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122143" Name="" export="">CalculateField ribits_2020 IS_CONSERV Ucase([IS_CONSERV]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122146" Name="" export="">CalculateField ribits_2020 IS_DOT Ucase([IS_DOT]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122146" Name="" export="">CalculateField ribits_2020 IS_FWS Ucase([IS_FWS]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122146" Name="" export="">CalculateField ribits_2020 IS_ILF Ucase([IS_ILF]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122147" Name="" export="">CalculateField ribits_2020 IS_NMFS Ucase([IS_NMFS]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122149" Name="" export="">CalculateField ribits_2020 IS_NRDA Ucase([IS_NRDA]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122150" Name="" export="">CalculateField ribits_2020 IS_USACE Ucase([IS_USACE]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122150" Name="" export="">CalculateField ribits_2020 IS_UMBRELL Ucase([IS_UMBRELL]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122150" Name="" export="">CalculateField ribits_2020 NOAA_FISHE Ucase([NOAA_FISHE]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122153" Name="" export="">CalculateField ribits_2020 YEAR_EST Ucase([YEAR_EST]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201123" Time="122153" Name="" export="">CalculateField ribits_2020 DESCRIPT Ucase([DESCRIPT]) VB #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Conversion Tools.tbx\FeatureClassToFeatureClass" Date="20201218" Time="084301">FeatureClassToFeatureClass Q:\finaldata\state\pre_load\ribits_2020.shp "Database Connections\poke_etat.sde\ETAT.aaa\" RIBITS_2020 # "NAME "NAME" true true false 60 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,NAME,-1,-1;BANK_TYPE "BANK_TYPE" true true false 20 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,BANK_TYPE,-1,-1;BANK_ID "BANK_ID" true true false 10 Long 0 10 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,BANK_ID,-1,-1;URL "URL" true true false 254 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,URL,-1,-1;BANK_STATU "BANK_STATU" true true false 10 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,BANK_STATU,-1,-1;STATE_ABBR "STATE_ABBR" true true false 10 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,STATE_ABBR,-1,-1;APPROVAL_D "APPROVAL_D" true true false 15 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,APPROVAL_D,-1,-1;BANK_SOLD "BANK_SOLD" true true false 15 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,BANK_SOLD,-1,-1;COUNTY_LIS "COUNTY_LIS" true true false 30 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,COUNTY_LIS,-1,-1;DISTRICT_L "DISTRICT_L" true true false 15 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,DISTRICT_L,-1,-1;FIELD_OFFI "FIELD_OFFI" true true false 15 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,FIELD_OFFI,-1,-1;HAS_FOOTPR "HAS_FOOTPR" true true false 5 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,HAS_FOOTPR,-1,-1;IS_404 "IS_404" true true false 5 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,IS_404,-1,-1;IS_CONSERV "IS_CONSERV" true true false 5 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,IS_CONSERV,-1,-1;IS_DOT "IS_DOT" true true false 5 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,IS_DOT,-1,-1;IS_FWS "IS_FWS" true true false 5 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,IS_FWS,-1,-1;IS_ILF "IS_ILF" true true false 5 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,IS_ILF,-1,-1;IS_NMFS "IS_NMFS" true true false 5 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,IS_NMFS,-1,-1;IS_NRDA "IS_NRDA" true true false 5 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,IS_NRDA,-1,-1;IS_USACE "IS_USACE" true true false 5 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,IS_USACE,-1,-1;IS_UMBRELL "IS_UMBRELL" true true false 5 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,IS_UMBRELL,-1,-1;NOAA_FISHE "NOAA_FISHE" true true false 10 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,NOAA_FISHE,-1,-1;X "X" true true false 19 Double 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,X,-1,-1;Y "Y" true true false 19 Double 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,Y,-1,-1;YEAR_EST "YEAR_EST" true true false 5 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,YEAR_EST,-1,-1;ACRES "ACRES" true true false 19 Double 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,ACRES,-1,-1;DESCRIPT "DESCRIPT" true true false 60 Text 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,DESCRIPT,-1,-1;FGDLAQDATE "FGDLAQDATE" true true false 8 Date 0 0 ,First,#,Q:\finaldata\state\pre_load\ribits_2020.shp,FGDLAQDATE,-1,-1" #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\AddField" Date="20201218" Time="090018">AddField "Database Connections\poke_etat.sde\ETAT.aaa\\ETAT.RIBITS_2020" AUTOID LONG # # # # NULLABLE NON_REQUIRED #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CalculateField" Date="20201218" Time="090019">CalculateField "Database Connections\poke_etat.sde\ETAT.aaa\\ETAT.RIBITS_2020" AUTOID !OBJECTID! PYTHON_9.3 #</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\AddIndex" Date="20201218" Time="090020">AddIndex "Database Connections\poke_etat.sde\ETAT.aaa\\ETAT.RIBITS_2020" AUTOID A20201218090020 NON_UNIQUE NON_ASCENDING</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\AddIndex" Date="20201218" Time="090021">AddIndex "Database Connections\poke_etat.sde\ETAT.aaa\\ETAT.RIBITS_2020" DESCRIPT D20201218090020 NON_UNIQUE NON_ASCENDING</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\AddIndex" Date="20201218" Time="090021">AddIndex "Database Connections\poke_etat.sde\ETAT.aaa\\ETAT.RIBITS_2020" NAME N20201218090020 NON_UNIQUE NON_ASCENDING</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\Analyze" Date="20201218" Time="090022">Analyze "Database Connections\poke_etat.sde\ETAT.aaa\\ETAT.RIBITS_2020" BUSINESS</Process><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Data Management Tools.tbx\CopyFeatures" Date="20201218" Time="093954">CopyFeatures "Database Connections\poke_etat.sde\ETAT.aaa\ETAT.RIBITS_2020" Q:\finaldata\state\post_load\ribits_2020.shp # 0 0 0</Process><Process ToolSource="c:\program files\arcgis\pro\Resources\ArcToolbox\toolboxes\Conversion Tools.tbx\FeatureClassToFeatureClass" Date="20230214" Time="160645">FeatureClassToFeatureClass "ribits_2020 selection" "C:\Users\zblack\OneDrive - Environmental Protection Agency (EPA)\Profile\Documents\ArcGIS\ROAR\MitigationBanks\Mitigation_Banks" Ribits2020New.shp # "NAME "NAME" true true false 60 Text 0 0,First,#,ribits_2020 selection,NAME,0,60;BANK_TYPE "BANK_TYPE" true true false 20 Text 0 0,First,#,ribits_2020 selection,BANK_TYPE,0,20;BANK_ID "BANK_ID" true true false 10 Long 0 10,First,#,ribits_2020 selection,BANK_ID,-1,-1;URL "URL" true true false 254 Text 0 0,First,#,ribits_2020 selection,URL,0,254;BANK_STATU "BANK_STATU" true true false 10 Text 0 0,First,#,ribits_2020 selection,BANK_STATU,0,10;STATE_ABBR "STATE_ABBR" true true false 10 Text 0 0,First,#,ribits_2020 selection,STATE_ABBR,0,10;APPROVAL_D "APPROVAL_D" true true false 15 Text 0 0,First,#,ribits_2020 selection,APPROVAL_D,0,15;BANK_SOLD "BANK_SOLD" true true false 15 Text 0 0,First,#,ribits_2020 selection,BANK_SOLD,0,15;COUNTY_LIS "COUNTY_LIS" true true false 30 Text 0 0,First,#,ribits_2020 selection,COUNTY_LIS,0,30;DISTRICT_L "DISTRICT_L" true true false 15 Text 0 0,First,#,ribits_2020 selection,DISTRICT_L,0,15;FIELD_OFFI "FIELD_OFFI" true true false 15 Text 0 0,First,#,ribits_2020 selection,FIELD_OFFI,0,15;HAS_FOOTPR "HAS_FOOTPR" true true false 5 Text 0 0,First,#,ribits_2020 selection,HAS_FOOTPR,0,5;IS_404 "IS_404" true true false 5 Text 0 0,First,#,ribits_2020 selection,IS_404,0,5;IS_CONSERV "IS_CONSERV" true true false 5 Text 0 0,First,#,ribits_2020 selection,IS_CONSERV,0,5;IS_DOT "IS_DOT" true true false 5 Text 0 0,First,#,ribits_2020 selection,IS_DOT,0,5;IS_FWS "IS_FWS" true true false 5 Text 0 0,First,#,ribits_2020 selection,IS_FWS,0,5;IS_ILF "IS_ILF" true true false 5 Text 0 0,First,#,ribits_2020 selection,IS_ILF,0,5;IS_NMFS "IS_NMFS" true true false 5 Text 0 0,First,#,ribits_2020 selection,IS_NMFS,0,5;IS_NRDA "IS_NRDA" true true false 5 Text 0 0,First,#,ribits_2020 selection,IS_NRDA,0,5;IS_USACE "IS_USACE" true true false 5 Text 0 0,First,#,ribits_2020 selection,IS_USACE,0,5;IS_UMBRELL "IS_UMBRELL" true true false 5 Text 0 0,First,#,ribits_2020 selection,IS_UMBRELL,0,5;NOAA_FISHE "NOAA_FISHE" true true false 10 Text 0 0,First,#,ribits_2020 selection,NOAA_FISHE,0,10;X "X" true true false 19 Double 8 18,First,#,ribits_2020 selection,X,-1,-1;Y "Y" true true false 19 Double 8 18,First,#,ribits_2020 selection,Y,-1,-1;YEAR_EST "YEAR_EST" true true false 5 Text 0 0,First,#,ribits_2020 selection,YEAR_EST,0,5;ACRES "ACRES" true true false 19 Double 8 18,First,#,ribits_2020 selection,ACRES,-1,-1;DESCRIPT "DESCRIPT" true true false 60 Text 0 0,First,#,ribits_2020 selection,DESCRIPT,0,60;FGDLAQDATE "FGDLAQDATE" true true false 8 Date 0 0,First,#,ribits_2020 selection,FGDLAQDATE,-1,-1;AUTOID "AUTOID" true true false 10 Long 0 10,First,#,ribits_2020 selection,AUTOID,-1,-1;SHAPE_AREA "SHAPE_AREA" true true false 19 Double 0 0,First,#,ribits_2020 selection,SHAPE_AREA,-1,-1;SHAPE_LEN "SHAPE_LEN" true true false 19 Double 0 0,First,#,ribits_2020 selection,SHAPE_LEN,-1,-1" #</Process><Process ToolSource="c:\program files\arcgis\pro\Resources\ArcToolbox\toolboxes\Conversion Tools.tbx\FeatureClassToFeatureClass" Date="20230214" Time="161727">FeatureClassToFeatureClass "Ribits2020New selection" "C:\Users\zblack\OneDrive - Environmental Protection Agency (EPA)\Profile\Documents\ArcGIS\ROAR\MitigationBanks\Mitigation_Banks" MangrovePoint_RIBIT2020.shp # "NAME "NAME" true true false 60 Text 0 0,First,#,Ribits2020New selection,NAME,0,60;BANK_TYPE "BANK_TYPE" true true false 20 Text 0 0,First,#,Ribits2020New selection,BANK_TYPE,0,20;BANK_ID "BANK_ID" true true false 10 Long 0 10,First,#,Ribits2020New selection,BANK_ID,-1,-1;URL "URL" true true false 254 Text 0 0,First,#,Ribits2020New selection,URL,0,254;BANK_STATU "BANK_STATU" true true false 10 Text 0 0,First,#,Ribits2020New selection,BANK_STATU,0,10;STATE_ABBR "STATE_ABBR" true true false 10 Text 0 0,First,#,Ribits2020New selection,STATE_ABBR,0,10;APPROVAL_D "APPROVAL_D" true true false 15 Text 0 0,First,#,Ribits2020New selection,APPROVAL_D,0,15;BANK_SOLD "BANK_SOLD" true true false 15 Text 0 0,First,#,Ribits2020New selection,BANK_SOLD,0,15;COUNTY_LIS "COUNTY_LIS" true true false 30 Text 0 0,First,#,Ribits2020New selection,COUNTY_LIS,0,30;DISTRICT_L "DISTRICT_L" true true false 15 Text 0 0,First,#,Ribits2020New selection,DISTRICT_L,0,15;FIELD_OFFI "FIELD_OFFI" true true false 15 Text 0 0,First,#,Ribits2020New selection,FIELD_OFFI,0,15;HAS_FOOTPR "HAS_FOOTPR" true true false 5 Text 0 0,First,#,Ribits2020New selection,HAS_FOOTPR,0,5;IS_404 "IS_404" true true false 5 Text 0 0,First,#,Ribits2020New selection,IS_404,0,5;IS_CONSERV "IS_CONSERV" true true false 5 Text 0 0,First,#,Ribits2020New selection,IS_CONSERV,0,5;IS_DOT "IS_DOT" true true false 5 Text 0 0,First,#,Ribits2020New selection,IS_DOT,0,5;IS_FWS "IS_FWS" true true false 5 Text 0 0,First,#,Ribits2020New selection,IS_FWS,0,5;IS_ILF "IS_ILF" true true false 5 Text 0 0,First,#,Ribits2020New selection,IS_ILF,0,5;IS_NMFS "IS_NMFS" true true false 5 Text 0 0,First,#,Ribits2020New selection,IS_NMFS,0,5;IS_NRDA "IS_NRDA" true true false 5 Text 0 0,First,#,Ribits2020New selection,IS_NRDA,0,5;IS_USACE "IS_USACE" true true false 5 Text 0 0,First,#,Ribits2020New selection,IS_USACE,0,5;IS_UMBRELL "IS_UMBRELL" true true false 5 Text 0 0,First,#,Ribits2020New selection,IS_UMBRELL,0,5;NOAA_FISHE "NOAA_FISHE" true true false 10 Text 0 0,First,#,Ribits2020New selection,NOAA_FISHE,0,10;X "X" true true false 19 Double 8 18,First,#,Ribits2020New selection,X,-1,-1;Y "Y" true true false 19 Double 8 18,First,#,Ribits2020New selection,Y,-1,-1;YEAR_EST "YEAR_EST" true true false 5 Text 0 0,First,#,Ribits2020New selection,YEAR_EST,0,5;ACRES "ACRES" true true false 19 Double 8 18,First,#,Ribits2020New selection,ACRES,-1,-1;DESCRIPT "DESCRIPT" true true false 60 Text 0 0,First,#,Ribits2020New selection,DESCRIPT,0,60;FGDLAQDATE "FGDLAQDATE" true true false 8 Date 0 0,First,#,Ribits2020New selection,FGDLAQDATE,-1,-1;AUTOID "AUTOID" true true false 10 Long 0 10,First,#,Ribits2020New selection,AUTOID,-1,-1;SHAPE_AREA "SHAPE_AREA" true true false 19 Double 0 0,First,#,Ribits2020New selection,SHAPE_AREA,-1,-1;SHAPE_LEN "SHAPE_LEN" true true false 19 Double 0 0,First,#,Ribits2020New selection,SHAPE_LEN,-1,-1" #</Process><Process ToolSource="c:\program files\arcgis\pro\Resources\ArcToolbox\toolboxes\Conversion Tools.tbx\FeatureClassToFeatureClass" Date="20230214" Time="162738">FeatureClassToFeatureClass MangrovePoint_RIBIT2020 "L:\Priv\SHC_1012\Florida ROAR\Data\Boundary Shapefiles\Boundary.gdb" MangrovePoint_RIBITS2020 # "NAME "NAME" true true false 60 Text 0 0,First,#,MangrovePoint_RIBIT2020,NAME,0,60;BANK_TYPE "BANK_TYPE" true true false 20 Text 0 0,First,#,MangrovePoint_RIBIT2020,BANK_TYPE,0,20;BANK_ID "BANK_ID" true true false 10 Long 0 10,First,#,MangrovePoint_RIBIT2020,BANK_ID,-1,-1;URL "URL" true true false 254 Text 0 0,First,#,MangrovePoint_RIBIT2020,URL,0,254;BANK_STATU "BANK_STATU" true true false 10 Text 0 0,First,#,MangrovePoint_RIBIT2020,BANK_STATU,0,10;STATE_ABBR "STATE_ABBR" true true false 10 Text 0 0,First,#,MangrovePoint_RIBIT2020,STATE_ABBR,0,10;APPROVAL_D "APPROVAL_D" true true false 15 Text 0 0,First,#,MangrovePoint_RIBIT2020,APPROVAL_D,0,15;BANK_SOLD "BANK_SOLD" true true false 15 Text 0 0,First,#,MangrovePoint_RIBIT2020,BANK_SOLD,0,15;COUNTY_LIS "COUNTY_LIS" true true false 30 Text 0 0,First,#,MangrovePoint_RIBIT2020,COUNTY_LIS,0,30;DISTRICT_L "DISTRICT_L" true true false 15 Text 0 0,First,#,MangrovePoint_RIBIT2020,DISTRICT_L,0,15;FIELD_OFFI "FIELD_OFFI" true true false 15 Text 0 0,First,#,MangrovePoint_RIBIT2020,FIELD_OFFI,0,15;HAS_FOOTPR "HAS_FOOTPR" true true false 5 Text 0 0,First,#,MangrovePoint_RIBIT2020,HAS_FOOTPR,0,5;IS_404 "IS_404" true true false 5 Text 0 0,First,#,MangrovePoint_RIBIT2020,IS_404,0,5;IS_CONSERV "IS_CONSERV" true true false 5 Text 0 0,First,#,MangrovePoint_RIBIT2020,IS_CONSERV,0,5;IS_DOT "IS_DOT" true true false 5 Text 0 0,First,#,MangrovePoint_RIBIT2020,IS_DOT,0,5;IS_FWS "IS_FWS" true true false 5 Text 0 0,First,#,MangrovePoint_RIBIT2020,IS_FWS,0,5;IS_ILF "IS_ILF" true true false 5 Text 0 0,First,#,MangrovePoint_RIBIT2020,IS_ILF,0,5;IS_NMFS "IS_NMFS" true true false 5 Text 0 0,First,#,MangrovePoint_RIBIT2020,IS_NMFS,0,5;IS_NRDA "IS_NRDA" true true false 5 Text 0 0,First,#,MangrovePoint_RIBIT2020,IS_NRDA,0,5;IS_USACE "IS_USACE" true true false 5 Text 0 0,First,#,MangrovePoint_RIBIT2020,IS_USACE,0,5;IS_UMBRELL "IS_UMBRELL" true true false 5 Text 0 0,First,#,MangrovePoint_RIBIT2020,IS_UMBRELL,0,5;NOAA_FISHE "NOAA_FISHE" true true false 10 Text 0 0,First,#,MangrovePoint_RIBIT2020,NOAA_FISHE,0,10;X "X" true true false 19 Double 8 18,First,#,MangrovePoint_RIBIT2020,X,-1,-1;Y "Y" true true false 19 Double 8 18,First,#,MangrovePoint_RIBIT2020,Y,-1,-1;YEAR_EST "YEAR_EST" true true false 5 Text 0 0,First,#,MangrovePoint_RIBIT2020,YEAR_EST,0,5;ACRES "ACRES" true true false 19 Double 8 18,First,#,MangrovePoint_RIBIT2020,ACRES,-1,-1;DESCRIPT "DESCRIPT" true true false 60 Text 0 0,First,#,MangrovePoint_RIBIT2020,DESCRIPT,0,60;FGDLAQDATE "FGDLAQDATE" true true false 8 Date 0 0,First,#,MangrovePoint_RIBIT2020,FGDLAQDATE,-1,-1;AUTOID "AUTOID" true true false 10 Long 0 10,First,#,MangrovePoint_RIBIT2020,AUTOID,-1,-1;SHAPE_AREA "SHAPE_AREA" true true false 19 Double 0 0,First,#,MangrovePoint_RIBIT2020,SHAPE_AREA,-1,-1;SHAPE_LEN "SHAPE_LEN" true true false 19 Double 0 0,First,#,MangrovePoint_RIBIT2020,SHAPE_LEN,-1,-1" #</Process><Process ToolSource="c:\program files\arcgis\pro\Resources\ArcToolbox\toolboxes\Conversion Tools.tbx\FeatureClassToFeatureClass" Date="20230215" Time="113746">FeatureClassToFeatureClass MangrovePoint_RIBITS2020 "L:\Priv\SHC_1012\Florida ROAR\Data\Boundary Shapefiles\Updated ROAR MB Boundaries" MangrovePoint_RIBITS2020.shp # "NAME "NAME" true true false 60 Text 0 0,First,#,MangrovePoint_RIBITS2020,NAME,0,60;BANK_TYPE "BANK_TYPE" true true false 20 Text 0 0,First,#,MangrovePoint_RIBITS2020,BANK_TYPE,0,20;BANK_ID "BANK_ID" true true false 4 Long 0 0,First,#,MangrovePoint_RIBITS2020,BANK_ID,-1,-1;URL "URL" true true false 254 Text 0 0,First,#,MangrovePoint_RIBITS2020,URL,0,254;BANK_STATU "BANK_STATU" true true false 10 Text 0 0,First,#,MangrovePoint_RIBITS2020,BANK_STATU,0,10;STATE_ABBR "STATE_ABBR" true true false 10 Text 0 0,First,#,MangrovePoint_RIBITS2020,STATE_ABBR,0,10;APPROVAL_D "APPROVAL_D" true true false 15 Text 0 0,First,#,MangrovePoint_RIBITS2020,APPROVAL_D,0,15;BANK_SOLD "BANK_SOLD" true true false 15 Text 0 0,First,#,MangrovePoint_RIBITS2020,BANK_SOLD,0,15;COUNTY_LIS "COUNTY_LIS" true true false 30 Text 0 0,First,#,MangrovePoint_RIBITS2020,COUNTY_LIS,0,30;DISTRICT_L "DISTRICT_L" true true false 15 Text 0 0,First,#,MangrovePoint_RIBITS2020,DISTRICT_L,0,15;FIELD_OFFI "FIELD_OFFI" true true false 15 Text 0 0,First,#,MangrovePoint_RIBITS2020,FIELD_OFFI,0,15;HAS_FOOTPR "HAS_FOOTPR" true true false 5 Text 0 0,First,#,MangrovePoint_RIBITS2020,HAS_FOOTPR,0,5;IS_404 "IS_404" true true false 5 Text 0 0,First,#,MangrovePoint_RIBITS2020,IS_404,0,5;IS_CONSERV "IS_CONSERV" true true false 5 Text 0 0,First,#,MangrovePoint_RIBITS2020,IS_CONSERV,0,5;IS_DOT "IS_DOT" true true false 5 Text 0 0,First,#,MangrovePoint_RIBITS2020,IS_DOT,0,5;IS_FWS "IS_FWS" true true false 5 Text 0 0,First,#,MangrovePoint_RIBITS2020,IS_FWS,0,5;IS_ILF "IS_ILF" true true false 5 Text 0 0,First,#,MangrovePoint_RIBITS2020,IS_ILF,0,5;IS_NMFS "IS_NMFS" true true false 5 Text 0 0,First,#,MangrovePoint_RIBITS2020,IS_NMFS,0,5;IS_NRDA "IS_NRDA" true true false 5 Text 0 0,First,#,MangrovePoint_RIBITS2020,IS_NRDA,0,5;IS_USACE "IS_USACE" true true false 5 Text 0 0,First,#,MangrovePoint_RIBITS2020,IS_USACE,0,5;IS_UMBRELL "IS_UMBRELL" true true false 5 Text 0 0,First,#,MangrovePoint_RIBITS2020,IS_UMBRELL,0,5;NOAA_FISHE "NOAA_FISHE" true true false 10 Text 0 0,First,#,MangrovePoint_RIBITS2020,NOAA_FISHE,0,10;X "X" true true false 8 Double 0 0,First,#,MangrovePoint_RIBITS2020,X,-1,-1;Y "Y" true true false 8 Double 0 0,First,#,MangrovePoint_RIBITS2020,Y,-1,-1;YEAR_EST "YEAR_EST" true true false 5 Text 0 0,First,#,MangrovePoint_RIBITS2020,YEAR_EST,0,5;ACRES "ACRES" true true false 8 Double 0 0,First,#,MangrovePoint_RIBITS2020,ACRES,-1,-1;DESCRIPT "DESCRIPT" true true false 60 Text 0 0,First,#,MangrovePoint_RIBITS2020,DESCRIPT,0,60;FGDLAQDATE "FGDLAQDATE" true true false 8 Date 0 0,First,#,MangrovePoint_RIBITS2020,FGDLAQDATE,-1,-1;AUTOID "AUTOID" true true false 4 Long 0 0,First,#,MangrovePoint_RIBITS2020,AUTOID,-1,-1;Shape_Length "Shape_Length" false true true 8 Double 0 0,First,#,MangrovePoint_RIBITS2020,Shape_Length,-1,-1;Shape_Area "Shape_Area" false true true 8 Double 0 0,First,#,MangrovePoint_RIBITS2020,Shape_Area,-1,-1" #</Process></lineage></DataProperties><SyncDate>20230215</SyncDate><SyncTime>11374500</SyncTime><CreaDate>20201207</CreaDate><CreaTime>16313800</CreaTime><ArcGISstyle>FGDC CSDGM Metadata</ArcGISstyle><SyncOnce>FALSE</SyncOnce><ArcGISProfile>FGDC</ArcGISProfile><scaleRange><minScale>150000000</minScale><maxScale>5000</maxScale></scaleRange></Esri><mdLang><languageCode value="eng"/><countryCode value="USA" Sync="TRUE"/></mdLang><mdChar><CharSetCd value="004"/></mdChar><mdHrLv><ScopeCd value="005"/></mdHrLv><mdContact><rpOrgName>U.S. Army Corps of Engineers (USACE)</rpOrgName><rpCntInfo><cntPhone><voiceNum>202-761-0011</voiceNum></cntPhone><cntAddress addressType="both"><delPoint>441 G Street NW</delPoint><city>Washington</city><adminArea>DC</adminArea><postCode>20314-1000</postCode><country>US</country></cntAddress></rpCntInfo><role><RoleCd value="007"/></role></mdContact><mdDateSt Sync="TRUE">20230215</mdDateSt><mdStanName>ArcGIS Metadata</mdStanName><mdStanVer>1.0</mdStanVer><distInfo><distributor><distorCont><rpOrgName>Florida Geographic Data Library (FGDL)</rpOrgName><rpCntInfo><cntAddress addressType="postal"><delPoint>431 Architecture PO Box 115706</delPoint><city>Gainesville</city><adminArea>Florida</adminArea><postCode>32611-5706</postCode><country>US</country><eMailAdd>For FGDL Software: http://www.fgdl.org/software.html</eMailAdd><eMailAdd>Mailing list for FGDL: http://www.fgdl.org/fgdl-l.html</eMailAdd><eMailAdd>Technical Support: http://www.fgdl.org/fgdlfeed.html</eMailAdd><eMailAdd>FGDL Frequently Asked Questions: http://www.fgdl.org/fgdlfaq.html</eMailAdd><eMailAdd>Web site: http://www.fgdl.org</eMailAdd></cntAddress></rpCntInfo><role><RoleCd value="005"/></role></distorCont><distorTran><onLineSrc><orDesc>DOWNLOADABLE DATA</orDesc></onLineSrc></distorTran></distributor><distTranOps><onLineSrc><linkage>https://ribits.usace.army.mil</linkage></onLineSrc><transSize Sync="TRUE">0.000</transSize></distTranOps><distFormat><formatName Sync="TRUE">Shapefile</formatName></distFormat></distInfo><dataIdInfo><idCitation><resTitle>Mitigation Bank and In-Lieu Fee Program Sites in Florida - 2020</resTitle><date><pubDate>2020-01-01</pubDate></date><citRespParty><rpOrgName>U.S. Army Corps of Engineers (USACE)</rpOrgName><rpCntInfo><cntAddress><delPoint>Washington DC</delPoint></cntAddress></rpCntInfo><role><RoleCd value="010"/></role></citRespParty><citRespParty><rpOrgName>U.S. Army Corps of Engineers</rpOrgName><role><RoleCd value="006"/></role></citRespParty><presForm><PresFormCd value="005"/></presForm><presForm><fgdcGeoform>vector digital data</fgdcGeoform></presForm><otherCitDet>State of Florida</otherCitDet></idCitation><idAbs>&lt;DIV STYLE="text-align:Left;"&gt;&lt;DIV&gt;&lt;P&gt;&lt;SPAN&gt;This dataset contains mitigation bank and in-lieu fee program sites in Florida from the US Army Corps of Engineers Regulatory In-lieu Fee and Bank Information Tracking System (RIBITS). A mitigation bank is a site where resources (e.g., wetlands, streams, riparian areas) are restored, established, enhanced, and/or preserved for the purpose of providing compensatory mitigation for impacts authorized by Department of the Army permits. The U.S. Army Corps of Engineers regulates resources like wetlands and streams under Section 404 of the Clean Water Act and in some cases Section 10 of the Rivers and Harbors Act. The measure of aquatic functions is based on the resources restored, established, enhanced, or preserved. An in-lieu fee program involves the restoration, establishment, enhancement, and/or preservation through funds paid to a governmental or non-profit natural resources management program sponsor to satisfy compensatory mitigation requirements under Department of the Army permits. Funds are often received by the in-lieu fee program sponsor prior to undertaking compensatory mitigation projects. In lieu fee programs can involve multiple mitigation project sites.&lt;/SPAN&gt;&lt;/P&gt;&lt;/DIV&gt;&lt;/DIV&gt;</idAbs><idPurp>RIBITS (Regulatory In lieu fee and Bank Information Tracking System) was developed by the U.S. Army Corps of Engineers with support from the Environmental Protection Agency, the U.S. Fish and Wildlife Service, the Federal Highway Administration, and NOAA Fisheries to provide better information on mitigation and conservation banking and in-lieu fee programs across the country. RIBITS allows users to access information on the types and numbers of mitigation and conservation bank and in-lieu fee program sites, associated documents, mitigation credit availability, service areas, as well information on national and local policies and procedures that affect mitigation and conservation bank and in-lieu fee program development and operation.</idPurp><idCredit>U.S. Army Corps of Engineers</idCredit><idStatus><ProgCd value="001"/></idStatus><idPoC><rpOrgName>U.S. Army Corps of Engineers (USACE)</rpOrgName><rpCntInfo><cntPhone><voiceNum>202-761-0011</voiceNum></cntPhone><cntAddress><delPoint>441 G Street NW</delPoint><city>Washington</city><adminArea>DC</adminArea><postCode>20314-1000</postCode><country>US</country></cntAddress></rpCntInfo><role><RoleCd value="007"/></role></idPoC><resMaint><maintFreq><MaintFreqCd value="009"/></maintFreq></resMaint><themeKeys><keyword>environment</keyword><keyword>inlandWaters</keyword></themeKeys><searchKeys><keyword>environment</keyword><keyword>inlandWaters</keyword></searchKeys><resConst><LegConsts><useLimit>The Florida Geographic Data Library is a collection of Geospatial Data compiled by the University of Florida GeoPlan Center with support from the Florida Department of Transportation. GIS data available in FGDL is collected from various state, federal, and other agencies (data sources) who are data stewards, producers, or publishers. The data available in FGDL may not be the most current version of the data offered by the data source. University of Florida GeoPlan Center makes no guarantees about the currentness of the data and suggests that data users check with the data source to see if more recent versions of the data exist. Furthermore, the GIS data available in the FGDL are provided 'as is'. The University of Florida GeoPlan Center makes no warranties, guaranties or representations as to the truth, accuracy or completeness of the data provided by the data sources. The University of Florida GeoPlan Center makes no representations or warranties about the quality or suitability of the materials, either expressly or implied, including but not limited to any implied warranties of merchantability, fitness for a particular purpose, or non-infringement. The University of Florida GeoPlan Center shall not be liable for any damages suffered as a result of using, modifying, contributing or distributing the materials. A note about data scale: Scale is an important factor in data usage. Certain scale datasets are not suitable for some project, analysis, or modeling purposes. Please be sure you are using the best available data. 1:24000 scale datasets are recommended for projects that are at the county level. 1:24000 data should NOT be used for high accuracy base mapping such as property parcel boundaries. 1:100000 scale datasets are recommended for projects that are at the multi-county or regional level. 1:125000 scale datasets are recommended for projects that are at the regional or state level or larger. Vector datasets with no defined scale or accuracy should be considered suspect. Make sure you are familiar with your data before using it for projects or analysis. Every effort has been made to supply the user with data documentation. For additional information, see the References section and the Data Source Contact section of this documentation. For more information regarding scale and accuracy, see our webpage at: http://geoplan.ufl.edu/education.html</useLimit></LegConsts></resConst><resConst><Consts><useLimit>&lt;DIV STYLE="text-align:Left;"&gt;&lt;DIV&gt;&lt;P&gt;&lt;SPAN&gt;The Florida Geographic Data Library is a collection of Geospatial Data compiled by the University of Florida GeoPlan Center with support from the Florida Department of Transportation. GIS data available in FGDL is collected from various state, federal, and other agencies (data sources) who are data stewards, producers, or publishers. The data available in FGDL may not be the most current version of the data offered by the data source. University of Florida GeoPlan Center makes no guarantees about the currentness of the data and suggests that data users check with the data source to see if more recent versions of the data exist. Furthermore, the GIS data available in the FGDL are provided 'as is'. The University of Florida GeoPlan Center makes no warranties, guaranties or representations as to the truth, accuracy or completeness of the data provided by the data sources. The University of Florida GeoPlan Center makes no representations or warranties about the quality or suitability of the materials, either expressly or implied, including but not limited to any implied warranties of merchantability, fitness for a particular purpose, or non-infringement. The University of Florida GeoPlan Center shall not be liable for any damages suffered as a result of using, modifying, contributing or distributing the materials. A note about data scale: Scale is an important factor in data usage. Certain scale datasets are not suitable for some project, analysis, or modeling purposes. Please be sure you are using the best available data. 1:24000 scale datasets are recommended for projects that are at the county level. 1:24000 data should NOT be used for high accuracy base mapping such as property parcel boundaries. 1:100000 scale datasets are recommended for projects that are at the multi-county or regional level. 1:125000 scale datasets are recommended for projects that are at the regional or state level or larger. Vector datasets with no defined scale or accuracy should be considered suspect. Make sure you are familiar with your data before using it for projects or analysis. Every effort has been made to supply the user with data documentation. For additional information, see the References section and the Data Source Contact section of this documentation. For more information regarding scale and accuracy, see our webpage at: http://geoplan.ufl.edu/education.html&lt;/SPAN&gt;&lt;/P&gt;&lt;/DIV&gt;&lt;/DIV&gt;</useLimit></Consts></resConst><aggrInfo><aggrDSName><otherCitDet>U.S. Army Corps of Engineers: https://www.usace.army.mil/ Regulatory In-lieu Fee and Bank Information Tracking System: https://ribits.usace.army.mil</otherCitDet></aggrDSName><assocType><AscTypeCd value="001"/></assocType></aggrInfo><spatRpType><SpatRepTypCd value="001"/></spatRpType><dataLang><languageCode value="eng"/><countryCode value="USA" Sync="TRUE"/></dataLang><envirDesc Sync="TRUE">Microsoft Windows 10 Version 10.0 (Build 22000) ; Esri ArcGIS 12.9.4.32739</envirDesc><dataExt><geoEle><GeoBndBox><westBL>-87.386619</westBL><eastBL>-80.068748</eastBL><southBL>24.637801</southBL><northBL>30.734352</northBL></GeoBndBox></geoEle></dataExt><dataExt><exDesc>publication date</exDesc><tempEle><TempExtent><exTemp><TM_Instant><tmPosition>2020-01-01</tmPosition></TM_Instant></exTemp></TempExtent></tempEle></dataExt><suppInfo>A mitigation bank is an aquatic resource area that has been restored, created, enhanced, or (in exceptional circumstances) preserved, which is then set aside to compensate for future impacts to aquatic resources for development activities. A mitigation bank may be created when a government agency, a corporation, or a nonprofit organization undertakes such activities under a formal agreement with a regulatory agency. The value of a bank is determined by quantifying the functions or area restored or created in terms of "credits." Benefits of Mitigation Banking: * Banking can provide more cost-effective mitigation and reduce uncertainty and delays for qualified projects, especially when the project is associated with a comprehensive planning effort. * Successful mitigation can be ensured since the aquatic resource can be functional in advance of project impacts. * Banking eliminates the temporal losses of aquatic resource functions that typically occur when mitigation is initiated during or after the development impacts occur * Consolidation of numerous small, isolated or fragmented mitigation projects into a single large parcel may have greater ecological benefit. * A mitigation bank can bring scientific and planning expertise and financial resources together, thereby increasing the likelihood of success in a way not practical for individual mitigation efforts.</suppInfo><dataExt><geoEle xmlns=""><GeoBndBox esriExtentType="search"><exTypeCode Sync="TRUE">1</exTypeCode><westBL Sync="TRUE">-87.386619</westBL><eastBL Sync="TRUE">-80.068748</eastBL><northBL Sync="TRUE">30.734352</northBL><southBL Sync="TRUE">24.637801</southBL></GeoBndBox></geoEle></dataExt><tpCat><TopicCatCd value="007"/></tpCat><tpCat><TopicCatCd value="012"/></tpCat></dataIdInfo><dqInfo><dqScope><scpLvl><ScopeCd value="005"/></scpLvl></dqScope><report type="DQTopConsis"><evalMethDesc>This data is provided 'as is'. GeoPlan relied on the integrity of the original data layer's topology</evalMethDesc></report><report type="DQConcConsis"><measDesc>This data is provided 'as is'. GeoPlan relied on the integrity of the original data layer's topology</measDesc></report><report type="DQCompOm"><measDesc>This data is provided 'as is' by GeoPlan and is complete to our knowledge.</measDesc></report><report type="DQQuanAttAcc"><measDesc>GeoPlan relied on the integrity of the attribute information within the original data.</measDesc></report><report type="DQAbsExtPosAcc" dimension="horizontal"><measDesc>This data is provided 'as is' and its horizontal positional accuracy has not been verified by GeoPlan</measDesc></report><report type="DQAbsExtPosAcc" dimension="vertical"><measDesc>This data is provided 'as is' and its vertical positional accuracy has not been verified by GeoPlan</measDesc></report><dataLineage><dataSource xmlns="" type=""><srcDesc>Spatial and Attribute Information</srcDesc><srcMedName><MedNameCd value="015"/></srcMedName><srcScale><rfDenom>0</rfDenom></srcScale></dataSource><prcStep xmlns=""><stepDesc>GeoPlan Center Process Steps: 
+
+Mitigation bank and ILF site data was downloaded from RIBITS on 11/20/2020. 
+
+Download Instructions:
+1. https://ribits.usace.army.mil/
+2. MENU &gt; Banks &amp; Sites
+3. Actions &gt; Select Columns: Add all columns to "Display in Report" 
+   window
+4. Actions &gt; Filter: State Abbrev List contains 'FL'
+5. Actions &gt; Download: As CSV
+6. After making the selections above, download Footprint KML 
+   file from the Google Map window.
+
+Downloaded Files: 
+- banks_and_ilf_sites.csv (178 records)
+- RIBITS_BANKS_ILF_KML_footprint.kmz (430 records - 165 unique records)
+
+Latitude/longitude data from "banks_and_ilf_sites.csv" were mapped and 
+exported as a shapefile and "RIBITS_BANKS_ILF_KML_footprint.kmz" was 
+converted from a kmz file to a shapefile. Footprint shapefile was dissolved 
+based on 'Name' field. Resulting shapefile had 165 unique records. Both datasets 
+were mapped in the GCS_WGS_84 (EPSG: 4326) projection and then reprojected to 
+FGDL Albers NAD83 HARN (EPSG: 3087).
+
+Field changes from source since previous update: 
+- Removed: BANK_NAME, CREDIT_TYPE, TOTAL_ACRE, 
+- Added: ZOOM, APPROVAL_DATE, BANK_SOLD, IS_UMBRELLA
+- STATUS changed to BANK_STATUS
+- YEAR_ESTAB changed to YEAR_EST
+
+Next, "banks_and_ilf_sites" was joined to "RIBITS_BANKS_ILF_KML_footprint"
+via the NAME field. The resulting table join was exported to shapefile.
+Thirteen sites from the csv download had no footprint (polygon) spatial data,
+and thus were not included in the final dataset: 
+*EVERGLADES SCOUTS MB [5736]
+*HATCHINEHA RANCH CONSERVATION BANK PHASE 2 [3526]
+*HATCHINEHA RANCH MB [1040]
+*HEATHER ISLAND MB [290]
+*ILF KEYS ENVIRONMENTAL RESTORATION FUND [2120]
+*ILF-KRF-BAHIA HONDA PROJECT A [3573]
+*ILF-KRF-CRANE POINT HAMMOCK [3385]
+*MARION MB [4438]
+*NATURAL RESOURCE MB [3272]
+*OSPREY UNIT MB [3061]
+*PEPPER RANCH PRESERVE CONSERVATION BANK [5375]
+*RG RESERVE MB [277]
+*TWIN OAKS MB [3553]
+
+Field lengths of existing fields were shortened and fields were upcased. 
+Field ZOOM had no values and was removed from the table. 
+The following fields were added to the table: 
+- URL field populated based on the following field calculation: 
+  "https://ribits.ops.usace.army.mil/ords/f?p=107:10:::NO::P10_BANK_ID:"
+  &amp; [BANK_ID]
+- Added ACRES field and calculated geometry with Acres US (ac). 
+- Added DESCRIPT field populated based on NAME. 
+- Added FGDLAQDATE field populated based on the date the dataset was downloaded
+  from the source. 
+
+Finally, the file was renamed ribits_2020.shp.</stepDesc><stepDateTm>2020-11-20T00:00:00</stepDateTm><stepSrc type="used" xmlns=""><srcCitatn><resAltTitle>GeoPlan</resAltTitle></srcCitatn></stepSrc></prcStep></dataLineage></dqInfo><mdHrLvName Sync="TRUE">dataset</mdHrLvName><refSysInfo><RefSystem><refSysID><identCode code="3087" Sync="TRUE"/><idCodeSpace Sync="TRUE">EPSG</idCodeSpace><idVersion Sync="TRUE">6.12(9.2.0)</idVersion></refSysID></RefSystem></refSysInfo><spatRepInfo><VectSpatRep><geometObjs Name="MangrovePoint_RIBITS2020"><geoObjTyp><GeoObjTypCd value="002" Sync="TRUE"></GeoObjTypCd></geoObjTyp><geoObjCnt Sync="TRUE">0</geoObjCnt></geometObjs><topLvl><TopoLevCd value="001" Sync="TRUE"></TopoLevCd></topLvl></VectSpatRep></spatRepInfo></metadata>

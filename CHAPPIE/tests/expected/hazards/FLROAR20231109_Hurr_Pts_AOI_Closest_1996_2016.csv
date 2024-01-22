@@ -1,0 +1,146 @@
+Bank,Category,SID,Year,StormName,Date,WindSpdKts,PressureMb,StormLevel
+Breakfast Point,Mitigation Bank,1996279N23264,1996,JOSEPHINE,1996-10-08T00:00:00Z,60,983,Tropical Storm
+Breakfast Point,Mitigation Bank,1997198N27267,1997,DANNY,1997-07-20T12:00:00Z,35,1001,Tropical Storm
+Breakfast Point,Mitigation Bank,1998244N22267,1998,EARL,1998-09-03T06:00:00Z,70,987,Category 1
+Breakfast Point,Mitigation Bank,1998259N10335,1998,GEORGES,1998-09-30T09:00:00Z,27,1001,Tropical Depression
+Breakfast Point,Mitigation Bank,2000260N15308,2000,HELENE,2000-09-22T12:00:00Z,35,1006,Tropical Storm
+Breakfast Point,Mitigation Bank,2001215N26275,2001,BARRY,2001-08-06T03:00:00Z,60,990,Tropical Storm
+Breakfast Point,Mitigation Bank,2004217N13306,2004,BONNIE,2004-08-12T14:00:00Z,40,1002,Tropical Storm
+Breakfast Point,Mitigation Bank,2004238N11325,2004,FRANCES,2004-09-07T00:00:00Z,35,984,Tropical Storm
+Breakfast Point,Mitigation Bank,2005160N17276,2005,ARLENE,2005-06-11T19:00:00Z,50,991,Tropical Storm
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,2005-07-10T18:00:00Z,110,942,Category 3
+Breakfast Point,Mitigation Bank,2005278N27280,2005,TAMMY,2005-10-07T00:00:00Z,10,1005,Tropical Depression
+Breakfast Point,Mitigation Bank,2007265N29275,2007,NOT_NAMED,2007-09-21T21:00:00Z,27,1005,Tropical Depression
+Breakfast Point,Mitigation Bank,2008229N18293,2008,FAY,2008-08-23T15:00:00Z,40,998,Tropical Storm
+Breakfast Point,Mitigation Bank,2008311N14278,2008,PALOMA,2008-11-14T06:00:00Z,20,1010,Tropical Depression
+Breakfast Point,Mitigation Bank,2009228N27277,2009,CLAUDETTE,2009-08-17T03:00:00Z,42,1005,Tropical Storm
+Breakfast Point,Mitigation Bank,2009308N11279,2009,IDA,2009-11-11T03:00:00Z,25,1005,Tropical Depression
+Breakfast Point,Mitigation Bank,2010222N26277,2010,NOT_NAMED,2010-08-16T06:00:00Z,20,1010,Tropical Depression
+Breakfast Point,Mitigation Bank,2012176N26272,2012,DEBBY,2012-06-25T18:00:00Z,40,992,Tropical Storm
+Breakfast Point,Service Area,1996279N23264,1996,JOSEPHINE,1996-10-08T00:00:00Z,60,983,Tropical Storm
+Breakfast Point,Service Area,1997198N27267,1997,DANNY,1997-07-20T12:00:00Z,35,1001,Tropical Storm
+Breakfast Point,Service Area,1998244N22267,1998,EARL,1998-09-03T06:00:00Z,70,987,Category 1
+Breakfast Point,Service Area,1998259N10335,1998,GEORGES,1998-09-30T09:00:00Z,27,1001,Tropical Depression
+Breakfast Point,Service Area,2000260N15308,2000,HELENE,2000-09-22T12:00:00Z,35,1006,Tropical Storm
+Breakfast Point,Service Area,2001157N28265,2001,ALLISON,2001-06-12T03:00:00Z,22,1004,Tropical Depression
+Breakfast Point,Service Area,2001215N26275,2001,BARRY,2001-08-06T05:00:00Z,60,990,Tropical Storm
+Breakfast Point,Service Area,2002255N26273,2002,HANNA,2002-09-15T03:00:00Z,20,1010,Tropical Depression
+Breakfast Point,Service Area,2004217N13306,2004,BONNIE,2004-08-12T14:00:00Z,40,1002,Tropical Storm
+Breakfast Point,Service Area,2004238N11325,2004,FRANCES,2004-09-07T00:00:00Z,35,984,Tropical Storm
+Breakfast Point,Service Area,2004258N16300,2004,JEANNE,2004-09-27T12:00:00Z,35,987,Tropical Storm
+Breakfast Point,Service Area,2005160N17276,2005,ARLENE,2005-06-11T19:00:00Z,50,991,Tropical Storm
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,2005-07-10T18:00:00Z,110,942,Category 3
+Breakfast Point,Service Area,2005278N27280,2005,TAMMY,2005-10-07T00:00:00Z,10,1005,Tropical Depression
+Breakfast Point,Service Area,2006161N20275,2006,ALBERTO,2006-06-13T12:00:00Z,45,996,Tropical Storm
+Breakfast Point,Service Area,2007265N29275,2007,NOT_NAMED,2007-09-21T21:00:00Z,27,1005,Tropical Depression
+Breakfast Point,Service Area,2008229N18293,2008,FAY,2008-08-23T15:00:00Z,40,998,Tropical Storm
+Breakfast Point,Service Area,2008311N14278,2008,PALOMA,2008-11-14T06:00:00Z,20,1010,Tropical Depression
+Breakfast Point,Service Area,2009228N27277,2009,CLAUDETTE,2009-08-17T03:00:00Z,42,1005,Tropical Storm
+Breakfast Point,Service Area,2009308N11279,2009,IDA,2009-11-11T03:00:00Z,25,1005,Tropical Depression
+Breakfast Point,Service Area,2010222N26277,2010,NOT_NAMED,2010-08-16T03:00:00Z,20,1010,Tropical Depression
+Breakfast Point,Service Area,2012176N26272,2012,DEBBY,2012-06-25T18:00:00Z,40,992,Tropical Storm
+Fl Gulf Coast,Mitigation Bank,1996279N23264,1996,JOSEPHINE,1996-10-08T03:30:00Z,60,983,Tropical Storm
+Fl Gulf Coast,Mitigation Bank,1998259N10335,1998,GEORGES,1998-10-01T00:00:00Z,25,1006,Tropical Depression
+Fl Gulf Coast,Mitigation Bank,2000259N20273,2000,GORDON,2000-09-18T03:00:00Z,55,991,Tropical Storm
+Fl Gulf Coast,Mitigation Bank,2000279N29279,2000,LESLIE,2000-10-04T12:00:00Z,30,1012,Tropical Depression
+Fl Gulf Coast,Mitigation Bank,2001255N26276,2001,GABRIELLE,2001-09-14T21:00:00Z,42,994,Tropical Storm
+Fl Gulf Coast,Mitigation Bank,2002245N29281,2002,EDOUARD,2002-09-05T15:00:00Z,20,1011,Tropical Depression
+Fl Gulf Coast,Mitigation Bank,2003247N27272,2003,HENRI,2003-09-06T09:00:00Z,30,1006,Tropical Depression
+Fl Gulf Coast,Mitigation Bank,2004217N13306,2004,BONNIE,2004-08-12T18:00:00Z,30,1006,Tropical Depression
+Fl Gulf Coast,Mitigation Bank,2004238N11325,2004,FRANCES,2004-09-06T09:00:00Z,55,981,Tropical Storm
+Fl Gulf Coast,Mitigation Bank,2004258N16300,2004,JEANNE,2004-09-27T00:00:00Z,45,978,Tropical Storm
+Fl Gulf Coast,Mitigation Bank,2006161N20275,2006,ALBERTO,2006-06-13T15:00:00Z,41,997,Tropical Storm
+Fl Gulf Coast,Mitigation Bank,2007151N18273,2007,BARRY,2007-06-02T18:00:00Z,30,1001,Tropical Depression
+Fl Gulf Coast,Mitigation Bank,2008229N18293,2008,FAY,2008-08-22T15:00:00Z,42,996,Tropical Storm
+Fl Gulf Coast,Mitigation Bank,2009228N27277,2009,CLAUDETTE,2009-08-16T12:00:00Z,35,1010,Tropical Storm
+Fl Gulf Coast,Mitigation Bank,2012147N30284,2012,BERYL,2012-05-28T15:00:00Z,30,1001,Tropical Depression
+Fl Gulf Coast,Mitigation Bank,2012176N26272,2012,DEBBY,2012-06-26T21:00:00Z,35,995,Tropical Storm
+Fl Gulf Coast,Mitigation Bank,2013157N25273,2013,ANDREA,2013-06-06T22:00:00Z,50,992,Tropical Storm
+Fl Gulf Coast,Service Area,1996279N23264,1996,JOSEPHINE,1996-10-08T03:30:00Z,60,983,Tropical Storm
+Fl Gulf Coast,Service Area,1998244N22267,1998,EARL,1998-09-03T09:00:00Z,57,988,Tropical Storm
+Fl Gulf Coast,Service Area,1998259N10335,1998,GEORGES,1998-10-01T00:00:00Z,25,1006,Tropical Depression
+Fl Gulf Coast,Service Area,2000259N20273,2000,GORDON,2000-09-18T06:00:00Z,40,1000,Tropical Storm
+Fl Gulf Coast,Service Area,2000279N29279,2000,LESLIE,2000-10-04T12:00:00Z,30,1012,Tropical Depression
+Fl Gulf Coast,Service Area,2001255N26276,2001,GABRIELLE,2001-09-14T21:00:00Z,42,994,Tropical Storm
+Fl Gulf Coast,Service Area,2002245N29281,2002,EDOUARD,2002-09-05T12:00:00Z,20,1011,Tropical Depression
+Fl Gulf Coast,Service Area,2003247N27272,2003,HENRI,2003-09-06T09:00:00Z,30,1006,Tropical Depression
+Fl Gulf Coast,Service Area,2004217N13306,2004,BONNIE,2004-08-12T18:00:00Z,30,1006,Tropical Depression
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,2004-08-14T03:00:00Z,75,981,Category 1
+Fl Gulf Coast,Service Area,2004238N11325,2004,FRANCES,2004-09-06T18:00:00Z,50,982,Tropical Storm
+Fl Gulf Coast,Service Area,2004258N16300,2004,JEANNE,2004-09-27T00:00:00Z,45,978,Tropical Storm
+Fl Gulf Coast,Service Area,2005278N27280,2005,TAMMY,2005-10-07T00:00:00Z,10,1005,Tropical Depression
+Fl Gulf Coast,Service Area,2006161N20275,2006,ALBERTO,2006-06-13T16:30:00Z,40,998,Tropical Storm
+Fl Gulf Coast,Service Area,2007151N18273,2007,BARRY,2007-06-02T18:00:00Z,30,1001,Tropical Depression
+Fl Gulf Coast,Service Area,2007265N29275,2007,NOT_NAMED,2007-09-21T12:00:00Z,30,1005,Tropical Depression
+Fl Gulf Coast,Service Area,2008229N18293,2008,FAY,2008-08-22T15:00:00Z,42,996,Tropical Storm
+Fl Gulf Coast,Service Area,2009228N27277,2009,CLAUDETTE,2009-08-16T21:00:00Z,47,1006,Tropical Storm
+Fl Gulf Coast,Service Area,2009308N11279,2009,IDA,2009-11-11T06:00:00Z,25,1006,Tropical Depression
+Fl Gulf Coast,Service Area,2010222N26277,2010,NOT_NAMED,2010-08-16T03:00:00Z,20,1010,Tropical Depression
+Fl Gulf Coast,Service Area,2012147N30284,2012,BERYL,2012-05-28T21:00:00Z,27,1004,Tropical Depression
+Fl Gulf Coast,Service Area,2012176N26272,2012,DEBBY,2012-06-27T00:00:00Z,30,997,Tropical Depression
+Fl Gulf Coast,Service Area,2013157N25273,2013,ANDREA,2013-06-07T00:00:00Z,40,993,Tropical Storm
+Little Pine Island,Mitigation Bank,1998295N12284,1998,MITCH,1998-11-05T11:00:00Z,55,989,Tropical Storm
+Little Pine Island,Mitigation Bank,1999262N25272,1999,HARVEY,1999-09-21T15:00:00Z,50,997,Tropical Storm
+Little Pine Island,Mitigation Bank,1999286N16278,1999,IRENE,1999-10-16T00:00:00Z,65,986,Category 1
+Little Pine Island,Mitigation Bank,2001255N26276,2001,GABRIELLE,2001-09-14T12:00:00Z,60,983,Tropical Storm
+Little Pine Island,Mitigation Bank,2003227N26277,2003,ERIKA,2003-08-14T18:00:00Z,35,1011,Tropical Storm
+Little Pine Island,Mitigation Bank,2003247N27272,2003,HENRI,2003-09-06T09:00:00Z,30,1006,Tropical Depression
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,2004-08-13T19:45:00Z,130,941,Category 4
+Little Pine Island,Mitigation Bank,2004238N11325,2004,FRANCES,2004-09-05T18:00:00Z,60,975,Tropical Storm
+Little Pine Island,Mitigation Bank,2004247N10332,2004,IVAN,2004-09-21T12:00:00Z,25,1009,Tropical Depression
+Little Pine Island,Mitigation Bank,2004258N16300,2004,JEANNE,2004-09-26T12:00:00Z,75,965,Category 1
+Little Pine Island,Mitigation Bank,2005236N23285,2005,KATRINA,2005-08-26T06:00:00Z,65,987,Category 1
+Little Pine Island,Mitigation Bank,2005289N18282,2005,WILMA,2005-10-24T10:30:00Z,105,950,Category 3
+Little Pine Island,Mitigation Bank,2006237N13298,2006,ERNESTO,2006-08-30T15:00:00Z,35,1001,Tropical Storm
+Little Pine Island,Mitigation Bank,2007151N18273,2007,BARRY,2007-06-02T14:00:00Z,30,1000,Tropical Depression
+Little Pine Island,Mitigation Bank,2008229N18293,2008,FAY,2008-08-19T12:00:00Z,55,988,Tropical Storm
+Little Pine Island,Mitigation Bank,2009228N27277,2009,CLAUDETTE,2009-08-16T06:00:00Z,30,1011,Tropical Depression
+Little Pine Island,Mitigation Bank,2010203N22286,2010,BONNIE,2010-07-24T00:00:00Z,30,1010,Tropical Depression
+Little Pine Island,Mitigation Bank,2010222N26277,2010,NOT_NAMED,2010-08-10T06:00:00Z,25,1008,Tropical Depression
+Little Pine Island,Service Area,1998295N12284,1998,MITCH,1998-11-05T11:00:00Z,55,989,Tropical Storm
+Little Pine Island,Service Area,1999262N25272,1999,HARVEY,1999-09-21T17:00:00Z,50,999,Tropical Storm
+Little Pine Island,Service Area,1999286N16278,1999,IRENE,1999-10-15T21:00:00Z,68,986,Category 1
+Little Pine Island,Service Area,2001255N26276,2001,GABRIELLE,2001-09-14T12:00:00Z,60,983,Tropical Storm
+Little Pine Island,Service Area,2003227N26277,2003,ERIKA,2003-08-14T18:00:00Z,35,1011,Tropical Storm
+Little Pine Island,Service Area,2003247N27272,2003,HENRI,2003-09-06T09:00:00Z,30,1006,Tropical Depression
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,2004-08-13T19:45:00Z,130,941,Category 4
+Little Pine Island,Service Area,2004238N11325,2004,FRANCES,2004-09-05T18:00:00Z,60,975,Tropical Storm
+Little Pine Island,Service Area,2004247N10332,2004,IVAN,2004-09-21T12:00:00Z,25,1009,Tropical Depression
+Little Pine Island,Service Area,2004258N16300,2004,JEANNE,2004-09-26T12:00:00Z,75,965,Category 1
+Little Pine Island,Service Area,2005236N23285,2005,KATRINA,2005-08-26T06:00:00Z,65,987,Category 1
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,2005-10-24T10:30:00Z,105,950,Category 3
+Little Pine Island,Service Area,2006237N13298,2006,ERNESTO,2006-08-30T15:00:00Z,35,1001,Tropical Storm
+Little Pine Island,Service Area,2007151N18273,2007,BARRY,2007-06-02T14:00:00Z,30,1000,Tropical Depression
+Little Pine Island,Service Area,2008229N18293,2008,FAY,2008-08-19T12:00:00Z,55,988,Tropical Storm
+Little Pine Island,Service Area,2009228N27277,2009,CLAUDETTE,2009-08-16T06:00:00Z,30,1011,Tropical Depression
+Little Pine Island,Service Area,2010203N22286,2010,BONNIE,2010-07-23T21:00:00Z,30,1009,Tropical Depression
+Little Pine Island,Service Area,2010222N26277,2010,NOT_NAMED,2010-08-10T06:00:00Z,25,1008,Tropical Depression
+Mangrove Point,Mitigation Bank,2000259N20273,2000,GORDON,2000-09-17T18:00:00Z,65,985,Category 1
+Mangrove Point,Mitigation Bank,2001255N26276,2001,GABRIELLE,2001-09-14T15:00:00Z,52,988,Tropical Storm
+Mangrove Point,Mitigation Bank,2002245N29281,2002,EDOUARD,2002-09-05T15:00:00Z,20,1011,Tropical Depression
+Mangrove Point,Mitigation Bank,2003247N27272,2003,HENRI,2003-09-06T09:00:00Z,30,1006,Tropical Depression
+Mangrove Point,Mitigation Bank,2004223N11301,2004,CHARLEY,2004-08-13T21:00:00Z,121,944,Category 4
+Mangrove Point,Mitigation Bank,2004238N11325,2004,FRANCES,2004-09-06T00:00:00Z,55,978,Tropical Storm
+Mangrove Point,Mitigation Bank,2004258N16300,2004,JEANNE,2004-09-26T15:00:00Z,65,967,Category 1
+Mangrove Point,Mitigation Bank,2007151N18273,2007,BARRY,2007-06-02T15:00:00Z,30,1000,Tropical Depression
+Mangrove Point,Mitigation Bank,2008229N18293,2008,FAY,2008-08-19T21:00:00Z,57,987,Tropical Storm
+Mangrove Point,Mitigation Bank,2009228N27277,2009,CLAUDETTE,2009-08-16T06:00:00Z,30,1011,Tropical Depression
+Mangrove Point,Mitigation Bank,2010203N22286,2010,BONNIE,2010-07-24T00:00:00Z,30,1010,Tropical Depression
+Mangrove Point,Service Area,1998295N12284,1998,MITCH,1998-11-05T12:00:00Z,55,987,Tropical Storm
+Mangrove Point,Service Area,1999262N25272,1999,HARVEY,1999-09-21T12:00:00Z,50,996,Tropical Storm
+Mangrove Point,Service Area,2000259N20273,2000,GORDON,2000-09-17T21:00:00Z,62,987,Tropical Storm
+Mangrove Point,Service Area,2000279N29279,2000,LESLIE,2000-10-04T12:00:00Z,30,1012,Tropical Depression
+Mangrove Point,Service Area,2001255N26276,2001,GABRIELLE,2001-09-14T15:00:00Z,52,988,Tropical Storm
+Mangrove Point,Service Area,2002245N29281,2002,EDOUARD,2002-09-05T15:00:00Z,20,1011,Tropical Depression
+Mangrove Point,Service Area,2003227N26277,2003,ERIKA,2003-08-14T18:00:00Z,35,1011,Tropical Storm
+Mangrove Point,Service Area,2003247N27272,2003,HENRI,2003-09-06T09:00:00Z,30,1006,Tropical Depression
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,2004-08-13T21:00:00Z,121,944,Category 4
+Mangrove Point,Service Area,2004238N11325,2004,FRANCES,2004-09-06T00:00:00Z,55,978,Tropical Storm
+Mangrove Point,Service Area,2004258N16300,2004,JEANNE,2004-09-26T15:00:00Z,65,967,Category 1
+Mangrove Point,Service Area,2006237N13298,2006,ERNESTO,2006-08-30T21:00:00Z,35,1000,Tropical Storm
+Mangrove Point,Service Area,2007151N18273,2007,BARRY,2007-06-02T14:00:00Z,30,1000,Tropical Depression
+Mangrove Point,Service Area,2008229N18293,2008,FAY,2008-08-19T18:00:00Z,60,986,Tropical Storm
+Mangrove Point,Service Area,2009228N27277,2009,CLAUDETTE,2009-08-16T06:00:00Z,30,1011,Tropical Depression
+Mangrove Point,Service Area,2010203N22286,2010,BONNIE,2010-07-24T00:00:00Z,30,1010,Tropical Depression
+Mangrove Point,Service Area,2012176N26272,2012,DEBBY,2012-06-26T21:00:00Z,35,995,Tropical Storm
+Mangrove Point,Service Area,2013157N25273,2013,ANDREA,2013-06-06T18:00:00Z,55,993,Tropical Storm
