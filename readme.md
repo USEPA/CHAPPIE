@@ -1,3 +1,38 @@
+## Package Structure
+
+CHAPPIE/ Repo contains package info (e.g., requirements.txt) and non-package scripts (other)
+
+      CHAPPIE/ Package contains tests, init, and 6 sub-package folders:
+
+            access
+
+                  OSMnx/           folder for module reference materials
+
+                  timeMatrix/      folder for module reference materials
+
+            assets
+
+                  bluespace/      folder for module reference materials
+
+            eco_services
+
+                  infiltration/      folder for module reference materials
+
+            endpoints
+
+                  Health/      folder for module reference materials
+
+            hazards
+
+                  TropicalCyclones/      folder for module reference materials
+
+                  tornadoes/                folder for module reference materials
+
+            vulnerability
+
+                  svi.py      module script
+
+                  SVI/        folder for module reference materials
 
 ## Disclaimer
 
