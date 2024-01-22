@@ -1,0 +1,265 @@
+Bank,Category,SID,Year,StormName,StormLevel,SSDepth,HurrCells,AOICells,PerUnder
+Breakfast Point,Mitigation Bank,1998244N22267,1998,EARL,Category 1,00 to 01 foot above ground,5536,244899,2.2605237261074973
+Breakfast Point,Mitigation Bank,1998244N22267,1998,EARL,Category 1,01 to 02 feet above ground,8574,244899,3.5010351206007373
+Breakfast Point,Mitigation Bank,1998244N22267,1998,EARL,Category 1,02 to 03 feet above ground,39257,244899,16.029873539704123
+Breakfast Point,Mitigation Bank,1998244N22267,1998,EARL,Category 1,03 to 04 feet above ground,136053,244899,55.55473889235971
+Breakfast Point,Mitigation Bank,1998244N22267,1998,EARL,Category 1,04 to 05 feet above ground,42207,244899,17.234451753580046
+Breakfast Point,Mitigation Bank,1998244N22267,1998,EARL,Category 1,05 to 06 feet above ground,5068,244899,2.0694245382790455
+Breakfast Point,Mitigation Bank,1998244N22267,1998,EARL,Category 1,06 to 07 feet above ground,495,244899,0.20212414097240086
+Breakfast Point,Service Area,1998244N22267,1998,EARL,Category 1,00 to 01 foot above ground,167029,14224075,1.174269680102221
+Breakfast Point,Service Area,1998244N22267,1998,EARL,Category 1,01 to 02 feet above ground,166383,14224075,1.1697280842515243
+Breakfast Point,Service Area,1998244N22267,1998,EARL,Category 1,02 to 03 feet above ground,191425,14224075,1.3457817116403001
+Breakfast Point,Service Area,1998244N22267,1998,EARL,Category 1,03 to 04 feet above ground,274507,14224075,1.9298759321783665
+Breakfast Point,Service Area,1998244N22267,1998,EARL,Category 1,04 to 05 feet above ground,175111,14224075,1.2310888405748703
+Breakfast Point,Service Area,1998244N22267,1998,EARL,Category 1,05 to 06 feet above ground,109117,14224075,0.7671289697221085
+Breakfast Point,Service Area,1998244N22267,1998,EARL,Category 1,06 to 07 feet above ground,62324,14224075,0.43815854458022757
+Breakfast Point,Service Area,1998244N22267,1998,EARL,Category 1,07 to 08 feet above ground,13509,14224075,0.09497278381898296
+Breakfast Point,Service Area,1998244N22267,1998,EARL,Category 1,08 to 09 feet above ground,1248,14224075,0.008773856999488542
+Little Pine Island,Mitigation Bank,1999286N16278,1999,IRENE,Category 1,00 to 01 foot above ground,7,74911,0.009344422047496363
+Little Pine Island,Mitigation Bank,1999286N16278,1999,IRENE,Category 1,01 to 02 feet above ground,6,74911,0.008009504612139739
+Little Pine Island,Mitigation Bank,1999286N16278,1999,IRENE,Category 1,02 to 03 feet above ground,107,74911,0.1428361655831587
+Little Pine Island,Mitigation Bank,1999286N16278,1999,IRENE,Category 1,03 to 04 feet above ground,1086,74911,1.449720334797293
+Little Pine Island,Mitigation Bank,1999286N16278,1999,IRENE,Category 1,04 to 05 feet above ground,15887,74911,21.20783329551067
+Little Pine Island,Mitigation Bank,1999286N16278,1999,IRENE,Category 1,05 to 06 feet above ground,47835,74911,63.85577552028408
+Little Pine Island,Mitigation Bank,1999286N16278,1999,IRENE,Category 1,06 to 07 feet above ground,9814,74911,13.100879710589899
+Little Pine Island,Service Area,1999286N16278,1999,IRENE,Category 1,00 to 01 foot above ground,644440,31058973,2.0748915297360284
+Little Pine Island,Service Area,1999286N16278,1999,IRENE,Category 1,01 to 02 feet above ground,691610,31058973,2.226763904910829
+Little Pine Island,Service Area,1999286N16278,1999,IRENE,Category 1,02 to 03 feet above ground,627068,31058973,2.018959223152678
+Little Pine Island,Service Area,1999286N16278,1999,IRENE,Category 1,03 to 04 feet above ground,530947,31058973,1.7094802200961379
+Little Pine Island,Service Area,1999286N16278,1999,IRENE,Category 1,04 to 05 feet above ground,537338,31058973,1.730057204402734
+Little Pine Island,Service Area,1999286N16278,1999,IRENE,Category 1,05 to 06 feet above ground,752294,31058973,2.4221470555385074
+Little Pine Island,Service Area,1999286N16278,1999,IRENE,Category 1,06 to 07 feet above ground,698297,31058973,2.2482939149340195
+Little Pine Island,Service Area,1999286N16278,1999,IRENE,Category 1,07 to 08 feet above ground,495302,31058973,1.5947146739204805
+Little Pine Island,Service Area,1999286N16278,1999,IRENE,Category 1,08 to 09 feet above ground,235724,31058973,0.7589561960081552
+Little Pine Island,Service Area,1999286N16278,1999,IRENE,Category 1,09 to 10 feet above ground,273375,31058973,0.8801804232226222
+Little Pine Island,Service Area,1999286N16278,1999,IRENE,Category 1,10 to 11 feet above ground,366538,31058973,1.180135608476172
+Little Pine Island,Service Area,1999286N16278,1999,IRENE,Category 1,11 to 12 feet above ground,45375,31058973,0.14609304692721167
+Little Pine Island,Service Area,1999286N16278,1999,IRENE,Category 1,12 to 13 feet above ground,401,31058973,0.0012910922714669283
+Little Pine Island,Service Area,2000259N20273,2000,GORDON,Category 1,NA,NA,31058973,NA
+Mangrove Point,Mitigation Bank,2000259N20273,2000,GORDON,Category 1,04 to 05 feet above ground,17,20081,0.08465713858871571
+Mangrove Point,Mitigation Bank,2000259N20273,2000,GORDON,Category 1,05 to 06 feet above ground,50,20081,0.24899158408445793
+Mangrove Point,Mitigation Bank,2000259N20273,2000,GORDON,Category 1,06 to 07 feet above ground,329,20081,1.6383646232757332
+Mangrove Point,Mitigation Bank,2000259N20273,2000,GORDON,Category 1,07 to 08 feet above ground,8418,20081,41.92022309645934
+Mangrove Point,Mitigation Bank,2000259N20273,2000,GORDON,Category 1,08 to 09 feet above ground,7690,20081,38.29490563218963
+Mangrove Point,Mitigation Bank,2000259N20273,2000,GORDON,Category 1,09 to 10 feet above ground,111,20081,0.5527613166674966
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,00 to 01 foot above ground,254406,98258921,0.2589138954619703
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,01 to 02 feet above ground,278017,98258921,0.2829432657824525
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,02 to 03 feet above ground,293208,98258921,0.29840343962254584
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,03 to 04 feet above ground,296597,98258921,0.30185249031993744
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,04 to 05 feet above ground,301573,98258921,0.3069166615416019
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,05 to 06 feet above ground,326959,98258921,0.332752483614185
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,06 to 07 feet above ground,476221,98258921,0.48465930131677304
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,07 to 08 feet above ground,825158,98258921,0.8397792196395073
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,08 to 09 feet above ground,962720,98258921,0.9797787215676834
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,09 to 10 feet above ground,913273,98258921,0.9294555554909869
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,10 to 11 feet above ground,1101210,98258921,1.1207226670034367
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,11 to 12 feet above ground,658392,98258921,0.6700582433629614
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,12 to 13 feet above ground,143971,98258921,0.14652206490238176
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,13 to 14 feet above ground,18346,98258921,0.01867107822199676
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,14 to 15 feet above ground,26,98258921,2.64607017209155e-5
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,15 to 16 feet above ground,26,98258921,2.64607017209155e-5
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 4,04 to 05 feet above ground,1,74911,0.0013349174353566233
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 4,06 to 07 feet above ground,1,74911,0.0013349174353566233
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 4,08 to 09 feet above ground,1,74911,0.0013349174353566233
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 4,10 to 11 feet above ground,2,74911,0.0026698348707132466
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 4,11 to 12 feet above ground,5,74911,0.006674587176783115
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 4,12 to 13 feet above ground,2,74911,0.0026698348707132466
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 4,13 to 14 feet above ground,8,74911,0.010679339482852986
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 4,14 to 15 feet above ground,7,74911,0.009344422047496363
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 4,15 to 16 feet above ground,48,74911,0.06407603689711791
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 4,16 to 17 feet above ground,647,74911,0.8636915806757353
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 4,17 to 18 feet above ground,9411,74911,12.56290798414118
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 4,18 to 19 feet above ground,46636,74911,62.255209515291476
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 4,19 to 20 feet above ground,17973,74911,23.99247106566459
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 4,Greater than 20 feet above ground,15,74911,0.02002376153034935
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,00 to 01 foot above ground,879549,31058973,2.8318676216370706
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,01 to 02 feet above ground,941770,31058973,3.0321994226917934
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,02 to 03 feet above ground,934529,31058973,3.0088857091314645
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,03 to 04 feet above ground,764090,31058973,2.46012641821737
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,04 to 05 feet above ground,683205,31058973,2.199702482113623
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,05 to 06 feet above ground,710912,31058973,2.2889101967408902
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,06 to 07 feet above ground,822606,31058973,2.648529299407292
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,07 to 08 feet above ground,893983,31058973,2.87834050404693
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,08 to 09 feet above ground,949028,31058973,3.0555678708371974
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,09 to 10 feet above ground,1030135,31058973,3.31670657622839
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,10 to 11 feet above ground,1135397,31058973,3.655616687647721
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,11 to 12 feet above ground,1225535,31058973,3.9458323364394565
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,12 to 13 feet above ground,1266262,31058973,4.076960303870962
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,13 to 14 feet above ground,1290570,31058973,4.155224321164773
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,14 to 15 feet above ground,1349153,31058973,4.343842921013518
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,15 to 16 feet above ground,1350687,31058973,4.348781912396137
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,16 to 17 feet above ground,1278625,31058973,4.116765225946138
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,17 to 18 feet above ground,1295791,31058973,4.1720342781456425
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,18 to 19 feet above ground,1494618,31058973,4.812193886771466
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,19 to 20 feet above ground,1223822,31058973,3.940317022072816
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,Greater than 20 feet above ground,2053855,31058973,6.612758895794784
+Mangrove Point,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 1,04 to 05 feet above ground,17,20081,0.08465713858871571
+Mangrove Point,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 1,05 to 06 feet above ground,50,20081,0.24899158408445793
+Mangrove Point,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 1,06 to 07 feet above ground,329,20081,1.6383646232757332
+Mangrove Point,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 1,07 to 08 feet above ground,8418,20081,41.92022309645934
+Mangrove Point,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 1,08 to 09 feet above ground,7690,20081,38.29490563218963
+Mangrove Point,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 1,09 to 10 feet above ground,111,20081,0.5527613166674966
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,00 to 01 foot above ground,397716,22189947,1.792325146157402
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,01 to 02 feet above ground,424158,22189947,1.9114872153592797
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,02 to 03 feet above ground,418701,22189947,1.886894997991658
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,03 to 04 feet above ground,390486,22189947,1.7597428240815536
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,04 to 05 feet above ground,373424,22189947,1.6828521492187432
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,05 to 06 feet above ground,387300,22189947,1.7453849709510347
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,06 to 07 feet above ground,405836,22189947,1.8289182934956987
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,07 to 08 feet above ground,392995,22189947,1.7710497460854684
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,08 to 09 feet above ground,387516,22189947,1.7463583847225954
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,09 to 10 feet above ground,381810,22189947,1.7206440375905359
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,10 to 11 feet above ground,375490,22189947,1.6921626716819107
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,11 to 12 feet above ground,355109,22189947,1.600314773171833
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,12 to 13 feet above ground,339406,22189947,1.5295484932884247
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,13 to 14 feet above ground,351976,22189947,1.5861957669389657
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,14 to 15 feet above ground,403926,22189947,1.8203107920897694
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,15 to 16 feet above ground,455538,22189947,2.05290260494989
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,16 to 17 feet above ground,526043,22189947,2.370636577004893
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,17 to 18 feet above ground,588664,22189947,2.652840946397934
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,18 to 19 feet above ground,599160,22189947,2.7001416452233977
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,19 to 20 feet above ground,534945,22189947,2.4107538427198585
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,Greater than 20 feet above ground,1922523,22189947,8.663936871953773
+Little Pine Island,Mitigation Bank,2004258N16300,2004,JEANNE,Category 1,00 to 01 foot above ground,7,74911,0.009344422047496363
+Little Pine Island,Mitigation Bank,2004258N16300,2004,JEANNE,Category 1,01 to 02 feet above ground,6,74911,0.008009504612139739
+Little Pine Island,Mitigation Bank,2004258N16300,2004,JEANNE,Category 1,02 to 03 feet above ground,107,74911,0.1428361655831587
+Little Pine Island,Mitigation Bank,2004258N16300,2004,JEANNE,Category 1,03 to 04 feet above ground,1086,74911,1.449720334797293
+Little Pine Island,Mitigation Bank,2004258N16300,2004,JEANNE,Category 1,04 to 05 feet above ground,15887,74911,21.20783329551067
+Little Pine Island,Mitigation Bank,2004258N16300,2004,JEANNE,Category 1,05 to 06 feet above ground,47835,74911,63.85577552028408
+Little Pine Island,Mitigation Bank,2004258N16300,2004,JEANNE,Category 1,06 to 07 feet above ground,9814,74911,13.100879710589899
+Little Pine Island,Service Area,2004258N16300,2004,JEANNE,Category 1,00 to 01 foot above ground,1094668,31058973,3.524482280853266
+Little Pine Island,Service Area,2004258N16300,2004,JEANNE,Category 1,01 to 02 feet above ground,1182855,31058973,3.8084163310873156
+Little Pine Island,Service Area,2004258N16300,2004,JEANNE,Category 1,02 to 03 feet above ground,1137871,31058973,3.6635821796168213
+Little Pine Island,Service Area,2004258N16300,2004,JEANNE,Category 1,03 to 04 feet above ground,978668,31058973,3.150999229755601
+Little Pine Island,Service Area,2004258N16300,2004,JEANNE,Category 1,04 to 05 feet above ground,928554,31058973,2.9896481123184593
+Little Pine Island,Service Area,2004258N16300,2004,JEANNE,Category 1,05 to 06 feet above ground,1272457,31058973,4.096906230608463
+Little Pine Island,Service Area,2004258N16300,2004,JEANNE,Category 1,06 to 07 feet above ground,1378910,31058973,4.439650982664494
+Little Pine Island,Service Area,2004258N16300,2004,JEANNE,Category 1,07 to 08 feet above ground,822565,31058973,2.648397292466818
+Little Pine Island,Service Area,2004258N16300,2004,JEANNE,Category 1,08 to 09 feet above ground,298892,31058973,0.9623370354196837
+Little Pine Island,Service Area,2004258N16300,2004,JEANNE,Category 1,09 to 10 feet above ground,272675,31058973,0.8779266461901364
+Little Pine Island,Service Area,2004258N16300,2004,JEANNE,Category 1,10 to 11 feet above ground,366508,31058973,1.1800390180319227
+Little Pine Island,Service Area,2004258N16300,2004,JEANNE,Category 1,11 to 12 feet above ground,45375,31058973,0.14609304692721167
+Little Pine Island,Service Area,2004258N16300,2004,JEANNE,Category 1,12 to 13 feet above ground,401,31058973,0.0012910922714669283
+Mangrove Point,Mitigation Bank,2004258N16300,2004,JEANNE,Category 1,04 to 05 feet above ground,17,20081,0.08465713858871571
+Mangrove Point,Mitigation Bank,2004258N16300,2004,JEANNE,Category 1,05 to 06 feet above ground,50,20081,0.24899158408445793
+Mangrove Point,Mitigation Bank,2004258N16300,2004,JEANNE,Category 1,06 to 07 feet above ground,329,20081,1.6383646232757332
+Mangrove Point,Mitigation Bank,2004258N16300,2004,JEANNE,Category 1,07 to 08 feet above ground,8418,20081,41.92022309645934
+Mangrove Point,Mitigation Bank,2004258N16300,2004,JEANNE,Category 1,08 to 09 feet above ground,7690,20081,38.29490563218963
+Mangrove Point,Mitigation Bank,2004258N16300,2004,JEANNE,Category 1,09 to 10 feet above ground,111,20081,0.5527613166674966
+Mangrove Point,Service Area,2004258N16300,2004,JEANNE,Category 1,00 to 01 foot above ground,432638,22189947,1.949702718983511
+Mangrove Point,Service Area,2004258N16300,2004,JEANNE,Category 1,01 to 02 feet above ground,506020,22189947,2.2804020216902727
+Mangrove Point,Service Area,2004258N16300,2004,JEANNE,Category 1,02 to 03 feet above ground,570046,22189947,2.568938087143696
+Mangrove Point,Service Area,2004258N16300,2004,JEANNE,Category 1,03 to 04 feet above ground,598298,22189947,2.696257003227633
+Mangrove Point,Service Area,2004258N16300,2004,JEANNE,Category 1,04 to 05 feet above ground,552612,22189947,2.490370977452087
+Mangrove Point,Service Area,2004258N16300,2004,JEANNE,Category 1,05 to 06 feet above ground,483567,22189947,2.179216561445595
+Mangrove Point,Service Area,2004258N16300,2004,JEANNE,Category 1,06 to 07 feet above ground,393371,22189947,1.772744207095222
+Mangrove Point,Service Area,2004258N16300,2004,JEANNE,Category 1,07 to 08 feet above ground,499270,22189947,2.2499828413290035
+Mangrove Point,Service Area,2004258N16300,2004,JEANNE,Category 1,08 to 09 feet above ground,242118,22189947,1.091115720105145
+Mangrove Point,Service Area,2004258N16300,2004,JEANNE,Category 1,09 to 10 feet above ground,76512,22189947,0.3448047893039131
+Mangrove Point,Service Area,2004258N16300,2004,JEANNE,Category 1,10 to 11 feet above ground,28657,22189947,0.12914406690561273
+Mangrove Point,Service Area,2004258N16300,2004,JEANNE,Category 1,11 to 12 feet above ground,2624,22189947,0.011825174706365906
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,Category 3,00 to 01 foot above ground,5,244899,0.002041657989620211
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,Category 3,01 to 02 feet above ground,22,244899,0.008983295154328927
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,Category 3,02 to 03 feet above ground,121,244899,0.0494081233488091
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,Category 3,03 to 04 feet above ground,772,244899,0.31523199359736054
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,Category 3,04 to 05 feet above ground,1941,244899,0.7925716315705659
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,Category 3,05 to 06 feet above ground,2735,244899,1.1167869203222553
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,Category 3,06 to 07 feet above ground,5007,244899,2.044516310805679
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,Category 3,07 to 08 feet above ground,7411,244899,3.0261454722150765
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,Category 3,08 to 09 feet above ground,25214,244899,10.2956729100568
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,Category 3,09 to 10 feet above ground,126399,244899,51.612705646001004
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,Category 3,10 to 11 feet above ground,64162,244899,26.199371986002397
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,Category 3,11 to 12 feet above ground,9268,244899,3.784417249560023
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,Category 3,12 to 13 feet above ground,1011,244899,0.41282324550120664
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,Category 3,13 to 14 feet above ground,24,244899,0.009799958350177012
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,00 to 01 foot above ground,184758,14224075,1.2989104739675514
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,01 to 02 feet above ground,177653,14224075,1.248959949944021
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,02 to 03 feet above ground,178767,14224075,1.256791742169526
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,03 to 04 feet above ground,165623,14224075,1.164385030309528
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,04 to 05 feet above ground,155782,14224075,1.0951995120948113
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,05 to 06 feet above ground,160131,14224075,1.125774435244471
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,06 to 07 feet above ground,159556,14224075,1.1217319931173029
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,07 to 08 feet above ground,160068,14224075,1.125331524194016
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,08 to 09 feet above ground,170522,14224075,1.1988266372330012
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,09 to 10 feet above ground,243725,14224075,1.713468186859251
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,10 to 11 feet above ground,171837,14224075,1.2080715266194813
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,11 to 12 feet above ground,105418,14224075,0.7411237637596821
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,12 to 13 feet above ground,73543,14224075,0.5170318632318798
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,13 to 14 feet above ground,22695,14224075,0.15955343317579526
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,14 to 15 feet above ground,4332,14224075,0.0304554074693785
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,15 to 16 feet above ground,23,14224075,1.6169768508672797e-4
+Little Pine Island,Mitigation Bank,2005236N23285,2005,KATRINA,Category 1,00 to 01 foot above ground,7,74911,0.009344422047496363
+Little Pine Island,Mitigation Bank,2005236N23285,2005,KATRINA,Category 1,01 to 02 feet above ground,6,74911,0.008009504612139739
+Little Pine Island,Mitigation Bank,2005236N23285,2005,KATRINA,Category 1,02 to 03 feet above ground,107,74911,0.1428361655831587
+Little Pine Island,Mitigation Bank,2005236N23285,2005,KATRINA,Category 1,03 to 04 feet above ground,1086,74911,1.449720334797293
+Little Pine Island,Mitigation Bank,2005236N23285,2005,KATRINA,Category 1,04 to 05 feet above ground,15887,74911,21.20783329551067
+Little Pine Island,Mitigation Bank,2005236N23285,2005,KATRINA,Category 1,05 to 06 feet above ground,47835,74911,63.85577552028408
+Little Pine Island,Mitigation Bank,2005236N23285,2005,KATRINA,Category 1,06 to 07 feet above ground,9814,74911,13.100879710589899
+Little Pine Island,Service Area,2005236N23285,2005,KATRINA,Category 1,00 to 01 foot above ground,554607,31058973,1.7856578837941617
+Little Pine Island,Service Area,2005236N23285,2005,KATRINA,Category 1,01 to 02 feet above ground,596450,31058973,1.9203790157517442
+Little Pine Island,Service Area,2005236N23285,2005,KATRINA,Category 1,02 to 03 feet above ground,557273,31058973,1.7942415546064578
+Little Pine Island,Service Area,2005236N23285,2005,KATRINA,Category 1,03 to 04 feet above ground,469510,31058973,1.5116726493177994
+Little Pine Island,Service Area,2005236N23285,2005,KATRINA,Category 1,04 to 05 feet above ground,475868,31058973,1.5321433841357213
+Little Pine Island,Service Area,2005236N23285,2005,KATRINA,Category 1,05 to 06 feet above ground,626315,31058973,2.016534803002018
+Little Pine Island,Service Area,2005236N23285,2005,KATRINA,Category 1,06 to 07 feet above ground,634977,31058973,2.044423683938294
+Little Pine Island,Service Area,2005236N23285,2005,KATRINA,Category 1,07 to 08 feet above ground,473885,31058973,1.5257587557708363
+Little Pine Island,Service Area,2005236N23285,2005,KATRINA,Category 1,08 to 09 feet above ground,224003,31058973,0.721218309439916
+Little Pine Island,Service Area,2005236N23285,2005,KATRINA,Category 1,09 to 10 feet above ground,273332,31058973,0.8800419769191982
+Little Pine Island,Service Area,2005236N23285,2005,KATRINA,Category 1,10 to 11 feet above ground,366538,31058973,1.180135608476172
+Little Pine Island,Service Area,2005236N23285,2005,KATRINA,Category 1,11 to 12 feet above ground,45375,31058973,0.14609304692721167
+Little Pine Island,Service Area,2005236N23285,2005,KATRINA,Category 1,12 to 13 feet above ground,401,31058973,0.0012910922714669283
+Little Pine Island,Mitigation Bank,2005289N18282,2005,WILMA,Category 3,01 to 02 feet above ground,1,74911,0.0013349174353566233
+Little Pine Island,Mitigation Bank,2005289N18282,2005,WILMA,Category 3,02 to 03 feet above ground,1,74911,0.0013349174353566233
+Little Pine Island,Mitigation Bank,2005289N18282,2005,WILMA,Category 3,04 to 05 feet above ground,1,74911,0.0013349174353566233
+Little Pine Island,Mitigation Bank,2005289N18282,2005,WILMA,Category 3,05 to 06 feet above ground,4,74911,0.005339669741426493
+Little Pine Island,Mitigation Bank,2005289N18282,2005,WILMA,Category 3,06 to 07 feet above ground,3,74911,0.004004752306069869
+Little Pine Island,Mitigation Bank,2005289N18282,2005,WILMA,Category 3,07 to 08 feet above ground,4,74911,0.005339669741426493
+Little Pine Island,Mitigation Bank,2005289N18282,2005,WILMA,Category 3,08 to 09 feet above ground,9,74911,0.012014256918209608
+Little Pine Island,Mitigation Bank,2005289N18282,2005,WILMA,Category 3,09 to 10 feet above ground,5,74911,0.006674587176783115
+Little Pine Island,Mitigation Bank,2005289N18282,2005,WILMA,Category 3,10 to 11 feet above ground,240,74911,0.3203801844855896
+Little Pine Island,Mitigation Bank,2005289N18282,2005,WILMA,Category 3,11 to 12 feet above ground,2448,74911,3.267877881753013
+Little Pine Island,Mitigation Bank,2005289N18282,2005,WILMA,Category 3,12 to 13 feet above ground,25208,74911,33.65059871046976
+Little Pine Island,Mitigation Bank,2005289N18282,2005,WILMA,Category 3,13 to 14 feet above ground,46330,74911,61.84672478007235
+Little Pine Island,Mitigation Bank,2005289N18282,2005,WILMA,Category 3,14 to 15 feet above ground,502,74911,0.6701285525490248
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,00 to 01 foot above ground,900395,31058973,2.8989851016645014
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,01 to 02 feet above ground,873368,31058973,2.8119667704402205
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,02 to 03 feet above ground,868011,31058973,2.794718936778753
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,03 to 04 feet above ground,976310,31058973,3.1434072208375983
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,04 to 05 feet above ground,1075883,31058973,3.464000564345769
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,05 to 06 feet above ground,1147010,31058973,3.6930068486166623
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,06 to 07 feet above ground,1163483,31058973,3.7460446615540057
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,07 to 08 feet above ground,1217286,31058973,3.919273183952348
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,08 to 09 feet above ground,1289258,31058973,4.1510000990695985
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,09 to 10 feet above ground,1285010,31058973,4.137322892163884
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,10 to 11 feet above ground,1199913,31058973,3.8633376576875227
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,11 to 12 feet above ground,1134411,31058973,3.652442081713391
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,12 to 13 feet above ground,1323628,31058973,4.261660551364657
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,13 to 14 feet above ground,1411436,31058973,4.544374342319689
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,14 to 15 feet above ground,934637,31058973,3.0092334347307617
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,15 to 16 feet above ground,414653,31058973,1.3350505826448285
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,16 to 17 feet above ground,250352,31058973,0.8060536966241607
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,17 to 18 feet above ground,250971,31058973,0.8080466794571732
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,18 to 19 feet above ground,336072,31058973,1.0820447926594354
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,19 to 20 feet above ground,124337,31058973,0.4003255355545723
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,Greater than 20 feet above ground,2467,31058973,0.007942954198775342
+Breakfast Point,Mitigation Bank,1998244N22267,1998,EARL,Category 1,Unaffected,7709,244899,3.147828288396441
+Breakfast Point,Mitigation Bank,2005186N12299,2005,DENNIS,Category 3,Unaffected,807,244899,0.329523599524702
+Breakfast Point,Service Area,1998244N22267,1998,EARL,Category 1,Unaffected,13063422,14224075,91.84022159613191
+Breakfast Point,Service Area,2005186N12299,2005,DENNIS,Category 3,Unaffected,12089642,14224075,84.99422282292521
+Fl Gulf Coast,Service Area,2004223N11301,2004,CHARLEY,Category 1,Unaffected,91408818,98258921,93.02851799074814
+Little Pine Island,Mitigation Bank,1999286N16278,1999,IRENE,Category 1,Unaffected,169,74911,0.2256010465752693
+Little Pine Island,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 4,Unaffected,154,74911,0.20557728504491998
+Little Pine Island,Mitigation Bank,2004258N16300,2004,JEANNE,Category 1,Unaffected,169,74911,0.2256010465752693
+Little Pine Island,Mitigation Bank,2005236N23285,2005,KATRINA,Category 1,Unaffected,169,74911,0.2256010465752693
+Little Pine Island,Mitigation Bank,2005289N18282,2005,WILMA,Category 3,Unaffected,155,74911,0.20691220248027659
+Little Pine Island,Service Area,1999286N16278,1999,IRENE,Category 1,Unaffected,25160264,31058973,81.00803590640295
+Little Pine Island,Service Area,2000259N20273,2000,GORDON,Category 1,Unaffected,NA,31058973,NA
+Little Pine Island,Service Area,2004223N11301,2004,CHARLEY,Category 4,Unaffected,7484851,31058973,24.098836107684566
+Little Pine Island,Service Area,2004258N16300,2004,JEANNE,Category 1,Unaffected,21278574,31058973,68.51023052178834
+Little Pine Island,Service Area,2005236N23285,2005,KATRINA,Category 1,Unaffected,25760439,31058973,82.940408235649
+Little Pine Island,Service Area,2005289N18282,2005,WILMA,Category 3,Unaffected,12880082,31058973,41.46976141162169
+Mangrove Point,Mitigation Bank,2000259N20273,2000,GORDON,Category 1,Unaffected,3466,20081,17.260096608734624
+Mangrove Point,Mitigation Bank,2004223N11301,2004,CHARLEY,Category 1,Unaffected,3466,20081,17.260096608734624
+Mangrove Point,Mitigation Bank,2004258N16300,2004,JEANNE,Category 1,Unaffected,3466,20081,17.260096608734624
+Mangrove Point,Service Area,2004223N11301,2004,CHARLEY,Category 4,Unaffected,11777225,22189947,53.07459724892538
+Mangrove Point,Service Area,2004258N16300,2004,JEANNE,Category 1,Unaffected,17804214,22189947,80.23549583061195
