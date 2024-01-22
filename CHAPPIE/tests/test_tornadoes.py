@@ -7,7 +7,7 @@ Test tornadoes
 import os
 import geopandas
 from geopandas.testing import assert_geodataframe_equal
-from CHAPPIE.Hazards import tornadoes
+from CHAPPIE.hazards import tornadoes
 import pytest
 
 
