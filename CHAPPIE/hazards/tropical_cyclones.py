@@ -4,7 +4,6 @@ import urllib.request
 import zipfile
 
 
-
 def get_tropical_cyclones(out_dir, dataset=['lines', 'points']):
     base_url = "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r00/access/shapefile/"
     results = []  # use named tuple instead?
@@ -17,7 +16,10 @@ def get_tropical_cyclones(out_dir, dataset=['lines', 'points']):
             zip_ref.extractall(out_dir)
         shp = os.path.join(out_dir, f"IBTrACS.ALL.list.v04r00.{data}.shp")
         results.append(geopandas.read_file(shp))
-        
+    
+    if len(results)==1:
+        return results[0]
+    
     return results
 
 def process_tropical_cyclones(tropical_cyclones_gdf, aoi_gdf, distance=160934):

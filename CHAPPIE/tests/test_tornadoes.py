@@ -28,7 +28,9 @@ def test_get_tornadoes():
     #NOTE/TODO: 1950-2022-torn-aspath is too big to save in expected?
     expected_file = os.path.join(EXPECTED_DIR, '1950-2022-torn-aspath.shp')
     expected = geopandas.read_file(expected_file)
-    
+    # First check that results are same lenth
+    assert(len(actual)==len(expected)), f'{len(actual)}!={len(expected)}'
+    # check same results (order doesn't matter)
     assert_geodataframe_equal(actual, expected, check_like=True)
     
     return actual
