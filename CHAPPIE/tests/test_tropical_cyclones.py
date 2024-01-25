@@ -20,7 +20,12 @@ AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 
 
 def test_get_tropical_cyclones():
-    actual = tropical_cyclones.get_tropical_cyclones()
+    actual = tropical_cyclones.get_tropical_cyclones(DATA_DIR, ['points'])
+    
+    # Restrict to ~CONUS for test
+    min_y, max_y = 24, 50
+    min_x, max_x = -125, -66
+    
     expected_file = os.path.join(EXPECTED_DIR, '<FILE>')
     expected = geopandas.read_file(expected_file)
     

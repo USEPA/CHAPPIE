@@ -21,7 +21,7 @@ DATA_DIR = os.path.join(DIRPATH, 'data')  # inputs
 
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 
-
+# get() as fixture to assure full dataset has been downloaded 1st
 @pytest.fixture(scope='session')
 def test_get_tornadoes():
     actual = tornadoes.get_tornadoes(DATA_DIR)
@@ -36,11 +36,10 @@ def test_get_tornadoes():
     return actual
 
 
-# get() may need to be a fixture to assure full dataset has been downloaded 1st
 def test_process_tornadoes(test_get_tornadoes):
     aoi_gdf = geopandas.read_file(AOI)
     actual = tornadoes.process_tornadoes(test_get_tornadoes, aoi_gdf)
-    expected_file = os.path.join(EXPECTED_DIR, 'FLROAR20231108_Torn_Buffer_AOI_Intersection_1996_2016.shp')
+    expected_file = os.path.join(EXPECTED_DIR, 'hazards\\FLROAR20231108_Torn_Buffer_AOI_Intersection_1996_2016.shp')
     expected = geopandas.read_file(expected_file)
     
     assert_geodataframe_equal(actual, expected, check_like=True)
