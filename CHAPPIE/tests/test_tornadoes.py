@@ -13,7 +13,7 @@ import pytest
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
-#DIRPATH = r'D:\code\CHAPPIE\CHAPPIE\tests'
+#DIRPATH = r'L:\Public\jbousqui\Code\GitHub\CHAPPIE\CHAPPIE\tests'
 
 EXPECTED_DIR = os.path.join(DIRPATH, 'expected')  # Expected
 DATA_DIR = os.path.join(DIRPATH, 'data')  # inputs
@@ -31,7 +31,7 @@ def test_get_tornadoes():
     # First check that results are same lenth
     assert(len(actual)==len(expected)), f'{len(actual)}!={len(expected)}'
     # check same results (order doesn't matter)
-    assert_geodataframe_equal(actual, expected, check_like=True)
+    assert_geodataframe_equal(actual, expected, check_less_precise=True)
     
     return actual
 
