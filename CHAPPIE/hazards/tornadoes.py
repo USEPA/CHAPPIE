@@ -10,6 +10,7 @@ import urllib.request
 import zipfile
 import pandas
 import geopandas
+from CHAPPIE import layer_query
 
 
 def get_tornadoes(out_dir, component='torn-aspath', years='1950-2022'):
@@ -95,5 +96,51 @@ def process_tornadoes(tornadoe_gdf, aoi_gdf):
     torn_path_aoi = torn_path.clip(aoi_gdf)
 
     # Do we want full path or just the path that intersects?
+    
+    return torn_path_aoi
+
+
+def max_buffer():
+    baseurl = 'https://services2.arcgis.com/FiaPA4ga0iQKduv3/ArcGIS/rest/services/'
+    #url = f'{baseurl}Tornadoes_1950_2017_1/FeatureServer'
+    url = f'{baseurl}Tornado_Tracks_1950_2017_1/FeatureServer'  # same as above
+    layer = 0
+    wid = layer_query.get_field_where(url, layer, 'wid', 2000, oper='>')
+    return math.ceil(max(wid['wid'])/ 2.188)
+
+
+def get_tornadoes_aoi(aoi):
+    """ Get tornaodes for area of interest
+
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        area of interest to get tornadoes for
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        Tornadoes lines in raw format.
+
+    """
+    baseurl = 'https://services2.arcgis.com/FiaPA4ga0iQKduv3/ArcGIS/rest/services/'
+    url_lines = f'{baseurl}Tornadoes_1950_2017_1/FeatureServer'
+    #url_pnts = f'{baseurl}Tornado_Tracks_1950_2017_1/FeatureServer'
+    max_buff = max_buffer()
+    # NOTE: assumes aoi_gdf in meters
+    # TODO: assert aoi.crs in meters
+    xmin, ymin, xmax, ymax = aoi.total_bounds
+    bbox = [xmin-max_buff, xmax+max_buff, ymin-max_buff, ymax+max_buff]
+    
+    return layer_query.get_bbox(bbox, url_lines, 0, in_crs=aoi.crs.to_epsg())
+    
+
+def process_tornadoes_aoi(tornadoes_gdf, aoi):
+    # buffer lines in filtered tornadoes (sf::st_buffer defaults join_style and cap_style are same)
+    tornadoes_gdf['radM'] = tornadoes_gdf['wid'] / 2.188
+    torn_path = tornadoes_gdf.buffer(tornadoes_gdf['radM'])
+    
+    # clip buffered paths to aoi
+    torn_path_aoi = torn_path.clip(aoi)
     
     return torn_path_aoi
