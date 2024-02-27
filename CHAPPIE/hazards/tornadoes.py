@@ -6,8 +6,6 @@ Test tropical cyclones
 """
 import os
 import math
-import urllib.request
-import zipfile
 import pandas
 import geopandas
 from CHAPPIE import layer_query
@@ -35,7 +33,6 @@ def get_tornadoes(out_dir, component='torn-aspath', years='1950-2022'):
     
     base_url = "https://www.spc.noaa.gov/"
 
-    
     if component=='torn.csv':
         url = f"{base_url}wcm/data/{years}_torn.csv.zip"
         # Cache the original download?
@@ -44,15 +41,10 @@ def get_tornadoes(out_dir, component='torn-aspath', years='1950-2022'):
     temp = os.path.join(out_dir, "temp.zip")  # temp out_file for zip
     url = f"{base_url}gis/svrgis/zipped/{years}-{component}.zip"
     
-    urllib.request.urlretrieve(url, temp)  # Download zip
-
-    # Extract        
-    with zipfile.ZipFile(temp, 'r') as zip_ref:
-        zip_ref.extractall(out_dir)
+    layer_query.get_zip(url, temp)  # Download & extract zip
 
     # Read component file to geodataframe
     sub_dir = f'{os.sep}{years}-{component}'
-    #return geopandas.read_file(f'{out_dir}{sub_dir}{sub_dir}{sub_dir}.shp')
     return geopandas.read_file(f'{out_dir}{sub_dir}{sub_dir}.shp')
 
 

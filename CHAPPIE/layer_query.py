@@ -4,9 +4,12 @@ Created on Fri Oct 23 10:36:03 2020
 
 @author: jbousqui
 """
+import os 
 import copy
 import pandas
 import requests
+import urllib.request
+import zipfile
 import geopandas
 
 
@@ -37,6 +40,17 @@ _basequery = {
 }
 
 _tiger_url = "tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb"
+
+
+
+# Retaining  this retrive function here for now
+def get_zip(url, temp_file):
+    out_dir = os.path.dirname(temp_file)
+    urllib.request.urlretrieve(url, temp_file)  # Download zip
+
+    # Extract
+    with zipfile.ZipFile(temp_file, 'r') as zip_ref:
+        zip_ref.extractall(out_dir)
 
 
 def getCounty(aoi):
