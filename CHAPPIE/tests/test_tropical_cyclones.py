@@ -8,6 +8,7 @@ import os
 import geopandas
 from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.hazards import tropical_cyclones
+import pytest
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -32,6 +33,7 @@ def test_get_tropical_cyclones():
     assert_geodataframe_equal(actual, expected, check_like=True)
 
 # get() may need to be a fixture to assure full dataset has been downloaded 1st
+@pytest.mark.skip(reason="incomplete")
 def test_process_tropical_cyclones():
     #aoi_input = geopandas.read_file()  # may be able to pass it filename
     actual = tropical_cyclones.process_tropical_cyclones()

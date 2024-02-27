@@ -51,7 +51,7 @@ def test_get_tornadoes_aoi():
     actual = tornadoes.get_tornadoes_aoi(aoi_gdf)
     
     # save for now
-    actual.to_file(os.path.join(TEST_DIR, 'get_tornaodes_aoi.shp'))
+    #actual.to_file(os.path.join(TEST_DIR, 'get_tornaodes_aoi.shp'))
     
     return actual
     
@@ -60,4 +60,9 @@ def test_process_tornadoes_aoi(test_get_tornadoes_aoi):
     actual = tornadoes.process_tornadoes_aoi(test_get_tornadoes_aoi, aoi_gdf)
     
     # save for now
-    actual.to_file(os.path.join(TEST_DIR, 'process_tornaodes_aoi.shp'))
+    #actual.to_file(os.path.join(TEST_DIR, 'process_tornaodes_aoi.shp'))
+    
+    # check columns
+    expected_cols = ['Year', 'Date', 'TornNo', 'Magnitude', 'geometry']
+    missing_cols = set(expected_cols) - set(actual.columns)
+    assert not missing_cols, f"Columns missing: {', '.join(missing_cols)}"
