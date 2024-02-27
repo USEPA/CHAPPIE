@@ -119,7 +119,7 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None):
             }
     if out_fields:
         if isinstance(out_fields, list):
-            query_params["outFields"] = ", ".join(out_fields)
+            query_params["outFields"] = ",".join(out_fields)
         else:
             query_params["outFields"] = out_fields
 
