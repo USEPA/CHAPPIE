@@ -109,6 +109,7 @@ purrr::map(x. = dem_pts, .f = write.table,
 
 # Step 4: Create a tidal surface representing MHHW in NAVD88 using IDW interpolation
 # This step is done outside R using ArcPro and follows the steps outline in the NOAA SLR inundation modeling methods
+# Power was determined using cross validation - mean square error drops exponentially until a power of 2 after which there are only very small improvements
 
 
 # Step 5: Create bounding boxes that represent the extent of the DEMs
