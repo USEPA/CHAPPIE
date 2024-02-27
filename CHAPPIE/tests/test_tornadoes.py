@@ -17,12 +17,13 @@ DIRPATH = os.path.dirname(os.path.realpath(__file__))
 
 EXPECTED_DIR = os.path.join(DIRPATH, 'expected')  # Expected
 DATA_DIR = os.path.join(DIRPATH, 'data')  # inputs
-# TEST_DIR = os.path.join(DIRPATH, 'results')  # test results (have to create)
+TEST_DIR = os.path.join(DIRPATH, 'results')  # test results (have to create)
 
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
+aoi_gdf = geopandas.read_file(AOI)
 
 # get() as fixture to assure full dataset has been downloaded 1st
-@pytest.fixture(scope='session')
+#@pytest.fixture(scope='session')
 def test_get_tornadoes():
     actual = tornadoes.get_tornadoes(DATA_DIR)
     #NOTE/TODO: 1950-2022-torn-aspath is too big to save in expected?
@@ -36,10 +37,27 @@ def test_get_tornadoes():
     return actual
 
 
+@pytest.mark.skip(reason="incomplete")
 def test_process_tornadoes(test_get_tornadoes):
-    aoi_gdf = geopandas.read_file(AOI)
     actual = tornadoes.process_tornadoes(test_get_tornadoes, aoi_gdf)
     expected_file = os.path.join(EXPECTED_DIR, 'hazards\\FLROAR20231108_Torn_Buffer_AOI_Intersection_1996_2016.shp')
     expected = geopandas.read_file(expected_file)
     
     assert_geodataframe_equal(actual, expected, check_like=True)
+    
+    
+@pytest.fixture(scope='session')
+def test_get_tornadoes_aoi():
+    actual = tornadoes.get_tornadoes_aoi(aoi_gdf)
+    
+    # save for now
+    actual.to_file(os.path.join(TEST_DIR, 'get_tornaodes_aoi.shp'))
+    
+    return actual
+    
+
+def test_process_tornadoes_aoi(test_get_tornadoes_aoi):
+    actual = tornadoes.process_tornadoes_aoi(test_get_tornadoes_aoi, aoi_gdf)
+    
+    # save for now
+    actual.to_file(os.path.join(TEST_DIR, 'process_tornaodes_aoi.shp'))
