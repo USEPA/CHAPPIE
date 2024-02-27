@@ -42,7 +42,6 @@ _basequery = {
 _tiger_url = "tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb"
 
 
-
 # Retaining  this retrive function here for now
 def get_zip(url, temp_file):
     out_dir = os.path.dirname(temp_file)

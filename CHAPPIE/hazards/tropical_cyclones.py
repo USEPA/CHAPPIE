@@ -1,7 +1,6 @@
 import geopandas
 import os
-import urllib.request
-import zipfile
+from CHAPPIE import layer_query
 
 
 def get_tropical_cyclones(out_dir, dataset=['lines', 'points']):
@@ -10,10 +9,7 @@ def get_tropical_cyclones(out_dir, dataset=['lines', 'points']):
     for data in dataset:
         url = f'{base_url}IBTrACS.ALL.list.v04r00.{data}.zip'       
         temp = os.path.join(out_dir, f"{data}_temp.zip")  # temp zip out_file
-        urllib.request.urlretrieve(url, temp)  # Download zip
-        # Extract shp components
-        with zipfile.ZipFile(temp, 'r') as zip_ref:
-            zip_ref.extractall(out_dir)
+        layer_query.get_zip(url, temp)  # Download & extract zip
         shp = os.path.join(out_dir, f"IBTrACS.ALL.list.v04r00.{data}.shp")
         results.append(geopandas.read_file(shp))
     
