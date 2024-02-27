@@ -123,7 +123,7 @@ def get_tornadoes_aoi(aoi):
     # TODO: assert aoi.crs in meters
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin-max_buff, xmax+max_buff, ymin-max_buff, ymax+max_buff]
-    out_fields = ['yr', 'date', 'om', 'mag']
+    out_fields = ['yr', 'date', 'om', 'mag', 'wid']
     
     return layer_query.get_bbox(bbox, url, 0, out_fields, aoi.crs.to_epsg())
     
@@ -133,15 +133,15 @@ def process_tornadoes_aoi(tornadoes_gdf, aoi):
     # buffer lines in filtered tornadoes (sf::st_buffer defaults join_style and cap_style are same)
     tornadoes_gdf['radM'] = tornadoes_gdf['wid'] / 2.188
     # TODO: assert aoi.crs is in meters
-    torn_path = tornadoes_gdf.buffer(tornadoes_gdf['radM'])
+    tornadoes_gdf['geometry'] = tornadoes_gdf.buffer(tornadoes_gdf['radM'])
     
     # clip buffered paths to aoi
-    torn_path_aoi = torn_path.clip(aoi)
+    torn_path_aoi = tornadoes_gdf.clip(aoi)
     
     # rename cols
-    update_cols = {'yr':'Year',
+    update_cols = {'yr': 'Year',
                    'date': 'Date',
                    'om': 'TornNo',
                    'mag': 'Magnitude'}
-    torn_path_aoi.rename(columns=update_cols, inplace=True)
-    return torn_path_aoi
+
+    return torn_path_aoi.rename(columns=update_cols)
