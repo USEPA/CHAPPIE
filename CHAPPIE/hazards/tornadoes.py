@@ -116,23 +116,32 @@ def get_tornadoes_aoi(aoi):
 
     """
     baseurl = 'https://services2.arcgis.com/FiaPA4ga0iQKduv3/ArcGIS/rest/services/'
-    url_lines = f'{baseurl}Tornadoes_1950_2017_1/FeatureServer'
+    url = f'{baseurl}Tornadoes_1950_2017_1/FeatureServer'
     #url_pnts = f'{baseurl}Tornado_Tracks_1950_2017_1/FeatureServer'
     max_buff = max_buffer()
     # NOTE: assumes aoi_gdf in meters
     # TODO: assert aoi.crs in meters
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin-max_buff, xmax+max_buff, ymin-max_buff, ymax+max_buff]
+    out_fields = ['yr', 'date', 'om', 'mag']
     
-    return layer_query.get_bbox(bbox, url_lines, 0, in_crs=aoi.crs.to_epsg())
+    return layer_query.get_bbox(bbox, url, 0, out_fields, aoi.crs.to_epsg())
     
 
 def process_tornadoes_aoi(tornadoes_gdf, aoi):
+    tornadoes_gdf = tornadoes_gdf.to_crs(aoi.crs)  # match crs for clip
     # buffer lines in filtered tornadoes (sf::st_buffer defaults join_style and cap_style are same)
     tornadoes_gdf['radM'] = tornadoes_gdf['wid'] / 2.188
+    # TODO: assert aoi.crs is in meters
     torn_path = tornadoes_gdf.buffer(tornadoes_gdf['radM'])
     
     # clip buffered paths to aoi
     torn_path_aoi = torn_path.clip(aoi)
     
+    # rename cols
+    update_cols = {'yr':'Year',
+                   'date': 'Date',
+                   'om': 'TornNo',
+                   'mag': 'Magnitude'}
+    torn_path_aoi.rename(columns=update_cols, inplace=True)
     return torn_path_aoi
