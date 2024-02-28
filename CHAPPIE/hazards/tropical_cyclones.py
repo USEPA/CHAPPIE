@@ -3,6 +3,24 @@ import os
 from CHAPPIE import layer_query
 
 
+def get_tropical_cyclones_aoi(aoi):
+    baseurl = 'https://services2.arcgis.com/FiaPA4ga0iQKduv3/ArcGIS/rest/services/'
+    # starting w/ lines only
+    url = f'{baseurl}IBTrACS_ALL_list_v04r00_lines_1/FeatureServer'
+    #url_pnts = f'{baseurl}Tornado_Tracks_1950_2017_1/FeatureServer'
+    max_buff = 160934
+    # NOTE: assumes aoi_gdf in meters
+    # TODO: assert aoi.crs in meters
+    xmin, ymin, xmax, ymax = aoi.total_bounds
+    bbox = [xmin-max_buff, xmax+max_buff, ymin-max_buff, ymax+max_buff]
+    out_fields = ['SID', 'NAME', 'USA_WIND', 'USA_PRES', 'year', 'month', 'day']
+    
+    return layer_query.get_bbox(bbox, url, 0, out_fields, aoi.crs.to_epsg())
+
+
+    
+                              
+    
 def get_tropical_cyclones(out_dir, dataset=['lines', 'points']):
     base_url = "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r00/access/shapefile/"
     results = []  # use named tuple instead?
