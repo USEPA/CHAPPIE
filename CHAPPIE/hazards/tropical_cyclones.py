@@ -18,7 +18,36 @@ def get_tropical_cyclones_aoi(aoi):
     return layer_query.get_bbox(bbox, url, 0, out_fields, aoi.crs.to_epsg())
 
 
-    
+def process_tropical_cyclones_aoi(cyclones_gdf, aoi):
+    # project to aoi CRS
+    #TODO: must be in meters?
+    cyclones_gdf = cyclones_gdf.to_crs(aoi.crs)  # match crs for clip
+    # Fix up geometries
+    #combine segments with the same SID
+    #SID_list = list(set(cyclones_gdf.SID))
+    #Note this uses default first for groupby
+    cyclones_gdf = cyclones_gdf.dissolve(by='SID', aggfunc='max')
+    #TODO buffer
+    cyclones_gdf['geometry'] = cyclones_gdf.buffer(160934)
+    # Fix up fields
+    # Add storm level
+    cyclones_gdf['StormLevel'] = "Category 5"
+    cyclones_gdf.loc[cyclones_gdf.USA_WIND < 137, 'StormLevel'] = "Category 4"
+    cyclones_gdf.loc[cyclones_gdf.USA_WIND < 113, 'StormLevel'] = "Category 3"
+    cyclones_gdf.loc[cyclones_gdf.USA_WIND < 96, 'StormLevel'] = "Category 2"
+    cyclones_gdf.loc[cyclones_gdf.USA_WIND < 83, 'StormLevel'] = "Category 1"
+    cyclones_gdf.loc[cyclones_gdf.USA_WIND < 64, 'StormLevel'] = "Tropical Storm"
+    cyclones_gdf.loc[cyclones_gdf.USA_WIND < 34, 'StormLevel'] = "Tropical Depression"
+    # Date
+    cyclones_gdf['Date'] = [f'{row.year}-{row.month}-{row.day}' for i, row in cyclones_gdf.iterrows()]
+    # Rename cols
+    update_cols = {'SID': 'SID', 
+                   'year': 'Year',
+                   'NAME': 'StormName',
+                   'USA_WIND': 'WindSpdKts',
+                   'USA_PRES': 'PressureMb',
+                   }
+    return cyclones_gdf.rename(columns=update_cols)
                               
     
 def get_tropical_cyclones(out_dir, dataset=['lines', 'points']):
@@ -35,6 +64,7 @@ def get_tropical_cyclones(out_dir, dataset=['lines', 'points']):
         return results[0]
     
     return results
+
 
 def process_tropical_cyclones(tropical_cyclones_gdf, aoi_gdf, distance=160934):
     """ Get buffered (based on 'wid' column) hurricane paths for AOI

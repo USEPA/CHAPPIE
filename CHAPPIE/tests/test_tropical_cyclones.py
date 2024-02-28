@@ -22,11 +22,22 @@ AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 aoi_gdf = geopandas.read_file(AOI)
 
 
+@pytest.fixture(scope='session')
 def test_get_tropical_cyclones_aoi():
     actual = tropical_cyclones.get_tropical_cyclones_aoi(aoi_gdf)
     
     # save for now
     #actual.to_file(os.path.join(TEST_DIR, 'get_cyclones_aoi.shp'))
+
+    return actual
+
+
+def test_process_tropical_cyclones_aoi(test_get_tropical_cyclones_aoi):
+    actual = tropical_cyclones.process_tropical_cyclones_aoi(test_get_tropical_cyclones_aoi, aoi_gdf)
+    expected_file = os.path.join(EXPECTED_DIR, 'Hurr_Buffer_AOI_Intersection_1996_2016.shp')
+    expected = geopandas.read_file(expected_file)    
+    
+    assert_geodataframe_equal(actual, expected, check_like=True)
 
 
 @pytest.mark.skip(reason="depricating")
