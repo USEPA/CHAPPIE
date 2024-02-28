@@ -217,7 +217,12 @@ class ESRILayer(object):
         # run query
         if kwargs.get("returnGeometry", "true") == "True":
             # WARNING - this will override raw
-            return geopandas.read_file(self._last_query + "&f=pgeojson")
+            try:
+                return geopandas.read_file(self._last_query + "&f=pgeojson")
+            except requests.exceptions.HTTPError as e:
+                #TODO: this needs improvement, but getting url is good for debug
+                print(self._last_query())
+                raise e
         else:
             resp = requests.get(self._last_query + "&f=json")
         resp.raise_for_status()
