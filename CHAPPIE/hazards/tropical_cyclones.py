@@ -12,10 +12,16 @@ def get_tropical_cyclones_aoi(aoi):
     # NOTE: assumes aoi_gdf in meters
     # TODO: assert aoi.crs in meters
     xmin, ymin, xmax, ymax = aoi.total_bounds
-    bbox = [xmin-max_buff, xmax+max_buff, ymin-max_buff, ymax+max_buff]
+    #bbox = [xmin-max_buff, xmax+max_buff, ymin-max_buff, ymax+max_buff]
+    bbox = [xmin, xmax, ymin, ymax]
     out_fields = ['SID', 'NAME', 'USA_WIND', 'USA_PRES', 'year', 'month', 'day']
     
-    return layer_query.get_bbox(bbox, url, 0, out_fields, aoi.crs.to_epsg())
+    return layer_query.get_bbox(bbox,
+                                url,
+                                0,
+                                out_fields,
+                                aoi.crs.to_epsg(),
+                                buff_dist_m = max_buff)
 
 
 def process_tropical_cyclones_aoi(cyclones_gdf, aoi):

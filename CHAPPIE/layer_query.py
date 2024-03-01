@@ -95,7 +95,7 @@ def getState(geoids):
     return feature_layer.query(**query_params)
 
 
-def get_bbox(aoi, url, layer, out_fields=None, in_crs=None):
+def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None):
     # if geodataframe get bbox str
     if isinstance(aoi, geopandas.GeoDataFrame):
         bbox = ','.join(map(str, aoi.total_bounds))
@@ -123,6 +123,11 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None):
         else:
             query_params["outFields"] = out_fields
 
+    # Buffer distance
+    if buff_dist_m:
+        query_params["distance"] = buff_dist_m
+        query_params["units"] = 'esriSRUnit_Meter'
+        
     result = feature_layer.query(**query_params)
     return result
 

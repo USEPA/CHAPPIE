@@ -122,10 +122,11 @@ def get_tornadoes_aoi(aoi):
     # NOTE: assumes aoi_gdf in meters
     # TODO: assert aoi.crs in meters
     xmin, ymin, xmax, ymax = aoi.total_bounds
-    bbox = [xmin-max_buff, xmax+max_buff, ymin-max_buff, ymax+max_buff]
+    #bbox = [xmin-max_buff, xmax+max_buff, ymin-max_buff, ymax+max_buff]
+    bbox = [xmin, xmax, ymin, ymax]
     out_fields = ['yr', 'date', 'om', 'mag', 'wid']
     
-    return layer_query.get_bbox(bbox, url, 0, out_fields, aoi.crs.to_epsg())
+    return layer_query.get_bbox(bbox, url, 0, out_fields, aoi.crs.to_epsg(), max_buff)
     
 
 def process_tornadoes_aoi(tornadoes_gdf, aoi):
