@@ -116,14 +116,16 @@ def get_tornadoes_aoi(aoi):
 
     """
     baseurl = 'https://services2.arcgis.com/FiaPA4ga0iQKduv3/ArcGIS/rest/services/'
-    url = f'{baseurl}Tornadoes_1950_2017_1/FeatureServer'
-    #url_pnts = f'{baseurl}Tornado_Tracks_1950_2017_1/FeatureServer'
+    #url_pnts = f'{baseurl}Tornadoes_1950_2017_1/FeatureServer'
+    url = f'{baseurl}Tornado_Tracks_1950_2017_1/FeatureServer'
+    
     max_buff = max_buffer()
     # NOTE: assumes aoi_gdf in meters
     # TODO: assert aoi.crs in meters
     xmin, ymin, xmax, ymax = aoi.total_bounds
     #bbox = [xmin-max_buff, xmax+max_buff, ymin-max_buff, ymax+max_buff]
-    bbox = [xmin, xmax, ymin, ymax]
+    #bbox = [xmin, xmax, ymin, ymax]
+    bbox = [xmin, ymin, xmax,  ymax]
     out_fields = ['yr', 'date', 'om', 'mag', 'wid']
     
     return layer_query.get_bbox(bbox, url, 0, out_fields, aoi.crs.to_epsg(), max_buff)

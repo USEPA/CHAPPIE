@@ -13,7 +13,8 @@ def get_tropical_cyclones_aoi(aoi):
     # TODO: assert aoi.crs in meters
     xmin, ymin, xmax, ymax = aoi.total_bounds
     #bbox = [xmin-max_buff, xmax+max_buff, ymin-max_buff, ymax+max_buff]
-    bbox = [xmin, xmax, ymin, ymax]
+    #bbox = [xmin, xmax, ymin, ymax]
+    bbox = [xmin, ymin, xmax,  ymax]
     out_fields = ['SID', 'NAME', 'USA_WIND', 'USA_PRES', 'year', 'month', 'day']
     
     return layer_query.get_bbox(bbox,
