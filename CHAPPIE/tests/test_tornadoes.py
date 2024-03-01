@@ -66,3 +66,7 @@ def test_process_tornadoes_aoi(test_get_tornadoes_aoi):
     expected_cols = ['Year', 'Date', 'TornNo', 'Magnitude', 'geometry']
     missing_cols = set(expected_cols) - set(actual.columns)
     assert not missing_cols, f"Columns missing: {', '.join(missing_cols)}"
+    # check rows
+    expected_file = os.path.join(EXPECTED_DIR, '1950-2022-torn-aspath.shp')
+    expected = geopandas.read_file(expected_file)
+    assert(len(actual)==len(expected)), f'{len(actual)}!={len(expected)}'
