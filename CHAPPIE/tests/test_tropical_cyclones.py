@@ -23,46 +23,46 @@ aoi_gdf = geopandas.read_file(AOI)
 
 
 @pytest.fixture(scope='session')
-def test_get_tropical_cyclones_aoi():
-    actual = tropical_cyclones.get_tropical_cyclones_aoi(aoi_gdf)
+def test_get_cyclones():
+    actual = tropical_cyclones.get_cyclones(aoi_gdf)
     
-    # save for now
-    #actual.to_file(os.path.join(TEST_DIR, 'get_cyclones_aoi.shp'))
-
+    # save to results
+    #actual.to_file(os.path.join(TEST_DIR, 'cyclones_aoi_1851_2022.shp'))
+    
+    # assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'cyclones_aoi_1851_2022.shp')
+    expected = geopandas.read_file(expected_file)
+    assert_geodataframe_equal(actual, expected, check_like=True)
+    
     return actual
 
 
-def test_process_tropical_cyclones_aoi(test_get_tropical_cyclones_aoi):
-    actual = tropical_cyclones.process_tropical_cyclones_aoi(test_get_tropical_cyclones_aoi, aoi_gdf)
-    expected_file = os.path.join(EXPECTED_DIR, 'Hurr_Buffer_AOI_Intersection_1996_2016.shp')
+def test_process_cyclones(test_get_cyclones):
+    actual = tropical_cyclones.process_cyclones(test_get_cyclones, aoi_gdf)
+    
+    # save to results
+    #actual.to_file(os.path.join(TEST_DIR, 'cyclones_processed_1851_2022.parquet'))
+    
+    #expected_file = os.path.join(EXPECTED_DIR,
+    #                             'Hurr_Buffer_AOI_Intersection_1996_2016.shp')
+    expected_file = os.path.join(EXPECTED_DIR,'cyclones_processed_1851_2022.parquet')
     expected = geopandas.read_file(expected_file)    
     
-    #assert_geodataframe_equal(actual, expected, check_like=True)
-    assert(len(actual)==len(expected)), f'{len(actual)}!={len(expected)}'
-    # save for now
-    #actual.to_file(os.path.join(TEST_DIR, 'process_cyclones_aoi.shp'))
+    assert_geodataframe_equal(actual, expected, check_like=True)
+    #assert(len(actual)==len(expected)), f'{len(actual)}!={len(expected)}'
+
 
 
 @pytest.mark.skip(reason="depricating")
-def test_get_tropical_cyclones():
-    actual = tropical_cyclones.get_tropical_cyclones(DATA_DIR, ['points'])
+def test_get_cyclones_all():
+    actual = tropical_cyclones.get_cyclones_all(DATA_DIR, ['points'])
 
-    # Restrict to ~CONUS for test
-    min_y, max_y = 24, 50
-    min_x, max_x = -125, -66
+    # Restrict to ~CONUS for test (full is too big)
+    #min_y, max_y = 24, 50
+    #min_x, max_x = -125, -66
 
     expected_file = os.path.join(EXPECTED_DIR, '<FILE>')
     expected = geopandas.read_file(expected_file)
 
     assert_geodataframe_equal(actual, expected, check_like=True)
 
-
-# get() may need to be a fixture to assure full dataset has been downloaded 1st
-@pytest.mark.skip(reason="incomplete")
-def test_process_tropical_cyclones():
-    #aoi_input = geopandas.read_file()  # may be able to pass it filename
-    actual = tropical_cyclones.process_tropical_cyclones()
-    expected_file = os.path.join(EXPECTED_DIR, '<FILE>')
-    expected = geopandas.read_file(expected_file)
-    
-    assert_geodataframe_equal(actual, expected, check_like=True)

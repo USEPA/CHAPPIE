@@ -3,17 +3,27 @@ import os
 from CHAPPIE import layer_query
 
 
-def get_tropical_cyclones_aoi(aoi):
+def get_cyclones(aoi):
+    """Get hurricane tracks within 100 miles (160934 meters) of  AOI.
+
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        Spatial definition for Area Of Interest (AOI).
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame for hurricane tracks back to 1950.
+
+    """
     baseurl = 'https://services2.arcgis.com/FiaPA4ga0iQKduv3/ArcGIS/rest/services/'
     # starting w/ lines only
     url = f'{baseurl}IBTrACS_ALL_list_v04r00_lines_1/FeatureServer'
-    #url_pnts = f'{baseurl}Tornado_Tracks_1950_2017_1/FeatureServer'
+    #url_pnts = 
     max_buff = 160934
-    # NOTE: assumes aoi_gdf in meters
     # TODO: assert aoi.crs in meters
     xmin, ymin, xmax, ymax = aoi.total_bounds
-    #bbox = [xmin-max_buff, xmax+max_buff, ymin-max_buff, ymax+max_buff]
-    #bbox = [xmin, xmax, ymin, ymax]
     bbox = [xmin, ymin, xmax,  ymax]
     out_fields = ['SID', 'NAME', 'USA_WIND', 'USA_PRES', 'year', 'month', 'day']
     
@@ -25,16 +35,31 @@ def get_tropical_cyclones_aoi(aoi):
                                 buff_dist_m = max_buff)
 
 
-def process_tropical_cyclones_aoi(cyclones_gdf, aoi):
+def process_cyclones(cyclones_gdf, aoi):
+    """Buffer hurricane tracks by 100 miles (160934 meters) and fix up columns. 
+
+    Note: where there are multiple track segments for a single storm these are
+    combined and the attributes of the first are kept.
+        
+    Parameters
+    ----------
+    cyclones_gdf : geopandas.GeoDataFrame
+        GeoDataFrame for hurricane tracks back to 1950.
+    aoi : geopandas.GeoDataFrame
+        Spatial definition for Area Of Interest (AOI).
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame for buffered hurricane tracks and expected columns.
+
+    """
     # project to aoi CRS
-    #TODO: must be in meters?
+    # TODO: assert aoi.crs is in meters
     cyclones_gdf = cyclones_gdf.to_crs(aoi.crs)  # match crs for clip
     # Fix up geometries
-    #combine segments with the same SID
-    #SID_list = list(set(cyclones_gdf.SID))
-    #Note this uses default first for groupby
+    # Note: this uses default first for groupby
     cyclones_gdf = cyclones_gdf.dissolve(by='SID', aggfunc='max')
-    # TODO: assert aoi.crs is in meters 
     cyclones_gdf['geometry'] = cyclones_gdf.buffer(160934)  # Buffer track
     # clip buffered paths to aoi extent
     cyclones_gdf = cyclones_gdf.clip(aoi.total_bounds)
@@ -60,7 +85,23 @@ def process_tropical_cyclones_aoi(cyclones_gdf, aoi):
     return cyclones_gdf.rename(columns=update_cols)
                               
     
-def get_tropical_cyclones(out_dir, dataset=['lines', 'points']):
+def get_cyclones_all(out_dir, dataset=['lines', 'points']):
+    """Get all hurricane points or tracks.
+
+    Parameters
+    ----------
+    out_dir : str
+        Directory to save the resulting file in.
+    dataset : list, optional
+        List with dataset to return.
+        The default is ['lines', 'points'] to get both.
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame for all hurricane tracks or event points.
+
+    """
     base_url = "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r00/access/shapefile/"
     results = []  # use named tuple instead?
     for data in dataset:
@@ -74,54 +115,3 @@ def get_tropical_cyclones(out_dir, dataset=['lines', 'points']):
         return results[0]
     
     return results
-
-
-def process_tropical_cyclones(tropical_cyclones_gdf, aoi_gdf, distance=160934):
-    """ Get buffered (based on 'wid' column) hurricane paths for AOI
-
-    Parameters
-    ----------
-    tropical_cyclones_gdf : geopandas.geodataframe.GeoDataFrame
-        All tropical cyclone paths (points).
-    aoi_gdf : geopandas.geodataframe.GeoDataFrame
-        Area of Interest. CRS must be in meters.
-    distance : int, optional
-        Distance from the aoi in aoi units (meters).
-        The default is 160934 (meters), ~100 miles.
-
-
-    Returns
-    -------
-    cyclone_path_aoi : geopandas.geodataframe.GeoDataFrame
-        Buffered tornadoe paths for AOI.
-    """
-
-    # step 1: Find tropical cyclone track points that fall within a specified
-    # distance of the AOI boundary(ies).
-    
-    # project to aoi CRS
-    tropical_cyclones_gdf = tropical_cyclones_gdf.to_crs(aoi_gdf.crs)
-    
-    # Filter on aoi bbox
-    xmin, ymin, xmax, ymax = aoi_gdf.total_bounds
-    # index on bbox
-    cyclone_aoi = tropical_cyclones_gdf.cx[xmin-distance:xmax+distance,
-                                           ymin-distance:ymax+distance]
-    # Reduce the columns
-    cols = ["Name", "SID", "SEASON", "NAME", "Date", "USA_WIND", "USA_PRES"]
-    cyclone_aoi = cyclone_aoi[cols]
-            
-    # step 2: determine which point is the closest. If multiple points for the
-    # same storm have the same distance, keep only the earliest
-    
-    # step 3: storm level ('USA_WIND' col)
-    #gdf[gdf.USA_WIND < 34]['StormLevel'] = "Tropical Depression"
-    #gdf[gdf.USA_WIND < 64]['StormLevel'] = "Tropical Storm"
-    #gdf[gdf.USA_WIND < 83]['StormLevel'] = "Category 1"
-    #gdf[gdf.USA_WIND < 96]['StormLevel'] = "Category 2"
-    #gdf[gdf.USA_WIND < 113]['StormLevel'] = "Category 3"
-    #gdf[gdf.USA_WIND < 137]['StormLevel'] = "Category 4"
-    #else "Category 5")))))),
-    
-    # This is a placeholder function
-    print('process_tropical_cyclones')
