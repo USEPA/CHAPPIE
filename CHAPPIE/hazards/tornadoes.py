@@ -138,8 +138,8 @@ def process_tornadoes_aoi(tornadoes_gdf, aoi):
     # TODO: assert aoi.crs is in meters
     tornadoes_gdf['geometry'] = tornadoes_gdf.buffer(tornadoes_gdf['radM'])
     
-    # clip buffered paths to aoi
-    torn_path_aoi = tornadoes_gdf.clip(aoi)
+    # clip buffered paths to aoi extent
+    torn_path_aoi = tornadoes_gdf.clip(aoi.total_bounds)
     
     # rename cols
     update_cols = {'yr': 'Year',

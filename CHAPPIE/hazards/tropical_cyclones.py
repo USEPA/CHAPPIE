@@ -34,8 +34,11 @@ def process_tropical_cyclones_aoi(cyclones_gdf, aoi):
     #SID_list = list(set(cyclones_gdf.SID))
     #Note this uses default first for groupby
     cyclones_gdf = cyclones_gdf.dissolve(by='SID', aggfunc='max')
-    #TODO buffer
-    cyclones_gdf['geometry'] = cyclones_gdf.buffer(160934)
+    # TODO: assert aoi.crs is in meters 
+    cyclones_gdf['geometry'] = cyclones_gdf.buffer(160934)  # Buffer track
+    # clip buffered paths to aoi extent
+    cyclones_gdf = cyclones_gdf.clip(aoi.total_bounds)
+    
     # Fix up fields
     # Add storm level
     cyclones_gdf['StormLevel'] = "Category 5"
