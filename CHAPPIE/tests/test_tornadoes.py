@@ -24,8 +24,9 @@ aoi_gdf = geopandas.read_file(AOI)
 
 # get() as fixture to assure full dataset has been downloaded 1st
 #@pytest.fixture(scope='session')
-def test_get_tornadoes():
-    actual = tornadoes.get_tornadoes(DATA_DIR)
+@pytest.mark.skip(reason="no change")
+def test_get_tornadoes_all():
+    actual = tornadoes.get_tornadoes_all(DATA_DIR)
     #NOTE/TODO: 1950-2022-torn-aspath is too big to save in expected?
     expected_file = os.path.join(EXPECTED_DIR, '1950-2022-torn-aspath.shp')
     expected = geopandas.read_file(expected_file)
@@ -37,27 +38,32 @@ def test_get_tornadoes():
     return actual
 
 
-@pytest.mark.skip(reason="incomplete")
-def test_process_tornadoes(test_get_tornadoes):
-    actual = tornadoes.process_tornadoes(test_get_tornadoes, aoi_gdf)
-    expected_file = os.path.join(EXPECTED_DIR, 'hazards\\FLROAR20231108_Torn_Buffer_AOI_Intersection_1996_2016.shp')
-    expected = geopandas.read_file(expected_file)
+#@pytest.mark.skip(reason="incomplete")
+#def test_process_tornadoes_all(test_get_tornadoes):
+#    actual = tornadoes.process_tornadoes(test_get_tornadoes, aoi_gdf)
+#    expected_file = os.path.join(EXPECTED_DIR, 'hazards\\FLROAR20231108_Torn_Buffer_AOI_Intersection_1996_2016.shp')
+#    expected = geopandas.read_file(expected_file)
     
-    assert_geodataframe_equal(actual, expected, check_like=True)
+#    assert_geodataframe_equal(actual, expected, check_like=True)
     
     
 @pytest.fixture(scope='session')
-def test_get_tornadoes_aoi():
-    actual = tornadoes.get_tornadoes_aoi(aoi_gdf)
+def test_get_tornadoes():
+    actual = tornadoes.get_tornadoes(aoi_gdf)
     
     # save for now
     #actual.to_file(os.path.join(TEST_DIR, 'get_tornaodes_aoi.shp'))
     
+    # assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'get_tornaodes_aoi.shp')
+    expected = geopandas.read_file(expected_file)
+    assert_geodataframe_equal(actual, expected, check_like=True)
+    
     return actual
     
 
-def test_process_tornadoes_aoi(test_get_tornadoes_aoi):
-    actual = tornadoes.process_tornadoes_aoi(test_get_tornadoes_aoi, aoi_gdf)
+def test_process_tornadoes_aoi(test_get_tornadoes):
+    actual = tornadoes.process_tornadoes(test_get_tornadoes, aoi_gdf)
     
     # save for now
     #actual.to_file(os.path.join(TEST_DIR, 'process_tornaodes_aoi.shp'))
@@ -66,7 +72,13 @@ def test_process_tornadoes_aoi(test_get_tornadoes_aoi):
     expected_cols = ['Year', 'Date', 'TornNo', 'Magnitude', 'geometry']
     missing_cols = set(expected_cols) - set(actual.columns)
     assert not missing_cols, f"Columns missing: {', '.join(missing_cols)}"
-    # check rows
-    expected_file = os.path.join(EXPECTED_DIR, '1950-2022-torn-aspath.shp')
+    
+    # assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'process_tornaodes_aoi.shp')
     expected = geopandas.read_file(expected_file)
-    assert(len(actual)==len(expected)), f'{len(actual)}!={len(expected)}'
+    assert_geodataframe_equal(actual, expected, check_like=True)
+    
+    # check rows
+    #expected_file = os.path.join(EXPECTED_DIR, '1950-2022-torn-aspath.shp')
+    #expected = geopandas.read_file(expected_file)
+    #assert(len(actual)==len(expected)), f'{len(actual)}!={len(expected)}'
