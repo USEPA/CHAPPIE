@@ -57,7 +57,9 @@ def test_get_tornadoes():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_tornaodes_aoi.shp')
     expected = geopandas.read_file(expected_file)
-    assert_geodataframe_equal(actual, expected, check_like=True)
+    expected.sort_values(by='geometry', inplace=True, ignore_index=True)
+    actual.sort_values(by='geometry', inplace=True, ignore_index=True)
+    assert_geodataframe_equal(actual, expected)
     
     return actual
     
@@ -76,7 +78,9 @@ def test_process_tornadoes_aoi(test_get_tornadoes):
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'process_tornaodes_aoi.shp')
     expected = geopandas.read_file(expected_file)
-    assert_geodataframe_equal(actual, expected, check_like=True)
+    expected.sort_values(by='geometry', inplace=True, ignore_index=True)
+    actual.sort_values(by='geometry', inplace=True, ignore_index=True)
+    assert_geodataframe_equal(actual, expected)
     
     # check rows
     #expected_file = os.path.join(EXPECTED_DIR, '1950-2022-torn-aspath.shp')
