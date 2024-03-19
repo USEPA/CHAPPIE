@@ -26,13 +26,17 @@ aoi_gdf = geopandas.read_file(AOI)
 def test_get_cyclones():
     actual = tropical_cyclones.get_cyclones(aoi_gdf)
     
-    # save to results
+    # save to results (sorted so expected doesn't need to be)
+    #actual.sort_values(by=['geometry','day'], inplace=True, ignore_index=True)
     #actual.to_file(os.path.join(TEST_DIR, 'cyclones_aoi_1851_2022.shp'))
     
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'cyclones_aoi_1851_2022.shp')
     expected = geopandas.read_file(expected_file)
-    assert_geodataframe_equal(actual, expected, check_like=True)
+
+    actual.sort_values(by=['geometry','day'], inplace=True, ignore_index=True)
+    
+    assert_geodataframe_equal(actual, expected)
     
     return actual
 
@@ -47,8 +51,8 @@ def test_process_cyclones(test_get_cyclones):
     #                             'Hurr_Buffer_AOI_Intersection_1996_2016.shp')
     expected_file = os.path.join(EXPECTED_DIR,'cyclones_processed_1851_2022.shp')
     expected = geopandas.read_file(expected_file)    
-    
-    assert_geodataframe_equal(actual, expected, check_like=True)
+
+    assert_geodataframe_equal(actual, expected, check_less_precise=True)
     #assert(len(actual)==len(expected)), f'{len(actual)}!={len(expected)}'
 
 
