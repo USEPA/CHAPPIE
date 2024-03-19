@@ -49,8 +49,11 @@ def test_process_cyclones(test_get_cyclones):
     
     #expected_file = os.path.join(EXPECTED_DIR,
     #                             'Hurr_Buffer_AOI_Intersection_1996_2016.shp')
-    expected_file = os.path.join(EXPECTED_DIR,'cyclones_processed_1851_2022.shp')
-    expected = geopandas.read_file(expected_file)    
+    expected_file = os.path.join(EXPECTED_DIR, 'cyclones_processed_1851_2022.shp')
+    expected = geopandas.read_file(expected_file)
+    
+    actual.sort_values(by='SID', inplace=True, ignore_index=True)
+    expected.sort_values(by='SID', inplace=True, ignore_index=True)
 
     assert_geodataframe_equal(actual, expected, check_like=True)
     #assert(len(actual)==len(expected)), f'{len(actual)}!={len(expected)}'
