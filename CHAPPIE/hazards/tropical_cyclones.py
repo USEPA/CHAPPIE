@@ -65,6 +65,7 @@ def process_cyclones(cyclones_gdf, aoi):
     cyclones_gdf = cyclones_gdf.clip(aoi.total_bounds)
     
     # Fix up fields
+    cyclones_gdf.reset_index(inplace=True)
     # Add storm level
     cyclones_gdf['StormLevel'] = "Category 5"
     cyclones_gdf.loc[cyclones_gdf.USA_WIND < 137, 'StormLevel'] = "Category 4"
