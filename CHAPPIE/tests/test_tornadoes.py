@@ -77,6 +77,10 @@ def test_process_tornadoes_aoi(test_get_tornadoes):
     missing_cols = set(expected_cols) - set(actual.columns)
     assert not missing_cols, f"Columns missing: {', '.join(missing_cols)}"
     
+    #print debug
+    print(actual.iloc[6])
+    print(str(actual.iloc[6]['geometry']))
+    
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'process_tornaodes_aoi.shp')
     expected = geopandas.read_file(expected_file)
