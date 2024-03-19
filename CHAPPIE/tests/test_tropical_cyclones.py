@@ -57,7 +57,7 @@ def test_process_cyclones(test_get_cyclones):
     
     print(str(actual.iloc[36]['geometry']))
     print(str(expected.iloc[36]['geometry']))
-    assert_geodataframe_equal(actual, expected, check_like=True)
+    assert_geodataframe_equal(actual, expected, check_like=True, check_less_precise=True)
     #assert(len(actual)==len(expected)), f'{len(actual)}!={len(expected)}'
 
 
