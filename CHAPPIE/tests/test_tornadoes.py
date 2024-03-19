@@ -51,14 +51,15 @@ def test_get_tornadoes_all():
 def test_get_tornadoes():
     actual = tornadoes.get_tornadoes(aoi_gdf)
     
-    # save for now
+    # save for test (sorted so expeccted doesn't ahve to be)
+    actual.sort_values(by=['geometry', 'date'], inplace=True, ignore_index=True)
     #actual.to_file(os.path.join(TEST_DIR, 'get_tornaodes_aoi.shp'))
     
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_tornaodes_aoi.shp')
     expected = geopandas.read_file(expected_file)
-    expected.sort_values(by='geometry', inplace=True, ignore_index=True)
-    actual.sort_values(by='geometry', inplace=True, ignore_index=True)
+    expected.sort_values(by=['geometry', 'date'], inplace=True, ignore_index=True)
+
     assert_geodataframe_equal(actual, expected)
     
     return actual
