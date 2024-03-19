@@ -29,10 +29,10 @@ _basequery = {
     "geometryPrecision": "",
     "outSR": "",  # spatial reference of returned geometry
     "returnIdsOnly": False,  # bool stating to only return ObjectIDs
-    "returnCountOnly": False,  # not documented, probably for the sql query
-    "orderByFields": "",  # again not documented, probably for the sql
-    "groupByFieldsForStatistics": "",  # not documented, probably for sql
-    "outStatistics": "",  # no clue
+    "returnCountOnly": False,  # int count of features meeting specified params
+    "orderByFields": "",  # results sorting for the sql
+    "groupByFieldsForStatistics": "",  # equivalent to sql group by
+    "outStatistics": "",  # stats (mean, max, etc.) for specified fields
     "returnZ": False,  # whether to return z components of shp-z
     "returnM": False,  # whether to return m components of shp-m
     "gdbVersion": "",  # geodatabase version name
