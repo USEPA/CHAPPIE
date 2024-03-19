@@ -52,7 +52,7 @@ def test_process_cyclones(test_get_cyclones):
     expected_file = os.path.join(EXPECTED_DIR,'cyclones_processed_1851_2022.shp')
     expected = geopandas.read_file(expected_file)    
 
-    assert_geodataframe_equal(actual, expected, check_less_precise=True)
+    assert_geodataframe_equal(actual, expected, check_like=True)
     #assert(len(actual)==len(expected)), f'{len(actual)}!={len(expected)}'
 
 
