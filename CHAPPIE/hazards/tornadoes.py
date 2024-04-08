@@ -19,7 +19,7 @@ def get_tornadoes_all(out_dir, component='torn-aspath', years='1950-2022'):
     out_dir : str
         Directory to save download.
     component : str, optional
-        The Tornadoe component. The default is 'torn-aspath'.
+        The Tornado component. The default is 'torn-aspath'.
     years : str, optional
         The year range for the tornadoe component url. The default is '1950-2022'.
 
@@ -61,9 +61,16 @@ def max_buffer():
     #url_pnts = f'{baseurl}Tornadoes_1950_2017_1/FeatureServer'
     url = f'{baseurl}Tornado_Tracks_1950_2017_1/FeatureServer'  # same as above
     layer = 0
-    wid = layer_query.get_field_where(url, layer, 'wid', 2000, oper='>')
-    return math.ceil(max(wid['wid'])/ 2.188)
-
+    #wid = layer_query.get_field_where(url, layer, 'wid', 2000, oper='>')
+    #return math.ceil(max(wid['wid'])/ 2.188)
+    feature_layer = layer_query.ESRILayer(url,layer)
+    query_params = {"outStatistics":[{
+                        "statisticType": "max",
+                        "onStatisticField": "wid", 
+                        "outStatisticFieldName": "max_wid"
+                    }]}
+    query_response = feature_layer.query(**query_params)
+    return math.ceil(query_response['max_wid']/ 2.188)
 
 def get_tornadoes(aoi):
     """ Get tornaodes for area of interest
