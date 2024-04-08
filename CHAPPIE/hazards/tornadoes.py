@@ -68,7 +68,8 @@ def max_buffer():
                         "statisticType": "max",
                         "onStatisticField": "wid", 
                         "outStatisticFieldName": "max_wid"
-                    }]}
+                    }],
+                    'returnGeometry': "false"}
     query_response = feature_layer.query(**query_params)
     return math.ceil(query_response['max_wid']/ 2.188)
 
