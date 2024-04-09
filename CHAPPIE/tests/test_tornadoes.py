@@ -85,3 +85,9 @@ def test_process_tornadoes_aoi(test_get_tornadoes):
                               expected,
                               check_like=True,
                               check_less_precise=True)
+
+def test_max_buffer():
+    max_buffer = tornadoes.max_buffer()
+    expected_max_buffer = 2092
+    assert max_buffer == expected_max_buffer, f"Expected max buffer of {expected_max_buffer}, got {max_buffer}"
+    
