@@ -51,6 +51,26 @@ def get_zip(url, temp_file):
     with zipfile.ZipFile(temp_file, 'r') as zip_ref:
         zip_ref.extractall(out_dir)
 
+def getCRSUnits(CRS):
+    """ Function to return the units value of a pyproj CRS instance
+
+    Parameters
+    ----------
+    CRS : CRS
+        input coordinate reference system object
+
+    Returns
+    -------
+    string containing the units of the CRS
+
+    """
+    crsDict = CRS.to_dict()
+    if 'units' in crsDict.keys():
+        return crsDict['units']
+    elif crsDict['proj'] == 'longlat':
+        return 'degrees'
+    else:
+        return 'unknown'
 
 def getCounty(aoi):
     """Returns GEOID and county intersecting polygon extent"""
