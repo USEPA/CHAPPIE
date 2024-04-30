@@ -15,7 +15,12 @@ classifiers = [
     "License ::  MIT",
     "Operating System :: OS Independent",
 ]
-
+dependencies = [
+    "pygris",
+    "geopandas>=0.10",
+    "pandas>=1",
+    "requests",
+]
 [project.urls]
 "Homepage" = "https://github.com/USEPA/CHAPPIE"
 "Bug Tracker" = "https://github.com/USEPA/CHAPPIE/issues"
