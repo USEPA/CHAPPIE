@@ -4,10 +4,6 @@ Test technological
 
 @author: thultgre
 """
-import sys
-codeRoot = r"C:\Users\thultgre\Repos\CHAPPIE"
-sys.path.append(codeRoot)
-
 import os
 import geopandas
 from geopandas.testing import assert_geodataframe_equal
@@ -24,8 +20,17 @@ TEST_DIR = os.path.join(DIRPATH, 'results')  # test results (have to create)
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 aoi_gdf = geopandas.read_file(AOI)
 
-actual = technological.get_superfund_npl(aoi_gdf)
+@pytest.fixture(scope='session')
+def test_get_superfund():
+    actual = technological.get_superfund_npl(aoi_gdf)
 
-expected_file = os.path.join(EXPECTED_DIR, 'get_superfund.parquet')
+    # save for test
+    #actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_superfund.parquet'))
+    
+    # assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'get_superfund.parquet')
+    expected = geopandas.read_file(expected_file)
 
-actual.to_parquet(expected_file)
+    assert_geodataframe_equal(actual, expected)
+    
+    return actual
