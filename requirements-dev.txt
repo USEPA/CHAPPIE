@@ -1,0 +1,8 @@
+pyarrow>=1.0.1
+pytest
+coverage
+#sphinx
+#sphinx_rtd_theme
+#sphinxcontrib-spelling
+#nbsphinx
+#nbsphinx_link
