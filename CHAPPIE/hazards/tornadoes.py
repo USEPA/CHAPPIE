@@ -10,7 +10,6 @@ import pandas
 import geopandas
 from CHAPPIE import layer_query
 
-
 def get_tornadoes_all(out_dir, component='torn-aspath', years='1950-2022'):
     """ Get tornadoes dataframe
 
@@ -94,6 +93,7 @@ def get_tornadoes(aoi):
     max_buff = max_buffer()
     # NOTE: assumes aoi_gdf in meters
     # TODO: assert aoi.crs in meters
+    assert layer_query.getCRSUnits(aoi.crs) == 'm', f"Expected units to be meters, found {layer_query.getCRSUnits(aoi.crs)}"
     xmin, ymin, xmax, ymax = aoi.total_bounds
     #bbox = [xmin-max_buff, xmax+max_buff, ymin-max_buff, ymax+max_buff]
     #bbox = [xmin, xmax, ymin, ymax]
@@ -122,7 +122,7 @@ def process_tornadoes(tornadoes_gdf, aoi):
     tornadoes_gdf = tornadoes_gdf.to_crs(aoi.crs)  # match crs for clip
     # buffer lines in filtered tornadoes (sf::st_buffer defaults join_style and cap_style are same)
     tornadoes_gdf['radM'] = tornadoes_gdf['wid'] / 2.188
-    # TODO: assert aoi.crs is in meters
+    assert layer_query.getCRSUnits(aoi.crs) == 'm', f"Expected units to be meters, found {layer_query.getCRSUnits(aoi.crs)}"
     tornadoes_gdf['geometry'] = tornadoes_gdf.buffer(tornadoes_gdf['radM'])
     
     # clip buffered paths to aoi extent
