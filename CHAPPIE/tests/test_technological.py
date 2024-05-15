@@ -20,13 +20,9 @@ TEST_DIR = os.path.join(DIRPATH, 'results')  # test results (have to create)
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 aoi_gdf = geopandas.read_file(AOI)
 
-@pytest.fixture(scope='session')
 def test_get_superfund():
     actual = technological.get_superfund_npl(aoi_gdf)
 
-    # save for test
-    #actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_superfund.parquet'))
-    
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_superfund.parquet')
     expected = geopandas.read_file(expected_file)
