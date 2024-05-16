@@ -25,7 +25,7 @@ def test_get_superfund():
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_superfund.parquet')
-    expected = geopandas.read_file(expected_file)
+    expected = geopandas.read_parquet(expected_file)
 
     assert_geodataframe_equal(actual, expected)
     
