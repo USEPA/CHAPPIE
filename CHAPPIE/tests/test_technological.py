@@ -30,3 +30,15 @@ def test_get_superfund():
     assert_geodataframe_equal(actual, expected)
     
     return actual
+
+def test_get_FRS_ACRES():
+    actual = technological.get_FRS_ACRES(aoi_gdf)
+    #actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_FRS_ACRES.parquet'))
+ 
+    # assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'get_FRS_ACRES.parquet')
+    expected = geopandas.read_parquet(expected_file)
+ 
+    assert_geodataframe_equal(actual, expected)
+   
+    return actual

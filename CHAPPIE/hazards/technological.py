@@ -28,3 +28,30 @@ def get_superfund_npl(aoi):
                                 url=url,
                                 layer=0,
                                 in_crs=aoi.crs.to_epsg())
+
+def get_FRS_ACRES(aoi):
+    """ Get EPA's Facility Registry Service (FRS) sites that link
+    to the Assessment Cleanup and Redevelopment Exchange System
+    (ACRES) for Area Of Interest (AOI).
+ 
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        Spatial definition for Area Of Interest (AOI).
+ 
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame of FRS ACRES sites.
+ 
+    """
+ 
+    url = 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/ArcGIS/rest/services/FRS_INTERESTS_ACRES/FeatureServer'
+   
+    xmin, ymin, xmax, ymax = aoi.total_bounds
+    bbox = [xmin, ymin, xmax,  ymax]
+   
+    return layer_query.get_bbox(aoi=bbox,
+                                url=url,
+                                layer=0,
+                                in_crs=aoi.crs.to_epsg())
