@@ -20,7 +20,7 @@ def get_tornadoes_all(out_dir, component='torn-aspath', years='1950-2022'):
     component : str, optional
         The Tornado component. The default is 'torn-aspath'.
     years : str, optional
-        The year range for the tornadoe component url. The default is '1950-2022'.
+        The year range for the tornado component url. The default is '1950-2022'.
 
     Returns
     -------
@@ -53,7 +53,7 @@ def max_buffer():
     Returns
     -------
     int
-        Max buffer needed for any track in tornadoe tracks service.
+        Max buffer needed for any track in tornado tracks service.
 
     """
     baseurl = 'https://services2.arcgis.com/FiaPA4ga0iQKduv3/ArcGIS/rest/services/'
@@ -104,7 +104,7 @@ def get_tornadoes(aoi):
     
 
 def process_tornadoes(tornadoes_gdf, aoi):
-    """Get buffered (based on 'wid' column) tornadoe paths for AOI.
+    """Get buffered (based on 'wid' column) tornado paths for AOI.
 
     Parameters
     ----------
