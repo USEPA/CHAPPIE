@@ -28,8 +28,6 @@ def test_get_superfund():
     expected = geopandas.read_parquet(expected_file)
 
     assert_geodataframe_equal(actual, expected)
-    
-    return actual
 
 def test_get_FRS_ACRES():
     actual = technological.get_FRS_ACRES(aoi_gdf)
@@ -41,5 +39,3 @@ def test_get_FRS_ACRES():
     expected = geopandas.read_parquet(expected_file)
  
     assert_geodataframe_equal(actual, expected)
-   
-    return actual
