@@ -39,3 +39,13 @@ def test_get_FRS_ACRES():
     expected = geopandas.read_parquet(expected_file)
  
     assert_geodataframe_equal(actual, expected)
+
+def test_get_landfills():
+    actual = technological.get_landfills(aoi_gdf)
+    actual.drop(columns=['OBJECTID'], inplace=True)
+    actual.sort_values(by=['GlobalID', 'geometry', 'Company'], inplace=True, ignore_index=True)
+ 
+    # assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'get_landfills.parquet')
+    expected = geopandas.read_parquet(expected_file)
+    assert_geodataframe_equal(actual, expected, normalize=True)

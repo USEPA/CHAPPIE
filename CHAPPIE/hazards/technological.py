@@ -55,3 +55,28 @@ def get_FRS_ACRES(aoi):
                                 url=url,
                                 layer=0,
                                 in_crs=aoi.crs.to_epsg())
+
+def get_landfills(aoi):
+    """ Get landfills for Area Of Interest (AOI).
+ 
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        Spatial definition for Area Of Interest (AOI).
+ 
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame of landfills.
+ 
+    """
+ 
+    url = 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/ArcGIS/rest/services/EPA_Disaster_Debris_Recovery_Data/FeatureServer'
+   
+    xmin, ymin, xmax, ymax = aoi.total_bounds
+    bbox = [xmin, ymin, xmax,  ymax]
+   
+    return layer_query.get_bbox(aoi=bbox,
+                                url=url,
+                                layer=0,
+                                in_crs=aoi.crs.to_epsg())
