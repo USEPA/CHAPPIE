@@ -31,6 +31,7 @@ def test_get_superfund():
 
 def test_get_FRS_ACRES():
     actual = technological.get_FRS_ACRES(aoi_gdf)
+    actual.drop(columns=['OBJECTID'], inplace=True)
     actual.sort_values(by=['KEY_FIELD', 'geometry', 'REGISTRY_ID'], inplace=True, ignore_index=True)
     #actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_FRS_ACRES.parquet'))
 
