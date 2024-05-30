@@ -31,6 +31,7 @@ def test_get_superfund():
 
 def test_get_FRS_ACRES():
     actual = technological.get_FRS_ACRES(aoi_gdf)
+    actual.drop(columns=['OBJECTID'], inplace=True)
     actual.sort_values(by=['KEY_FIELD', 'geometry', 'REGISTRY_ID'], inplace=True, ignore_index=True)
     #actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_FRS_ACRES.parquet'))
 
@@ -39,3 +40,13 @@ def test_get_FRS_ACRES():
     expected = geopandas.read_parquet(expected_file)
  
     assert_geodataframe_equal(actual, expected)
+
+def test_get_landfills():
+    actual = technological.get_landfills(aoi_gdf)
+    actual.drop(columns=['OBJECTID'], inplace=True)
+    actual.sort_values(by=['GlobalID', 'geometry', 'Company'], inplace=True, ignore_index=True)
+ 
+    # assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'get_landfills.parquet')
+    expected = geopandas.read_parquet(expected_file)
+    assert_geodataframe_equal(actual, expected, normalize=True)
