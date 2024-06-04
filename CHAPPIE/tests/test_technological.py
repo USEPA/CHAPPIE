@@ -50,3 +50,14 @@ def test_get_landfills():
     expected_file = os.path.join(EXPECTED_DIR, 'get_landfills.parquet')
     expected = geopandas.read_parquet(expected_file)
     assert_geodataframe_equal(actual, expected, normalize=True)
+
+def test_get_tri():
+    actual = technological.get_tri(aoi_gdf)
+    actual.drop(columns=['OBJECTID'], inplace=True)
+    #actual.sort_values(by=['GlobalID', 'geometry', 'Company'], inplace=True, ignore_index=True)
+    #actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_tri.parquet'))
+ 
+    # assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'get_tri.parquet')
+    expected = geopandas.read_parquet(expected_file)
+    assert_geodataframe_equal(actual, expected, normalize=True)
