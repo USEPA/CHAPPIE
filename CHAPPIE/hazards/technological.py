@@ -80,3 +80,28 @@ def get_landfills(aoi):
                                 url=url,
                                 layer=0,
                                 in_crs=aoi.crs.to_epsg())
+
+def get_tri(aoi):
+    """ Get TRI Reporting Facilities for Area Of Interest (AOI).
+ 
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        Spatial definition for Area Of Interest (AOI).
+ 
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame of TRI Reporting Facilities.
+ 
+    """
+ 
+    url = 'https://gispub.epa.gov/arcgis/rest/services/OCSPP/TRI_Reporting_Facilities/MapServer/'
+   
+    xmin, ymin, xmax, ymax = aoi.total_bounds
+    bbox = [xmin, ymin, xmax,  ymax]
+   
+    return layer_query.get_bbox(aoi=bbox,
+                                url=url,
+                                layer=0,
+                                in_crs=aoi.crs.to_epsg())
