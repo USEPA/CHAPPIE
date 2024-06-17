@@ -7,9 +7,6 @@ Test flood
 import os
 import geopandas
 from geopandas.testing import assert_geodataframe_equal
-import sys
-codeRoot = r"C:\Users\TLOMBA01\Documents\GEMMD"
-sys.path.append(codeRoot)
 from CHAPPIE.hazards import flood
 import pytest
 
