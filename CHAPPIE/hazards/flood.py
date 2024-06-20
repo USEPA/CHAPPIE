@@ -20,11 +20,13 @@ def get_fema_nfhl(aoi):
 
     """
 
-    url = 'https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer'
+    url = 'https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/USA_Flood_Hazard_Reduced_Set_gdb/FeatureServer'
     xmin, ymin, xmax, ymax = aoi.total_bounds
-    bbox = [xmin, ymin, xmax,  ymax]
-    
+    bbox = [xmin, ymin, xmax, ymax]
+    out_fields = ['geometry', 'DFIRM_ID', 'FLD_AR_ID', 'FLD_ZONE', 'ZONE_SUBTY']
+
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
-                                layer=28,
+                                out_fields=out_fields,
+                                layer=0,
                                 in_crs=aoi.crs.to_epsg())
