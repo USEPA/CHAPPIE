@@ -48,9 +48,7 @@ def test_get_superfund():
     actual.drop(columns=['OBJECTID'], inplace=True)
 
     # assert no changes
-    expected_file = os.path.join(EXPECTED_DIR, 'get_superfund.parquet')
-    expected = geopandas.read_parquet(expected_file)
-    expected['REGION_CODE'] = expected['REGION_CODE'].astype('int32')
+    expected = expected_32('get_superfund.parquet')
     
     assert_geodataframe_equal(actual, expected)
 
@@ -73,9 +71,7 @@ def test_get_landfills():
     actual.sort_values(by=['GlobalID', 'geometry', 'Company'], inplace=True, ignore_index=True)
  
     # assert no changes
-    expected_file = os.path.join(EXPECTED_DIR, 'get_landfills.parquet')
-    expected = geopandas.read_parquet(expected_file)
-    expected['Recovery'] = expected['Recovery'].astype('int32')
+    expected = expected_32('get_landfills.parquet')
     
     assert_geodataframe_equal(actual, expected, normalize=True)
 
@@ -85,8 +81,6 @@ def test_get_tri():
     actual.sort_values(by=['EPA_REGISTRY_ID', 'geometry', 'FACILITY_NAME'], inplace=True, ignore_index=True)
  
     # assert no changes
-    expected_file = os.path.join(EXPECTED_DIR, 'get_tri.parquet')
-    expected = geopandas.read_parquet(expected_file)
-    expected['ONSITE_AIR'] = expected['ONSITE_AIR'].astype('int32')
+    expected = expected_32('get_tri.parquet')
     
     assert_geodataframe_equal(actual, expected, normalize=True)
