@@ -27,7 +27,8 @@ def test_get_hospitals():
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_hospitals.parquet')
-    expected = geopandas.read_parquet(expected_file)
-    expected['USER_Zip_C'] = expected['USER_Zip_C'].astype('int32')
-
-    assert_geodataframe_equal(actual, expected)
+    gdf = geopandas.read_parquet(expected_file)
+    gdf_int64 = gdf.select_dtypes(include='int64')
+    gdf[gdf_int64.columns] = gdf_int64.astype('int32')
+    
+    assert_geodataframe_equal(actual, gdf)

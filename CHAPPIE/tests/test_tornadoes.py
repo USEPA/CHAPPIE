@@ -71,6 +71,7 @@ def test_process_tornadoes_aoi(test_get_tornadoes):
     # save for now (sorted so expeccted doesn't have to be)
     actual = actual.sort_values(by=['TornNo', 'Date'], ignore_index=True)
     #actual.to_file(os.path.join(EXPECTED_DIR, 'process_tornaodes_aoi.shp'))
+    #actual.to_parquet(os.path.join(EXPECTED_DIR, 'process_tornaodes_aoi.parquet'))
     
     # check columns
     expected_cols = ['Year', 'Date', 'TornNo', 'Magnitude', 'geometry']
@@ -78,10 +79,10 @@ def test_process_tornadoes_aoi(test_get_tornadoes):
     assert not missing_cols, f"Columns missing: {', '.join(missing_cols)}"
     
     # assert no changes
-    expected_file = os.path.join(EXPECTED_DIR, 'process_tornaodes_aoi.shp')
-    expected = geopandas.read_file(expected_file)
+    expected_file = os.path.join(EXPECTED_DIR, 'process_tornaodes_aoi.parquet')
+    expected = geopandas.read_parquet(expected_file)
     expected = expected.sort_values(by=['TornNo', 'Date'], ignore_index=True)
-    expected['yr'] = expected['yr'].astype('int32')
+    expected['Year'] = expected['Year'].astype('int32')
     
     assert_geodataframe_equal(actual,
                               expected,
