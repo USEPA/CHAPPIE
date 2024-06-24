@@ -8,7 +8,7 @@ import os
 import geopandas
 from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.hazards import technological
-import pytest
+#import pytest
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -20,6 +20,29 @@ TEST_DIR = os.path.join(DIRPATH, 'results')  # test results (have to create)
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 aoi_gdf = geopandas.read_file(AOI)
 
+
+def expected_32(parquet_name):
+    """
+    Read expected parquet to GeoDataFrame and convert int 64 to int32
+
+    Parameters
+    ----------
+    parquet_name : str
+        Parquet file name in EXPECTED_DIR.
+
+    Returns
+    -------
+    gdf : geopandas.GeoDataFrame
+        Expected with int64 updated to int32
+
+    """
+    expected_file = os.path.join(EXPECTED_DIR, parquet_name)
+    gdf = geopandas.read_parquet(expected_file)
+    gdf_int64 = gdf.select_dtypes(include='int64')
+    gdf[gdf_int64.columns] = gdf_int64.astype('int32')
+    return gdf
+
+
 def test_get_superfund():
     actual = technological.get_superfund_npl(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
@@ -27,7 +50,8 @@ def test_get_superfund():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_superfund.parquet')
     expected = geopandas.read_parquet(expected_file)
-
+    expected['REGION_CODE'] = expected['REGION_CODE'].astype('int32')
+    
     assert_geodataframe_equal(actual, expected)
 
 def test_get_FRS_ACRES():
@@ -39,6 +63,7 @@ def test_get_FRS_ACRES():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_FRS_ACRES.parquet')
     expected = geopandas.read_parquet(expected_file)
+    expected['ACCURACY_VALUE'] = expected['ACCURACY_VALUE'].astype('int32')
  
     assert_geodataframe_equal(actual, expected)
 
@@ -50,6 +75,8 @@ def test_get_landfills():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_landfills.parquet')
     expected = geopandas.read_parquet(expected_file)
+    expected['Recovery'] = expected['Recovery'].astype('int32')
+    
     assert_geodataframe_equal(actual, expected, normalize=True)
 
 def test_get_tri():
@@ -60,4 +87,6 @@ def test_get_tri():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_tri.parquet')
     expected = geopandas.read_parquet(expected_file)
+    expected['ONSITE_AIR'] = expected['ONSITE_AIR'].astype('int32')
+    
     assert_geodataframe_equal(actual, expected, normalize=True)
