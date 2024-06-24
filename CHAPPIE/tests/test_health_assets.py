@@ -8,7 +8,7 @@ import os
 import geopandas
 from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.assets import health
-import pytest
+#import pytest
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
