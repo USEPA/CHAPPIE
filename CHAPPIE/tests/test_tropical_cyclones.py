@@ -54,6 +54,7 @@ def test_process_cyclones(test_get_cyclones):
     
     actual.sort_values(by='SID', inplace=True, ignore_index=True)
     expected.sort_values(by='SID', inplace=True, ignore_index=True)
+    expected['USA_WIND'] = expected['USA_WIND'].astype('int32')
     
     assert_geodataframe_equal(actual, expected, check_like=True, check_less_precise=True)
     #assert(len(actual)==len(expected)), f'{len(actual)}!={len(expected)}'
