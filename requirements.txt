@@ -1,4 +1,4 @@
-numpy<2.0
+#numpy<2.0
 pygris
 geopandas>=0.10
 #numpy>=1.21  # routing & ~infiltration rounding
