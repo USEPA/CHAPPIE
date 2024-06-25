@@ -64,6 +64,7 @@ def test_get_tornadoes(get_tornadoes):
     expected_file = os.path.join(EXPECTED_DIR, 'get_tornaodes_aoi.shp')
     expected = geopandas.read_file(expected_file)
     expected = expected.sort_values(by=['geometry', 'date'], ignore_index=True)
+    expected['yr'] = expected['yr'].astype('int32')
 
     assert_geodataframe_equal(actual, expected)
     
