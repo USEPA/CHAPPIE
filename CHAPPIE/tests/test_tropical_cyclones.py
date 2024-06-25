@@ -23,25 +23,28 @@ aoi_gdf = geopandas.read_file(AOI)
 
 
 @pytest.fixture(scope='session')
-def test_get_cyclones():
+def get_cyclones():
     actual = tropical_cyclones.get_cyclones(aoi_gdf)
-    
+    actual.sort_values(by=['geometry','day'], inplace=True, ignore_index=True)
     # save to results (sorted so expected doesn't need to be)
-    #actual.sort_values(by=['geometry','day'], inplace=True, ignore_index=True)
     #actual.to_file(os.path.join(TEST_DIR, 'cyclones_aoi_1851_2022.shp'))
+    
+    return actual
+
+def test_get_cyclones(get_cyclones):
+    actual = get_cyclones
     
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'cyclones_aoi_1851_2022.shp')
     expected = geopandas.read_file(expected_file)
-
-    actual.sort_values(by=['geometry','day'], inplace=True, ignore_index=True)
+    expected['USA_WIND'] = expected['USA_WIND'].astype('int32')
     
     assert_geodataframe_equal(actual, expected)
     
     return actual
 
 
-def test_process_cyclones(test_get_cyclones):
+def test_process_cyclones(get_cyclones):
     actual = tropical_cyclones.process_cyclones(test_get_cyclones, aoi_gdf)
     
     # save to results
