@@ -48,13 +48,18 @@ def test_get_tornadoes_all():
     
     
 @pytest.fixture(scope='session')
-def test_get_tornadoes():
+def get_tornadoes():
     actual = tornadoes.get_tornadoes(aoi_gdf)
     
     # save for test (sorted so expeccted doesn't have to be)
     actual = actual.sort_values(by=['geometry', 'date'], ignore_index=True)
     #actual.to_file(os.path.join(TEST_DIR, 'get_tornaodes_aoi.shp'))
     
+    return actual
+
+
+def test_get_tornadoes(get_tornadoes):
+    actual = get_tornadoes
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_tornaodes_aoi.shp')
     expected = geopandas.read_file(expected_file)
@@ -65,7 +70,7 @@ def test_get_tornadoes():
     return actual
     
 
-def test_process_tornadoes_aoi(test_get_tornadoes):
+def test_process_tornadoes_aoi(get_tornadoes):
     actual = tornadoes.process_tornadoes(test_get_tornadoes, aoi_gdf)
     
     # save for now (sorted so expeccted doesn't have to be)
