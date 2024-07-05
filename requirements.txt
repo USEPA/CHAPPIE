@@ -1,4 +1,3 @@
-#numpy<2.0
 pygris
 geopandas>=0.10
 #numpy>=1.21  # routing & ~infiltration rounding
@@ -7,3 +6,4 @@ pandas>=1
 pyarrow>=1.0.1  #dev?
 #shapely>=2
 requests
+numpy<2.0
