@@ -39,6 +39,9 @@ def test_get_cyclones(get_cyclones):
     expected = geopandas.read_file(expected_file)
     expected['USA_WIND'] = expected['USA_WIND'].astype('int32')
     expected['USA_PRES'] = expected['USA_PRES'].astype('int32')
+    expected['year'] = expected['year'].astype('int32')
+    expected['month'] = expected['month'].astype('int32')
+    expected['day'] = expected['day'].astype('int32')
     
     assert_geodataframe_equal(actual, expected)
     
