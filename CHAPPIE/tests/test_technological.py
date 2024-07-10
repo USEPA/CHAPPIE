@@ -46,10 +46,14 @@ def expected_32(parquet_name):
 def test_get_superfund():
     actual = technological.get_superfund_npl(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
-
-    # assert no changes
-    expected = expected_32('get_superfund.parquet')
+    #actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_superfund.parquet'))
     
+    # assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'get_superfund.parquet')
+    expected = geopandas.read_parquet(expected_file)
+    expected['REGION_CODE'] = expected['REGION_CODE'].astype('int32')
+    expected['SITE_FEATURE_CLASS'] = expected['SITE_FEATURE_CLASS'].astype('int32')
+
     assert_geodataframe_equal(actual, expected)
 
 def test_get_FRS_ACRES():
