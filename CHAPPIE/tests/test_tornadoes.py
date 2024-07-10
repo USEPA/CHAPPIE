@@ -91,7 +91,7 @@ def test_get_tornadoes(get_tornadoes):
     
 
 def test_process_tornadoes_aoi(get_tornadoes):
-    actual = tornadoes.process_tornadoes(test_get_tornadoes, aoi_gdf)
+    actual = tornadoes.process_tornadoes(get_tornadoes, aoi_gdf)
     
     # save for now (sorted so expeccted doesn't have to be)
     actual = actual.sort_values(by=['TornNo', 'Date'], ignore_index=True)

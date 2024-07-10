@@ -47,7 +47,7 @@ def test_get_cyclones(get_cyclones):
 
 
 def test_process_cyclones(get_cyclones):
-    actual = tropical_cyclones.process_cyclones(test_get_cyclones, aoi_gdf)
+    actual = tropical_cyclones.process_cyclones(get_cyclones, aoi_gdf)
     
     # save to results
     #actual.to_file(os.path.join(TEST_DIR, 'cyclones_processed_1851_2022.shp'))
