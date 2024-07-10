@@ -37,12 +37,10 @@ def test_get_cyclones(get_cyclones):
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'cyclones_aoi_1851_2022.shp')
     expected = geopandas.read_file(expected_file)
-    expected['USA_WIND'] = expected['USA_WIND'].astype('int32')
-    expected['USA_PRES'] = expected['USA_PRES'].astype('int32')
-    expected['year'] = expected['year'].astype('int32')
-    expected['month'] = expected['month'].astype('int32')
-    expected['day'] = expected['day'].astype('int32')
-    
+    field_list = ['USA_WIND', 'USA_PRES', 'year', 'month', 'day']
+    for i in range(len(field_list)):
+        expected[field_list[i]] = expected[field_list[i]].astype('int32')
+
     assert_geodataframe_equal(actual, expected)
     
     return actual
