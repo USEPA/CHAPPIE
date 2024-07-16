@@ -107,8 +107,11 @@ def test_process_tornadoes_aoi(get_tornadoes):
     expected_file = os.path.join(EXPECTED_DIR, 'process_tornaodes_aoi.parquet')
     expected = geopandas.read_parquet(expected_file)
     expected = expected.sort_values(by=['TornNo', 'Date'], ignore_index=True)
-    expected['Year'] = expected['Year'].astype('int32')
-    
+    expected['Date'] = expected['Date'].astype('datetime64[ms]')
+    field_list = ['Year', 'TornNo', 'Magnitude', 'wid']
+    for i in range(len(field_list)):
+        expected[field_list[i]] = expected[field_list[i]].astype('int32')
+
     assert_geodataframe_equal(actual,
                               expected,
                               check_like=True,
