@@ -30,3 +30,22 @@ def get_fema_nfhl(aoi):
                                 out_fields=out_fields,
                                 layer=0,
                                 in_crs=aoi.crs.to_epsg())
+
+def get_flood(aoi):
+    """Get flood imagery statistics and histogram for polygon within AOI.
+
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        Parcel polygons to be summarized for Area Of Interest (AOI).
+
+    Returns
+    -------
+    JSON
+        Statistics and Histogram JSON object.
+
+    """
+    url = 'https://enviroatlas.epa.gov/arcgis/rest/services/Supplemental/Estimated_floodplain_CONUS_WM/ImageServer'
+   
+    return layer_query.get_image_by_poly(aoi=aoi,
+                                url=url)

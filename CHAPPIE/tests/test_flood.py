@@ -6,6 +6,7 @@ Test flood
 """
 import os
 import geopandas
+import json
 from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.hazards import flood
 import pytest
@@ -16,9 +17,12 @@ DIRPATH = os.path.dirname(os.path.realpath(__file__))
 EXPECTED_DIR = os.path.join(DIRPATH, 'expected')  # Expected
 DATA_DIR = os.path.join(DIRPATH, 'data')  # inputs
 TEST_DIR = os.path.join(DIRPATH, 'results')  # test results (have to create)
+PARCEL_DIR = os.path.join(EXPECTED_DIR, 'parcels')
 
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
+PARCELS = os.path.join(PARCEL_DIR, "BP_Regrid.shp")
 aoi_gdf = geopandas.read_file(AOI)
+parcels_gdf = geopandas.read_file(PARCELS)
 
 def test_get_fema_nfhl():
     actual = flood.get_fema_nfhl(aoi_gdf)
@@ -38,3 +42,9 @@ def test_get_fema_nfhl():
                               expected,
                               check_like=True,
                               check_less_precise=True)
+    
+def test_get_flood():
+    actual = flood.get_flood(parcels_gdf)
+    actual_file = open((os.path.join(EXPECTED_DIR, 'get_flood.json')), "w")
+    json.dump(actual, actual_file)
+    actual_file.close()

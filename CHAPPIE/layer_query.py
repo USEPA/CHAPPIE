@@ -11,7 +11,7 @@ import requests
 import urllib.request
 import zipfile
 import geopandas
-
+import json
 
 _basequery = {
     "where": "",  # sql query component
@@ -37,6 +37,17 @@ _basequery = {
     "returnM": False,  # whether to return m components of shp-m
     "gdbVersion": "",  # geodatabase version name
     "returnDistinctValues": False,
+}
+
+_baseComputeStatisticsHistograms = {
+    "geometry": "",
+    "geometryType": "",
+    "mosaicRule": "",
+    "renderingRule": "",
+    "pixelSize": "",
+    "time": "",  # time instant/time extend to compute statistics and histograms
+    "processAsMultidimensional": False,
+    "f": "",
 }
 
 _tiger_url = "tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb"
@@ -261,3 +272,75 @@ class ESRILayer(object):
         else:
             #return resp
             raise KeyError("Returning geometry is currently disabled")
+
+class ESRIImageService(object):
+    """Fundamental building block to access an image in an ESRI Image Service"""
+ 
+    def __init__(self, baseurl, **kwargs):
+        """
+        Class representing an image service
+ 
+        Parameters
+        ----------
+        baseurl :   str
+                    the url for the image service.
+ 
+        """
+        if baseurl[:4] != 'http':
+            baseurl = 'https://' + baseurl
+        self.__dict__.update({"_" + k: v for k, v in kwargs.items()})
+        if hasattr(self, "_fields"):
+            self.variables = pandas.DataFrame(self._fields)
+        self._baseurl = baseurl
+ 
+    def __repr__(self):
+        try:
+            return "(ESRIImageService) " + self._name
+        except:
+            return ""
+ 
+    def computeStatHist(self, raw=False, **kwargs):
+        # Parse args
+        kwargs = {"".join(k.split("_")): v for k, v in kwargs.items()}
+       
+        # construct query string
+        self._baseComputeStatisticsHistograms = copy.deepcopy(_baseComputeStatisticsHistograms)
+        for k, v in kwargs.items():
+            try:
+                self._baseComputeStatisticsHistograms[k] = v
+            except KeyError:
+                raise KeyError("Option '{k}' not recognized, check parameters")
+        cstr = "&".join(["{}={}".format(k, v) for k, v in self._baseComputeStatisticsHistograms.items()])
+        cstr = cstr.replace(" ", "").replace("[", "%5B").replace("]", "%5D").replace("{", "%7B").replace("}", "%7D").replace("'", "%27").replace(":", "%3A").replace(",", "%2C")
+        self._last_query = self._baseurl + "/computeStatisticsHistograms?" + cstr
+        #print(self._last_query)
+        resp = requests.get(self._last_query)
+        resp.raise_for_status()
+        datadict = resp.json()
+        #print(datadict["statistics"][0]["mean"])
+        return datadict
+ 
+def get_image_by_poly(url, aoi):
+    # If geodataframe, get geometry
+    if isinstance(aoi, geopandas.GeoDataFrame):
+        row = aoi.loc[[0]] #TODO: loop through each row and return stats
+        json_string = row.to_json(drop_id=True)
+        data = json.loads(json_string)
+        # Parse geodataframe polygon object to get coordinates
+        rings = data["features"][0]["geometry"]["coordinates"]
+        # Make esri geometry object (polygon)
+        geometry_object = { "rings": rings,
+            "spatialReference": { "wkid": 4326 } #TODO: pull wkid programmatically
+            }
+   
+    feature_layer = ESRIImageService(url)
+   
+    # query
+    query_params = {      
+            "geometry": geometry_object,
+            "geometryType": "esriGeometryPolygon",
+            "f": "json"
+            }
+       
+    result = feature_layer.computeStatHist(**query_params)
+    return result
