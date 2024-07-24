@@ -32,3 +32,14 @@ def test_get_hospitals():
     gdf[gdf_int64.columns] = gdf_int64.astype('int32')
     
     assert_geodataframe_equal(actual, gdf)
+
+def test_get_urgent_care():
+    actual = health.get_urgent_care(aoi_gdf)
+    actual.drop(columns=['OBJECTID'], inplace=True)
+    actual.sort_values(by=['ID', 'geometry', 'NAME'], inplace=True, ignore_index=True)
+
+    # assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'get_urgent_care.parquet')
+    expected = geopandas.read_parquet(expected_file)
+    
+    assert_geodataframe_equal(actual, expected)
