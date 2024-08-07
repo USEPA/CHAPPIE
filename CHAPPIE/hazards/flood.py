@@ -4,6 +4,7 @@ Module for flood hazards
 @author: tlomba01
 """
 from CHAPPIE import layer_query
+import pandas
 
 def get_fema_nfhl(aoi):
     """Get FEMA NFHL sites within AOI.
@@ -46,6 +47,14 @@ def get_flood(aoi):
 
     """
     url = 'https://enviroatlas.epa.gov/arcgis/rest/services/Supplemental/Estimated_floodplain_CONUS_WM/ImageServer'
-   
-    return layer_query.get_image_by_poly(aoi=aoi,
-                                url=url)
+    
+    df = pandas.DataFrame(columns=['parcelnumb', 'mean'])
+    aoi = aoi[:100]
+    for i in range(len(aoi)):
+        data = []
+        data.append(aoi.loc[[i]]['parcelnumb'][i])
+        row = aoi.loc[[i]]
+        actual = layer_query.get_image_by_poly(aoi=aoi, url=url, row=row)
+        data.append(actual)
+        df.loc[len(df)] = data
+        return df

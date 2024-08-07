@@ -45,6 +45,5 @@ def test_get_fema_nfhl():
     
 def test_get_flood():
     actual = flood.get_flood(parcels_gdf)
-    actual_file = open((os.path.join(EXPECTED_DIR, 'get_flood.json')), "w")
-    json.dump(actual, actual_file)
-    actual_file.close()
+    actual_file = os.path.join(EXPECTED_DIR, 'get_flood.csv')
+    actual.to_csv(actual_file)

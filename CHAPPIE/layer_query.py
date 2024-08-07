@@ -317,30 +317,36 @@ class ESRIImageService(object):
         resp = requests.get(self._last_query)
         resp.raise_for_status()
         datadict = resp.json()
-        #print(datadict["statistics"][0]["mean"])
-        return datadict
- 
-def get_image_by_poly(url, aoi):
-    # If geodataframe, get geometry
+        mean = datadict["statistics"][0]["mean"]
+        return mean
+
+def get_image_by_poly(aoi, url, row):
+    # if geodataframe, get geometry of the row
     if isinstance(aoi, geopandas.GeoDataFrame):
-        row = aoi.loc[[0]] #TODO: loop through each row and return stats
         json_string = row.to_json(drop_id=True)
         data = json.loads(json_string)
-        # Parse geodataframe polygon object to get coordinates
-        rings = data["features"][0]["geometry"]["coordinates"]
-        # Make esri geometry object (polygon)
-        geometry_object = { "rings": rings,
-            "spatialReference": { "wkid": 4326 } #TODO: pull wkid programmatically
-            }
-   
-    feature_layer = ESRIImageService(url)
-   
-    # query
-    query_params = {      
-            "geometry": geometry_object,
-            "geometryType": "esriGeometryPolygon",
-            "f": "json"
-            }
-       
-    result = feature_layer.computeStatHist(**query_params)
-    return result
+        geometry_type = data["features"][0]["geometry"]["type"]
+        # Consider polygons and multipolygon differently
+        if geometry_type == 'Polygon':
+            # Parse geodataframe polygon object to get coordinates
+            rings = data["features"][0]["geometry"]["coordinates"]
+            # Make esri geometry object (polygon)
+            geometry_object = { "rings": rings,
+                "spatialReference": { "wkid": 4326 } #TODO: pull wkid programmatically
+                }
+            
+            feature_layer = ESRIImageService(url)
+    
+            # query
+            query_params = {       
+                    "geometry": geometry_object,
+                    "geometryType": "esriGeometryPolygon",
+                    "f": "json"
+                    }
+
+            result = feature_layer.computeStatHist(**query_params)
+
+            return result
+        
+        elif geometry_type == "MultiPolygon": #TODO: from geopandas to esri geometry object
+            pass
