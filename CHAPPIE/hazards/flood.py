@@ -52,9 +52,9 @@ def get_flood(aoi):
     aoi = aoi[:100]
     for i in range(len(aoi)):
         data = []
-        data.append(aoi.loc[[i]]['parcelnumb'][i])
+        data.append(aoi['parcelnumb'][i])
         row = aoi.loc[[i]]
         actual = layer_query.get_image_by_poly(aoi=aoi, url=url, row=row)
         data.append(actual)
         df.loc[len(df)] = data
-        return df
+    return df
