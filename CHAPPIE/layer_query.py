@@ -258,7 +258,7 @@ class ESRILayer(object):
             except requests.exceptions.HTTPError as e:
                 #TODO: this needs improvement, but getting url is good for debug
                 print(self._last_query())
-                raise e
+                print(e)
         else:
             resp = requests.get(self._last_query + "&f=json")
         resp.raise_for_status()
@@ -314,11 +314,16 @@ class ESRIImageService(object):
         cstr = cstr.replace(" ", "").replace("[", "%5B").replace("]", "%5D").replace("{", "%7B").replace("}", "%7D").replace("'", "%27").replace(":", "%3A").replace(",", "%2C")
         self._last_query = self._baseurl + "/computeStatisticsHistograms?" + cstr
         #print(self._last_query)
-        resp = requests.get(self._last_query)
-        resp.raise_for_status()
-        datadict = resp.json()
-        mean = datadict["statistics"][0]["mean"]
-        return mean
+        try:
+            resp = requests.get(self._last_query)
+            resp.raise_for_status()
+            datadict = resp.json()
+            mean = datadict["statistics"][0]["mean"]
+            return mean
+        except requests.exceptions.HTTPError as e:
+            #TODO: this needs improvement, but getting url is good for debug
+            print(self._last_query)
+            print(e)
 
 def get_image_by_poly(aoi, url, row):
     # if geodataframe, get geometry of the row

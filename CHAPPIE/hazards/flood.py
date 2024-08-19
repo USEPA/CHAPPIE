@@ -32,13 +32,16 @@ def get_fema_nfhl(aoi):
                                 layer=0,
                                 in_crs=aoi.crs.to_epsg())
 
-def get_flood(aoi):
+def get_flood(aoi, output):
     """Get flood imagery statistics and histogram for polygon within AOI.
 
     Parameters
     ----------
     aoi : geopandas.GeoDataFrame
         Parcel polygons to be summarized for Area Of Interest (AOI).
+
+    output : csv file path
+        Append data to csv.
 
     Returns
     -------
@@ -49,12 +52,14 @@ def get_flood(aoi):
     url = 'https://enviroatlas.epa.gov/arcgis/rest/services/Supplemental/Estimated_floodplain_CONUS_WM/ImageServer'
     
     df = pandas.DataFrame(columns=['parcelnumb', 'mean'])
-    aoi = aoi[:100]
+    aoi = aoi[:1000]
     for i in range(len(aoi)):
         data = []
         data.append(aoi['parcelnumb'][i])
-        row = aoi.loc[[i]]
+        row = aoi.iloc[[i]]
         actual = layer_query.get_image_by_poly(aoi=aoi, url=url, row=row)
         data.append(actual)
-        df.loc[len(df)] = data
+        df.loc[i] = data
+        df.to_csv(output, mode='a', index=True, header=False)
+        df.drop(df.index, inplace=True)
     return df

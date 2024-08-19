@@ -44,6 +44,5 @@ def test_get_fema_nfhl():
                               check_less_precise=True)
     
 def test_get_flood():
-    actual = flood.get_flood(parcels_gdf)
     actual_file = os.path.join(EXPECTED_DIR, 'get_flood.csv')
-    actual.to_csv(actual_file)
+    flood.get_flood(parcels_gdf, actual_file)
