@@ -339,19 +339,28 @@ def get_image_by_poly(aoi, url, row):
             geometry_object = { "rings": rings,
                 "spatialReference": { "wkid": 4326 } #TODO: pull wkid programmatically
                 }
+                   
+        elif geometry_type == "MultiPolygon": 
+            # Parse geodataframe polygon object to get coordinates
+            rings = data["features"][0]["geometry"]["coordinates"]
+            # get the number of rings in the multipolygon
+            count = len(rings)
+            # TODO: pull out polygons from exploded gdf and fit into rest syntax for rest request
+            row_ex = row.explode(column='geometry',index_parts=False)
+            # Make esri geometry object (multipolygon)
+            geometry_object = { "rings": multipoly,
+                "spatialReference": { "wkid": 4326 } #TODO: pull wkid programmatically
+                }
             
-            feature_layer = ESRIImageService(url)
+        feature_layer = ESRIImageService(url)
     
-            # query
-            query_params = {       
-                    "geometry": geometry_object,
-                    "geometryType": "esriGeometryPolygon",
-                    "f": "json"
-                    }
+        # query
+        query_params = {       
+                "geometry": geometry_object,
+                "geometryType": "esriGeometryPolygon",
+                "f": "json"
+                }
 
-            result = feature_layer.computeStatHist(**query_params)
+        result = feature_layer.computeStatHist(**query_params)
 
-            return result
-        
-        elif geometry_type == "MultiPolygon": #TODO: from geopandas to esri geometry object
-            pass
+        return result
