@@ -337,7 +337,7 @@ def get_image_by_poly(aoi, url, row):
             rings = data["features"][0]["geometry"]["coordinates"]
             # Make esri geometry object (polygon)
             geometry_object = { "rings": rings,
-                "spatialReference": { "wkid": 4326 } #TODO: pull wkid programmatically
+                "spatialReference": { "wkid": aoi.crs.to_epsg() }
                 }
                    
         elif geometry_type == "MultiPolygon": 
@@ -357,7 +357,7 @@ def get_image_by_poly(aoi, url, row):
                 multipoly.append(rings)
             
             geometry_object = { "rings": multipoly,
-                "spatialReference": { "wkid": 4326 } #TODO: pull wkid programmatically
+                "spatialReference": { "wkid": aoi.crs.to_epsg() }
                 }
             
         feature_layer = ESRIImageService(url)
