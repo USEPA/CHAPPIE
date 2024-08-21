@@ -348,6 +348,14 @@ def get_image_by_poly(aoi, url, row):
             # TODO: pull out polygons from exploded gdf and fit into rest syntax for rest request
             row_ex = row.explode(column='geometry',index_parts=False)
             # Make esri geometry object (multipolygon)
+            multipoly = []
+            for i in range(len(row_ex)):
+                row = row_ex.iloc[[i]]
+                json_string = row.to_json(drop_id=True)
+                data = json.loads(json_string)
+                rings = data["features"][0]["geometry"]["coordinates"][0]
+                multipoly.append(rings)
+            
             geometry_object = { "rings": multipoly,
                 "spatialReference": { "wkid": 4326 } #TODO: pull wkid programmatically
                 }
