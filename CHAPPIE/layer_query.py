@@ -299,7 +299,7 @@ class ESRIImageService(object):
         except:
             return ""
  
-    def computeStatHist(self, raw=False, **kwargs):
+    def computeStatHist(self, **kwargs):
         # Parse args
         kwargs = {"".join(k.split("_")): v for k, v in kwargs.items()}
        
@@ -324,7 +324,11 @@ class ESRIImageService(object):
             #TODO: this needs improvement, but getting url is good for debug
             print(self._last_query)
             print(e)
-
+            pass
+        except IndexError:
+            return 'error'
+            
+    
 def get_image_by_poly(aoi, url, row):
     # if geodataframe, get geometry of the row
     if isinstance(aoi, geopandas.GeoDataFrame):
@@ -343,9 +347,7 @@ def get_image_by_poly(aoi, url, row):
         elif geometry_type == "MultiPolygon": 
             # Parse geodataframe polygon object to get coordinates
             rings = data["features"][0]["geometry"]["coordinates"]
-            # get the number of rings in the multipolygon
-            count = len(rings)
-            # TODO: pull out polygons from exploded gdf and fit into rest syntax for rest request
+            # Pull out polygons from exploded gdf and fit into rest syntax for rest request
             row_ex = row.explode(column='geometry',index_parts=False)
             # Make esri geometry object (multipolygon)
             multipoly = []
