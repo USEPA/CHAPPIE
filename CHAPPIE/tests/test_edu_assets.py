@@ -47,10 +47,21 @@ def test_get_child_care():
     actual = education.get_child_care(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
     actual.sort_values(by=['ID', 'geometry', 'NAME'], inplace=True, ignore_index=True)
-    #actual.to_parquet(os.path.join(EXPECTED_DIR, 'child_care.parquet'))
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'child_care.parquet')
+    expected = geopandas.read_parquet(expected_file)
+    
+    assert_geodataframe_equal(actual, expected)
+
+def test_get_colleges_universities():
+    actual = education.get_colleges_universities(aoi_gdf)
+    actual.drop(columns=['OBJECTID'], inplace=True)
+    actual.sort_values(by=['IPEDSID', 'geometry', 'NAME'], inplace=True, ignore_index=True)
+    #actual.to_parquet(os.path.join(EXPECTED_DIR, 'colleges_universities.parquet'))
+
+    # assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'colleges_universities.parquet')
     expected = geopandas.read_parquet(expected_file)
     
     assert_geodataframe_equal(actual, expected)
