@@ -58,10 +58,20 @@ def test_get_colleges_universities():
     actual = education.get_colleges_universities(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
     actual.sort_values(by=['IPEDSID', 'geometry', 'NAME'], inplace=True, ignore_index=True)
-    #actual.to_parquet(os.path.join(EXPECTED_DIR, 'colleges_universities.parquet'))
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'colleges_universities.parquet')
+    expected = geopandas.read_parquet(expected_file)
+    
+    assert_geodataframe_equal(actual, expected)
+
+def test_get_supplemental_colleges():
+    actual = education.get_supplemental_colleges(aoi_gdf)
+    actual.drop(columns=['OBJECTID'], inplace=True)
+    actual.sort_values(by=['UNIQUEID', 'geometry', 'NAME'], inplace=True, ignore_index=True)
+
+    # assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'supplemental_colleges.parquet')
     expected = geopandas.read_parquet(expected_file)
     
     assert_geodataframe_equal(actual, expected)

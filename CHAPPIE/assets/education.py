@@ -81,7 +81,7 @@ def get_child_care(aoi):
                                 in_crs=aoi.crs.to_epsg())
 
 def get_colleges_universities(aoi):
-    """Get Colleges and Universities locations within AOI.
+    """Get College and University locations within AOI.
 
     Parameters
     ----------
@@ -91,12 +91,37 @@ def get_colleges_universities(aoi):
     Returns
     -------
     geopandas.GeoDataFrame
-        GeoDataFrame for Colleges and Universities locations.
+        GeoDataFrame for College and University locations.
 
     """
 
     base_url = "https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/"
     url = f"{base_url}/Colleges_and_Universities/FeatureServer"
+    xmin, ymin, xmax, ymax = aoi.total_bounds
+    bbox = [xmin, ymin, xmax, ymax]
+    
+    return layer_query.get_bbox(aoi=bbox,
+                                url=url,
+                                layer=0,
+                                in_crs=aoi.crs.to_epsg())
+
+def get_supplemental_colleges(aoi):
+    """Get Supplemental College locations within AOI.
+
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        Spatial definition for Area Of Interest (AOI).
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame for Supplemental College locations.
+
+    """
+
+    base_url = "https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/"
+    url = f"{base_url}/Supplemental_Colleges/FeatureServer"
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
     
