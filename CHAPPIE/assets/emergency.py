@@ -1,5 +1,5 @@
 """
-Module for health assets.
+Module for emergency assets.
 
 @author: tlomba01
 """
