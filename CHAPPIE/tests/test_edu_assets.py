@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Test technological 
+Test education assets 
 
 @author: tlomba01
 """
