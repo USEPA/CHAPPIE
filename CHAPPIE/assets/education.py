@@ -5,6 +5,9 @@ Module for education assets.
 """
 from CHAPPIE import layer_query
 
+BASE_URL = "https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/"
+
+
 def get_schools_public(aoi):
     """Get Public School locations within AOI.
 
@@ -19,9 +22,8 @@ def get_schools_public(aoi):
         GeoDataFrame for Public School locations.
 
     """
-    
-    base_url = "https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/"
-    url = f"{base_url}/Public_Schools/FeatureServer"
+
+    url = f"{BASE_URL}/Public_Schools/FeatureServer"
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
     
@@ -45,8 +47,7 @@ def get_schools_private(aoi):
 
     """
 
-    base_url = "https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/"
-    url = f"{base_url}/Private_Schools/FeatureServer"
+    url = f"{BASE_URL}/Private_Schools/FeatureServer"
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
     
@@ -70,8 +71,7 @@ def get_child_care(aoi):
 
     """
 
-    base_url = "https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/"
-    url = f"{base_url}/ChildCareCenter1/FeatureServer"
+    url = f"{BASE_URL}/ChildCareCenter1/FeatureServer"
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
     
@@ -95,8 +95,7 @@ def get_colleges_universities(aoi):
 
     """
 
-    base_url = "https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/"
-    url = f"{base_url}/Colleges_and_Universities/FeatureServer"
+    url = f"{BASE_URL}/Colleges_and_Universities/FeatureServer"
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
     
@@ -120,8 +119,7 @@ def get_supplemental_colleges(aoi):
 
     """
 
-    base_url = "https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/"
-    url = f"{base_url}/Supplemental_Colleges/FeatureServer"
+    url = f"{BASE_URL}/Supplemental_Colleges/FeatureServer"
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
     
