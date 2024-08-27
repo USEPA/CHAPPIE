@@ -5,6 +5,7 @@ Test food assets.
 @author: jbousqui
 """
 import os
+import geopandas
 from shapely import Point
 from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.assets import food
@@ -29,4 +30,3 @@ def test_radius():
 
 def get_agritourism():
     actual = get_agritourism(aoi_gdf, usda_API)
-    
