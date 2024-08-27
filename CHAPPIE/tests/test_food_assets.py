@@ -30,7 +30,7 @@ def test_radius():
     assert isinstance(radius, int)
     assert isinstance(pnt, Point)  # shapely.Point
     # Can't check epsg off point, but we can confirm values
-    assert pnt == Point(30.23698502049977, -85.64365604143532)
+    assert pnt == Point(-85.64365604143532, 30.23698502049977)
 
 def test_get_agritourism():
     actual = food.get_agritourism(aoi_gdf, usda_API)
