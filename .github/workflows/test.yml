@@ -53,6 +53,6 @@ jobs:
       - name: Run pytest
         env:
           usda_API: ${{ secrets.USDA_KEY1 }}
-        run: pytest -v -s CHAPPIE "$usda_API"
+        run: pytest -v -s CHAPPIE
 
       # upload artifact if results of run are needed, e.g., for freeze, deploy, etc.

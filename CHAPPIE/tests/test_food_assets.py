@@ -10,6 +10,10 @@ from shapely import Point
 from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.assets import food
 
+
+# get key from env
+usda_API = = os.environ['usda_API']
+
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
 
