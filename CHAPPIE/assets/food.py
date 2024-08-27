@@ -67,7 +67,7 @@ def get_agritourism(aoi, api_key):
     url = f"{API_URL}/agritourism/"
 
     # Get query geos
-    pnt, radius = search_pnt_radius(aoi.total_bounds)
+    pnt, radius = search_pnt_radius(aoi)
     
     params = {
         'apikey': api_key,
@@ -101,7 +101,7 @@ def get_CSA(aoi, api_key):
     url = f"{API_URL}/csa/"
 
     # Get query geos
-    pnt, radius = search_pnt_radius(aoi.total_bounds)
+    pnt, radius = search_pnt_radius(aoi)
     
     params = {
         'apikey': api_key,
@@ -135,7 +135,7 @@ def get_farmers_market(aoi, api_key):
     url = f"{API_URL}/farmersmarket/"
 
     # Get query geos
-    pnt, radius = search_pnt_radius(aoi.total_bounds)
+    pnt, radius = search_pnt_radius(aoi)
     
     params = {
         'apikey': api_key,
@@ -171,7 +171,7 @@ def get_food_hub(aoi, api_key):
     url = f"{API_URL}/foodhub/"
 
     # Get query geos
-    pnt, radius = search_pnt_radius(aoi.total_bounds)
+    pnt, radius = search_pnt_radius(aoi)
     
     params = {
         'apikey': api_key,
@@ -207,7 +207,7 @@ def get_farm_store(aoi, api_key):
     url = f"{API_URL}/onfarmmarket/"
 
     # Get query geos
-    pnt, radius = search_pnt_radius(aoi.total_bounds)
+    pnt, radius = search_pnt_radius(aoi)
     
     params = {
         'apikey': api_key,
