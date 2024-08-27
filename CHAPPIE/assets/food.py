@@ -39,7 +39,7 @@ def search_pnt_radius(aoi, outEPSG=4326):
     radius = pnt.distance(max_pnt)
     
     # transform center point to desired EPSG
-    transformer = Transformer.from_crs(inEPSG, "epsg:{}".format(outEPSG))
+    transformer = Transformer.from_crs(inEPSG, "epsg:{}".format(outEPSG), always_xy=True)
     pnt_out = transformer.transform(pnt.x, pnt.y)
 
     return Point(pnt_out), ceil(radius/1609)
@@ -78,7 +78,13 @@ def get_agritourism(aoi, api_key):
 
     res = requests.get(url, params, headers=USDA_header)
     if res.ok:
-        return geopandas.read_file(res)
+        try:
+            gdf = geopandas.read_file(res)
+            return gdf
+        except Exception as e:
+            # TODO: catch just TypeError if not seeing anything else
+            print(f'Check {res.url}')
+            print(e)
 
 
 def get_CSA(aoi, api_key):
