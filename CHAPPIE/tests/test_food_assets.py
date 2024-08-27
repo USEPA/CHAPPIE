@@ -21,7 +21,7 @@ aoi_gdf = geopandas.read_file(AOI)
 
 
 def test_radius():
-    pnt, radius = search_pnt_radius(aoi_gdf)
+    pnt, radius = food.search_pnt_radius(aoi_gdf)
     assert radius == 25
     assert isinstance(radius, int)
     assert isinstance(pnt, Point)  # shapely.Point
@@ -29,4 +29,5 @@ def test_radius():
     assert pnt == Point(46.02003357814886, -83.15749862546241)
 
 def get_agritourism():
-    actual = get_agritourism(aoi_gdf, usda_API)
+    actual = food.get_agritourism(aoi_gdf, usda_API)
+    assert isinstance(actual, geopandas.GeoDataFrame)
