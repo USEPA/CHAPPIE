@@ -39,10 +39,10 @@ def search_pnt_radius(aoi, outEPSG=4326):
     # transform center point to desired EPSG
     if not inEPSG:
         inEPSG = aoi.crs.to_epsg()
-    transformer = Transformer.from_crs(inEPS, "epsg:{}".format(outEPSG))
+    transformer = Transformer.from_crs(inEPSG, "epsg:{}".format(outEPSG))
     pnt_out = transformer.transform(pnt.x, pnt.y)
 
-    return pnt_out, ceil(radius/1609)
+    return Point(pnt_out), ceil(radius/1609)
 
 
 def get_agritourism(aoi, api_key):
