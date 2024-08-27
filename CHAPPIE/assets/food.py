@@ -78,6 +78,9 @@ def get_agritourism(aoi, api_key):
 
     res = requests.get(url, params, headers=USDA_header)
     if res.ok:
+        if res.content==b'{"data":""}':
+            # empty result, return empty gdf
+            return geopandas.GeoDataFrame()
         try:
             gdf = geopandas.read_file(res)
             return gdf
