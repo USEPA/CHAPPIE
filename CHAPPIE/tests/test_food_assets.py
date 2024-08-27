@@ -7,7 +7,7 @@ Test food assets.
 import os
 import geopandas
 from shapely import Point
-from geopandas.testing import assert_geodataframe_equal
+#from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.assets import food
 
 
@@ -34,4 +34,26 @@ def test_radius():
 
 def test_get_agritourism():
     actual = food.get_agritourism(aoi_gdf, usda_API)
-    assert isinstance(actual, geopandas.GeoDataFrame)
+    assert isinstance(actual, geopandas.geodataframe.GeoDataFrame)
+    # Expect this one to be empty
+    assert len(actual)==0
+
+def test_get_CSA():
+    actual = food.get_CSA(aoi_gdf, usda_API)
+    assert isinstance(actual, geopandas.geodataframe.GeoDataFrame)
+    assert len(actual)==0
+
+def test_get_farmers_market():
+    actual = food.get_farmers_market(aoi_gdf, usda_API)
+    assert isinstance(actual, geopandas.geodataframe.GeoDataFrame)
+    assert len(actual)==0
+
+def test_get_food_hub():
+    actual = food.get_food_hub(aoi_gdf, usda_API)
+    assert isinstance(actual, geopandas.geodataframe.GeoDataFrame)
+    assert len(actual)==0
+
+def test_get_farm_store():
+    actual = food.get_farm_store(aoi_gdf, usda_API)
+    assert isinstance(actual, geopandas.geodataframe.GeoDataFrame)
+    assert len(actual)==0

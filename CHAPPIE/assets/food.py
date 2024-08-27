@@ -121,7 +121,16 @@ def get_CSA(aoi, api_key):
 
     res = requests.get(url, params, headers=USDA_header)
     if res.ok:
-        return geopandas.read_file(res)
+        if res.content==b'{"data":""}':
+            # empty result, return empty gdf
+            return geopandas.GeoDataFrame()
+        try:
+            gdf = geopandas.read_file(res)
+            return gdf
+        except Exception as e:
+            # TODO: catch just TypeError if not seeing anything else
+            print(f'Check {res.url}')
+            print(e)
 
 
 def get_farmers_market(aoi, api_key):
@@ -155,7 +164,16 @@ def get_farmers_market(aoi, api_key):
 
     res = requests.get(url, params, headers=USDA_header)
     if res.ok:
-        return geopandas.read_file(res)
+        if res.content==b'{"data":""}':
+            # empty result, return empty gdf
+            return geopandas.GeoDataFrame()
+        try:
+            gdf = geopandas.read_file(res)
+            return gdf
+        except Exception as e:
+            # TODO: catch just TypeError if not seeing anything else
+            print(f'Check {res.url}')
+            print(e)
 
 
 def get_food_hub(aoi, api_key):
@@ -191,7 +209,16 @@ def get_food_hub(aoi, api_key):
 
     res = requests.get(url, params, headers=USDA_header)
     if res.ok:
-        return geopandas.read_file(res)
+        if res.content==b'{"data":""}':
+            # empty result, return empty gdf
+            return geopandas.GeoDataFrame()
+        try:
+            gdf = geopandas.read_file(res)
+            return gdf
+        except Exception as e:
+            # TODO: catch just TypeError if not seeing anything else
+            print(f'Check {res.url}')
+            print(e)
 
 
 def get_farm_store(aoi, api_key):
@@ -227,4 +254,13 @@ def get_farm_store(aoi, api_key):
 
     res = requests.get(url, params, headers=USDA_header)
     if res.ok:
-        return geopandas.read_file(res)
+        if res.content==b'{"data":""}':
+            # empty result, return empty gdf
+            return geopandas.GeoDataFrame()
+        try:
+            gdf = geopandas.read_file(res)
+            return gdf
+        except Exception as e:
+            # TODO: catch just TypeError if not seeing anything else
+            print(f'Check {res.url}')
+            print(e)
