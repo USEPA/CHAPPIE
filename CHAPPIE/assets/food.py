@@ -27,6 +27,8 @@ def search_pnt_radius(aoi, outEPSG=4326):
         # TODO: better equa-distant projection for CONUS?
         aoi = aoi.to_csr('ESRI:102005')
         inEPSG = 'ESRI:102005'
+    else:
+        inEPSG = aoi.crs.to_epsg()
 
     # center point (not==centroid)
     xmin, ymin, xmax, ymax = aoi.total_bounds
@@ -37,8 +39,6 @@ def search_pnt_radius(aoi, outEPSG=4326):
     radius = pnt.distance(max_pnt)
     
     # transform center point to desired EPSG
-    if not inEPSG:
-        inEPSG = aoi.crs.to_epsg()
     transformer = Transformer.from_crs(inEPSG, "epsg:{}".format(outEPSG))
     pnt_out = transformer.transform(pnt.x, pnt.y)
 
