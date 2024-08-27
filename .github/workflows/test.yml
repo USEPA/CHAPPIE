@@ -51,6 +51,8 @@ jobs:
           #pip freeze >> ~\tests\expected\git_env.txt
 
       - name: Run pytest
+        with:
+          usda_API: ${{ secrets.USDA_KEY1 }}
         run: pytest -v -s CHAPPIE
 
       # upload artifact if results of run are needed, e.g., for freeze, deploy, etc.
