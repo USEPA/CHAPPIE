@@ -259,7 +259,7 @@ def get_farm_store(aoi, api_key):
 
     res = requests.get(url, params, headers=USDA_header)
     if res.ok:
-        usda_res_as_gdf(res)
+        return usda_res_as_gdf(res)
     # there was a problem
     print(f'Problem, check {res.url}')
     #TODO: throw error?
