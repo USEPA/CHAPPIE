@@ -61,6 +61,19 @@ def search_pnt_radius(aoi, outEPSG=4326):
 
 
 def usda_res_as_gdf(res):
+    """Build geopandas.GeoDataFrame from a USDA Directory response.
+
+    Parameters
+    ----------
+    res : requests.response
+        Response object from query to one of the USDA directories
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame for locations from USDA directory.
+
+    """
     if res.content==b'{"data":""}':
         # empty result, return empty gdf
         return geopandas.GeoDataFrame()
