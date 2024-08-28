@@ -8,6 +8,7 @@ For additional definitions: https://www.usdalocalfoodportal.com/fe/definitions/
 """
 import requests
 import geopandas
+import pandas
 from shapely import Point
 from pyproj import Transformer
 from math import ceil
@@ -17,9 +18,23 @@ USDA_header = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb
 
 
 def search_pnt_radius(aoi, outEPSG=4326):
-    # Doc note: pnt coordinates in outEPSG CRS
-    # Doc note: expected input CRS units in 'm' and what it is projected to otherwise
-    # Doc note: radius in miles, rounded up
+    """Get central point and radius around point to use in spatial search.
+
+    Note: aoi is expected to be in CRS with units in 'm', otherwise it is re-projected in ESRI:102005
+
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        Geodataframe defining the area to search for results within.
+    outEPSG : int, optional
+        EPSG code for the point returned. The default is 4326 (WGS1984).
+
+    Returns
+    -------
+    Tuple : (shapely.Point, int)
+        Central point in outEPSG and search radius in miles (rounded up).
+
+    """
 
     # Check crs units are meters and re-project if not
     crs_units = aoi.crs.to_dict()['units']
@@ -44,6 +59,20 @@ def search_pnt_radius(aoi, outEPSG=4326):
 
     return Point(pnt_out), ceil(radius/1609)
 
+
+def usda_res_as_gdf(res):
+    if res.content==b'{"data":""}':
+        # empty result, return empty gdf
+        return geopandas.GeoDataFrame()
+    try:
+        df = pandas.DataFrame(res.json()['data'])
+    except Exception as e:
+        # TODO: catch just TypeError if not seeing anything else
+        print(f'Check {res.url}')
+        print(e)
+    geom = geopandas.points_from_xy(df['location_x'], df['location_y'])
+    gdf = geopandas.GeoDataFrame(df, geometry=geom, crs=4326)
+    return gdf
 
 def get_agritourism(aoi, api_key):
     """Get businesses from the USDA Agritourism Business Directory.
@@ -78,16 +107,10 @@ def get_agritourism(aoi, api_key):
 
     res = requests.get(url, params, headers=USDA_header)
     if res.ok:
-        if res.content==b'{"data":""}':
-            # empty result, return empty gdf
-            return geopandas.GeoDataFrame()
-        try:
-            gdf = geopandas.read_file(res)
-            return gdf
-        except Exception as e:
-            # TODO: catch just TypeError if not seeing anything else
-            print(f'Check {res.url}')
-            print(e)
+        usda_res_as_gdf(res)
+    # there was a problem
+    print(f'Problem, check {res.url}')
+    #TODO: throw error?
 
 
 def get_CSA(aoi, api_key):
@@ -121,16 +144,10 @@ def get_CSA(aoi, api_key):
 
     res = requests.get(url, params, headers=USDA_header)
     if res.ok:
-        if res.content==b'{"data":""}':
-            # empty result, return empty gdf
-            return geopandas.GeoDataFrame()
-        try:
-            gdf = geopandas.read_file(res)
-            return gdf
-        except Exception as e:
-            # TODO: catch just TypeError if not seeing anything else
-            print(f'Check {res.url}')
-            print(e)
+        usda_res_as_gdf(res)
+    # there was a problem
+    print(f'Problem, check {res.url}')
+    #TODO: throw error?
 
 
 def get_farmers_market(aoi, api_key):
@@ -164,16 +181,10 @@ def get_farmers_market(aoi, api_key):
 
     res = requests.get(url, params, headers=USDA_header)
     if res.ok:
-        if res.content==b'{"data":""}':
-            # empty result, return empty gdf
-            return geopandas.GeoDataFrame()
-        try:
-            gdf = geopandas.read_file(res)
-            return gdf
-        except Exception as e:
-            # TODO: catch just TypeError if not seeing anything else
-            print(f'Check {res.url}')
-            print(e)
+        usda_res_as_gdf(res)
+    # there was a problem
+    print(f'Problem, check {res.url}')
+    #TODO: throw error?
 
 
 def get_food_hub(aoi, api_key):
@@ -209,16 +220,10 @@ def get_food_hub(aoi, api_key):
 
     res = requests.get(url, params, headers=USDA_header)
     if res.ok:
-        if res.content==b'{"data":""}':
-            # empty result, return empty gdf
-            return geopandas.GeoDataFrame()
-        try:
-            gdf = geopandas.read_file(res)
-            return gdf
-        except Exception as e:
-            # TODO: catch just TypeError if not seeing anything else
-            print(f'Check {res.url}')
-            print(e)
+        usda_res_as_gdf(res)
+    # there was a problem
+    print(f'Problem, check {res.url}')
+    #TODO: throw error?
 
 
 def get_farm_store(aoi, api_key):
@@ -254,13 +259,7 @@ def get_farm_store(aoi, api_key):
 
     res = requests.get(url, params, headers=USDA_header)
     if res.ok:
-        if res.content==b'{"data":""}':
-            # empty result, return empty gdf
-            return geopandas.GeoDataFrame()
-        try:
-            gdf = geopandas.read_file(res)
-            return gdf
-        except Exception as e:
-            # TODO: catch just TypeError if not seeing anything else
-            print(f'Check {res.url}')
-            print(e)
+        usda_res_as_gdf(res)
+    # there was a problem
+    print(f'Problem, check {res.url}')
+    #TODO: throw error?
