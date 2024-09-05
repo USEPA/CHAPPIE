@@ -129,6 +129,15 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None):
     
     feature_layer = ESRILayer(url, layer)
     
+    # return count only
+    return_count_params = {       
+            "geometry": bbox,
+            "geometryType": "esriGeometryEnvelope",
+            "spatialRel": "esriSpatialRelIntersects",
+            "inSR": in_crs,
+            "returnCountOnly": "True",
+            }    
+    
     # query
     query_params = {       
             "geometry": bbox,
@@ -137,6 +146,7 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None):
             "inSR": in_crs,
             'returnGeometry': "True",
             }
+    
     if out_fields:
         if isinstance(out_fields, list):
             query_params["outFields"] = ",".join(out_fields)
@@ -147,9 +157,21 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None):
     if buff_dist_m:
         query_params["distance"] = buff_dist_m
         query_params["units"] = 'esriSRUnit_Meter'
-        
-    result = feature_layer.query(**query_params)
-    return result
+    
+    count = feature_layer.query(**return_count_params)
+    
+    if count < 2000:
+        result = feature_layer.query(**query_params)
+        return result
+    else:
+        num_requests_needed = math.ceil(count/2000) # can get this max record count from service?
+        query_params['resultOffset'] = 0
+        result = feature_layer.query(**query_params)
+        for dl_count in list(range(num_requests_needed)):
+            query_params['resultOffset'] = dl_count * 2000 # can get this max record count from service?
+            result2 = feature_layer.query(**query_params)
+            result = pandas.concat([result, result2])
+        return result
 
 
 def get_field_where(url, layer, field, value, oper='='):
@@ -258,6 +280,8 @@ class ESRILayer(object):
             return pandas.DataFrame.from_records(
                 [x["attributes"] for x in datadict["features"]]
             )
+        if kwargs.get("returnCountOnly", "true") == "True":
+            return datadict["count"]
         else:
             #return resp
             raise KeyError("Returning geometry is currently disabled")
