@@ -158,10 +158,10 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None):
         return result
     else:
         # Get count of features in bbox
-        count = feature_layer.get_count_only(aoi=bbox,
-                                             url=url,
-                                             layer=0,
-                                             in_crs=aoi.crs.to_epsg())
+        count = get_count_only(aoi=bbox,
+                               url=url,
+                               layer=0,
+                               in_crs=aoi.crs.to_epsg())
         num_requests_needed = math.ceil(count/count_limit) # compare to maxRecordCount from service
         # TODO: right now we don't leverage results from before the count check
         list_of_results = []
