@@ -164,15 +164,15 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None):
                                in_crs=in_crs)
         # Compare to maxRecordCount from service
         num_requests_needed = math.ceil(count/count_limit)
-        # TODO: right now we don't leverage results from before the count check
-        list_of_results = []
-        for request_count in list(range(num_requests_needed)):
+        list_of_results = [result]  # Add first result to list of resutls
+        for request_count in list(range(num_requests_needed))[1:]:
             offset_factor = request_count
             # Compare to maxRecordCount from service
             query_params['resultOffset'] = (offset_factor * count_limit)
             result = feature_layer.query(**query_params)
             list_of_results.append([result])
         df = [geopandas.GeoDataFrame(result[0]) for result in list_of_results]
+        # TODO: may need to drop all-NA results in FutureWarning
         dftot = pandas.concat(df)
                 
         return dftot
