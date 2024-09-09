@@ -290,8 +290,7 @@ class ESRILayer(object):
                 #TODO: this needs improvement, but getting url is good for debug
                 print(self._last_query())
                 raise e
-        else:
-            resp = requests.get(self._last_query + "&f=json")
+        resp = requests.get(self._last_query + "&f=json")
         resp.raise_for_status()
         datadict = resp.json()
         if raw:
