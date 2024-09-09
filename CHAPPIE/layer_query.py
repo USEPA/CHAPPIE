@@ -160,14 +160,16 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None):
         # Get count of features in bbox
         count = get_count_only(aoi=bbox,
                                url=url,
-                               layer=0,
-                               in_crs=in_crs.to_epsg())
-        num_requests_needed = math.ceil(count/count_limit) # compare to maxRecordCount from service
+                               layer=layer,
+                               in_crs=in_crs)
+        # Compare to maxRecordCount from service
+        num_requests_needed = math.ceil(count/count_limit)
         # TODO: right now we don't leverage results from before the count check
         list_of_results = []
         for request_count in list(range(num_requests_needed)):
             offset_factor = request_count
-            query_params['resultOffset'] = (offset_factor * 2000) # compare to maxRecordCount from service
+            # Compare to maxRecordCount from service
+            query_params['resultOffset'] = (offset_factor * count_limit)
             result = feature_layer.query(**query_params)
             list_of_results.append([result])
         df = [geopandas.GeoDataFrame(result[0]) for result in list_of_results]
