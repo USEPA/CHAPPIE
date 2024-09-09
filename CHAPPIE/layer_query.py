@@ -165,7 +165,8 @@ def batch_query(feature_layer, query_params, count_limit=None):
     # Get count of features in query result
     count = get_count_only(feature_layer, query_params)
     # Get rid of returnCountOnly
-    query_params.pop('returnCountOnly')
+    if 'returnCountOnly' in query_params.keys():
+        query_params.pop('returnCountOnly')
     # Compare to maxRecordCount from service
     num_requests = math.ceil(count/count_limit)
     list_of_results = []
