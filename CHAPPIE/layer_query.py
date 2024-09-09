@@ -186,31 +186,14 @@ def get_field_where(url, layer, field, value, oper='='):
                     }
     return feature_layer.query(**query_params)
 
-def get_count_only(aoi, url, layer, in_crs):
+def get_count_only(feature_layer, query_params):
     """Query ESRI feature layer and return count only"""
-    # if geodataframe get bbox str
-    if isinstance(aoi, geopandas.GeoDataFrame):
-        bbox = ','.join(map(str, aoi.total_bounds))
-        if not in_crs:
-            in_crs = aoi.crs
-    elif isinstance(aoi, list):
-        bbox = ','.join(map(str, aoi))
-    else:
-        bbox = aoi
-        #assert in_crs!=None?
-    feature_layer = ESRILayer(url, layer)
-    
-    # return count only
-    return_count_params = {       
-            "geometry": bbox,
-            "geometryType": "esriGeometryEnvelope",
-            "spatialRel": "esriSpatialRelIntersects",
-            "inSR": in_crs,
-            "returnCountOnly": "True",
-            }    
-    datadict = feature_layer.query(raw=True, **return_count_params)
-    count = datadict["count"]
-    return count
+    # Return count only
+    query_params["returnCountOnly"] = "True"
+    # Run query
+    datadict = feature_layer.query(raw=True, **query_params)
+
+    return datadict["count"]
 
 class ESRILayer(object):
     """Fundamental building block to access a layer in an ESRI MapService"""
