@@ -150,6 +150,7 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None, co
         query_params["distance"] = buff_dist_m
         query_params["units"] = 'esriSRUnit_Meter'
     
+    # Send multiple queries to rest service and specify resultOffset parameter
     if count < 2000: 
         result = feature_layer.query(**query_params)
         return result
@@ -176,6 +177,7 @@ def get_field_where(url, layer, field, value, oper='='):
     return feature_layer.query(**query_params)
 
 def get_count_only(aoi, url, layer, in_crs):
+    """Query ESRI feature layer and return count only"""
     # if geodataframe get bbox str
     if isinstance(aoi, geopandas.GeoDataFrame):
         bbox = ','.join(map(str, aoi.total_bounds))

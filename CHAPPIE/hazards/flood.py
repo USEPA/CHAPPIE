@@ -25,6 +25,7 @@ def get_fema_nfhl(aoi):
     bbox = [xmin, ymin, xmax, ymax]
     # out_fields = ['geometry', 'DFIRM_ID', 'FLD_AR_ID', 'FLD_ZONE', 'ZONE_SUBTY']
 
+    # Count how many flood hazard features are in the bbox
     count = layer_query.get_count_only(aoi=bbox,
                                 url=url,
                                 layer=0,
