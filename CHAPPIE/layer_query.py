@@ -190,6 +190,8 @@ def get_count_only(feature_layer, query_params):
     """Query ESRI feature layer and return count only"""
     # Return count only
     query_params["returnCountOnly"] = "True"
+    # Above takes precedence, but this param is used to parse result
+    query_params["returnGeometry"] = "False"
     # Run query
     datadict = feature_layer.query(raw=True, **query_params)
 
