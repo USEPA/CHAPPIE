@@ -163,7 +163,7 @@ def batch_query(query_params, feature_layer, count_limit=None):
     if not count_limit:
         count_limit = feature_layer.count()  # re-query
     # Get count of features in query result
-    count = get_count_only(**query_params)
+    count = get_count_only(feature_layer, query_params)
     # Compare to maxRecordCount from service
     num_requests = math.ceil(count/count_limit)
     list_of_results = []
