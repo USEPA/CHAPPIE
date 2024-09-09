@@ -193,7 +193,9 @@ def get_count_only(feature_layer, query_params):
     # Run query
     datadict = feature_layer.query(raw=True, **query_params)
 
-    return datadict["count"]
+    count = datadict["count"]
+
+    return count
 
 class ESRILayer(object):
     """Fundamental building block to access a layer in an ESRI MapService"""
