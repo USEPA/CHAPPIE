@@ -116,7 +116,7 @@ def getState(geoids):
     return feature_layer.query(**query_params)
 
 
-def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None, count=0):
+def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None):
     # if geodataframe get bbox str
     if isinstance(aoi, geopandas.GeoDataFrame):
         bbox = ','.join(map(str, aoi.total_bounds))
@@ -150,12 +150,20 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None, co
         query_params["distance"] = buff_dist_m
         query_params["units"] = 'esriSRUnit_Meter'
     
-    # Send multiple queries to rest service and specify resultOffset parameter
-    if count < 2000: #TODO: compare to maxRecordCount from service
-        result = feature_layer.query(**query_params)
+    result = feature_layer.query(**query_params)  # Get result
+    
+    # Compare result against count limit
+    count_limit = feature_layer.count()
+    if len(result) < count_limit:
         return result
     else:
-        num_requests_needed = math.ceil(count/2000) # compare to maxRecordCount from service
+        # Get count of features in bbox
+        count = feature_layer.get_count_only(aoi=bbox,
+                                             url=url,
+                                             layer=0,
+                                             in_crs=aoi.crs.to_epsg())
+        num_requests_needed = math.ceil(count/count_limit) # compare to maxRecordCount from service
+        # TODO: right now we don't leverage results from before the count check
         list_of_results = []
         for request_count in list(range(num_requests_needed)):
             offset_factor = request_count
@@ -228,7 +236,10 @@ class ESRILayer(object):
         except:
             return ""
 
-    #TODO: Method to return service properties from self._baseurl, like maxRecordCount
+    #TODO: Extend method to return other service properties from self._baseurl as needed
+    def count(self):
+        res = requests.get(self._baseurl + '?f=pjson')
+        return res.json()['maxRecordCount']
 
     def query(self, raw=False, **kwargs):
         """
