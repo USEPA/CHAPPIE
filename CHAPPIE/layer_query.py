@@ -151,15 +151,15 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None, co
         query_params["units"] = 'esriSRUnit_Meter'
     
     # Send multiple queries to rest service and specify resultOffset parameter
-    if count < 2000: 
+    if count < 2000: #TODO: compare to maxRecordCount from service
         result = feature_layer.query(**query_params)
         return result
     else:
-        num_requests_needed = math.ceil(count/2000) # can get this max record count from service?
+        num_requests_needed = math.ceil(count/2000) # compare to maxRecordCount from service
         list_of_results = []
         for request_count in list(range(num_requests_needed)):
             offset_factor = request_count
-            query_params['resultOffset'] = (offset_factor * 2000) # can get this max record count from service?
+            query_params['resultOffset'] = (offset_factor * 2000) # compare to maxRecordCount from service
             result = feature_layer.query(**query_params)
             list_of_results.append([result])
         df = [geopandas.GeoDataFrame(result[0]) for result in list_of_results]
@@ -227,6 +227,8 @@ class ESRILayer(object):
             return "(ESRILayer) " + self._name
         except:
             return ""
+
+    #TODO: Method to return service properties from self._baseurl, like maxRecordCount
 
     def query(self, raw=False, **kwargs):
         """
