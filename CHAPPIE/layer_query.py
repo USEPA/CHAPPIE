@@ -162,8 +162,11 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None):
 def batch_query(query_params, feature_layer, count_limit=None):
     if not count_limit:
         count_limit = feature_layer.count()  # re-query
+    if "returnGeometry" in query_params:
+        return_geos = query_params["returnGeometry"]
     # Get count of features in query result
     count = get_count_only(feature_layer, query_params)
+    print(query_params["returnGeometry"])
     # Compare to maxRecordCount from service
     num_requests = math.ceil(count/count_limit)
     list_of_results = []
@@ -186,14 +189,14 @@ def get_field_where(url, layer, field, value, oper='='):
                     }
     return feature_layer.query(**query_params)
 
-def get_count_only(feature_layer, query_params):
+def get_count_only(feature_layer, count_query_params):
     """Query ESRI feature layer and return count only"""
     # Return count only
-    query_params["returnCountOnly"] = "True"
+    count_query_params["returnCountOnly"] = "True"
     # Above takes precedence, but this param is used to parse result
-    query_params["returnGeometry"] = "False"
+    count_query_params["returnGeometry"] = "False"
     # Run query
-    datadict = feature_layer.query(raw=True, **query_params)
+    datadict = feature_layer.query(raw=True, **count_query_params)
 
     count = datadict["count"]
 
