@@ -156,14 +156,16 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None):
     if len(result) < maxRecordCount:
         return result
     else:
-        return batch_query(query_params, feature_layer, maxRecordCount)
+        return batch_query(feature_layer, query_params, maxRecordCount)
 
 
-def batch_query(query_params, feature_layer, count_limit=None):
+def batch_query(feature_layer, query_params, count_limit=None):
     if not count_limit:
         count_limit = feature_layer.count()  # re-query
     # Get count of features in query result
     count = get_count_only(feature_layer, query_params)
+    # Get rid of returnCountOnly
+    query_params.pop('returnCountOnly')
     # Compare to maxRecordCount from service
     num_requests = math.ceil(count/count_limit)
     list_of_results = []
@@ -192,7 +194,6 @@ def get_count_only(feature_layer, count_query_params):
     count_query_params["returnCountOnly"] = "True"
     # Run query
     datadict = feature_layer.query(raw=True, **count_query_params)
-
     count = datadict["count"]
 
     return count
@@ -282,7 +283,7 @@ class ESRILayer(object):
         qstr = "&".join(["{}={}".format(k, v) for k, v in self._basequery.items()])
         self._last_query = self._baseurl + "/query?" + qstr
         # Note: second condition to not overide raw
-        if (kwargs.get("returnGeometry", "true") == "True" and not raw):
+        if (kwargs.get("returnGeometry", "true") == "True" and raw==False):
             try:
                 return geopandas.read_file(self._last_query + "&f=geojson")
             except requests.exceptions.HTTPError as e:
