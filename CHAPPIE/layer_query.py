@@ -162,11 +162,8 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None):
 def batch_query(query_params, feature_layer, count_limit=None):
     if not count_limit:
         count_limit = feature_layer.count()  # re-query
-    if "returnGeometry" in query_params:
-        return_geos = query_params["returnGeometry"]
     # Get count of features in query result
     count = get_count_only(feature_layer, query_params)
-    print(query_params["returnGeometry"])
     # Compare to maxRecordCount from service
     num_requests = math.ceil(count/count_limit)
     list_of_results = []
@@ -193,8 +190,6 @@ def get_count_only(feature_layer, count_query_params):
     """Query ESRI feature layer and return count only"""
     # Return count only
     count_query_params["returnCountOnly"] = "True"
-    # Above takes precedence, but this param is used to parse result
-    count_query_params["returnGeometry"] = "False"
     # Run query
     datadict = feature_layer.query(raw=True, **count_query_params)
 
@@ -286,9 +281,8 @@ class ESRILayer(object):
                 raise KeyError("Option '{k}' not recognized, check parameters")
         qstr = "&".join(["{}={}".format(k, v) for k, v in self._basequery.items()])
         self._last_query = self._baseurl + "/query?" + qstr
-
-        if kwargs.get("returnGeometry", "true") == "True":
-            # WARNING - this will override raw
+        # Note: second condition to not overide raw
+        if (kwargs.get("returnGeometry", "true") == "True" and not raw):
             try:
                 return geopandas.read_file(self._last_query + "&f=geojson")
             except requests.exceptions.HTTPError as e:
