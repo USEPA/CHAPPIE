@@ -42,7 +42,6 @@ _basequery = {
 
 _tiger_url = "tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb"
 
-
 # Retaining  this retrive function here for now
 def get_zip(url, temp_file):
     out_dir = os.path.dirname(temp_file)
@@ -153,29 +152,30 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None):
     result = feature_layer.query(**query_params)  # Get result
     
     # Compare result against count limit
-    count_limit = feature_layer.count()
-    if len(result) < count_limit:
+    maxRecordCount = feature_layer.count()
+    if len(result) < maxRecordCount:
         return result
     else:
-        # Get count of features in bbox
-        count = get_count_only(aoi=bbox,
-                               url=url,
-                               layer=layer,
-                               in_crs=in_crs)
-        # Compare to maxRecordCount from service
-        num_requests_needed = math.ceil(count/count_limit)
-        list_of_results = [result]  # Add first result to list of resutls
-        for request_count in list(range(num_requests_needed))[1:]:
-            offset_factor = request_count
-            # Compare to maxRecordCount from service
-            query_params['resultOffset'] = (offset_factor * count_limit)
-            result = feature_layer.query(**query_params)
-            list_of_results.append([result])
-        df = [geopandas.GeoDataFrame(result[0]) for result in list_of_results]
-        # TODO: may need to drop all-NA results in FutureWarning
-        dftot = pandas.concat(df)
-                
-        return dftot
+        return batch_query(query_params, feature_layer, maxRecordCount)
+
+
+def batch_query(query_params, feature_layer, count_limit=None):
+    if not count_limit:
+        count_limit = feature_layer.count()  # re-query
+    # Get count of features in query result
+    count = get_count_only(**query_params)
+    # Compare to maxRecordCount from service
+    num_requests = math.ceil(count/count_limit)
+    list_of_results = []
+    # Offset is request number * service maxRecordCount
+    for offset in [idx * count_limit  for idx in range(num_requests)]:
+        query_params['resultOffset'] = offset
+        list_of_results.append([feature_layer.query(**query_params)])
+    # Convert each result to geodataframe
+    # TODO: may need to drop all-NA results in FutureWarning
+    gdfs = [geopandas.GeoDataFrame(result[0]) for result in list_of_results]
+            
+    return pandas.concat(gdfs)
 
 
 def get_field_where(url, layer, field, value, oper='='):
@@ -238,7 +238,8 @@ class ESRILayer(object):
         except:
             return ""
 
-    #TODO: Extend method to return other service properties from self._baseurl as needed
+    # TODO: Extend method to return other service properties from self._baseurl as needed
+
     def count(self):
         res = requests.get(self._baseurl + '?f=pjson')
         return res.json()['maxRecordCount']
