@@ -42,7 +42,6 @@ _basequery = {
 
 _tiger_url = "tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb"
 
-
 # Retaining  this retrive function here for now
 def get_zip(url, temp_file):
     out_dir = os.path.dirname(temp_file)
@@ -116,7 +115,7 @@ def getState(geoids):
     return feature_layer.query(**query_params)
 
 
-def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None, count=0):
+def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None):
     # if geodataframe get bbox str
     if isinstance(aoi, geopandas.GeoDataFrame):
         bbox = ','.join(map(str, aoi.total_bounds))
@@ -150,22 +149,36 @@ def get_bbox(aoi, url, layer, out_fields=None, in_crs=None, buff_dist_m=None, co
         query_params["distance"] = buff_dist_m
         query_params["units"] = 'esriSRUnit_Meter'
     
-    # Send multiple queries to rest service and specify resultOffset parameter
-    if count < 2000: #TODO: compare to maxRecordCount from service
-        result = feature_layer.query(**query_params)
+    result = feature_layer.query(**query_params)  # Get result
+    
+    # Compare result against count limit
+    maxRecordCount = feature_layer.count()
+    if len(result) < maxRecordCount:
         return result
     else:
-        num_requests_needed = math.ceil(count/2000) # compare to maxRecordCount from service
-        list_of_results = []
-        for request_count in list(range(num_requests_needed)):
-            offset_factor = request_count
-            query_params['resultOffset'] = (offset_factor * 2000) # compare to maxRecordCount from service
-            result = feature_layer.query(**query_params)
-            list_of_results.append([result])
-        df = [geopandas.GeoDataFrame(result[0]) for result in list_of_results]
-        dftot = pandas.concat(df)
-                
-        return dftot
+        return batch_query(feature_layer, query_params, maxRecordCount)
+
+
+def batch_query(feature_layer, query_params, count_limit=None):
+    if not count_limit:
+        count_limit = feature_layer.count()  # re-query
+    # Get count of features in query result
+    count = get_count_only(feature_layer, query_params)
+    # Get rid of returnCountOnly
+    if 'returnCountOnly' in query_params.keys():
+        query_params.pop('returnCountOnly')
+    # Compare to maxRecordCount from service
+    num_requests = math.ceil(count/count_limit)
+    list_of_results = []
+    # Offset is request number * service maxRecordCount
+    for offset in [idx * count_limit  for idx in range(num_requests)]:
+        query_params['resultOffset'] = offset
+        list_of_results.append([feature_layer.query(**query_params)])
+    # Convert each result to geodataframe
+    # TODO: may need to drop all-NA results in FutureWarning
+    gdfs = [geopandas.GeoDataFrame(result[0]) for result in list_of_results]
+            
+    return pandas.concat(gdfs)
 
 
 def get_field_where(url, layer, field, value, oper='='):
@@ -176,30 +189,14 @@ def get_field_where(url, layer, field, value, oper='='):
                     }
     return feature_layer.query(**query_params)
 
-def get_count_only(aoi, url, layer, in_crs):
+def get_count_only(feature_layer, count_query_params):
     """Query ESRI feature layer and return count only"""
-    # if geodataframe get bbox str
-    if isinstance(aoi, geopandas.GeoDataFrame):
-        bbox = ','.join(map(str, aoi.total_bounds))
-        if not in_crs:
-            in_crs = aoi.crs
-    elif isinstance(aoi, list):
-        bbox = ','.join(map(str, aoi))
-    else:
-        bbox = aoi
-        #assert in_crs!=None?
-    feature_layer = ESRILayer(url, layer)
-    
-    # return count only
-    return_count_params = {       
-            "geometry": bbox,
-            "geometryType": "esriGeometryEnvelope",
-            "spatialRel": "esriSpatialRelIntersects",
-            "inSR": in_crs,
-            "returnCountOnly": "True",
-            }    
-    datadict = feature_layer.query(raw=True, **return_count_params)
+    # Return count only
+    count_query_params["returnCountOnly"] = "True"
+    # Run query
+    datadict = feature_layer.query(raw=True, **count_query_params)
     count = datadict["count"]
+
     return count
 
 class ESRILayer(object):
@@ -228,7 +225,11 @@ class ESRILayer(object):
         except:
             return ""
 
-    #TODO: Method to return service properties from self._baseurl, like maxRecordCount
+    # TODO: Extend method to return other service properties from self._baseurl as needed
+
+    def count(self):
+        res = requests.get(self._baseurl + '?f=pjson')
+        return res.json()['maxRecordCount']
 
     def query(self, raw=False, **kwargs):
         """
@@ -282,17 +283,15 @@ class ESRILayer(object):
                 raise KeyError("Option '{k}' not recognized, check parameters")
         qstr = "&".join(["{}={}".format(k, v) for k, v in self._basequery.items()])
         self._last_query = self._baseurl + "/query?" + qstr
-
-        if kwargs.get("returnGeometry", "true") == "True":
-            # WARNING - this will override raw
+        # Note: second condition to not overide raw
+        if (kwargs.get("returnGeometry", "true") == "True" and raw==False):
             try:
                 return geopandas.read_file(self._last_query + "&f=geojson")
             except requests.exceptions.HTTPError as e:
                 #TODO: this needs improvement, but getting url is good for debug
                 print(self._last_query())
                 raise e
-        else:
-            resp = requests.get(self._last_query + "&f=json")
+        resp = requests.get(self._last_query + "&f=json")
         resp.raise_for_status()
         datadict = resp.json()
         if raw:
