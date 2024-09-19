@@ -13,7 +13,7 @@ import urllib.request
 import requests
 import pandas
 import geopandas
-
+import json
 
 _basequery = {
     "where": "",  # sql query component
@@ -39,6 +39,17 @@ _basequery = {
     "returnM": False,  # whether to return m components of shp-m
     "gdbVersion": "",  # geodatabase version name
     "returnDistinctValues": False,
+}
+
+_baseComputeStatisticsHistograms = {
+    "geometry": "",
+    "geometryType": "",
+    "mosaicRule": "",
+    "renderingRule": "",
+    "pixelSize": "",
+    "time": "",  # time instant/time extend to compute statistics and histograms
+    "processAsMultidimensional": False,
+    "f": "",
 }
 
 _tiger_url = "tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb"
@@ -378,3 +389,105 @@ class ESRILayer(object):
         else:
             # return resp
             raise KeyError("Returning geometry is currently disabled")
+
+class ESRIImageService(object):
+    """Fundamental building block to access an image in an ESRI Image Service"""
+ 
+    def __init__(self, baseurl, **kwargs):
+        """
+        Class representing an image service
+ 
+        Parameters
+        ----------
+        baseurl :   str
+                    the url for the image service.
+ 
+        """
+        if baseurl[:4] != 'http':
+            baseurl = 'https://' + baseurl
+        self.__dict__.update({"_" + k: v for k, v in kwargs.items()})
+        if hasattr(self, "_fields"):
+            self.variables = pandas.DataFrame(self._fields)
+        self._baseurl = baseurl
+ 
+    def __repr__(self):
+        try:
+            return "(ESRIImageService) " + self._name
+        except:
+            return ""
+ 
+    def computeStatHist(self, **kwargs):
+        # Parse args
+        kwargs = {"".join(k.split("_")): v for k, v in kwargs.items()}
+       
+        # construct query string
+        self._baseComputeStatisticsHistograms = copy.deepcopy(_baseComputeStatisticsHistograms)
+        for k, v in kwargs.items():
+            try:
+                self._baseComputeStatisticsHistograms[k] = v
+            except KeyError:
+                raise KeyError("Option '{k}' not recognized, check parameters")
+        cstr = "&".join(["{}={}".format(k, v) for k, v in self._baseComputeStatisticsHistograms.items()])
+        cstr = cstr.replace(" ", "").replace("[", "%5B").replace("]", "%5D").replace("{", "%7B").replace("}", "%7D").replace("'", "%27").replace(":", "%3A").replace(",", "%2C")
+        self._last_query = self._baseurl + "/computeStatisticsHistograms?" + cstr
+        #print(self._last_query)
+        try:
+            resp = requests.get(self._last_query)
+            resp.raise_for_status()
+            datadict = resp.json()
+            mean = datadict["statistics"][0]["mean"]
+            return mean
+        except requests.exceptions.HTTPError as e:
+            #TODO: this needs improvement, but getting url is good for debug
+            print(self._last_query)
+            print(e)
+            pass
+        except IndexError:
+            return 'error'
+            
+    
+def get_image_by_poly(aoi, url, row):
+    # if geodataframe, get geometry of the row
+    if isinstance(aoi, geopandas.GeoDataFrame):
+        json_string = row.to_json(drop_id=True)
+        data = json.loads(json_string)
+        geometry_type = data["features"][0]["geometry"]["type"]
+        # Consider polygons and multipolygon differently
+        if geometry_type == 'Polygon':
+            # Parse geodataframe polygon object to get coordinates
+            rings = data["features"][0]["geometry"]["coordinates"]
+            # Make esri geometry object (polygon)
+            geometry_object = { "rings": rings,
+                "spatialReference": { "wkid": aoi.crs.to_epsg() }
+                }
+                   
+        elif geometry_type == "MultiPolygon": 
+            # Parse geodataframe polygon object to get coordinates
+            rings = data["features"][0]["geometry"]["coordinates"]
+            # Pull out polygons from exploded gdf and fit into rest syntax for rest request
+            row_ex = row.explode(column='geometry',index_parts=False)
+            # Make esri geometry object (multipolygon)
+            multipoly = []
+            for i in range(len(row_ex)):
+                row = row_ex.iloc[[i]]
+                json_string = row.to_json(drop_id=True)
+                data = json.loads(json_string)
+                rings = data["features"][0]["geometry"]["coordinates"][0]
+                multipoly.append(rings)
+            
+            geometry_object = { "rings": multipoly,
+                "spatialReference": { "wkid": aoi.crs.to_epsg() }
+                }
+            
+        feature_layer = ESRIImageService(url)
+    
+        # query
+        query_params = {       
+                "geometry": geometry_object,
+                "geometryType": "esriGeometryPolygon",
+                "f": "json"
+                }
+
+        result = feature_layer.computeStatHist(**query_params)
+
+        return result
