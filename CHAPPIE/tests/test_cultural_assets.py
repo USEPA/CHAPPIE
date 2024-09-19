@@ -18,7 +18,7 @@ DATA_DIR = os.path.join(DIRPATH, 'data')  # inputs
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 aoi_gdf = geopandas.read_file(AOI)
 
-def test_get_fema_nfhl():
+def test_get_historic():
     actual = cultural.get_historic(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
     actual.sort_values(by=['CertDate', 'RESNAME', 'geometry'], inplace=True, ignore_index=True)
