@@ -26,18 +26,11 @@ def get_fema_nfhl(aoi):
     bbox = [xmin, ymin, xmax, ymax]
     # out_fields = ['geometry', 'DFIRM_ID', 'FLD_AR_ID', 'FLD_ZONE', 'ZONE_SUBTY']
 
-    # Count how many flood hazard features are in the bbox
-    count = layer_query.get_count_only(aoi=bbox,
-                                url=url,
-                                layer=0,
-                                in_crs=aoi.crs.to_epsg())
-
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
                                 # out_fields=out_fields,
                                 layer=0,
-                                in_crs=aoi.crs.to_epsg(),
-                                count=count)
+                                in_crs=aoi.crs.to_epsg())
 
 def get_flood(aoi, output):
     """Get flood imagery statistics and histogram for polygon within AOI.

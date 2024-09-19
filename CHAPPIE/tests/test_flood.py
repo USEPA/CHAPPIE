@@ -9,7 +9,7 @@ import geopandas
 import json
 from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.hazards import flood
-import pytest
+# import pytest
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
