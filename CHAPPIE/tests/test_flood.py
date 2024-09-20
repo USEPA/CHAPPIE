@@ -82,3 +82,22 @@ def test_get_flood_complete_overlap():
     expected_file = os.path.join(EXPECTED_DIR, 'get_flood_complete_overlap.csv')
     expected = pandas.read_csv(expected_file)
     assert_frame_equal(actual, expected)
+
+def test_get_flood_gt1pct_lt25pct_overlap():
+    test_parcels = ['33722-000-000',
+                    '32767-010-000',
+                    '32807-000-000',
+                    '32807-007-000',
+                    '07564-125-000',
+                    '26436-015-082',
+                    '26467-010-070',
+                    '03726-040-000',
+                    '03802-050-000',
+                    '34024-322-000']
+    # Get subset of parcels with partial (0.01-0.25) known overlap with flood areas
+    gt1pct_lt25pct_overlap_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
+    actual = flood.get_flood(gt1pct_lt25pct_overlap_parcels)
+
+    expected_file = os.path.join(EXPECTED_DIR, 'get_flood_gt1pct_lt25pct_overlap.csv')
+    expected = pandas.read_csv(expected_file)
+    assert_frame_equal(actual, expected)
