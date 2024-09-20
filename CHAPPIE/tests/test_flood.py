@@ -6,17 +6,16 @@ Test flood
 """
 import os
 import geopandas
-import json
+import pandas
+from pandas.testing import assert_frame_equal
 from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.hazards import flood
-# import pytest
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
 
 EXPECTED_DIR = os.path.join(DIRPATH, 'expected')  # Expected
 DATA_DIR = os.path.join(DIRPATH, 'data')  # inputs
-TEST_DIR = os.path.join(DIRPATH, 'results')  # test results (have to create)
 PARCEL_DIR = os.path.join(EXPECTED_DIR, 'parcels')
 
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
@@ -43,6 +42,43 @@ def test_get_fema_nfhl():
                               check_like=True,
                               check_less_precise=True)
     
-def test_get_flood():
-    actual_file = os.path.join(EXPECTED_DIR, 'get_flood.csv')
-    flood.get_flood(parcels_gdf, actual_file)
+def test_get_flood_no_overlap():
+    test_parcels = ['07533-450-090',
+                    '26487-000-000',
+                    '26484-030-000',
+                    '26470-000-000',
+                    '07533-450-090',
+                    '26509-020-000',
+                    '26567-000-000',
+                    '26551-005-000',
+                    '38324-000-000',
+                    '36617-000-000']
+    # Get subset of parcels with no known overlap with flood areas
+    no_overlap_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
+    actual = flood.get_flood(no_overlap_parcels)
+
+    expected_file = os.path.join(EXPECTED_DIR, 'get_flood_no_overlap.csv')
+    expected = pandas.read_csv(expected_file)
+    assert_frame_equal(actual, expected)
+
+def test_get_flood_complete_overlap():
+    test_parcels = ['36630-000-000',
+                    '32736-000-000',
+                    '32736-015-000',
+                    '32734-010-000',
+                    '32728-000-000',
+                    '26630-000-000',
+                    '26631-000-000',
+                    '26509-010-000',
+                    '03623-050-000',
+                    '26593-533-000']
+    # Get subset of parcels with complete known overlap with flood areas
+    complete_overlap_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
+    #actual_file = os.path.join(EXPECTED_DIR, 'get_flood_complete_overlap.csv')
+    actual = flood.get_flood(complete_overlap_parcels, 
+                             #actual_file
+                            )
+
+    expected_file = os.path.join(EXPECTED_DIR, 'get_flood_complete_overlap.csv')
+    expected = pandas.read_csv(expected_file)
+    assert_frame_equal(actual, expected)
