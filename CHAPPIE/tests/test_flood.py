@@ -143,3 +143,23 @@ def test_get_flood_exterior_some_overlap():
     expected_file = os.path.join(EXPECTED_DIR, 'get_flood_exterior_some_overlap.csv')
     expected = pandas.read_csv(expected_file)
     assert_frame_equal(actual, expected)
+
+def test_get_multipolygon():
+    test_parcels = ['03814-000-000', 
+                    '03608-010-000',
+                    '32719-000-000',
+                    '03798-000-000',
+                    '32736-350-000',
+                    '40000-975-312',
+                    '03805-150-000',
+                    '26496-000-000',
+                    '32738-639-000',
+                    '03613-000-000']
+    # Get subset of parcels that are multipolygons
+    multipolygon_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
+    actual = flood.get_flood(multipolygon_parcels
+                            )
+
+    expected_file = os.path.join(EXPECTED_DIR, 'get_multipolygon.csv')
+    expected = pandas.read_csv(expected_file)
+    assert_frame_equal(actual, expected)
