@@ -16,6 +16,7 @@ DIRPATH = os.path.dirname(os.path.realpath(__file__))
 
 EXPECTED_DIR = os.path.join(DIRPATH, 'expected')  # Expected
 DATA_DIR = os.path.join(DIRPATH, 'data')  # inputs
+TEST_DIR = os.path.join(DIRPATH, 'results')  # test results (have to create)
 PARCEL_DIR = os.path.join(EXPECTED_DIR, 'parcels')
 
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
@@ -153,13 +154,38 @@ def test_get_multipolygon():
                     '40000-975-312',
                     '03805-150-000',
                     '26496-000-000',
-                    '32738-639-000',
-                    '03613-000-000']
+                    '32738-639-000', #this returns 0, but has a small corner of raster pixel present
+                    '03613-000-000', #this returns 0, but has a corner of raster pixel present
+                    '05964-000-000', #Multipolygon (Donut with null value); Result looks valid (not null)	
+                    ]
     # Get subset of parcels that are multipolygons
     multipolygon_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
     actual = flood.get_flood(multipolygon_parcels
                             )
 
     expected_file = os.path.join(EXPECTED_DIR, 'get_multipolygon.csv')
+    expected = pandas.read_csv(expected_file)
+    assert_frame_equal(actual, expected)
+
+def test_get_tiny_parcels():
+    test_parcels = ['31668-150-000', #14.5 m2 parcel no overlap NULL
+                    '34801-158-000', #14.3 m2 parcel no overlap NULL
+                    '40001-175-010', #14.3 m2 parcel complete overlap NULL
+                    '30464-230-000', #15.8 m2 parcel complete overlap NULL; multipolygon
+                    '30819-058-000', #74.8 m2 parcel no overlap, value of 0
+                    '40000-050-059', #74.3 m2 parcel no overlap, value of 0
+                    '31423-031-000', #74.3 m2 parcel complete overlap NULL
+                    #'08344-000-000', #74.4 m2 parcel complete overlap NULL; not a unique parcel numb (3 polygons)
+                    '38187-505-000', #Smallest parcel to return overlap value of 0 (74.9 m2)
+                    '38466-020-000', #Smallest parcel to return overlap value of 1 (96.5 m2)
+                    ]
+    # Get subset of parcels with tiny geometries and results of null
+    tiny_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
+    #actual_file = os.path.join(EXPECTED_DIR, 'get_tiny.csv')
+    actual = flood.get_flood(tiny_parcels, 
+                             #actual_file
+                            )
+
+    expected_file = os.path.join(EXPECTED_DIR, 'get_tiny.csv')
     expected = pandas.read_csv(expected_file)
     assert_frame_equal(actual, expected)
