@@ -175,16 +175,13 @@ def test_get_tiny_parcels():
                     '30819-058-000', #74.8 m2 parcel no overlap, value of 0
                     '40000-050-059', #74.3 m2 parcel no overlap, value of 0
                     '31423-031-000', #74.3 m2 parcel complete overlap NULL
-                    #'08344-000-000', #74.4 m2 parcel complete overlap NULL; not a unique parcel numb (3 polygons)
+                    '08344-000-000', #74.4 m2 parcel complete overlap NULL; not a unique parcel numb (3 polygons)
                     '38187-505-000', #Smallest parcel to return overlap value of 0 (74.9 m2)
                     '38466-020-000', #Smallest parcel to return overlap value of 1 (96.5 m2)
                     ]
     # Get subset of parcels with tiny geometries and results of null
     tiny_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
-    #actual_file = os.path.join(EXPECTED_DIR, 'get_tiny.csv')
-    actual = flood.get_flood(tiny_parcels, 
-                             #actual_file
-                            )
+    actual = flood.get_flood(tiny_parcels)
 
     expected_file = os.path.join(EXPECTED_DIR, 'get_tiny.csv')
     expected = pandas.read_csv(expected_file)
