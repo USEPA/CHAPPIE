@@ -181,8 +181,43 @@ def test_get_tiny_parcels():
                     ]
     # Get subset of parcels with tiny geometries and results of null
     tiny_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
+    #TODO: test for parcel size?
     actual = flood.get_flood(tiny_parcels)
 
     expected_file = os.path.join(EXPECTED_DIR, 'get_tiny.csv')
     expected = pandas.read_csv(expected_file)
     assert_frame_equal(actual, expected)
+
+def test_needs_investigation():
+    test_parcels = ['26529-020-000', #parcel with overlap but returned 0 value; yes returns 0, but has a corner of raster pixel present
+                    '38186-090-000', #parcel with no overlap but returned a value (0.5)
+                    '38461-816-000', #greater than 75m2 (134.2) returned NULL
+                    '38461-876-000', #greater than 75m2 (134.2) returned NULL
+                    '37252-030-120', #greater than 75m2 (102.4) returned NULL
+                    '36238-010-000', #greater than 75m2 (205.6) returned NULL
+                    '36459-720-010', #greater than 75m2 (486.1) returned NULL
+                    '38373-019-000' #greater than 75m2 (200.1) returned NULL
+    ]
+    # Get subset of parcels with tiny geometries and results of null
+    needs_investigation_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
+    #TODO: test for winding order? is_ccw method available in GeoPandas v1.0.0 
+
+    invalid_geom = test_valid_geometry(needs_investigation_parcels)
+    assert len(invalid_geom)==0 
+
+    actual = flood.get_flood(needs_investigation_parcels)
+    
+    expected_file = os.path.join(EXPECTED_DIR, 'get_needs_investigation.csv')
+    expected = pandas.read_csv(expected_file)
+    assert_frame_equal(actual, expected)
+
+def test_valid_geometry(parcels):
+    invalid_geom = []
+    for i in range(len(parcels)):
+        row = parcels.iloc[[i]]
+        geom = row.geometry
+        if geom.is_valid.item() == False:
+            invalid_geom.append(row)
+    return invalid_geom      
+
+    #TODO: test for url character length?
