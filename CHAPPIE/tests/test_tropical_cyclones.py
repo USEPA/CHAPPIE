@@ -23,26 +23,31 @@ aoi_gdf = geopandas.read_file(AOI)
 
 
 @pytest.fixture(scope='session')
-def test_get_cyclones():
+def get_cyclones():
     actual = tropical_cyclones.get_cyclones(aoi_gdf)
-    
+    actual.sort_values(by=['geometry','day'], inplace=True, ignore_index=True)
     # save to results (sorted so expected doesn't need to be)
-    #actual.sort_values(by=['geometry','day'], inplace=True, ignore_index=True)
     #actual.to_file(os.path.join(TEST_DIR, 'cyclones_aoi_1851_2022.shp'))
+    
+    return actual
+
+def test_get_cyclones(get_cyclones):
+    actual = get_cyclones
     
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'cyclones_aoi_1851_2022.shp')
     expected = geopandas.read_file(expected_file)
+    field_list = ['USA_WIND', 'USA_PRES', 'year', 'month', 'day']
+    for i in range(len(field_list)):
+        expected[field_list[i]] = expected[field_list[i]].astype('int32')
 
-    actual.sort_values(by=['geometry','day'], inplace=True, ignore_index=True)
-    
     assert_geodataframe_equal(actual, expected)
     
     return actual
 
 
-def test_process_cyclones(test_get_cyclones):
-    actual = tropical_cyclones.process_cyclones(test_get_cyclones, aoi_gdf)
+def test_process_cyclones(get_cyclones):
+    actual = tropical_cyclones.process_cyclones(get_cyclones, aoi_gdf)
     
     # save to results
     #actual.to_file(os.path.join(TEST_DIR, 'cyclones_processed_1851_2022.shp'))
@@ -54,6 +59,9 @@ def test_process_cyclones(test_get_cyclones):
     
     actual.sort_values(by='SID', inplace=True, ignore_index=True)
     expected.sort_values(by='SID', inplace=True, ignore_index=True)
+    field_list = ['WindSpdKts', 'PressureMb', 'Year', 'month', 'day']
+    for i in range(len(field_list)):
+        expected[field_list[i]] = expected[field_list[i]].astype('int32')
     
     assert_geodataframe_equal(actual, expected, check_like=True, check_less_precise=True)
     #assert(len(actual)==len(expected)), f'{len(actual)}!={len(expected)}'

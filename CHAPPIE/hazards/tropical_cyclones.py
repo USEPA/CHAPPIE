@@ -22,7 +22,8 @@ def get_cyclones(aoi):
     url = f'{baseurl}IBTrACS_ALL_list_v04r00_lines_1/FeatureServer'
     #url_pnts = 
     max_buff = 160934
-    # TODO: assert aoi.crs in meters
+    assert layer_query.getCRSUnits(aoi.crs) == 'm', f"Expected units to be meters, found {layer_query.getCRSUnits(aoi.crs)}"
+
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax,  ymax]
     out_fields = ['SID', 'NAME', 'USA_WIND', 'USA_PRES', 'year', 'month', 'day']
@@ -55,7 +56,7 @@ def process_cyclones(cyclones_gdf, aoi):
 
     """
     # project to aoi CRS
-    # TODO: assert aoi.crs is in meters
+    assert layer_query.getCRSUnits(aoi.crs) == 'm', f"Expected units to be meters, found {layer_query.getCRSUnits(aoi.crs)}"
     cyclones_gdf = cyclones_gdf.to_crs(aoi.crs)  # match crs for clip
     # Fix up geometries
     # Note: this uses default first for groupby

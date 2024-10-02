@@ -10,7 +10,6 @@ import pandas
 import geopandas
 from CHAPPIE import layer_query
 
-
 def get_tornadoes_all(out_dir, component='torn-aspath', years='1950-2022'):
     """ Get tornadoes dataframe
 
@@ -19,9 +18,9 @@ def get_tornadoes_all(out_dir, component='torn-aspath', years='1950-2022'):
     out_dir : str
         Directory to save download.
     component : str, optional
-        The Tornadoe component. The default is 'torn-aspath'.
+        The Tornado component. The default is 'torn-aspath'.
     years : str, optional
-        The year range for the tornadoe component url. The default is '1950-2022'.
+        The year range for the tornado component url. The default is '1950-2022'.
 
     Returns
     -------
@@ -54,16 +53,24 @@ def max_buffer():
     Returns
     -------
     int
-        Max buffer needed for any track in tornadoe tracks service.
+        Max buffer needed for any track in tornado tracks service.
 
     """
     baseurl = 'https://services2.arcgis.com/FiaPA4ga0iQKduv3/ArcGIS/rest/services/'
     #url_pnts = f'{baseurl}Tornadoes_1950_2017_1/FeatureServer'
     url = f'{baseurl}Tornado_Tracks_1950_2017_1/FeatureServer'  # same as above
     layer = 0
-    wid = layer_query.get_field_where(url, layer, 'wid', 2000, oper='>')
-    return math.ceil(max(wid['wid'])/ 2.188)
-
+    #wid = layer_query.get_field_where(url, layer, 'wid', 2000, oper='>')
+    #return math.ceil(max(wid['wid'])/ 2.188)
+    feature_layer = layer_query.ESRILayer(url,layer)
+    query_params = {"outStatistics":[{
+                        "statisticType": "max",
+                        "onStatisticField": "wid", 
+                        "outStatisticFieldName": "max_wid"
+                    }],
+                    'returnGeometry': "false"}
+    query_response = feature_layer.query(**query_params)
+    return math.ceil(query_response['max_wid']/ 2.188)
 
 def get_tornadoes(aoi):
     """ Get tornaodes for area of interest
@@ -86,6 +93,7 @@ def get_tornadoes(aoi):
     max_buff = max_buffer()
     # NOTE: assumes aoi_gdf in meters
     # TODO: assert aoi.crs in meters
+    assert layer_query.getCRSUnits(aoi.crs) == 'm', f"Expected units to be meters, found {layer_query.getCRSUnits(aoi.crs)}"
     xmin, ymin, xmax, ymax = aoi.total_bounds
     #bbox = [xmin-max_buff, xmax+max_buff, ymin-max_buff, ymax+max_buff]
     #bbox = [xmin, xmax, ymin, ymax]
@@ -96,7 +104,7 @@ def get_tornadoes(aoi):
     
 
 def process_tornadoes(tornadoes_gdf, aoi):
-    """Get buffered (based on 'wid' column) tornadoe paths for AOI.
+    """Get buffered (based on 'wid' column) tornado paths for AOI.
 
     Parameters
     ----------
@@ -114,7 +122,7 @@ def process_tornadoes(tornadoes_gdf, aoi):
     tornadoes_gdf = tornadoes_gdf.to_crs(aoi.crs)  # match crs for clip
     # buffer lines in filtered tornadoes (sf::st_buffer defaults join_style and cap_style are same)
     tornadoes_gdf['radM'] = tornadoes_gdf['wid'] / 2.188
-    # TODO: assert aoi.crs is in meters
+    assert layer_query.getCRSUnits(aoi.crs) == 'm', f"Expected units to be meters, found {layer_query.getCRSUnits(aoi.crs)}"
     tornadoes_gdf['geometry'] = tornadoes_gdf.buffer(tornadoes_gdf['radM'])
     
     # clip buffered paths to aoi extent
