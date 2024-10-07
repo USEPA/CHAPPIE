@@ -36,7 +36,19 @@ def get_historic(aoi):
                                 layer=0,
                                 in_crs=aoi.crs.to_epsg())
 
-def get_library(aoi, temp_file):
+def get_library(aoi):
+    """Get library data from IMLS.
+
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        Spatial definition for Area Of Interest (AOI).
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame for library points within aoi.
+    """    
     # TODO: use refresh or parent url to identify latest?
     zip_url = f"{IMLS_URL}/2024-06/pls_fy2022_csv.zip"
 
@@ -46,11 +58,24 @@ def get_library(aoi, temp_file):
     df = layer_query.get_from_zip(zip_url, expected_csvs, encoding="Windows-1252")
     geom = geopandas.points_from_xy(df['LATITUDE'], df['LONGITUD'])
     gdf = geopandas.GeoDataFrame(df, geometry=geom, crs=4326)
-    #TODO: filter by bbox?
-    return gdf
+    # Filter by those within aoi
+    #TODO: null geom?
+    return gdf[gdf.geometry.within(aoi)]
 
 
 def get_museums(aoi):
+    """Get museums data from IMLS.
+
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        Spatial definition for Area Of Interest (AOI).
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame for museum points within aoi.
+    """    
     zip_url = f"{IMLS_URL}/2018_csv_museum_data_files.zip"
 
     expected_csvs = ["MuseumFile2018_File1_Nulls.csv",
@@ -62,5 +87,5 @@ def get_museums(aoi):
     df_geoms.replace(" ", nan, inplace=True)  # Must be able to coerce to float
     geom = geopandas.points_from_xy(df_geoms['LATITUDE'], df_geoms['LONGITUDE'])
     gdf = geopandas.GeoDataFrame(df, geometry=geom, crs=4326)
-    #TODO: filter by bbox? How important are NAN?
-    return gdf
+    # Filter by those within aoi
+    return gdf[gdf.geometry.within(aoi)]
