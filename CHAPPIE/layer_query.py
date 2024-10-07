@@ -443,7 +443,7 @@ class ESRIImageService(object):
             print(e)
             pass
         except IndexError:
-            return 'error'
+            return 
             
     
 def get_image_by_poly(aoi, url, row):

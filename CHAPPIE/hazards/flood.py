@@ -55,7 +55,7 @@ def get_flood(aoi, output=None):
     df = pandas.DataFrame(columns=[parcel_id, 'mean'])
     if output:
         df.to_csv(output, mode='a', index=False, header=True)
-    #aoi = aoi[:1000] #TODO: remove this when tests are written to call only certain parcelnumb's
+        
     for i in range(len(aoi)): #TODO: use iterrows instead?
         data = []
         data.append(aoi[parcel_id][i])
