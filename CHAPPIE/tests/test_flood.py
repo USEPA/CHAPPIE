@@ -145,8 +145,7 @@ class TestGetFlood:
         test_parcels = self.parcels[59:69]
         # Get subset of parcels with complete known overlap with flood areas
         complete_overlap_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
-        actual = flood.get_flood(complete_overlap_parcels, 
-                                )
+        actual = flood.get_flood(complete_overlap_parcels)
 
         expected_file = os.path.join(EXPECTED_DIR, 'get_flood_complete_overlap.csv')
         expected = pandas.read_csv(expected_file)
@@ -216,7 +215,6 @@ class TestGetFlood:
         expected_file = os.path.join(EXPECTED_DIR, 'get_tiny.csv')
         expected = pandas.read_csv(expected_file)
         assert_frame_equal(actual, expected, check_dtype=False)
-        
 
     def test_needs_investigation(self):
         """ Test get flood when parcels return unexpected results """
@@ -240,14 +238,4 @@ class TestGetFlood:
             if geom.is_valid.item() == False:
                 invalid_geom.append(row)
         assert len(invalid_geom)==0       
-
-#TODO: test for url character length?
-def test_url_char_length():
-    """ Test length of url (number of vertices in polygon?) to send to image service """
-    raise Exception("not yet implemented")
-
-#TODO: test for winding order? is_ccw method available in GeoPandas v1.0.0 
-def test_rings_winding_order():
-    """ Test winding order of rings"""
-    raise Exception("not yet implemented")
 
