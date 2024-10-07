@@ -56,10 +56,11 @@ def get_library(aoi):
                      "PLS_FY2022 PUD_CSV/pls_fy22_outlet_pud22i.csv"]
 
     df = layer_query.get_from_zip(zip_url, expected_csvs, encoding="Windows-1252")
+    
     geom = geopandas.points_from_xy(df['LATITUDE'], df['LONGITUD'])
     gdf = geopandas.GeoDataFrame(df, geometry=geom, crs=4326)
+    gdf.to_crs(aoi.crs, inplace=True)  # Coerce to export crs
     # Filter by those within aoi
-    #TODO: null geom?
     return gdf[gdf.geometry.within(aoi)]
 
 
@@ -83,9 +84,12 @@ def get_museums(aoi):
                      "MuseumFile2018_File3_Nulls.csv"]
 
     df = layer_query.get_from_zip(zip_url, expected_csvs, encoding="Windows-1252")
+    #TODO: null geom?
     df_geoms = df[['LATITUDE', 'LONGITUDE']].copy()
     df_geoms.replace(" ", nan, inplace=True)  # Must be able to coerce to float
+    
     geom = geopandas.points_from_xy(df_geoms['LATITUDE'], df_geoms['LONGITUDE'])
     gdf = geopandas.GeoDataFrame(df, geometry=geom, crs=4326)
+    gdf.to_crs(aoi.crs, inplace=True)   # Coerce to export crs
     # Filter by those within aoi
     return gdf[gdf.geometry.within(aoi)]
