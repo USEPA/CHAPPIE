@@ -2,7 +2,7 @@
 """
 Test flood 
 
-@author: tlomba01
+@author: tlomba01, jbousquin
 """
 import os
 import geopandas
@@ -26,6 +26,30 @@ def test_get_historic():
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'cultural_historic.parquet')
+    expected = geopandas.read_parquet(expected_file)
+ 
+    assert_geodataframe_equal(actual, 
+                              expected)
+
+
+def test_get_library():
+    actual = cultural.get_library(aoi_gdf)
+    actual.sort_values(by=['LIBID', 'geometry'], inplace=True, ignore_index=True)
+    
+    # assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'cultural_lib.parquet')
+    expected = geopandas.read_parquet(expected_file)
+ 
+    assert_geodataframe_equal(actual, 
+                              expected)
+    
+
+def test_get_museums():
+    actual = cultural.get_museums(aoi_gdf)
+    actual.sort_values(by=['MID', 'geometry'], inplace=True, ignore_index=True)
+
+    # assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'cultural_museum.parquet')
     expected = geopandas.read_parquet(expected_file)
  
     assert_geodataframe_equal(actual, 
