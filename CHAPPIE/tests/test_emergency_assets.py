@@ -22,8 +22,14 @@ aoi_gdf = geopandas.read_file(AOI)
 
 def test_get_fire_ems():
     actual = emergency.get_fire_ems(aoi_gdf)
-    actual.drop(columns=['OBJECTID'], inplace=True)
-    actual.sort_values(by=['PERMANENT_IDENTIFIER', 'geometry', 'NAME'], inplace=True, ignore_index=True)
+    # Drop columns that are not needed and int (32 vs 64)
+    int_cols = ["DATA_SECURITY", "LOADDATE", "FTYPE", "FCODE", "ISLANDMARK",
+                "POINTLOCATIONTYPE"]
+    actual.drop(columns=['OBJECTID']+int_cols, inplace=True)
+
+    actual.sort_values(by=['PERMANENT_IDENTIFIER', 'geometry', 'NAME'],
+                       inplace=True,
+                       ignore_index=True)
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'fire_ems.parquet')
@@ -33,8 +39,14 @@ def test_get_fire_ems():
 
 def test_get_police():
     actual = emergency.get_police(aoi_gdf)
-    actual.drop(columns=['OBJECTID'], inplace=True)
-    actual.sort_values(by=['PERMANENT_IDENTIFIER', 'geometry', 'NAME'], inplace=True, ignore_index=True)
+    # Drop columns that are not needed and int (32 vs 64)
+    int_cols = ["DATA_SECURITY", "LOADDATE", "FTYPE", "FCODE", "ISLANDMARK",
+                "POINTLOCATIONTYPE"]
+    actual.drop(columns=['OBJECTID']+int_cols, inplace=True)
+    
+    actual.sort_values(by=['PERMANENT_IDENTIFIER', 'geometry', 'NAME'],
+                       inplace=True,
+                       ignore_index=True)
     #actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_police.parquet'))
 
     # assert no changes
