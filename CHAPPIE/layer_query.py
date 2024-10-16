@@ -87,6 +87,23 @@ def getCRSUnits(CRS):
         return "unknown"
 
 
+def getZipCode(aoi):
+    """Get the zipcodes intersecting polygon extent."""
+    # Build ESRI layer object to query
+    baseurl = f"{_tiger_url}/tigerWMS_Current/MapServer"
+    layer = 2
+    #feature_layer = ESRILayer(baseurl, layer)
+    # Note: "ZCTA5" == "GEOID" == "BASENAME"
+    outFields = ["ZCTA5"]
+    # Note: currently "returnGeometry": "true" to allow overlay
+    res = get_bbox(aoi, baseurl, layer, in_crs=102039, out_fields=outFields)
+    # Reduce to intersecting aoi
+    aoi_prj = aoi.to_crs(res.crs)
+    res2 = res.overlay(aoi_prj[['geometry']], how="intersection")
+    # Reduce to list of zipcodes
+    return res2['ZCTA5'].to_list()
+
+
 def getCounty(aoi):
     """Get the GEOID and county intersecting polygon extent."""
     # Build ESRI layer object to query
