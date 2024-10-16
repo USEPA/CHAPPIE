@@ -43,3 +43,7 @@ def test_get_urgent_care():
     expected = geopandas.read_parquet(expected_file)
     
     assert_geodataframe_equal(actual, expected)
+
+
+def test_get_providers():
+    actual = health.get_providers(aoi_gdf)
