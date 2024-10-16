@@ -62,6 +62,23 @@ get_tornado_losses(torn_path_buffer_int)
 
 
 
+# Function to build a list of files to read from the storm events database
+build_file_list <- function(yrs) {
+  # Create a vector of years
+  rng <- paste(paste0("d", yrs), collapse = "|")
+  # Establish the base URL for data download
+  base_url <- "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/"
+  # Read the table of file names
+  tbl <- rvest::read_html(base_url) |>
+    rvest::html_nodes("table") |>
+    rvest::html_table()
+  # Create a vector of URLs for file download
+  paste0(base_url, dplyr::filter(tbl[[1]], grepl(rng, Name), grepl("details", Name))$Name)
+}
+
+
+
+
 # Example: Tropical cyclone damages 2000 to present in the Little Pine Island service area
 # Filter tropical cyclones for needed years and project to CRS of Little Pine Island service area boundary
 hurr_pts_proj <- sf::st_transform(sf::read_sf("L:/Priv/SHC_1012/Florida ROAR/Data/Hazards/TropicalCyclones/IBTrACS.NA.list.v04r00.points", "IBTrACS.NA.list.v04r00.points") |>
@@ -141,7 +158,7 @@ get_cyclone_losses <- function(storm, aoi) {
   response <- "y"
   # If more than 10 years of data are going to be retrieved, alert the user that it may take some time and ask if they would like to continue
   if(length(years) > 10) {
-    message("It may take some time to retrieve this data.")
+    message("It may take some time to retrieve this amount of data.")
     response <- readline(prompt = "Would you like to continue? (y/n)\t")
   }
   
@@ -152,19 +169,9 @@ get_cyclone_losses <- function(storm, aoi) {
     target_counties <- counties[sf::st_transform(aoi, terra::crs(counties)), op = sf::st_intersects] |>
       # Create a state-county FIPS identifier
       dplyr::mutate(STCZFP = paste(as.numeric(STATEFP), as.numeric(COUNTYFP), sep = "-"))
-    
-    # Create a vector of years
-    rng <- paste(paste0("d", years), collapse = "|")
-    # Establish the base URL for data download
-    base_url <- "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/"
-    # Read the table of file names
-    tbl <- rvest::read_html(base_url) |>
-      rvest::html_nodes("table") |>
-      rvest::html_table()
-    # Create a vector of URLs for file download
-    files <- paste0(base_url, dplyr::filter(tbl[[1]], grepl(rng, Name), grepl("details", Name))$Name)
+
     # Read each year's csv file and combine into a single data frame (suppress the warning that some dates parse incorrectly)
-    storm_events <- suppressWarnings(purrr::map(files, readr::read_csv, show_col_types = FALSE) %>%
+    storm_events <- suppressWarnings(purrr::map(build_file_list(years), readr::read_csv, show_col_types = FALSE) %>%
                                        # Keep only needed columns
                                        purrr::map(., ~.x |> dplyr::select(YEAR, BEGIN_YEARMONTH, DAY = BEGIN_DAY, TIME = BEGIN_TIME, TZ = CZ_TIMEZONE, STATE, STATE_FIPS,
                                                                           CZ_NAME, CZ_FIPS, EVENT_TYPE, INJURIES_DIRECT:SOURCE, EPISODE_NARRATIVE, EVENT_NARRATIVE)) |>
@@ -211,16 +218,16 @@ get_cyclone_losses(hurr_pts_aoi_int, little_pine)
 
 
 
-# Example: Miscellaneous hazard damages 2000 to present in the Little Pine Island service area
-# Determine damages from selected tropical cyclones
-get_hazard_losses <- function(event, aoi, start, end) {
+# Example: Miscellaneous hazard damages in the Little Pine Island service area
+# The default behavior of get_hazard_losses() is to return all storm events
+get_hazard_losses <- function(event = "all", aoi, start, end) {
   # Determine the years needed
   years <- seq(start, end)
   # Establish the default response
   response <- "y"
   # If more than 10 years of data are going to be retrieved, alert the user that it may take some time and ask if they would like to continue
   if(length(years) > 10) {
-    message("It may take some time to retrieve this data.")
+    message("It may take some time to retrieve this amount of data.")
     response <- readline(prompt = "Would you like to continue? (y/n)\t")
   }
   
@@ -232,18 +239,8 @@ get_hazard_losses <- function(event, aoi, start, end) {
       # Create a state-county FIPS identifier
       dplyr::mutate(STCZFP = paste(as.numeric(STATEFP), as.numeric(COUNTYFP), sep = "-"))
     
-    # Create a vector of years
-    rng <- paste(paste0("d", years), collapse = "|")
-    # Establish the base URL for data download
-    base_url <- "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/"
-    # Read the table of file names
-    tbl <- rvest::read_html(base_url) |>
-      rvest::html_nodes("table") |>
-      rvest::html_table()
-    # Create a vector of URLs for file download
-    files <- paste0(base_url, dplyr::filter(tbl[[1]], grepl(rng, Name), grepl("details", Name))$Name)
     # Read each year's csv file and combine into a single data frame (suppress the warning that some dates parse incorrectly)
-    storm_events <- suppressWarnings(purrr::map(files, readr::read_csv, show_col_types = FALSE) %>%
+    storm_events <- suppressWarnings(purrr::map(build_file_list(years), readr::read_csv, show_col_types = FALSE) %>%
                                        # Keep only needed columns
                                        purrr::map(., ~.x |> dplyr::select(YEAR, BEGIN_YEARMONTH, DAY = BEGIN_DAY, TIME = BEGIN_TIME, TZ = CZ_TIMEZONE, STATE, STATE_FIPS,
                                                                           CZ_NAME, CZ_FIPS, EVENT_TYPE, INJURIES_DIRECT:SOURCE, EPISODE_NARRATIVE, EVENT_NARRATIVE)) |>
@@ -259,6 +256,8 @@ get_hazard_losses <- function(event, aoi, start, end) {
       storm_sub <- storm_events |>
         # Search for multiple natural hazard keywords in the event types
         dplyr::filter(grepl(stringr::str_c(event, collapse = "|"), EVENT_TYPE, ignore.case = TRUE))
+    } else if(event == "all") {
+      storm_sub <- storm_events
     } else {
       storm_sub <- storm_events |>
         # Search for the natural hazard keyword in the event types
@@ -284,5 +283,9 @@ get_hazard_losses <- function(event, aoi, start, end) {
                                                                ifelse(grepl("B", DAMAGE_CROPS), as.numeric(gsub("B", "", DAMAGE_CROPS)) * 1000000000, NA))))))
   }
 }
+# Retrieve rain related events from 2000 to 2024
 get_hazard_losses("rain", little_pine, 2000, 2024)
+# Retrieve flooding relative events from 2012 to 2017
 get_hazard_losses(c("flood", "storm surge"), little_pine, 2012, 2017)
+# Retrieve all events in 2020
+get_hazard_losses(aoi = little_pine, start = 2020, end = 2020)
