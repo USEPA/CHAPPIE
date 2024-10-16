@@ -135,33 +135,76 @@ hurr_pts_aoi_int <- closest_hurr_pt(find_hurr_pts(hurr_pts_proj, little_pine, na
 
 # Determine damages from selected tropical cyclones
 get_cyclone_losses <- function(storm, aoi) {
-  # Determine which counties are in the AOI
-  target_counties <- tigris::counties()[sf::st_transform(aoi, terra::crs(tigris::counties())), op = sf::st_intersects] |>
-    # Create a state-county FIPS identifier
-    dplyr::mutate(STCZFP = paste(as.numeric(STATEFP), as.numeric(COUNTYFP), sep = "-"))
+  # Determine the years needed
+  years <- unique(storm$Year)
+  # Establish the default response
+  response <- "y"
+  # If more than 10 years of data are going to be retrieved, alert the user that it may take some time and ask if they would like to continue
+  if(length(years) > 10) {
+    message("It may take some time to retrieve this data.")
+    response <- readline(prompt = "Would you like to continue? (y/n)\t")
+  }
   
-  # Read the compiled NOAA Storm Events database (1950-2022)
-  readr::read_csv("L:/Priv/SHC_1012/Florida ROAR/Data/Hazards/StormEvents/StormEvents_details_d1950-2022.csv") |>
-    # Add columns for month and state-county FIPS identifier
-    dplyr::mutate(MONTH = as.numeric(stringr::str_sub(BEGIN_YEARMONTH, start = -2)),
-                  STCZFP = paste(STATE_FIPS, CZ_FIPS, sep = "-")) |>
-    # Keep only counties in the AOI
-    dplyr::filter(STCZFP %in% unique(target_counties$STCZFP)) |>
-    # Search episode narratives for the storm names by row
-    dplyr::rowwise() |>
-    # Assign STORM as the first storm name that appears in the narrative
-    dplyr::mutate(STORM = stringr::str_to_upper(stringr::str_split(EPISODE_NARRATIVE, pattern = " ")[[1]][stringr::str_split(EPISODE_NARRATIVE, pattern = " ")[[1]]
-                                                                                                          %in% stringr::str_to_title(unique(storm$StormName))][1])) |>
-    # Create a storm identifier assigning matched storms to a season
-    dplyr::mutate(ID = paste(YEAR, STORM, sep = "-")) |>
-    # Keep only storms that occurred in the correct season
-    dplyr::filter(ID %in% unique(dplyr::mutate(storm, ID = paste(Year, StormName, sep = "-"))$ID)) |>
-    # Keep only needed columns
-    dplyr::select(YEAR, MONTH, DAY = BEGIN_DAY, TIME = BEGIN_TIME, TZ = CZ_TIMEZONE, STATE, CZ_NAME, EVENT_TYPE, STORM, INJURIES_DIRECT:SOURCE, EPISODE_NARRATIVE, EVENT_NARRATIVE) |>
-    # Remove storm events that did not match with any storm names (not tropical cyclone related)
-    dplyr::filter(!is.na(STORM)) |>
-    # Sort by date of event, state, and county
-    dplyr::arrange(YEAR, MONTH, DAY, STATE, CZ_NAME)
+  # If the response is "y", continue with the analysis
+  if(response == "y") {
+    # Determine which counties are in the AOI
+    counties <- tigris::counties(progress_bar = FALSE)
+    target_counties <- counties[sf::st_transform(aoi, terra::crs(counties)), op = sf::st_intersects] |>
+      # Create a state-county FIPS identifier
+      dplyr::mutate(STCZFP = paste(as.numeric(STATEFP), as.numeric(COUNTYFP), sep = "-"))
+    
+    # Create a vector of years
+    rng <- paste(paste0("d", years), collapse = "|")
+    # Establish the base URL for data download
+    base_url <- "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/"
+    # Read the table of file names
+    tbl <- rvest::read_html(base_url) |>
+      rvest::html_nodes("table") |>
+      rvest::html_table()
+    # Create a vector of URLs for file download
+    files <- paste0(base_url, dplyr::filter(tbl[[1]], grepl(rng, Name), grepl("details", Name))$Name)
+    # Read each year's csv file and combine into a single data frame (suppress the warning that some dates parse incorrectly)
+    storm_events <- suppressWarnings(purrr::map(files, readr::read_csv, show_col_types = FALSE) %>%
+                                       # Keep only needed columns
+                                       purrr::map(., ~.x |> dplyr::select(YEAR, BEGIN_YEARMONTH, DAY = BEGIN_DAY, TIME = BEGIN_TIME, TZ = CZ_TIMEZONE, STATE, STATE_FIPS,
+                                                                          CZ_NAME, CZ_FIPS, EVENT_TYPE, INJURIES_DIRECT:SOURCE, EPISODE_NARRATIVE, EVENT_NARRATIVE)) |>
+                                       # Combine into single data frame
+                                       dplyr::bind_rows())
+    
+    # Determine damages from tropical cyclones
+    storm_events |>
+      # Add columns for month and state-county FIPS identifier
+      dplyr::mutate(MONTH = as.numeric(stringr::str_sub(BEGIN_YEARMONTH, start = -2)),
+                    STCZFP = paste(STATE_FIPS, CZ_FIPS, sep = "-")) |>
+      # Keep only counties in the AOI
+      dplyr::filter(STCZFP %in% unique(target_counties$STCZFP)) |>
+      # Search episode narratives for the storm names by row
+      dplyr::rowwise() |>
+      # Assign STORM as the first storm name that appears in the narrative
+      dplyr::mutate(STORM = stringr::str_to_upper(stringr::str_split(EPISODE_NARRATIVE, pattern = " ")[[1]][stringr::str_split(EPISODE_NARRATIVE, pattern = " ")[[1]]
+                                                                                                            %in% stringr::str_to_title(unique(storm$StormName))][1])) |>
+      # Create a storm identifier assigning matched storms to a season
+      dplyr::mutate(ID = paste(YEAR, STORM, sep = "-")) |>
+      # Keep only storms that occurred in the correct season
+      dplyr::filter(ID %in% unique(dplyr::mutate(storm, ID = paste(Year, StormName, sep = "-"))$ID)) |>
+      # Keep only needed columns
+      dplyr::select(YEAR, MONTH, DAY, TIME, TZ, STATE, CZ_NAME, EVENT_TYPE, STORM, INJURIES_DIRECT:SOURCE, EPISODE_NARRATIVE, EVENT_NARRATIVE) |>
+      # Remove storm events that did not match with any storm names (not tropical cyclone related)
+      dplyr::filter(!is.na(STORM)) |>
+      # Sort by date of event, state, and county
+      dplyr::arrange(YEAR, MONTH, DAY, STATE, CZ_NAME) |>
+      # Convert property and crop damage to numeric values
+      dplyr::mutate(DAMAGE_PROPERTY = ifelse(is.na(DAMAGE_PROPERTY), NA,
+                                             ifelse(DAMAGE_PROPERTY == "0", 0,
+                                                    ifelse(grepl("K", DAMAGE_PROPERTY), as.numeric(gsub("K", "", DAMAGE_PROPERTY)) * 1000,
+                                                           ifelse(grepl("M", DAMAGE_PROPERTY), as.numeric(gsub("M", "", DAMAGE_PROPERTY)) * 1000000,
+                                                                  ifelse(grepl("B", DAMAGE_PROPERTY), as.numeric(gsub("B", "", DAMAGE_PROPERTY)) * 1000000000, NA))))),
+                    DAMAGE_CROPS = ifelse(is.na(DAMAGE_CROPS), NA,
+                                          ifelse(DAMAGE_CROPS == "0", 0,
+                                                 ifelse(grepl("K", DAMAGE_CROPS), as.numeric(gsub("K", "", DAMAGE_CROPS)) * 1000,
+                                                        ifelse(grepl("M", DAMAGE_CROPS), as.numeric(gsub("M", "", DAMAGE_CROPS)) * 1000000,
+                                                               ifelse(grepl("B", DAMAGE_CROPS), as.numeric(gsub("B", "", DAMAGE_CROPS)) * 1000000000, NA))))))
+  }
 }
 get_cyclone_losses(hurr_pts_aoi_int, little_pine)
 
@@ -170,37 +213,76 @@ get_cyclone_losses(hurr_pts_aoi_int, little_pine)
 
 # Example: Miscellaneous hazard damages 2000 to present in the Little Pine Island service area
 # Determine damages from selected tropical cyclones
-get_hazard_losses <- function(event, aoi) {
-  # Determine which counties are in the AOI
-  target_counties <- tigris::counties()[sf::st_transform(aoi, terra::crs(tigris::counties())), op = sf::st_intersects] |>
-    # Create a state-county FIPS identifier
-    dplyr::mutate(STCZFP = paste(as.numeric(STATEFP), as.numeric(COUNTYFP), sep = "-"))
+get_hazard_losses <- function(event, aoi, start, end) {
+  # Determine the years needed
+  years <- seq(start, end)
+  # Establish the default response
+  response <- "y"
+  # If more than 10 years of data are going to be retrieved, alert the user that it may take some time and ask if they would like to continue
+  if(length(years) > 10) {
+    message("It may take some time to retrieve this data.")
+    response <- readline(prompt = "Would you like to continue? (y/n)\t")
+  }
   
-  # Read the compiled NOAA Storm Events database (1950-2022)
-  events <- readr::read_csv("L:/Priv/SHC_1012/Florida ROAR/Data/Hazards/StormEvents/StormEvents_details_d1950-2022.csv") |>
-    # Add columns for month and state-county FIPS identifier
-    dplyr::mutate(STCZFP = paste(STATE_FIPS, CZ_FIPS, sep = "-")) |>
-    # Keep only counties in the AOI
-    dplyr::filter(STCZFP %in% unique(target_counties$STCZFP))
-  
-  # Search for natural hazard keywords
-  if(length(event) > 1) {
-    events |>
-      # Search for multiple natural hazard keywords in the event types
-      dplyr::filter(grepl(stringr::str_c(event, collapse = "|"), EVENT_TYPE, ignore.case = TRUE)) |>
+  # If the response is "y", continue with the analysis
+  if(response == "y") {
+    # Determine which counties are in the AOI
+    counties <- tigris::counties(progress_bar = FALSE)
+    target_counties <- counties[sf::st_transform(aoi, terra::crs(counties)), op = sf::st_intersects] |>
+      # Create a state-county FIPS identifier
+      dplyr::mutate(STCZFP = paste(as.numeric(STATEFP), as.numeric(COUNTYFP), sep = "-"))
+    
+    # Create a vector of years
+    rng <- paste(paste0("d", years), collapse = "|")
+    # Establish the base URL for data download
+    base_url <- "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/"
+    # Read the table of file names
+    tbl <- rvest::read_html(base_url) |>
+      rvest::html_nodes("table") |>
+      rvest::html_table()
+    # Create a vector of URLs for file download
+    files <- paste0(base_url, dplyr::filter(tbl[[1]], grepl(rng, Name), grepl("details", Name))$Name)
+    # Read each year's csv file and combine into a single data frame (suppress the warning that some dates parse incorrectly)
+    storm_events <- suppressWarnings(purrr::map(files, readr::read_csv, show_col_types = FALSE) %>%
+                                       # Keep only needed columns
+                                       purrr::map(., ~.x |> dplyr::select(YEAR, BEGIN_YEARMONTH, DAY = BEGIN_DAY, TIME = BEGIN_TIME, TZ = CZ_TIMEZONE, STATE, STATE_FIPS,
+                                                                          CZ_NAME, CZ_FIPS, EVENT_TYPE, INJURIES_DIRECT:SOURCE, EPISODE_NARRATIVE, EVENT_NARRATIVE)) |>
+                                       # Combine into single data frame
+                                       dplyr::bind_rows() |>
+                                       # Add columns for month and state-county FIPS identifier
+                                       dplyr::mutate(STCZFP = paste(STATE_FIPS, CZ_FIPS, sep = "-")) |>
+                                       # Keep only counties in the AOI
+                                       dplyr::filter(STCZFP %in% unique(target_counties$STCZFP)))
+    
+    # Search for natural hazard keywords
+    if(length(event) > 1) {
+      storm_sub <- storm_events |>
+        # Search for multiple natural hazard keywords in the event types
+        dplyr::filter(grepl(stringr::str_c(event, collapse = "|"), EVENT_TYPE, ignore.case = TRUE))
+    } else {
+      storm_sub <- storm_events |>
+        # Search for the natural hazard keyword in the event types
+        dplyr::filter(grepl(event, EVENT_TYPE, ignore.case = TRUE))
+    }
+    storm_sub |>
       # Create a column for month
       dplyr::mutate(MONTH = as.numeric(stringr::str_sub(BEGIN_YEARMONTH, start = -2))) |>
       # Keep only needed columns
-      dplyr::select(YEAR, MONTH, DAY = BEGIN_DAY, TIME = BEGIN_TIME, TZ = CZ_TIMEZONE, STATE, CZ_NAME, EVENT_TYPE, INJURIES_DIRECT:SOURCE, EPISODE_NARRATIVE, EVENT_NARRATIVE)
-  } else {
-    events |>
-      # Search for the natural hazard keyword in the event types
-      dplyr::filter(grepl(event, EVENT_TYPE, ignore.case = TRUE)) |>
-      # Create a column for month
-      dplyr::mutate(MONTH = as.numeric(stringr::str_sub(BEGIN_YEARMONTH, start = -2))) |>
-      # Keep only needed columns
-      dplyr::select(YEAR, MONTH, DAY = BEGIN_DAY, TIME = BEGIN_TIME, TZ = CZ_TIMEZONE, STATE, CZ_NAME, EVENT_TYPE, INJURIES_DIRECT:SOURCE, EPISODE_NARRATIVE, EVENT_NARRATIVE)
+      dplyr::select(YEAR, MONTH, DAY, TIME, TZ, STATE, CZ_NAME, EVENT_TYPE, INJURIES_DIRECT:SOURCE, EPISODE_NARRATIVE, EVENT_NARRATIVE) |>
+      # Sort by date of event, state, and county
+      dplyr::arrange(YEAR, MONTH, DAY, STATE, CZ_NAME) |>
+      # Convert property and crop damage to numeric values
+      dplyr::mutate(DAMAGE_PROPERTY = ifelse(is.na(DAMAGE_PROPERTY), NA,
+                                             ifelse(DAMAGE_PROPERTY == "0", 0,
+                                                    ifelse(grepl("K", DAMAGE_PROPERTY), as.numeric(gsub("K", "", DAMAGE_PROPERTY)) * 1000,
+                                                           ifelse(grepl("M", DAMAGE_PROPERTY), as.numeric(gsub("M", "", DAMAGE_PROPERTY)) * 1000000,
+                                                                  ifelse(grepl("B", DAMAGE_PROPERTY), as.numeric(gsub("B", "", DAMAGE_PROPERTY)) * 1000000000, NA))))),
+                    DAMAGE_CROPS = ifelse(is.na(DAMAGE_CROPS), NA,
+                                          ifelse(DAMAGE_CROPS == "0", 0,
+                                                 ifelse(grepl("K", DAMAGE_CROPS), as.numeric(gsub("K", "", DAMAGE_CROPS)) * 1000,
+                                                        ifelse(grepl("M", DAMAGE_CROPS), as.numeric(gsub("M", "", DAMAGE_CROPS)) * 1000000,
+                                                               ifelse(grepl("B", DAMAGE_CROPS), as.numeric(gsub("B", "", DAMAGE_CROPS)) * 1000000000, NA))))))
   }
 }
-get_hazard_losses("rain", little_pine)
-get_hazard_losses(c("flood", "storm surge"), little_pine)
+get_hazard_losses("rain", little_pine, 2000, 2024)
+get_hazard_losses(c("flood", "storm surge"), little_pine, 2012, 2017)
