@@ -5,6 +5,7 @@ Module for health assets.
 """
 import requests
 import pandas
+from warnings import warn
 from CHAPPIE import layer_query
 
 _npi_url = "https://npiregistry.cms.hhs.gov/api"
@@ -77,24 +78,29 @@ def get_providers(aoi):
     params = {"version": 2.1, "limit": 200}
     dfs = []
     for zip in zips:
-        i=0
-        new_results=True
         params['postal_code']=zip
         #dfs.append(_paged_get(params))
-        while new_results:
-            params["skip"]=i
-            res = requests.get(_npi_url, params)
-            res.raise_for_status()
-            #if res.ok:
-            df= pandas.DataFrame(res.json()['results'])
-            df["zip5"]=zip  # Add 5-digit zipcode to show retrieval set
-            dfs.append(df)
-            if res.json()['result_count']==200:
-                if i>2000:
-                    break
+        # Split org vs provider
+        for type in ["NPI-1", "NPI-2"]:
+            i=0
+            new_results=True
+            params['enumeration_type']=type
+            while new_results:
+                params["skip"]=i
+                res = requests.get(_npi_url, params)
+                res.raise_for_status()
+                #if res.ok:
+                df= pandas.DataFrame(res.json()['results'])
+                df["zip5"]=zip  # Add 5-digit zipcode to show retrieval set
+                dfs.append(df)
+                if res.json()['result_count']==200:
+                    # Presumably not reached the end of results
+                    if i>=1200:
+                        warn(f"Reached NPI skip limit for zip {zip} & {type}")
+                        break  # Limits to 1400 results (last 200 duplicated)
+                    else:
+                        new_results = True
+                        i+=200
                 else:
-                    new_results = True
-                    i+=200
-            else:
-                new_results = False
+                    new_results = False
     return pandas.concat(dfs)
