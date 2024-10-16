@@ -47,3 +47,10 @@ def test_get_urgent_care():
 
 def test_get_providers():
     actual = health.get_providers(aoi_gdf)
+    actual_zips = sorted(list(actual['zip5'].unique()))
+    expected = ['32401', '32404', '32405', '32407', '32408', '32409',
+                '32413', '32444', '32465', '32466']
+    assert actual_zips==expected
+    actual_len = [len(actual[actual['zip5']==zip]) for zip in expected]
+    expected_len = [1189, 455, 1739, 490, 218, 46, 221, 510, 66, 40,]
+    assert actual_len==expected_len
