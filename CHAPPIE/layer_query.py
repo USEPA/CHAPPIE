@@ -443,6 +443,7 @@ class ESRIImageService(object):
             print(e)
             pass
         except IndexError:
+            # TODO: if response is empty, provide some metadata for the response, like a warning
             return 
             
     

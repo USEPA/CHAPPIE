@@ -41,7 +41,7 @@ def get_flood(aoi, output=None):
         Parcel polygons to be summarized for Area Of Interest (AOI).
 
     output : str, optional 
-        csv file path to Append data to.
+        csv file path to Append data to. The default is None and does not write to csv.
 
     Returns
     -------
@@ -53,6 +53,7 @@ def get_flood(aoi, output=None):
     parcel_id = 'parcelnumb' # unique id column name for parcel data
 
     df = pandas.DataFrame(columns=[parcel_id, 'mean'])
+    # Add headers to the csv at beginning once, since the rows are appended to csv one by one hereafter
     if output:
         df.to_csv(output, mode='a', index=False, header=True)
         
@@ -63,7 +64,9 @@ def get_flood(aoi, output=None):
         actual = layer_query.get_image_by_poly(aoi=aoi, url=url, row=row)
         data.append(actual)
         df.loc[i] = data
-        if output:
+        # This probably could be improved by using iterrows. 
+        # Iterrows may obscure the geometry somewhat, but is worth revisiting.
+        if output: 
             df.to_csv(output, mode='a', index=False, header=False)
             df.drop(df.index, inplace=True)
     return df
