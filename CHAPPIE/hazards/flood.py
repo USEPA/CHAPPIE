@@ -32,7 +32,7 @@ def get_fema_nfhl(aoi):
                                 layer=0,
                                 in_crs=aoi.crs.to_epsg())
 
-def get_flood(aoi, output):
+def get_flood(aoi, output=None):
     """Get flood imagery statistics and histogram for polygon within AOI.
 
     Parameters
@@ -40,26 +40,33 @@ def get_flood(aoi, output):
     aoi : geopandas.GeoDataFrame
         Parcel polygons to be summarized for Area Of Interest (AOI).
 
-    output : csv file path
-        Append data to csv.
+    output : str, optional 
+        csv file path to Append data to. The default is None and does not write to csv.
 
     Returns
     -------
-    JSON
-        Statistics and Histogram JSON object.
+    pandas.DataFrame
+        Table of results with Mean statistic, and parcel number (id).
 
     """
     url = 'https://enviroatlas.epa.gov/arcgis/rest/services/Supplemental/Estimated_floodplain_CONUS_WM/ImageServer'
-    
-    df = pandas.DataFrame(columns=['parcelnumb', 'mean'])
-    aoi = aoi[:1000]
-    for i in range(len(aoi)):
+    parcel_id = 'parcelnumb' # unique id column name for parcel data
+
+    df = pandas.DataFrame(columns=[parcel_id, 'mean'])
+    # Add headers to the csv at beginning once, since the rows are appended to csv one by one hereafter
+    if output:
+        df.to_csv(output, mode='a', index=False, header=True)
+        
+    for i in range(len(aoi)): #TODO: use iterrows instead?
         data = []
-        data.append(aoi['parcelnumb'][i])
+        data.append(aoi[parcel_id][i])
         row = aoi.iloc[[i]]
         actual = layer_query.get_image_by_poly(aoi=aoi, url=url, row=row)
         data.append(actual)
         df.loc[i] = data
-        df.to_csv(output, mode='a', index=True, header=False)
-        df.drop(df.index, inplace=True)
+        # This probably could be improved by using iterrows. 
+        # Iterrows may obscure the geometry somewhat, but is worth revisiting.
+        if output: 
+            df.to_csv(output, mode='a', index=False, header=False)
+            df.drop(df.index, inplace=True)
     return df

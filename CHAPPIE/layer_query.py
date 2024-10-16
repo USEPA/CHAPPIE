@@ -443,7 +443,8 @@ class ESRIImageService(object):
             print(e)
             pass
         except IndexError:
-            return 'error'
+            # TODO: if response is empty, provide some metadata for the response, like a warning
+            return 
             
     
 def get_image_by_poly(aoi, url, row):
@@ -453,6 +454,7 @@ def get_image_by_poly(aoi, url, row):
         data = json.loads(json_string)
         geometry_type = data["features"][0]["geometry"]["type"]
         # Consider polygons and multipolygon differently
+        #TODO: if/elif is fine, but some kind of else catch in case it ever isn't polygon.
         if geometry_type == 'Polygon':
             # Parse geodataframe polygon object to get coordinates
             rings = data["features"][0]["geometry"]["coordinates"]
