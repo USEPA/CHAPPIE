@@ -48,18 +48,20 @@ def test_get_fema_nfhl():
 class TestGetFlood:
     """ Test cases for get_flood """
 
-    parcels = ['03814-000-000', #Multipolygon
-                '03608-010-000', #Multipolygon
-                '32719-000-000', #Multipolygon
-                '03798-000-000', #Multipolygon
-                '32736-350-000', #Multipolygon
-                '40000-975-312', #Multipolygon
-                '03805-150-000', #Multipolygon
-                '26496-000-000', #Multipolygon
+    parcels = {"Multipolygon": 
+               ['03814-000-000', 
+                '03608-010-000',
+                '32719-000-000', 
+                '03798-000-000', 
+                '32736-350-000', 
+                '40000-975-312', 
+                '03805-150-000', 
+                '26496-000-000', 
                 '32738-639-000', #this returns 0, but has a small corner of raster pixel present
                 '03613-000-000', #this returns 0, but has a corner of raster pixel present
-                '05964-000-000', #Multipolygon (Donut with null value); Result looks valid (not null)	
-                '31668-150-000', #14.5 m2 parcel no overlap NULL
+                '05964-000-000'], #Multipolygon (Donut with null value);	
+                "Tiny": 
+                ['31668-150-000', #14.5 m2 parcel no overlap NULL
                 '34801-158-000', #14.3 m2 parcel no overlap NULL
                 '40001-175-010', #14.3 m2 parcel complete overlap NULL
                 '30464-230-000', #15.8 m2 parcel complete overlap NULL; multipolygon
@@ -67,8 +69,9 @@ class TestGetFlood:
                 '40000-050-059', #74.3 m2 parcel no overlap, value of 0
                 '31423-031-000', #74.3 m2 parcel complete overlap NULL
                 '38187-505-000', #Smallest parcel to return overlap value of 0 (74.9 m2)
-                '38466-020-000', #Smallest parcel to return overlap value of 1 (96.5 m2)
-                '08344-000-000', #74.4 m2 parcel complete overlap NULL; not a unique parcel numb (3 polygons)
+                '38466-020-000'], #Smallest parcel to return overlap value of 1 (96.5 m2)
+                "Investigate": 
+                ['08344-000-000', #74.4 m2 parcel complete overlap NULL; not a unique parcel numb (3 polygons)
                 '26529-020-000', #parcel with overlap but returned 0 value; yes returns 0, but has a corner of raster pixel present
                 '38186-090-000', #parcel with no overlap but returned a value (0.5)
                 '38461-816-000', #greater than 75m2 (134.2) returned NULL
@@ -76,62 +79,67 @@ class TestGetFlood:
                 '37252-030-120', #greater than 75m2 (102.4) returned NULL
                 '36238-010-000', #greater than 75m2 (205.6) returned NULL
                 '36459-720-010', #greater than 75m2 (486.1) returned NULL
-                '38373-019-000', #greater than 75m2 (200.1) returned NULL
-                '03841-000-000', #exterior some overlap
-                '32736-000-000', #exterior some overlap
-                '32736-026-010', #exterior some overlap
-                '26410-000-000', #exterior some overlap
-                '36076-023-000', #exterior some overlap
-                '36081-010-000', #exterior some overlap
-                '36071-029-000', #exterior some overlap
-                '36468-000-000', #exterior some overlap
-                '36719-000-000', #exterior some overlap
-                '05152-000-000', #exterior some overlap
-                '03869-000-000', #partial (0.75-0.99) overlap
-                '03799-000-000', #partial (0.75-0.99) overlap
-                '03805-257-000', #partial (0.75-0.99) overlap
-                '03805-342-000', #partial (0.75-0.99) overlap
-                '33997-000-000', #partial (0.75-0.99) overlap
-                '32720-000-000', #partial (0.75-0.99) overlap
-                '26618-000-000', #partial (0.75-0.99) overlap
-                '26466-010-000', #partial (0.75-0.99) overlap
-                '07566-010-000', #partial (0.75-0.99) overlap
-                '26626-030-000', #partial (0.75-0.99) overlap
-                '33722-000-000', #partial (0.01-0.25) overlap
-                '32767-010-000', #partial (0.01-0.25) overlap
-                '32807-000-000', #partial (0.01-0.25) overlap
-                '32807-007-000', #partial (0.01-0.25) overlap
-                '07564-125-000', #partial (0.01-0.25) overlap
-                '26436-015-082', #partial (0.01-0.25) overlap
-                '26467-010-070', #partial (0.01-0.25) overlap
-                '03726-040-000', #partial (0.01-0.25) overlap
-                '03802-050-000', #partial (0.01-0.25) overlap
-                '34024-322-000', #partial (0.01-0.25) overlap
-                '36630-000-000', #complete overlap
-                '32736-000-000', #complete overlap
-                '32736-015-000', #complete overlap
-                '32734-010-000', #complete overlap
-                '32728-000-000', #complete overlap
-                '26630-000-000', #complete overlap
-                '26631-000-000', #complete overlap
-                '26509-010-000', #complete overlap
-                '03623-050-000', #complete overlap
-                '26593-533-000', #complete overlap
-                '07533-450-090', #no overlap
-                '26487-000-000', #no overlap
-                '26484-030-000', #no overlap
-                '26470-000-000', #no overlap
-                '07533-450-090', #no overlap
-                '26509-020-000', #no overlap
-                '26567-000-000', #no overlap
-                '26551-005-000', #no overlap
-                '38324-000-000', #no overlap
-                '36617-000-000' #no overlap
-                ]
+                '38373-019-000'], #greater than 75m2 (200.1) returned NULL
+                "exterior some overlap": 
+                ['03841-000-000', 
+                '32736-000-000', 
+                '32736-026-010', 
+                '26410-000-000', 
+                '36076-023-000', 
+                '36081-010-000', 
+                '36071-029-000', 
+                '36468-000-000', 
+                '36719-000-000', 
+                '05152-000-000'], 
+                "partial (0.75-0.99) overlap": 
+                ['03869-000-000',
+                '03799-000-000', 
+                '03805-257-000',
+                '03805-342-000', 
+                '33997-000-000', 
+                '32720-000-000', 
+                '26618-000-000', 
+                '26466-010-000', 
+                '07566-010-000', 
+                '26626-030-000'],
+                "partial (0.01-0.25) overlap":  
+                ['33722-000-000', 
+                '32767-010-000', 
+                '32807-000-000',
+                '32807-007-000',
+                '07564-125-000',
+                '26436-015-082',
+                '26467-010-070',
+                '03726-040-000',
+                '03802-050-000',
+                '34024-322-000'],
+                "complete overlap":  
+                ['36630-000-000', 
+                '32736-000-000', 
+                '32736-015-000', 
+                '32734-010-000',
+                '32728-000-000',
+                '26630-000-000',
+                '26631-000-000',
+                '26509-010-000',
+                '03623-050-000',
+                '26593-533-000'],
+                "no overlap":
+                ['07533-450-090',
+                '26487-000-000',
+                '26484-030-000',
+                '26470-000-000',
+                '07533-450-090', 
+                '26509-020-000', 
+                '26567-000-000',
+                '26551-005-000', 
+                '38324-000-000',
+                '36617-000-000'
+                ]}
 
     def test_get_flood_no_overlap(self):
         """ Test get flood when parcels have no overlap """
-        test_parcels = self.parcels[69:]
+        test_parcels = self.parcels["no overlap"]
         # Get subset of parcels with no known overlap with flood areas
         no_overlap_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
         actual = flood.get_flood(no_overlap_parcels)
@@ -142,7 +150,7 @@ class TestGetFlood:
 
     def test_get_flood_complete_overlap(self):
         """ Test get flood when parcels have complete overlap """
-        test_parcels = self.parcels[59:69]
+        test_parcels = self.parcels["complete overlap"]
         # Get subset of parcels with complete known overlap with flood areas
         complete_overlap_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
         actual = flood.get_flood(complete_overlap_parcels)
@@ -153,7 +161,7 @@ class TestGetFlood:
 
     def test_get_flood_gt1pct_lt25pct_overlap(self):
         """ Test get flood when parcels have partial (0.01-0.25) overlap """
-        test_parcels = self.parcels[49:59]
+        test_parcels = self.parcels["partial (0.01-0.25) overlap"]
         # Get subset of parcels with partial (0.01-0.25) known overlap with flood areas
         gt1pct_lt25pct_overlap_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
         actual = flood.get_flood(gt1pct_lt25pct_overlap_parcels)
@@ -164,7 +172,7 @@ class TestGetFlood:
 
     def test_get_flood_gt75pct_lt99pct_overlap(self):
         """ Test get flood when parcels have partial (0.75-0.99) overlap """
-        test_parcels = self.parcels[39:49]
+        test_parcels = self.parcels["partial (0.75-0.99) overlap"]
         
         # Get subset of parcels with partial (0.75-0.99) known overlap with flood areas
         gt75pct_lt99pct_overlap_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
@@ -176,7 +184,7 @@ class TestGetFlood:
 
     def test_get_flood_exterior_some_overlap(self):
         """ Test get flood when parcels have some exterior overlap """
-        test_parcels = self.parcels[29:39]
+        test_parcels = self.parcels["exterior some overlap"]
 
         # Get subset of parcels with complete known overlap with flood areas
         exterior_some_overlap_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
@@ -188,7 +196,7 @@ class TestGetFlood:
 
     def test_get_multipolygon(self):
         """ Test get flood when parcels are multipolygons """
-        test_parcels = self.parcels[0:11]
+        test_parcels = self.parcels["Multipolygon"]
         # Get subset of parcels that are multipolygons
         multipolygon_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
         actual = flood.get_flood(multipolygon_parcels)
@@ -199,7 +207,7 @@ class TestGetFlood:
 
     def test_get_tiny_parcels(self):
         """ Test get flood when parcels are less than or nearly 75m2 """
-        test_parcels = self.parcels[11:20]
+        test_parcels = self.parcels["Tiny"]
         # Get subset of parcels with tiny geometries and results of null
         tiny_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
         #actual_file = os.path.join(EXPECTED_DIR, 'get_tiny.csv')
@@ -218,7 +226,7 @@ class TestGetFlood:
 
     def test_needs_investigation(self):
         """ Test get flood when parcels return unexpected results """
-        test_parcels = self.parcels[20:29]
+        test_parcels = self.parcels["Investigate"]
         # Get subset of parcels with unexpected results
         needs_investigation_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
         actual = flood.get_flood(needs_investigation_parcels)
