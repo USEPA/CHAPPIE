@@ -6,6 +6,7 @@ Test technological
 """
 import os
 #import pytest
+import pandas
 import geopandas
 from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.assets import health
@@ -37,11 +38,30 @@ def test_get_hospitals():
 #@pytest.mark.skip(reason="https://services1.arcgis.com/Hp6G80Pky0om7QvQ/ArcGIS/rest/services/Urgent_Care_Facilities/FeatureServer")
 def test_get_urgent_care():
     actual = health.get_urgent_care(aoi_gdf)
+
+    # Special handling for NASA srevice to match old HIFLD
+    actual.rename(columns=str.upper, inplace=True)
+    actual.rename(columns={'GEOMETRY': 'geometry'}, inplace=True)
+    actual.drop(columns=['OBJECTID_1'], inplace=True)
+
     actual.drop(columns=['OBJECTID'], inplace=True)
-    actual.sort_values(by=['ID', 'geometry', 'NAME'], inplace=True, ignore_index=True)
+    actual.sort_values(by=['ID', 'geometry', 'NAME'],
+                       inplace=True,
+                       ignore_index=True)
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_urgent_care.parquet')
     expected = geopandas.read_parquet(expected_file)
+
+    # For NASA source conver to datetime
+    expected["CONTDATE"] = pandas.to_datetime(expected["CONTDATE"],
+                                              unit='ms',
+                                              utc=True)
+    expected["GEODATE"] = pandas.to_datetime(expected["GEODATE"],
+                                              unit='ms',
+                                              utc=True)
     
-    assert_geodataframe_equal(actual, expected)
+    #assert_geodataframe_equal(actual, expected)  # HIFLD
+    assert_geodataframe_equal(actual.sort_index(axis=1),
+                              expected.sort_index(axis=1),
+                              check_less_precise=True)
