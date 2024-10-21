@@ -60,9 +60,9 @@ def test_get_urgent_care():
     expected["GEODATE"] = pandas.to_datetime(expected["GEODATE"],
                                               unit='ms',
                                               utc=True)
-    # Ensure expected times in ns
-    expected["CONTDATE"] = expected["CONTDATE"].astype("datetime64[ns, UTC]")
-    expected["GEODATE"] = expected["GEODATE"].astype("datetime64[ns, UTC]")
+    # Ensure expected times in ms
+    expected["CONTDATE"] = expected["CONTDATE"].astype("datetime64[ms, UTC]")
+    expected["GEODATE"] = expected["GEODATE"].astype("datetime64[ms, UTC]")
 
     #assert_geodataframe_equal(actual, expected)  # HIFLD
     assert_geodataframe_equal(actual.sort_index(axis=1),
