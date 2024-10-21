@@ -61,8 +61,8 @@ def test_get_urgent_care():
                                               unit='ms',
                                               utc=True)
     # Ensure expected times in ns
-    expected["CONTDATE"].astype("datetime64[ns, UTC]")
-    expected["GEODATE"].astype("datetime64[ns, UTC]")
+    expected["CONTDATE"] = expected["CONTDATE"].astype("datetime64[ns, UTC]")
+    expected["GEODATE"] = expected["GEODATE"].astype("datetime64[ns, UTC]")
 
     #assert_geodataframe_equal(actual, expected)  # HIFLD
     assert_geodataframe_equal(actual.sort_index(axis=1),
