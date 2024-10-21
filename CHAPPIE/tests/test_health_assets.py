@@ -53,14 +53,17 @@ def test_get_urgent_care():
     expected_file = os.path.join(EXPECTED_DIR, 'get_urgent_care.parquet')
     expected = geopandas.read_parquet(expected_file)
 
-    # For NASA source conver to datetime
+    # For NASA source convert to datetime
     expected["CONTDATE"] = pandas.to_datetime(expected["CONTDATE"],
                                               unit='ms',
                                               utc=True)
     expected["GEODATE"] = pandas.to_datetime(expected["GEODATE"],
                                               unit='ms',
                                               utc=True)
-    
+    # Ensure expected times in ns
+    expected["CONTDATE"].astype("datetime64[ns, UTC]")
+    expected["GEODATE"].astype("datetime64[ns, UTC]")
+
     #assert_geodataframe_equal(actual, expected)  # HIFLD
     assert_geodataframe_equal(actual.sort_index(axis=1),
                               expected.sort_index(axis=1),
