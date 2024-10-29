@@ -11,6 +11,8 @@ from pandas.testing import assert_frame_equal
 from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.hazards import flood
 import pytest
+from unittest.mock import patch
+import random
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -247,3 +249,13 @@ class TestGetFlood:
                 invalid_geom.append(row)
         assert len(invalid_geom)==0       
 
+@pytest.fixture
+# GeoDataFrame with single point feature 
+def point_gdf():
+    data = {
+        'geometry': geopandas.GeoSeries.from_wkt(["POINT (-85.763623 30.329186)"])
+    }
+    point_gdf = geopandas.GeoDataFrame(data)
+    point_gdf.crs = parcels_gdf.crs
+    point_gdf['parcelnumb'] = random.randint(1,10)
+    return point_gdf
