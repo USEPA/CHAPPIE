@@ -259,3 +259,14 @@ def point_gdf():
     point_gdf.crs = parcels_gdf.crs
     point_gdf['parcelnumb'] = random.randint(1,10)
     return point_gdf
+
+# Test sending point data to get_image_by_poly, but patch the computeStatHist endpoint call
+@patch('CHAPPIE.layer_query.ESRIImageService.computeStatHist')
+def test_get_image_by_poly_point(mock_computeStatHist, point_gdf):
+    mock_computeStatHist.return_value == 1
+    url = "https://fake.org/ImageServer"
+    row = point_gdf.iloc[[0]]
+    
+    result = flood.layer_query.get_image_by_poly(aoi=point_gdf, url=url, row=row)
+    assert result == 1
+    mock_computeStatHist.assert_called_once() 
