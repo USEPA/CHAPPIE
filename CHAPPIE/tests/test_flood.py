@@ -11,8 +11,9 @@ from pandas.testing import assert_frame_equal
 from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.hazards import flood
 import pytest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 import random
+from requests.exceptions import HTTPError
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -269,3 +270,33 @@ def test_get_image_by_poly_point(mock_computeStatHist, point_gdf):
     result = flood.layer_query.get_image_by_poly(aoi=point_gdf, url=url, row=row)
     assert result == None 
     mock_computeStatHist.assert_not_called() # Ensures the mocked method was never called
+
+@pytest.fixture
+# GeoDataFrame with single polygon feature 
+def polygon_gdf():
+    data = {
+        'geometry': geopandas.GeoSeries.from_wkt(["POLYGON ((-85.76298351599996 30.32878118700006, -85.76305759399997 30.32884191600005, -85.76316722699994 30.328925333000036, -85.76326076499998 30.32898948400003, -85.76337258599995 30.32905792500004, -85.76348870399994 30.329121772000065, -85.76362266399997 30.329186308, -85.76300802099996 30.329986128000023, -85.76235017699997 30.329637642000055, -85.76221772699995 30.329535969000062, -85.76211676699995 30.32929401400003, -85.76220841399999 30.328930764000056, -85.76228414799994 30.32877965800003, -85.76273981899999 30.328780179000045, -85.76298351599996 30.32878118700006))"])
+    }
+    point_gdf = geopandas.GeoDataFrame(data)
+    point_gdf.crs = parcels_gdf.crs
+    point_gdf['parcelnumb'] = random.randint(1,10)
+    return point_gdf
+
+#Test how 502 server error is handled, but patch the computeStatHist endpoint call
+@patch('CHAPPIE.layer_query.requests.get')
+def test_get_image_by_poly_502_error(mock_get, polygon_gdf):
+    mock_resp = MagicMock()
+    mock_resp.status_code = 502
+    mock_resp.raise_for_status.side_effect = HTTPError
+    mock_get.return_value = mock_resp # mock return value
+    url = "https://fake.org/ImageServer"
+    row = polygon_gdf.iloc[[0]]
+    result = flood.layer_query.get_image_by_poly(aoi=polygon_gdf, url=url, row=row)
+    assert result == {}
+    mock_get.assert_called_once() # Ensures the mocked method was called once
+    assert mock_resp.raise_for_status.called == True
+
+# Test mock return object {'statistics': []}, but patch the computeStatHist endpoint call
+# @patch('CHAPPIE.layer_query.ESRIImageService.computeStatHist')
+# def test_get_image_by_poly_index_error():
+#     pass

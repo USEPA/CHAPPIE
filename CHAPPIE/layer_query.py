@@ -470,16 +470,18 @@ class ESRIImageService(object):
             resp = requests.get(self._last_query)
             resp.raise_for_status()
             datadict = resp.json()
-            mean = datadict["statistics"][0]["mean"]
-            return mean
+            # moved this to parse in flood.py
+            #mean = datadict["statistics"][0]["mean"]
+            return datadict
         except requests.exceptions.HTTPError as e:
             #TODO: this needs improvement, but getting url is good for debug
             print(self._last_query)
             print(e)
-            pass
-        except IndexError:
+            return {}
+        # Moved to flood.py
+        # except IndexError as e:
             # TODO: if response is empty, provide some metadata for the response, like a warning
-            return 
+            # return 
             
     
 def get_image_by_poly(aoi, url, row):
