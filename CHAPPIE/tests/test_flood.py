@@ -261,7 +261,7 @@ def point_gdf():
     return point_gdf
 
 # Test sending point data to get_image_by_poly, but patch the computeStatHist endpoint call
-@patch('CHAPPIE.layer_query.ESRIImageService.computeStatHist')
+@patch('test_flood.flood.layer_query.ESRIImageService.computeStatHist')
 def test_get_image_by_poly_point(mock_computeStatHist, point_gdf):
     url = "https://fake.org/ImageServer"
     row = point_gdf.iloc[[0]]
