@@ -293,8 +293,8 @@ def test_get_image_by_poly_502_error(mock_get, polygon_gdf):
     row = polygon_gdf.iloc[[0]]
     result = flood.layer_query.get_image_by_poly(aoi=polygon_gdf, url=url, row=row)
     assert result == {}
-    mock_get.assert_called_once() # Ensures the mocked method was called once
     assert mock_resp.raise_for_status.called == True
+    assert mock_get.call_count == 2 # Ensures the mocked method was called twice (one plus a retry)
 
 # Test mock return object {'statistics': []}, but patch the computeStatHist endpoint call
 # @patch('CHAPPIE.layer_query.ESRIImageService.computeStatHist')
