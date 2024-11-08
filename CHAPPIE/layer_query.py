@@ -16,7 +16,7 @@ import geopandas
 import json
 from io import BytesIO
 import warnings
-
+from time import sleep
 
 _basequery = {
     "where": "",  # sql query component
@@ -452,6 +452,7 @@ class ESRIImageService(object):
             return ""
  
     def computeStatHist(self, **kwargs):
+        retry = 0
         # Parse args
         kwargs = {"".join(k.split("_")): v for k, v in kwargs.items()}
        
@@ -466,18 +467,25 @@ class ESRIImageService(object):
         cstr = cstr.replace(" ", "").replace("[", "%5B").replace("]", "%5D").replace("{", "%7B").replace("}", "%7D").replace("'", "%27").replace(":", "%3A").replace(",", "%2C")
         self._last_query = self._baseurl + "/computeStatisticsHistograms?" + cstr
         #print(self._last_query)
-        try:
-            resp = requests.get(self._last_query)
-            resp.raise_for_status()
-            datadict = resp.json()
-            # moved this to parse in flood.py
-            #mean = datadict["statistics"][0]["mean"]
-            return datadict
-        except requests.exceptions.HTTPError as e:
-            #TODO: this needs improvement, but getting url is good for debug
-            print(self._last_query)
-            print(e)
-            return {}
+        while True:
+            try:
+                resp = requests.get(self._last_query)
+                resp.raise_for_status()
+                datadict = resp.json()
+                # moved this to parse in flood.py
+                #mean = datadict["statistics"][0]["mean"]
+                return datadict
+            except requests.exceptions.HTTPError as e:
+                #TODO: this needs improvement, but getting url is good for debug
+                retry += 1
+                if retry < 2:
+                    warnings.warn(f"Retry number: {retry}")
+                    sleep(5)
+                    continue
+                else:
+                    print(self._last_query)
+                    print(e)
+                    return {}
         # Moved to flood.py
         # except IndexError as e:
             # TODO: if response is empty, provide some metadata for the response, like a warning
