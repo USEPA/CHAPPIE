@@ -6,4 +6,16 @@ Module for hazard infrastructure assets.
 from CHAPPIE import layer_query
 
 def get_dams(aoi):
-    pass
+    """Get dam locations within AOI.
+
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        Spatial definition for Area Of Interest (AOI).
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame for dam locations.
+
+    """
