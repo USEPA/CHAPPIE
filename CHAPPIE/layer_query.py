@@ -15,7 +15,8 @@ import pandas
 import geopandas
 import json
 from io import BytesIO
-
+import warnings
+from time import sleep
 
 _basequery = {
     "where": "",  # sql query component
@@ -451,6 +452,7 @@ class ESRIImageService(object):
             return ""
  
     def computeStatHist(self, **kwargs):
+        retry = 0
         # Parse args
         kwargs = {"".join(k.split("_")): v for k, v in kwargs.items()}
        
@@ -465,65 +467,80 @@ class ESRIImageService(object):
         cstr = cstr.replace(" ", "").replace("[", "%5B").replace("]", "%5D").replace("{", "%7B").replace("}", "%7D").replace("'", "%27").replace(":", "%3A").replace(",", "%2C")
         self._last_query = self._baseurl + "/computeStatisticsHistograms?" + cstr
         #print(self._last_query)
-        try:
-            resp = requests.get(self._last_query)
-            resp.raise_for_status()
-            datadict = resp.json()
-            mean = datadict["statistics"][0]["mean"]
-            return mean
-        except requests.exceptions.HTTPError as e:
-            #TODO: this needs improvement, but getting url is good for debug
-            print(self._last_query)
-            print(e)
-            pass
-        except IndexError:
+        while True:
+            try:
+                resp = requests.get(self._last_query)
+                resp.raise_for_status()
+                datadict = resp.json()
+                # moved this to parse in flood.py
+                #mean = datadict["statistics"][0]["mean"]
+                return datadict
+            except requests.exceptions.HTTPError as e:
+                #TODO: this needs improvement, but getting url is good for debug
+                retry += 1
+                if retry < 2:
+                    warnings.warn(f"Retry number: {retry}")
+                    sleep(5)
+                    continue
+                else:
+                    print(self._last_query)
+                    print(e)
+                    return {}
+        # Moved to flood.py
+        # except IndexError as e:
             # TODO: if response is empty, provide some metadata for the response, like a warning
-            return 
+            # return 
             
     
 def get_image_by_poly(aoi, url, row):
     # if geodataframe, get geometry of the row
     if isinstance(aoi, geopandas.GeoDataFrame):
-        json_string = row.to_json(drop_id=True)
-        data = json.loads(json_string)
-        geometry_type = data["features"][0]["geometry"]["type"]
-        # Consider polygons and multipolygon differently
-        #TODO: if/elif is fine, but some kind of else catch in case it ever isn't polygon.
-        if geometry_type == 'Polygon':
-            # Parse geodataframe polygon object to get coordinates
-            rings = data["features"][0]["geometry"]["coordinates"]
-            # Make esri geometry object (polygon)
-            geometry_object = { "rings": rings,
-                "spatialReference": { "wkid": aoi.crs.to_epsg() }
-                }
-                   
-        elif geometry_type == "MultiPolygon": 
-            # Parse geodataframe polygon object to get coordinates
-            rings = data["features"][0]["geometry"]["coordinates"]
-            # Pull out polygons from exploded gdf and fit into rest syntax for rest request
-            row_ex = row.explode(column='geometry',index_parts=False)
-            # Make esri geometry object (multipolygon)
-            multipoly = []
-            for i in range(len(row_ex)):
-                row = row_ex.iloc[[i]]
-                json_string = row.to_json(drop_id=True)
-                data = json.loads(json_string)
-                rings = data["features"][0]["geometry"]["coordinates"][0]
-                multipoly.append(rings)
-            
-            geometry_object = { "rings": multipoly,
-                "spatialReference": { "wkid": aoi.crs.to_epsg() }
-                }
-            
-        feature_layer = ESRIImageService(url)
-    
-        # query
-        query_params = {       
-                "geometry": geometry_object,
-                "geometryType": "esriGeometryPolygon",
-                "f": "json"
-                }
+        try:
+            json_string = row.to_json(drop_id=True)
+            data = json.loads(json_string)
+            geometry_type = data["features"][0]["geometry"]["type"]
+            # Implement else catch in case it ever isn't polygon / multipolygon
+            if geometry_type == 'Polygon':
+                # Parse geodataframe polygon object to get coordinates
+                rings = data["features"][0]["geometry"]["coordinates"]
+                # Make esri geometry object (polygon)
+                geometry_object = { "rings": rings,
+                    "spatialReference": { "wkid": aoi.crs.to_epsg() }
+                    }
+                    
+            elif geometry_type == "MultiPolygon": 
+                # Parse geodataframe polygon object to get coordinates
+                rings = data["features"][0]["geometry"]["coordinates"]
+                # Pull out polygons from exploded gdf and fit into rest syntax for rest request
+                row_ex = row.explode(column='geometry',index_parts=False)
+                # Make esri geometry object (multipolygon)
+                multipoly = []
+                for i in range(len(row_ex)):
+                    row = row_ex.iloc[[i]]
+                    json_string = row.to_json(drop_id=True)
+                    data = json.loads(json_string)
+                    rings = data["features"][0]["geometry"]["coordinates"][0]
+                    multipoly.append(rings)
+                
+                geometry_object = { "rings": multipoly,
+                    "spatialReference": { "wkid": aoi.crs.to_epsg() }
+                    }
+            else:
+                warnings.warn(f"Unsupported geometry type: {geometry_type}")
+                geometry_object = None
+        except Exception as e:
+            print(e)
 
-        result = feature_layer.computeStatHist(**query_params)
-
-        return result
+        if geometry_object:
+            try:    
+                feature_layer = ESRIImageService(url)
+                # query
+                query_params = {       
+                        "geometry": geometry_object,
+                        "geometryType": "esriGeometryPolygon",
+                        "f": "json"
+                        }
+                result = feature_layer.computeStatHist(**query_params)
+                return result
+            except Exception as e:
+                print(e)

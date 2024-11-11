@@ -5,6 +5,8 @@ Module for flood hazards
 """
 from CHAPPIE import layer_query
 import pandas
+import warnings
+from numpy import nan
 
 def get_fema_nfhl(aoi):
     """Get FEMA NFHL sites within AOI.
@@ -61,7 +63,12 @@ def get_flood(aoi, output=None):
         data = []
         data.append(aoi[parcel_id][i])
         row = aoi.iloc[[i]]
-        actual = layer_query.get_image_by_poly(aoi=aoi, url=url, row=row)
+        datadict = layer_query.get_image_by_poly(aoi=aoi, url=url, row=row)
+        try:
+            actual = datadict["statistics"][0]["mean"]
+        except IndexError as e:
+            warnings.warn(f"Response does not contain mean value: {datadict}")
+            actual = nan
         data.append(actual)
         df.loc[i] = data
         # This probably could be improved by using iterrows. 
