@@ -90,8 +90,7 @@ def get_providers(aoi):
                 params["skip"]=i
                 res = requests.get(_npi_url, params)
                 res.raise_for_status()
-                #if res.ok:
-                df= pandas.DataFrame(res.json()['results'])
+                df = pandas.DataFrame(res.json()['results'])
                 df["zip5"]=zip  # Add 5-digit zipcode to show retrieval set
                 dfs.append(df)
                 if res.json()['result_count']==200:
@@ -99,9 +98,14 @@ def get_providers(aoi):
                     if i>=1200:
                         warn(f"Reached NPI skip limit for zip {zip} & {type}")
                         break  # Limits to 1400 results (last 200 duplicated)
+                        #TODO: site now says 2100 results?
                     else:
                         new_results = True
                         i+=200
                 else:
                     new_results = False
     return pandas.concat(dfs)
+
+def extend_postal(zip):
+    wildcard = '*' * (8 -len(zip))  #extend to 9 digits w/ wilcard
+    return [f"{zip}{digit}{wildcard}" for digit in range(0, 10)]
