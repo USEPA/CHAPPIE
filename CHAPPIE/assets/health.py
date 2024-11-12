@@ -75,7 +75,8 @@ def get_urgent_care(aoi):
 
 def get_providers(aoi):
     zips = layer_query.getZipCode(aoi)
-    params = {"version": 2.1, "limit": 200}
+    params = {"version": 2.1, "limit": 200, "address_purpose" : "LOCATION"}
+
     dfs = []
     for zip in zips:
         params['postal_code']=zip
