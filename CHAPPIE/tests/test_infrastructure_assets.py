@@ -29,3 +29,8 @@ def test_get_dams():
     expected = geopandas.read_parquet(expected_file)
  
     assert_geodataframe_equal(actual, expected)
+
+def test_get_levees():
+    actual = hazard_infrastructure.get_levee(aoi_gdf)    
+    assert isinstance(actual, geopandas.geodataframe.GeoDataFrame)
+    assert len(actual)==0
