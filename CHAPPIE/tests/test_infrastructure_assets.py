@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Test infrastructure assets. 
+Test food assets. 
 
 @author: tlomba01
 """
@@ -24,8 +24,8 @@ def test_get_dams():
     actual = hazard_infrastructure.get_dams(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
     actual.sort_values(by=['id', 'name'], inplace=True, ignore_index=True)
-
-    expected_file = os.path.join(EXPECTED_DIR, 'get_dams.parquet')
+    
+    expected_file = os.path.join(EXPECTED_DIR, 'dams.parquet')
     expected = geopandas.read_parquet(expected_file)
  
     assert_geodataframe_equal(actual, expected)
