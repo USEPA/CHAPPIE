@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-Test technological 
+Test health assets 
 
-@author: tlomba01
+@author: tlomba01, jbousqui
 """
 import os
-#import pytest
 import pandas
 import geopandas
 from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.assets import health
-#import pytest
+
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
