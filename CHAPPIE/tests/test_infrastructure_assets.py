@@ -17,7 +17,9 @@ EXPECTED_DIR = os.path.join(DIRPATH, 'expected')  # Expected
 DATA_DIR = os.path.join(DIRPATH, 'data')  # inputs
 
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
+AOI2 = os.path.join(DATA_DIR, "LittlePineIsland_ServiceArea.shp")
 aoi_gdf = geopandas.read_file(AOI)
+aoi_gdf2 = geopandas.read_file(AOI2)
 
 
 def test_get_dams():
@@ -26,6 +28,17 @@ def test_get_dams():
     actual.sort_values(by=['id', 'name'], inplace=True, ignore_index=True)
     
     expected_file = os.path.join(EXPECTED_DIR, 'dams.parquet')
+    expected = geopandas.read_parquet(expected_file)
+ 
+    assert_geodataframe_equal(actual, expected)
+
+def test_get_levees():
+    actual = hazard_infrastructure.get_levee(aoi_gdf2)    
+    assert isinstance(actual, geopandas.geodataframe.GeoDataFrame)
+    actual.drop(columns=['OBJECTID'], inplace=True)
+    actual.sort_values(by=['SYSTEM_ID', 'SYSTEM_NAME'], inplace=True, ignore_index=True)
+    
+    expected_file = os.path.join(EXPECTED_DIR, 'levees.parquet')
     expected = geopandas.read_parquet(expected_file)
  
     assert_geodataframe_equal(actual, expected)
