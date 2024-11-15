@@ -160,8 +160,7 @@ def npi_registry_search(api_params):
         if len(df)==101:
             # TODO: RegistryBack/search site says 2100 results (BREAK)
             new_results = True
-            params['skip'] = params['skip']+101  # Note: something weird w/ 101 results
-            #params['skip']+=101 (TODO: this short hand would be nice if it works)
+            params['skip']+=101  # Note: something weird w/ 101 results
         else:
             new_results = False
 
@@ -180,8 +179,7 @@ def npi_registry_search(api_params):
             if len(df)==101:
                 # TODO: RegistryBack/search site says 2100 results (BREAK)
                 new_results = True
-                params['skip'] = params['skip']+101  # Note: something weird w/ 101 results
-                #params['skip']+=101 (TODO: this short hand would be nice if it works)
+                params['skip']+=101  # Note: something weird w/ 101 results
             else:
                 new_results = False
     return pandas.concat(dfs)
