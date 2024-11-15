@@ -177,13 +177,13 @@ def npi_registry_search(api_params):
             df = pandas.DataFrame(res.json())
             df["zip5"] = params["postalCode"]
             dfs.append(df)
-        if len(df)==101:
-            # TODO: RegistryBack/search site says 2100 results (BREAK)
-            new_results = True
-            params['skip'] = params['skip']+101  # Note: something weird w/ 101 results
-            #params['skip']+=101 (TODO: this short hand would be nice if it works)
-        else:
-            new_results = False
+            if len(df)==101:
+                # TODO: RegistryBack/search site says 2100 results (BREAK)
+                new_results = True
+                params['skip'] = params['skip']+101  # Note: something weird w/ 101 results
+                #params['skip']+=101 (TODO: this short hand would be nice if it works)
+            else:
+                new_results = False
     return pandas.concat(dfs)
 
 
