@@ -5,10 +5,18 @@ Module for health assets.
 """
 import requests
 import pandas
+from json import dumps
 from warnings import warn
 from CHAPPIE import layer_query
 
+
 _npi_url = "https://npiregistry.cms.hhs.gov/api"
+_npi_url_backup = f"{_url[:-3]}RegistryBack/search"
+param_list = ["firstName", "lastName", "organizationName", "aoFirstName", "skip",
+              "enumerationType", "number", "city", "state", "country",
+              "taxonomyDescription", "postalCode", "exactMatch", "addressType"]
+_npi_backup_basedict = {key: None for key in param_list}
+
 
 def get_hospitals(aoi):
     """Get Hospital locations within AOI.
@@ -98,13 +106,85 @@ def get_providers(aoi):
                     if i>=1200:
                         warn(f"Reached NPI skip limit for zip {zip} & {type}")
                         break  # Limits to 1400 results (last 200 duplicated)
-                        #TODO: site now says 2100 results?
+                        #TODO: switch to using _npi_url_backup
+                        dfs.append(npi_registry_search(params))
                     else:
                         new_results = True
                         i+=200
                 else:
                     new_results = False
     return pandas.concat(dfs)
+
+
+def npi_registry_search(api_params):   
+    
+    params = _npi_backup_basedict
+
+    # Note: tested w/ headers, if it hits error may try adding them back
+    
+    # Pull over matching from api_params
+    #NOTE: version, limit, skip are purposely ignored, many other
+    #keys:values could be converted (e.g., first_name)
+    
+    # Define params from select api_params
+    # "enumeration_type" -> enumerationType (values match)
+    if "enumeration_type" in api_params:
+        params["enumerationType" = api_params["enumeration_type"]
+    # "address_purpose" -> addressType (VALUES don't match)
+    if "address_purpose" in api_params:
+        if api_params["address_purpose"] == "LOCATION":
+            params["addressType"] = "PR"
+        #TODO: else "SE" for secondary or do nothing for all?
+        # From API doc: address_purpose: Refers to whether the address information entered
+        #pertains to the provider's Mailing Address or the provider's Practice Location Address.
+        #When not specified, the results will contain the providers where either the Mailing Address or
+        #any of Practice Location Addresses match the entered address information. PRIMARY will only
+        #search against Primary Location Address. While Secondary will only search against Secondary
+        #Location Addresses. Valid values are: [LOCATION, MAILING, PRIMARY, SECONDARY]
+
+    #postal_code -> postalCode, currently requires zip (raise KeyError)
+    zips = extend_postal(api_params['postal_code'])
+
+    # Exact match zip
+    params["postalCode"] = api_params['postal_code']
+    params["exactMatch"] = True
+    params["skip"] = 0  # Default None may work (TODO test)
+    dfs = []
+    while new_results:
+        res = requests.post(_npi_url_backup, dumps(params))
+        res.raise_for_status()
+        df = pandas.DataFrame(res.json())
+        df["zip5"] = params['postal_code']
+        dfs.append(df)
+        # Get all pages of results
+        if len(df)==101:
+            # TODO: RegistryBack/search site says 2100 results (BREAK)
+            new_results = True
+            params['skip'] = params['skip']+101  # Note: something weird w/ 101 results
+            #params['skip']+=101 (TODO: this short hand would be nice if it works)
+        else:
+            new_results = False
+
+    # wildcard 9-digit postal codes
+    params["exactMatch"] = False
+    for zip in zips:
+        params["skip"] = 0
+        params["postalCode"] = zip
+        while new_results:
+            res = requests.post(_npi_url_backup, dumps(params))
+            res.raise_for_status()
+            df = pandas.DataFrame(res.json())
+            df["zip5"] = params['postal_code']
+            dfs.append(df)
+        if len(df)==101:
+            # TODO: RegistryBack/search site says 2100 results (BREAK)
+            new_results = True
+            params['skip'] = params['skip']+101  # Note: something weird w/ 101 results
+            #params['skip']+=101 (TODO: this short hand would be nice if it works)
+        else:
+            new_results = False
+    return pandas.concat(dfs)
+
 
 def extend_postal(zip):
     wildcard = '*' * (8 -len(zip))  #extend to 9 digits w/ wilcard
