@@ -187,6 +187,9 @@ def npi_registry_search(api_params):
     return pandas.concat(dfs)
 
 
-def extend_postal(zip):
-    wildcard = '*' * (8 -len(zip))  #extend to 9 digits w/ wilcard
-    return [f"{zip}{digit}{wildcard}" for digit in range(0, 10)]
+def extend_postal(zip, api=False):
+    if api:
+      wildcard = '*' * (8 -len(zip))  #extend to 9 digits w/ wilcard
+      return [f"{zip}{digit}{wildcard}" for digit in range(0, 10)]
+    else:
+      return [f"{zip}{digit}" for digit in range(0, 10)]
