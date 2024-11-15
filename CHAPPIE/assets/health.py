@@ -11,7 +11,7 @@ from CHAPPIE import layer_query
 
 
 _npi_url = "https://npiregistry.cms.hhs.gov/api"
-_npi_url_backup = f"{_url[:-3]}RegistryBack/search"
+_npi_url_backup = f"{_npi_url[:-3]}RegistryBack/search"
 param_list = ["firstName", "lastName", "organizationName", "aoFirstName", "skip",
               "enumerationType", "number", "city", "state", "country",
               "taxonomyDescription", "postalCode", "exactMatch", "addressType"]
@@ -119,9 +119,8 @@ def get_providers(aoi):
 def npi_registry_search(api_params):   
     
     params = _npi_backup_basedict
-
-    # Note: tested w/ headers, if it hits error may try adding them back
-    
+    headers = {'Content-Type': 'application/json'}    
+  
     # Pull over matching from api_params
     #NOTE: version, limit, skip are purposely ignored, many other
     #keys:values could be converted (e.g., first_name)
@@ -129,7 +128,7 @@ def npi_registry_search(api_params):
     # Define params from select api_params
     # "enumeration_type" -> enumerationType (values match)
     if "enumeration_type" in api_params:
-        params["enumerationType" = api_params["enumeration_type"]
+        params["enumerationType"] = api_params["enumeration_type"]
     # "address_purpose" -> addressType (VALUES don't match)
     if "address_purpose" in api_params:
         if api_params["address_purpose"] == "LOCATION":
@@ -150,11 +149,12 @@ def npi_registry_search(api_params):
     params["exactMatch"] = True
     params["skip"] = 0  # Default None may work (TODO test)
     dfs = []
+    new_results=True
     while new_results:
-        res = requests.post(_npi_url_backup, dumps(params))
+        res = requests.post(_npi_url_backup, dumps(params), headers=headers)
         res.raise_for_status()
         df = pandas.DataFrame(res.json())
-        df["zip5"] = params['postal_code']
+        df["zip5"] = params["postalCode"]
         dfs.append(df)
         # Get all pages of results
         if len(df)==101:
@@ -170,11 +170,12 @@ def npi_registry_search(api_params):
     for zip in zips:
         params["skip"] = 0
         params["postalCode"] = zip
+        new_results=True
         while new_results:
-            res = requests.post(_npi_url_backup, dumps(params))
+            res = requests.post(_npi_url_backup, dumps(params), headers=headers)
             res.raise_for_status()
             df = pandas.DataFrame(res.json())
-            df["zip5"] = params['postal_code']
+            df["zip5"] = params["postalCode"]
             dfs.append(df)
         if len(df)==101:
             # TODO: RegistryBack/search site says 2100 results (BREAK)
