@@ -35,14 +35,36 @@ def test_get_hospitals():
 
 def test_get_urgent_care():
     actual = health.get_urgent_care(aoi_gdf)
+
+    # Special handling for NASA srevice to match old HIFLD
+    actual.rename(columns=str.upper, inplace=True)
+    actual.rename(columns={'GEOMETRY': 'geometry'}, inplace=True)
+    actual.drop(columns=['OBJECTID_1'], inplace=True)
+
     actual.drop(columns=['OBJECTID'], inplace=True)
-    actual.sort_values(by=['ID', 'geometry', 'NAME'], inplace=True, ignore_index=True)
+    actual.sort_values(by=['ID', 'geometry', 'NAME'],
+                       inplace=True,
+                       ignore_index=True)
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_urgent_care.parquet')
     expected = geopandas.read_parquet(expected_file)
-    
-    assert_geodataframe_equal(actual, expected)
+
+    # For NASA source convert to datetime
+    expected["CONTDATE"] = pandas.to_datetime(expected["CONTDATE"],
+                                              unit='ms',
+                                              utc=True)
+    expected["GEODATE"] = pandas.to_datetime(expected["GEODATE"],
+                                              unit='ms',
+                                              utc=True)
+    # Ensure expected times in ms
+    expected["CONTDATE"] = expected["CONTDATE"].astype("datetime64[ms, UTC]")
+    expected["GEODATE"] = expected["GEODATE"].astype("datetime64[ms, UTC]")
+
+    #assert_geodataframe_equal(actual, expected)  # HIFLD
+    assert_geodataframe_equal(actual.sort_index(axis=1),
+                              expected.sort_index(axis=1),
+                              check_less_precise=True)
 
 
 def test_get_providers():
