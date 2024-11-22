@@ -3,12 +3,13 @@ Module for health assets.
 
 @author: tlomba01, jbousquin
 """
-import requests
-import pandas
 from json import dumps
 from warnings import warn
-from CHAPPIE import layer_query
 
+import pandas
+import requests
+
+from CHAPPIE import layer_query
 
 _npi_url = "https://npiregistry.cms.hhs.gov/api"
 _npi_url_backup = f"{_npi_url[:-3]}RegistryBack/search"
@@ -36,7 +37,7 @@ def get_hospitals(aoi):
     url = 'https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Medicare_Hospitals/FeatureServer'
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
-    
+
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
                                 layer=0,
@@ -60,7 +61,7 @@ def get_urgent_care(aoi):
     url = 'https://services1.arcgis.com/Hp6G80Pky0om7QvQ/ArcGIS/rest/services/Urgent_Care_Facilities/FeatureServer'
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
-    
+
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
                                 layer=0,
@@ -79,7 +80,7 @@ def _get_npi_api(params):
     -------
     pandas.DataFrame
         Table of API results
-    """    
+    """
     res = requests.get(_npi_url, params)
     res.raise_for_status()
     return pandas.DataFrame(res.json()['results'])
@@ -98,7 +99,7 @@ def get_providers(aoi):
     -------
     pandas.DataFrame
         Table of providers from NPI in zipcodes in the area of Interest.
-    """    
+    """
     zips = layer_query.getZipCode(aoi)
     params = {"version": 2.1, "limit": 200, "address_purpose" : "LOCATION"}
 
@@ -153,7 +154,7 @@ def npi_api_by_number(params, numbers):
     -------
     pandas.DataFrame
         Table of API results
-    """    
+    """
     params.pop('skip', None)  # Avoid skipping
     dfs=[]
     for num in numbers:
@@ -169,7 +170,7 @@ def npi_registry_search(api_params):
     Parameters
     ----------
     api_params : dict
-        API search query parameters. Expected key:value pairs are updated. 
+        API search query parameters. Expected key:value pairs are updated.
 
     Returns
     -------
@@ -177,12 +178,12 @@ def npi_registry_search(api_params):
         Table of search query results. Not all fields match API results.
     """
     params = _npi_backup_basedict
-    headers = {'Content-Type': 'application/json'}    
-  
+    headers = {'Content-Type': 'application/json'}
+
     # Pull over matching from api_params
     #NOTE: version, limit, skip are purposely ignored, many other
     #keys:values could be converted (e.g., first_name)
-    
+
     # Define params from select api_params
     # "enumeration_type" -> enumerationType (values match)
     if "enumeration_type" in api_params:
@@ -192,11 +193,12 @@ def npi_registry_search(api_params):
         if api_params["address_purpose"] == "LOCATION":
             params["addressType"] = "PR"
         #TODO: else "SE" for secondary or do nothing for all?
-        # From API doc: address_purpose: Refers to whether the address information entered
-        #pertains to the provider's Mailing Address or the provider's Practice Location Address.
-        #When not specified, the results will contain the providers where either the Mailing Address or
-        #any of Practice Location Addresses match the entered address information. PRIMARY will only
-        #search against Primary Location Address. While Secondary will only search against Secondary
+        # From API doc: address_purpose: Refers to whether the address information
+        # entered pertains to the provider's Mailing Address or the provider's Practice
+        # Location Address. When not specified, the results will contain the providers
+        # where either the Mailing Address or any of Practice Location Addresses match
+        # the entered address information. PRIMARY will only search against Primary
+        # Location Address. While Secondary will only search against Secondary
         #Location Addresses. Valid values are: [LOCATION, MAILING, PRIMARY, SECONDARY]
 
     #postal_code -> postalCode, currently requires zip (raise KeyError)
