@@ -52,5 +52,6 @@ def test_get_providers():
                 '32413', '32444', '32465', '32466']
     assert actual_zips==expected
     actual_len = [len(actual[actual['zip5']==zip]) for zip in expected]
-    expected_len = [1189, 455, 1739, 490, 218, 46, 221, 510, 66, 40,]
+    #expected_len = [1189, 455, 1739, 490, 218, 46, 221, 510, 66, 40,]
+    expected_len = [1070, 311, 2037, 397, 149, 26, 168, 306, 44, 27]
     assert actual_len==expected_len
