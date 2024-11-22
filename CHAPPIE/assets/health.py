@@ -107,14 +107,14 @@ def get_providers(aoi):
     params = {"version": 2.1, "limit": 200, "address_purpose" : "LOCATION"}
 
     dfs = []
-    for zip in zips:
-        params['postal_code']=zip
+    for z_code in zips:
+        params['postal_code']=z_code
         # Split org vs provider
-        for type in ["NPI-1", "NPI-2"]:
+        for typ in ["NPI-1", "NPI-2"]:
             zip_dfs=[]
             i=0
             new_results=True
-            params['enumeration_type']=type
+            params['enumeration_type']=typ
             while new_results:
                 params["skip"]=i
                 df = _get_npi_api(params)
@@ -123,7 +123,7 @@ def get_providers(aoi):
                     # Presumably not reached the end of results
                     if i>=1000:
                         # Limits to 1200 results, otherwise last 200 duplicated
-                        warn(f"Reached NPI skip limit for zip {zip} & {type}")
+                        warn(f"Reached NPI skip limit for zip {z_code} & {typ}")
                         # Get IDs from _npi_url_backup
                         numbers = npi_registry_search(params)['number'].to_list()
                         # Compare against current result ids
@@ -138,7 +138,7 @@ def get_providers(aoi):
                 else:
                     new_results = False
             df_z = pandas.concat(zip_dfs).reset_index(drop=True)
-            df_z["zip5"]=zip  # Add 5-digit zipcode to show retrieval set
+            df_z["zip5"]=z_code  # Add 5-digit zipcode to show retrieval set
             dfs.append(df_z)
     return pandas.concat(dfs).reset_index(drop=True)
 
@@ -231,9 +231,9 @@ def npi_registry_search(api_params):
 
     # wildcard 9-digit postal codes
     params["exactMatch"] = False
-    for zip in zips:
+    for z_code in zips:
         params["skip"] = 0
-        params["postalCode"] = zip
+        params["postalCode"] = z_code
         new_results=True
         while new_results:
             res = requests.post(_npi_url_backup, dumps(params), headers=headers)
@@ -251,7 +251,7 @@ def npi_registry_search(api_params):
     return results.rename({"enumerationType":"enumeration_type"})
 
 
-def extend_postal(zip, api=False):
+def extend_postal(z_code, api=False):
     """List of possible zip with one more digit added as string.
 
     Parameters
@@ -267,7 +267,7 @@ def extend_postal(zip, api=False):
         Ten possible values when zip gets an additional digit.
     """
     if api:
-      wildcard = '*' * (8 -len(zip))  #extend to 9 digits w/ wilcard
-      return [f"{zip}{digit}{wildcard}" for digit in range(0, 10)]
-    else:
-      return [f"{zip}{digit}" for digit in range(0, 10)]
+        wildcard = '*' * (8 -len(z_code))  #extend to 9 digits w/ wilcard
+        return [f"{z_code}{digit}{wildcard}" for digit in range(0, 10)]
+    #else:
+    return [f"{z_code}{digit}" for digit in range(0, 10)]
