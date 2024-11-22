@@ -206,7 +206,7 @@ def npi_registry_search(api_params):
     # Exact match zip
     params["postalCode"] = api_params['postal_code']
     params["exactMatch"] = True
-    dfs = _get_npi_registry(params)
+    dfs = [_get_npi_registry(params)]
 
 
     # wildcard 9-digit postal codes
@@ -252,7 +252,7 @@ def _get_npi_registry(params):
             params['skip']+=101  # Note: something weird w/ 101 results
         else:
             new_results = False
-    return dfs
+    return pandas.concat(dfs)
 
 
 def extend_postal(z_code, api=False):
