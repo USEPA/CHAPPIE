@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-Test technological 
+Test health assets 
 
-@author: tlomba01
+@author: tlomba01, jbousqui
 """
 import os
+import pandas
 import geopandas
 from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.assets import health
-#import pytest
+
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -33,6 +34,7 @@ def test_get_hospitals():
     
     assert_geodataframe_equal(actual, gdf)
 
+#@pytest.mark.skip(reason="https://services1.arcgis.com/Hp6G80Pky0om7QvQ/ArcGIS/rest/services/Urgent_Care_Facilities/FeatureServer")
 def test_get_urgent_care():
     actual = health.get_urgent_care(aoi_gdf)
 
