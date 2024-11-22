@@ -1,7 +1,7 @@
 """
 Module for health assets.
 
-@author: tlomba01
+@author: tlomba01, jbousquin
 """
 import requests
 import pandas
@@ -67,13 +67,38 @@ def get_urgent_care(aoi):
                                 in_crs=aoi.crs.to_epsg())
 
 
-def get_npi_api(params):
+def _get_npi_api(params):
+    """Query API using params.
+
+    Parameters
+    ----------
+    params : dict
+        Parameters for the query.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Table of API results
+    """    
     res = requests.get(_npi_url, params)
     res.raise_for_status()
     return pandas.DataFrame(res.json()['results'])
 
 
 def get_providers(aoi):
+    """Get providers in area from National Provider Identifier (NPI) records.
+
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        Table with geometries defining the Area of Interest. Overlapping zip
+        codes for this area are used to search for addresses.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Table of providers from NPI in zipcodes in the area of Interest.
+    """    
     zips = layer_query.getZipCode(aoi)
     params = {"version": 2.1, "limit": 200, "address_purpose" : "LOCATION"}
 
@@ -88,7 +113,7 @@ def get_providers(aoi):
             params['enumeration_type']=type
             while new_results:
                 params["skip"]=i
-                df = get_npi_api(params)
+                df = _get_npi_api(params)
                 zip_dfs.append(df)
                 if len(df)==200:
                     # Presumably not reached the end of results
@@ -115,17 +140,42 @@ def get_providers(aoi):
 
 
 def npi_api_by_number(params, numbers):
+    """Query API using list of numbers
+
+    Parameters
+    ----------
+    params : dict
+        Parameters for the query.
+    numbers : list
+        Numbers to query API with one at a time.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Table of API results
+    """    
     params.pop('skip', None)  # Avoid skipping
     dfs=[]
     for num in numbers:
         params['number']=num
-        dfs.append(get_npi_api(params))
+        dfs.append(_get_npi_api(params))
     params.pop('number', None)  # Avoid this going up to global
     return pandas.concat(dfs)
 
 
-def npi_registry_search(api_params):   
-    
+def npi_registry_search(api_params):
+    """Run query against registry search using api query params.
+
+    Parameters
+    ----------
+    api_params : dict
+        API search query parameters. Expected key:value pairs are updated. 
+
+    Returns
+    -------
+    pandas.DataFrame
+        Table of search query results. Not all fields match API results.
+    """
     params = _npi_backup_basedict
     headers = {'Content-Type': 'application/json'}    
   
@@ -197,6 +247,20 @@ def npi_registry_search(api_params):
 
 
 def extend_postal(zip, api=False):
+    """List of possible zip with one more digit added as string.
+
+    Parameters
+    ----------
+    zip : str
+        5-digit zip code
+    api : bool, optional
+        If api is True wildcards are added to make it 9-digit, by default False.
+
+    Returns
+    -------
+    list
+        Ten possible values when zip gets an additional digit.
+    """
     if api:
       wildcard = '*' * (8 -len(zip))  #extend to 9 digits w/ wilcard
       return [f"{zip}{digit}{wildcard}" for digit in range(0, 10)]
