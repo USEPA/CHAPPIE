@@ -92,9 +92,9 @@ def get_providers(aoi):
                 zip_dfs.append(df)
                 if len(df)==200:
                     # Presumably not reached the end of results
-                    if i>=1200:
+                    if i>=1000:
+                        # Limits to 1200 results, otherwise last 200 duplicated
                         warn(f"Reached NPI skip limit for zip {zip} & {type}")
-                        #break  # Limits to 1400 results (last 200 duplicated)
                         # Get IDs from _npi_url_backup
                         numbers = npi_registry_search(params)['number'].to_list()
                         # Compare against current result ids
@@ -166,7 +166,9 @@ def npi_registry_search(api_params):
         dfs.append(df)
         # Get all pages of results
         if len(df)==101:
-            # TODO: RegistryBack/search site says 2100 results (BREAK)
+            # TODO: RegistryBack/search site says 2100 results (RAISE)
+            if params['skip']>2100:
+                break
             new_results = True
             params['skip']+=101  # Note: something weird w/ 101 results
         else:
