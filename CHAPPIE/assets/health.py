@@ -67,18 +67,10 @@ def get_urgent_care(aoi):
                                 in_crs=aoi.crs.to_epsg())
 
 
-# def _paged_get(params, i=0, dfs=[]):
-#     if i>0:
-#         params["skip"]=i
-#     res = requests.get(_npi_url, params)
-#     if res.ok:
-#         df = pandas.DataFrame(res.json()['results'])
-#         if res.json()['result_count']==200:
-#             _paged_get(params, i+=200, dfs.append(df))
-#         else:
-#             return dfs.append(df)
-
-#     return pandas.concat(dfs.
+def get_npi_api(params):
+    res = requests.get(_npi_url, params)
+    res.raise_for_status()
+    return pandas.DataFrame(res.json()['results'])
 
 
 def get_providers(aoi):
@@ -88,31 +80,47 @@ def get_providers(aoi):
     dfs = []
     for zip in zips:
         params['postal_code']=zip
-        #dfs.append(_paged_get(params))
         # Split org vs provider
         for type in ["NPI-1", "NPI-2"]:
+            zip_dfs=[]
             i=0
             new_results=True
             params['enumeration_type']=type
             while new_results:
                 params["skip"]=i
-                res = requests.get(_npi_url, params)
-                res.raise_for_status()
-                df = pandas.DataFrame(res.json()['results'])
-                df["zip5"]=zip  # Add 5-digit zipcode to show retrieval set
-                dfs.append(df)
-                if res.json()['result_count']==200:
+                df = get_npi_api(params)
+                zip_dfs.append(df)
+                if len(df)==200:
                     # Presumably not reached the end of results
                     if i>=1200:
                         warn(f"Reached NPI skip limit for zip {zip} & {type}")
-                        break  # Limits to 1400 results (last 200 duplicated)
-                        #TODO: switch to using _npi_url_backup
-                        dfs.append(npi_registry_search(params))
+                        #break  # Limits to 1400 results (last 200 duplicated)
+                        # Get IDs from _npi_url_backup
+                        numbers = npi_registry_search(params)['number'].to_list()
+                        # Compare against current result ids
+                        retrieved = list(pandas.concat(zip_dfs)['number'].unique())
+                        missing_numbers = [x for x in numbers if x not in retrieved]
+                        # Get missing_numbers from API one by one
+                        zip_dfs.append(npi_api_by_number(params, missing_numbers))
+                        new_results = False
                     else:
                         new_results = True
                         i+=200
                 else:
                     new_results = False
+            df_z = pandas.concat(zip_dfs).reset_index(drop=True)
+            df_z["zip5"]=zip  # Add 5-digit zipcode to show retrieval set
+            dfs.append(df_z)
+    return pandas.concat(dfs).reset_index(drop=True)
+
+
+def npi_api_by_number(params, numbers):
+    params.pop('skip', None)  # Avoid skipping
+    dfs=[]
+    for num in numbers:
+        params['number']=num
+        dfs.append(get_npi_api(params))
+    params.pop('number', None)  # Avoid this going up to global
     return pandas.concat(dfs)
 
 
@@ -182,7 +190,8 @@ def npi_registry_search(api_params):
                 params['skip']+=101  # Note: something weird w/ 101 results
             else:
                 new_results = False
-    return pandas.concat(dfs)
+    results = pandas.concat(dfs).reset_index(drop=True)
+    return results.rename({"enumerationType":"enumeration_type"})
 
 
 def extend_postal(zip, api=False):
