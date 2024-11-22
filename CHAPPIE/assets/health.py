@@ -252,6 +252,7 @@ def _get_npi_registry(params):
             params['skip']+=101  # Note: something weird w/ 101 results
         else:
             new_results = False
+    return dfs
 
 
 def extend_postal(z_code, api=False):
