@@ -181,7 +181,6 @@ def npi_registry_search(api_params):
         Table of search query results. Not all fields match API results.
     """
     params = _npi_backup_basedict
-    headers = {'Content-Type': 'application/json'}
 
     # Pull over matching from api_params
     #NOTE: version, limit, skip are purposely ignored, many other
@@ -195,29 +194,54 @@ def npi_registry_search(api_params):
     if "address_purpose" in api_params:
         if api_params["address_purpose"] == "LOCATION":
             params["addressType"] = "PR"
-        #TODO: else "SE" for secondary or do nothing for all?
-        # From API doc: address_purpose: Refers to whether the address information
-        # entered pertains to the provider's Mailing Address or the provider's Practice
-        # Location Address. When not specified, the results will contain the providers
-        # where either the Mailing Address or any of Practice Location Addresses match
-        # the entered address information. PRIMARY will only search against Primary
-        # Location Address. While Secondary will only search against Secondary
-        #Location Addresses. Valid values are: [LOCATION, MAILING, PRIMARY, SECONDARY]
-
-    #postal_code -> postalCode, currently requires zip (raise KeyError)
-    zips = extend_postal(api_params['postal_code'])
+    #TODO: else "SE" for secondary or do nothing for all?
+    # From API doc: address_purpose: Refers to whether the address information
+    # entered pertains to the provider's Mailing Address or the provider's Practice
+    # Location Address. When not specified, the results will contain the providers
+    # where either the Mailing Address or any of Practice Location Addresses match
+    # the entered address information. PRIMARY will only search against Primary
+    # Location Address. While Secondary will only search against Secondary
+    #Location Addresses. Valid values are: [LOCATION, MAILING, PRIMARY, SECONDARY]
 
     # Exact match zip
     params["postalCode"] = api_params['postal_code']
     params["exactMatch"] = True
+    dfs = _get_npi_registry(params)
+
+
+    # wildcard 9-digit postal codes
+    params["exactMatch"] = False
+    # postal_code -> postalCode, currently requires zip (raise KeyError)
+    for z_code in extend_postal(api_params['postal_code']):
+        params["skip"] = 0
+        params["postalCode"] = z_code
+        dfs.append(_get_npi_registry(params))
+
+    results = pandas.concat(dfs).reset_index(drop=True)
+    return results.rename({"enumerationType":"enumeration_type"})
+
+
+def _get_npi_registry(params):
+    """Query registry using params.
+
+    Parameters
+    ----------
+    params : dict
+        Parameters for the query.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Table of registry search results
+    """
+    headers = {'Content-Type': 'application/json'}
     params["skip"] = 0  # Default None may work (TODO test)
-    dfs = []
+    dfs=[]
     new_results=True
     while new_results:
         res = requests.post(_npi_url_backup, dumps(params), headers=headers)
         res.raise_for_status()
         df = pandas.DataFrame(res.json())
-        df["zip5"] = params["postalCode"]
         dfs.append(df)
         # Get all pages of results
         if len(df)==101:
@@ -228,27 +252,6 @@ def npi_registry_search(api_params):
             params['skip']+=101  # Note: something weird w/ 101 results
         else:
             new_results = False
-
-    # wildcard 9-digit postal codes
-    params["exactMatch"] = False
-    for z_code in zips:
-        params["skip"] = 0
-        params["postalCode"] = z_code
-        new_results=True
-        while new_results:
-            res = requests.post(_npi_url_backup, dumps(params), headers=headers)
-            res.raise_for_status()
-            df = pandas.DataFrame(res.json())
-            df["zip5"] = params["postalCode"]
-            dfs.append(df)
-            if len(df)==101:
-                # TODO: RegistryBack/search site says 2100 results (BREAK)
-                new_results = True
-                params['skip']+=101  # Note: something weird w/ 101 results
-            else:
-                new_results = False
-    results = pandas.concat(dfs).reset_index(drop=True)
-    return results.rename({"enumerationType":"enumeration_type"})
 
 
 def extend_postal(z_code, api=False):
