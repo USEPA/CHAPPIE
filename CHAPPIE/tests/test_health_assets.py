@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-Test health assets 
+Test health assets
 
 @author: tlomba01, jbousqui
 """
 import os
-import pandas
-import geopandas
-from geopandas.testing import assert_geodataframe_equal
-from CHAPPIE.assets import health
 
+import geopandas
+import pandas
+from geopandas.testing import assert_geodataframe_equal
+from pandas.testing import assert_frame_equal
+
+from CHAPPIE.assets import health
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -24,14 +26,16 @@ aoi_gdf = geopandas.read_file(AOI)
 def test_get_hospitals():
     actual = health.get_hospitals(aoi_gdf)
     actual.drop(columns=['FID'], inplace=True)
-    actual.sort_values(by=['USER_Facil', 'geometry', 'USER_Hospi'], inplace=True, ignore_index=True)
+    actual.sort_values(by=['USER_Facil', 'geometry', 'USER_Hospi'],
+                       inplace=True,
+                       ignore_index=True)
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_hospitals.parquet')
     gdf = geopandas.read_parquet(expected_file)
     gdf_int64 = gdf.select_dtypes(include='int64')
     gdf[gdf_int64.columns] = gdf_int64.astype('int32')
-    
+
     assert_geodataframe_equal(actual, gdf)
 
 #@pytest.mark.skip(reason="https://services1.arcgis.com/Hp6G80Pky0om7QvQ/ArcGIS/rest/services/Urgent_Care_Facilities/FeatureServer")
@@ -79,3 +83,14 @@ def test_get_providers():
     #expected_len = [1189, 455, 1739, 490, 218, 46, 221, 510, 66, 40,]
     expected_len = [1070, 311, 1838, 398, 149, 26, 168, 306, 44, 27]
     assert actual_len==expected_len
+
+    expected_file = os.path.join(EXPECTED_DIR, 'get_providers.parquet')
+    # Note: it isn't geo (addresses only)
+    expected = pandas.read_parquet(expected_file)
+
+    # NOTE: dict are not ordered, drop all columns where it contains a dict
+    # 'addresses', 'practiceLocations', 'basic', 'endpoints', 'other_names',
+    cols = ['created_epoch', 'enumeration_type', 'last_updated_epoch', 'number',
+            'taxonomies', 'identifiers', 'zip5']
+
+    assert_frame_equal(actual[cols], expected[cols])
