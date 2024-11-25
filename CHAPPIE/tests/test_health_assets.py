@@ -90,7 +90,9 @@ def test_get_providers():
 
     # NOTE: dict are not ordered, drop all columns where it contains a dict
     # 'addresses', 'practiceLocations', 'basic', 'endpoints', 'other_names',
+    # 'taxonomies',
     cols = ['created_epoch', 'enumeration_type', 'last_updated_epoch', 'number',
-            'taxonomies', 'identifiers', 'zip5']
+            'identifiers', 'zip5']
 
-    assert_frame_equal(actual[cols], expected[cols])
+    assert_frame_equal(actual[cols].sort_values(by='number').reset_index(drop=True),
+                       expected[cols].sort_values(by='number').reset_index(drop=True))
