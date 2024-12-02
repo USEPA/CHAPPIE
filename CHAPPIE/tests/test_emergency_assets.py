@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Test technological 
+Test technological
 
 @author: tlomba01
 """
 import os
+
 import geopandas
 from geopandas.testing import assert_geodataframe_equal
+
 from CHAPPIE.assets import emergency
+
 #import pytest
 
 # CI inputs/expected
@@ -34,7 +37,7 @@ def test_get_fire_ems():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'fire_ems.parquet')
     expected = geopandas.read_parquet(expected_file)
-    
+
     assert_geodataframe_equal(actual, expected)
 
 def test_get_police():
@@ -43,7 +46,7 @@ def test_get_police():
     int_cols = ["DATA_SECURITY", "LOADDATE", "FTYPE", "FCODE", "ISLANDMARK",
                 "POINTLOCATIONTYPE"]
     actual.drop(columns=['OBJECTID']+int_cols, inplace=True)
-    
+
     actual.sort_values(by=['PERMANENT_IDENTIFIER', 'geometry', 'NAME'],
                        inplace=True,
                        ignore_index=True)
@@ -52,5 +55,5 @@ def test_get_police():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_police.parquet')
     expected = geopandas.read_parquet(expected_file)
-    
+
     assert_geodataframe_equal(actual, expected)
