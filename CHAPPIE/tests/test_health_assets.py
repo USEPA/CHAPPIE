@@ -80,11 +80,11 @@ def providers():
 
 
 def test_get_providers(providers: pandas.DataFrame):
-    actual_zips = sorted(list(actual['zip5'].unique()))
+    actual_zips = sorted(list(providers['zip5'].unique()))
     expected = ['32401', '32404', '32405', '32407', '32408', '32409',
                 '32413', '32444', '32465', '32466']
     assert actual_zips==expected
-    actual_len = [len(actual[actual['zip5']==zip]) for zip in expected]
+    actual_len = [len(providers[providers['zip5']==zip]) for zip in expected]
     #expected_len = [1189, 455, 1739, 490, 218, 46, 221, 510, 66, 40,]
     expected_len = [1069, 311, 1841, 398, 149, 26, 168, 306, 44, 27]
     assert actual_len==expected_len
@@ -99,7 +99,7 @@ def test_get_providers(providers: pandas.DataFrame):
     cols = ['created_epoch', 'enumeration_type', 'last_updated_epoch', 'number',
             'identifiers', 'zip5']
 
-    assert_frame_equal(actual[cols].sort_values(by='number').reset_index(drop=True),
+    assert_frame_equal(providers[cols].sort_values(by='number').reset_index(drop=True),
                        expected[cols].sort_values(by='number').reset_index(drop=True))
 
 
