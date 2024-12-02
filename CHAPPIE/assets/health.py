@@ -275,3 +275,31 @@ def extend_postal(z_code, api=False):
         return [f"{z_code}{digit}{wildcard}" for digit in range(0, 10)]
     #else:
     return [f"{z_code}{digit}" for digit in range(0, 10)]
+
+
+def provider_address(df, typ="LOCATION"):
+    """ Get a set of addresses to geo locate based on address of typ
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Provider results DataFrame
+    typ : str, optional
+        Type of address to return, MAILING or LOCATION, by default "LOCATION"
+
+    Returns
+    -------
+    pandas.DataFrame
+        Reduced join (many-to-one) table with number-to-address
+    """
+    adds_lst = df.addresses.to_list()
+    # Take the first location address for each (should only be one)
+    add_lst = [[d for d in x if d['address_purpose']==typ][0] for x in adds_lst]
+    df_temp = pandas.DataFrame(add_lst)  # Read to dataFrame
+    # Assign index using unique id 'number'
+    df_temp["number"] = df.number.to_list()
+    # Add combined address column
+    cols = ["address_1", "city", "state", "postal_code"]
+    df_temp["street_address"] = df_temp[cols].agg(", ".join, axis=1)
+    # Groupby combined address column and list the IDs (number) for each
+    return df_temp.groupby("street_address")['number'].apply(list).reset_index()

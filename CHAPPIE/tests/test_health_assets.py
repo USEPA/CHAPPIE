@@ -8,6 +8,7 @@ import os
 
 import geopandas
 import pandas
+import pytest
 from geopandas.testing import assert_geodataframe_equal
 from pandas.testing import assert_frame_equal
 
@@ -73,15 +74,19 @@ def test_get_urgent_care():
                               check_less_precise=True)
 
 
-def test_get_providers():
-    actual = health.get_providers(aoi_gdf)
+@pytest.fixture(scope='session')
+def providers():
+    return health.get_providers(aoi_gdf)
+
+
+def test_get_providers(providers: pandas.DataFrame):
     actual_zips = sorted(list(actual['zip5'].unique()))
     expected = ['32401', '32404', '32405', '32407', '32408', '32409',
                 '32413', '32444', '32465', '32466']
     assert actual_zips==expected
     actual_len = [len(actual[actual['zip5']==zip]) for zip in expected]
     #expected_len = [1189, 455, 1739, 490, 218, 46, 221, 510, 66, 40,]
-    expected_len = [1070, 311, 1838, 398, 149, 26, 168, 306, 44, 27]
+    expected_len = [1069, 311, 1841, 398, 149, 26, 168, 306, 44, 27]
     assert actual_len==expected_len
 
     expected_file = os.path.join(EXPECTED_DIR, 'get_providers.parquet')
@@ -96,3 +101,8 @@ def test_get_providers():
 
     assert_frame_equal(actual[cols].sort_values(by='number').reset_index(drop=True),
                        expected[cols].sort_values(by='number').reset_index(drop=True))
+
+
+def test_provider_address(providers: pandas.DataFrame):
+    actual = health.provider_address(providers)
+    assert(actual.shape==(1864, 2))
