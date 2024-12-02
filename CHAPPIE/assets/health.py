@@ -298,8 +298,22 @@ def provider_address(df, typ="LOCATION"):
     df_temp = pandas.DataFrame(add_lst)  # Read to dataFrame
     # Assign index using unique id 'number'
     df_temp["number"] = df.number.to_list()
+    # Concatenate address_2 onto address_1 if not NaN
+    address_lines = []
+    address_1_lst = df_temp.address_1.to_list()
+    for i, val in enumerate(df_temp["address_2"].to_list()):
+        if not isinstance(val, float):
+            address_lines.append(address_1_lst[i] + ', ' + val)
+        else:
+            address_lines.append(address_1_lst[i])
+    df_temp["address_lines"] = address_lines
+    # zip vs postal
+    df_temp["zip"] = [val[:5] for val in df_temp["postal_code"]]
     # Add combined address column
-    cols = ["address_1", "city", "state", "postal_code"]
+    cols = ["address_lines", "city", "state", "postal_code"]
     df_temp["street_address"] = df_temp[cols].agg(", ".join, axis=1)
     # Groupby combined address column and list the IDs (number) for each
-    return df_temp.groupby("street_address")['number'].apply(list).reset_index()
+    df1 = df_temp.groupby("street_address")['number'].apply(list).reset_index()
+    # TODO: if we don't use df1 get rid of it, keeping it for now
+    cols = ["address_1", "address_2", "city", "state", "postal_code", "country_name", "zip"]
+    return df_temp.groupby(cols, dropna=False)['number'].apply(list).reset_index()
