@@ -105,4 +105,8 @@ def test_get_providers(providers: pandas.DataFrame):
 
 def test_provider_address(providers: pandas.DataFrame):
     actual = health.provider_address(providers)
-    assert(actual.shape==(2016, 8))
+
+    expected_file = os.path.join(EXPECTED_DIR, 'provider_address.parquet')
+    expected = pandas.read_parquet(expected_file)  # No geo (addresses only)
+
+    assert_frame_equal(actual, expected)
