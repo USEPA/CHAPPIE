@@ -109,5 +109,5 @@ def test_provider_address(providers: pandas.DataFrame):
 
     expected_file = os.path.join(EXPECTED_DIR, 'provider_address.parquet')
     expected = pandas.read_parquet(expected_file)  # No geo (addresses only)
-
-    assert_frame_equal(actual, expected)
+    cols = ['address_1', 'address_2', 'city', 'state', 'postal_code']
+    assert_frame_equal(actual.sort_values(by=cols), expected.sort_values(by=cols))
