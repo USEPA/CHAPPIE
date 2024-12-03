@@ -80,19 +80,19 @@ def providers():
 
 
 def test_get_providers(providers: pandas.DataFrame):
+    # Check zips are correct
     actual_zips = sorted(list(providers['zip5'].unique()))
     expected = ['32401', '32404', '32405', '32407', '32408', '32409',
                 '32413', '32444', '32465', '32466']
     assert actual_zips==expected
+    # Check number of results for each zip
     actual_len = [len(providers[providers['zip5']==zip]) for zip in expected]
-    #expected_len = [1189, 455, 1739, 490, 218, 46, 221, 510, 66, 40,]
     expected_len = [1069, 311, 1841, 398, 149, 26, 168, 306, 44, 27]
     assert actual_len==expected_len
 
+    # Test result dataframes
     expected_file = os.path.join(EXPECTED_DIR, 'get_providers.parquet')
-    # Note: it isn't geo (addresses only)
-    expected = pandas.read_parquet(expected_file)
-
+    expected = pandas.read_parquet(expected_file)  # No geo (addresses only)
     # NOTE: dict are not ordered, drop all columns where it contains a dict
     # 'addresses', 'practiceLocations', 'basic', 'endpoints', 'other_names',
     # 'taxonomies',
