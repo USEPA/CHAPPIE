@@ -99,8 +99,8 @@ def test_get_providers(providers: pandas.DataFrame):
     cols = ['created_epoch', 'enumeration_type', 'last_updated_epoch', 'number',
             'identifiers', 'zip5']
 
-    assert_frame_equal(providers[cols].sort_values(by='number').reset_index(drop=True),
-                       expected[cols].sort_values(by='number').reset_index(drop=True))
+    assert_frame_equal(providers[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True),
+                       expected[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True))
 
 
 def test_provider_address(providers: pandas.DataFrame):
