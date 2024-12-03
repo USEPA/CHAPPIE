@@ -312,6 +312,8 @@ def provider_address(df, typ="LOCATION"):
     # Add combined address column
     cols = ["address_lines", "city", "state", "postal_code"]
     df_temp["street_address"] = df_temp[cols].agg(", ".join, axis=1)
+    # Sort by number before aggregating
+    df_temp.sort_values(by=['number'], inplace=True)
     # Groupby combined address column and list the IDs (number) for each
     df1 = df_temp.groupby("street_address")['number'].apply(list).reset_index()
     # TODO: if we don't use df1 get rid of it, keeping it for now
