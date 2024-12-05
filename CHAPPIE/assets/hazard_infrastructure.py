@@ -52,3 +52,20 @@ def get_levee(aoi):
                                 url=url,
                                 layer=14,
                                 in_crs=aoi.crs.to_epsg())
+
+def get_levee_pump_stations(levees):
+    """Get the number of pump stations per Leveed Area.
+    
+    Parameters
+    ----------
+    levees : geopandas.GeoDataFrame
+        Spatial definition for Leveed Areas.
+
+    Returns
+    -------
+    pandas.Series
+        Table of count of levee pump stations per levee area.
+
+    """
+
+    pass
