@@ -275,3 +275,47 @@ def extend_postal(z_code, api=False):
         return [f"{z_code}{digit}{wildcard}" for digit in range(0, 10)]
     #else:
     return [f"{z_code}{digit}" for digit in range(0, 10)]
+
+
+def provider_address(df, typ="LOCATION"):
+    """ Get a set of addresses to geo locate based on address of typ
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Provider results DataFrame
+    typ : str, optional
+        Type of address to return, MAILING or LOCATION, by default "LOCATION"
+
+    Returns
+    -------
+    pandas.DataFrame
+        Reduced join (many-to-one) table with number-to-address
+    """
+    adds_lst = df.addresses.to_list()
+    # Take the first location address for each (should only be one)
+    add_lst = [[d for d in x if d['address_purpose']==typ][0] for x in adds_lst]
+    df_temp = pandas.DataFrame(add_lst)  # Read to dataFrame
+    # Assign index using unique id 'number'
+    df_temp["number"] = df.number.to_list()
+    # Concatenate address_2 onto address_1 if not NaN
+    address_lines = []
+    address_1_lst = df_temp.address_1.to_list()
+    for i, val in enumerate(df_temp["address_2"].to_list()):
+        if not isinstance(val, float):
+            address_lines.append(address_1_lst[i] + ', ' + val)
+        else:
+            address_lines.append(address_1_lst[i])
+    df_temp["address_lines"] = address_lines
+    # zip vs postal
+    df_temp["zip"] = [val[:5] for val in df_temp["postal_code"]]
+    # Add combined address column
+    cols = ["address_lines", "city", "state", "postal_code"]
+    df_temp["street_address"] = df_temp[cols].agg(", ".join, axis=1)
+    # Sort by number before aggregating
+    df_temp.sort_values(by=['number'], inplace=True)
+    # Groupby combined address column and list the IDs (number) for each
+    df1 = df_temp.groupby("street_address")['number'].apply(list).reset_index()
+    # TODO: if we don't use df1 get rid of it, keeping it for now
+    cols = ["address_1", "address_2", "city", "state", "postal_code", "country_name", "zip"]
+    return df_temp.groupby(cols, dropna=False)['number'].apply(list).reset_index()

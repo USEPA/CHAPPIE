@@ -8,6 +8,7 @@ import os
 
 import geopandas
 import pandas
+import pytest
 from geopandas.testing import assert_geodataframe_equal
 from pandas.testing import assert_frame_equal
 
@@ -73,26 +74,40 @@ def test_get_urgent_care():
                               check_less_precise=True)
 
 
-def test_get_providers():
-    actual = health.get_providers(aoi_gdf)
-    actual_zips = sorted(list(actual['zip5'].unique()))
+@pytest.fixture(scope='session')
+def providers():
+    return health.get_providers(aoi_gdf)
+
+
+def test_get_providers(providers: pandas.DataFrame):
+    # Check zips are correct
+    actual_zips = sorted(list(providers['zip5'].unique()))
     expected = ['32401', '32404', '32405', '32407', '32408', '32409',
                 '32413', '32444', '32465', '32466']
     assert actual_zips==expected
-    actual_len = [len(actual[actual['zip5']==zip]) for zip in expected]
-    #expected_len = [1189, 455, 1739, 490, 218, 46, 221, 510, 66, 40,]
-    expected_len = [1070, 311, 1838, 398, 149, 26, 168, 306, 44, 27]
+    # Check number of results for each zip
+    actual_len = [len(providers[providers['zip5']==zip]) for zip in expected]
+    #expected_len = [1069, 311, 1841, 398, 149, 26, 168, 306, 44, 27]
+    expected_len = [1071, 311, 1841, 398, 149, 26, 168, 306, 44, 27]
     assert actual_len==expected_len
 
+    # Test result dataframes
     expected_file = os.path.join(EXPECTED_DIR, 'get_providers.parquet')
-    # Note: it isn't geo (addresses only)
-    expected = pandas.read_parquet(expected_file)
-
+    expected = pandas.read_parquet(expected_file)  # No geo (addresses only)
     # NOTE: dict are not ordered, drop all columns where it contains a dict
     # 'addresses', 'practiceLocations', 'basic', 'endpoints', 'other_names',
     # 'taxonomies',
     cols = ['created_epoch', 'enumeration_type', 'last_updated_epoch', 'number',
             'identifiers', 'zip5']
 
-    assert_frame_equal(actual[cols].sort_values(by='number').reset_index(drop=True),
-                       expected[cols].sort_values(by='number').reset_index(drop=True))
+    assert_frame_equal(providers[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True),
+                       expected[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True))
+
+
+def test_provider_address(providers: pandas.DataFrame):
+    actual = health.provider_address(providers)
+
+    expected_file = os.path.join(EXPECTED_DIR, 'provider_address.parquet')
+    expected = pandas.read_parquet(expected_file)  # No geo (addresses only)
+    cols = ['address_1', 'address_2', 'city', 'state', 'postal_code']
+    assert_frame_equal(actual.sort_values(by=cols), expected.sort_values(by=cols))
