@@ -5,6 +5,7 @@ Module for health assets.
 """
 from json import dumps
 from warnings import warn
+from geopy.geocoders import ArcGIS
 
 import pandas
 import requests
@@ -319,3 +320,8 @@ def provider_address(df, typ="LOCATION"):
     # TODO: if we don't use df1 get rid of it, keeping it for now
     cols = ["address_1", "address_2", "city", "state", "postal_code", "country_name", "zip"]
     return df_temp.groupby(cols, dropna=False)['number'].apply(list).reset_index()
+
+def geocode_addresses():
+    """
+    
+    """
