@@ -6,8 +6,10 @@ Test natural hazards weather
 import os
 
 import geopandas
+import pandas
+from pandas.testing import assert_frame_equal
 
-from CHAPPIE import layer_query
+from CHAPPIE import layer_query, weather
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -35,3 +37,9 @@ def test_tracts():
                 '12005001302', '12133970302', '12005000201', '12005000804',
                 '12005000402']
     assert actual == expected
+
+def test_get_heat_events():
+    actual = weather.get_heat_events(aoi_gdf)
+    expected_file = os.path.join(EXPECTED_DIR, "heat.csv")
+    expected = pandas.read_csv(expected_file)
+    assert_frame_equal(actual, expected)
