@@ -79,15 +79,15 @@ def get_heat_events(aoi, stratificationLevelId=2194, localIDs=None, years=["2023
     url_tail = f"/{isSmoothed}/{getFullCoreHolder}?{localIDs_str}"
 
     # NOTE: These can be moved down as just part of params?
-    geographicTypeIdFilter = "7"  # Census Tract
-    geographicItemsFilter = ",".join(tracts)  #tracts[0]
-    temporalTypeIdFilter = "1"
-    temporalItemsFilter = ",".join(years)
+    #geographicTypeIdFilter = "7"  # Census Tract
+    #geographicItemsFilter = ",".join(tracts)  #tracts[0]
+    #temporalTypeIdFilter = "1"
+    #temporalItemsFilter = ",".join(years)
 
     # Request as get
-    get_body = f"{geographicTypeIdFilter}/{geographicItemsFilter}/"
-    get_body += f"{temporalTypeIdFilter}/{temporalItemsFilter}"
-    res = requests.get(f"{EPH_url}/{get_body}{url_tail}")
+    #get_body = f"{geographicTypeIdFilter}/{geographicItemsFilter}/"
+    #get_body += f"{temporalTypeIdFilter}/{temporalItemsFilter}"
+    #res = requests.get(f"{EPH_url}/{get_body}{url_tail}")
 
     # Request as post
     params = {"geographicTypeIdFilter": "7",
