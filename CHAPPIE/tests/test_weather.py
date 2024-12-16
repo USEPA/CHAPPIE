@@ -9,7 +9,8 @@ import geopandas
 import pandas
 from pandas.testing import assert_frame_equal
 
-from CHAPPIE import layer_query, weather
+from CHAPPIE import layer_query
+from CHAPPIE.hazards import weather
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
