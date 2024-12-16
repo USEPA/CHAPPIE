@@ -41,6 +41,8 @@ def test_tracts():
 
 def test_get_heat_events():
     actual = weather.get_heat_events(aoi_gdf)
-    expected_file = os.path.join(EXPECTED_DIR, "heat.csv")
-    expected = pandas.read_csv(expected_file)
+    expected_file = os.path.join(EXPECTED_DIR, "heat.parquet")
+    expected = pandas.read_parquet(expected_file)
+    #actual.to_parquet(expected_file, index=False)
+
     assert_frame_equal(actual, expected)
