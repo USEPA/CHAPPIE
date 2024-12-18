@@ -139,6 +139,30 @@ def getZipCode(aoi):
     return res2['ZCTA5'].to_list()
 
 
+def getTract(aoi, year="Current"):
+    "Get the GEOID for tracts intersecting polygon extent."
+    # Specifcying "inSR": aoi.crs returned empty
+    aoi_temp = aoi.to_crs(3857)
+    # TODO: use pyproj transform bbox instead of whole gdf
+    year_lyr = {"2010": 14,
+                "2020": 6,
+                "Current": 8}
+    assert year in year_lyr.keys()
+    layer = year_lyr[year]
+    if year in ["2010", "2020"]:
+        year = f"Census{year}"
+    baseurl = f"{_tiger_url}/tigerWMS_{year}/MapServer"
+    feature_layer = ESRILayer(baseurl, layer)
+    query_params = {
+        "geometry": ",".join(map(str, aoi_temp.total_bounds)),
+        "geometryType": "esriGeometryEnvelope",
+        "spatialRel": "esriSpatialRelIntersects",
+        "returnGeometry": "false",
+        "outFields": "GEOID",
+    }
+
+    return feature_layer.query(**query_params)
+
 def getCounty(aoi):
     """Get the GEOID and county intersecting polygon extent."""
     # Build ESRI layer object to query
