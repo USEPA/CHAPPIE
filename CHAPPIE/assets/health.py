@@ -5,7 +5,9 @@ Module for health assets.
 """
 from json import dumps
 from warnings import warn
-from geopy.geocoders import ArcGIS
+import os
+import json
+import time
 
 import pandas
 import requests
@@ -321,7 +323,94 @@ def provider_address(df, typ="LOCATION"):
     cols = ["address_1", "address_2", "city", "state", "postal_code", "country_name", "zip"]
     return df_temp.groupby(cols, dropna=False)['number'].apply(list).reset_index()
 
-def geocode_addresses():
+def geocode_addresses(serverName,  token=""):
+    """ Get a lat/long for a set of provider addresses
+
+    Parameters
+    ----------
+
+
+    Returns
+    -------
+    gdf : geopandas.GeoDataFrame
+        Point locations
+
     """
+
+    if token == "":
+        token = get_geocode_token("chappie")
+    params = {
+        "addresses": {
+            "records": [
+                {
+                    "attributes": {
+                        "OBJECTID": 1,
+                        "Address": "380 New York St",
+                        "Neighborhood": "",
+                        "City": "Redlands",
+                        "Subregion": "",
+                        "Region": "CA"
+                    }
+                },
+                {
+                    "attributes": {
+                        "OBJECTID": 2,
+                        "Address": "1 World Way",
+                        "Neighborhood": "",
+                        "City": "Los Angeles",
+                        "Subregion": "",
+                        "Region": "CA"
+                    }
+                }
+            ]
+        },
+        "f": "json",
+        "token": token
+    }
+    serviceURL = "https://geocode.epa.gov/arcgis/rest/services/StreetmapPremium_USA/GeocodeServer/geocodeAddresses"
+    response = post_request(serviceURL, params)
+    return response
+
+
+def get_geocode_token(userName):
+    try:
+        # Token URL 
+        url = "https://geocode.epa.gov/arcgis/tokens/"
+        password = os.environ['GEOCODE_API_KEY']
+        data = {"username": userName,
+                "password": password,
+                "referer" : "https://localhost",
+                "expiration" : 60, #1 hour
+                "f": "json"}
+        json_response = post_request(url, data)
+        if 'token' in json_response.keys():
+            return json_response["token"]
+        else:
+            raise ValueError(f"Problem with getToken. Url: {url} Response: {json_response}")
+    except Exception as e:
+        raise ValueError(f"Problem with getToken. Url: {url} Response: {json_response} Exception: {e}")
+
+
+def post_request(url, data):
+        # Connect to URL and post parameters
+    count = 0
+    r = None
+    while r is None and count < 2:
+        try:
+            r = requests.post(url,data=data)
+        except requests.exceptions.ConnectionError:
+            print("Connection error",str(count))
+            count += 1
+            time.sleep(30)
+    if r:
+        try:
+            r_json = r.json()
+            print("Response JSON:", r_json)
+            print("Request headers", r.headers)
+            return r_json
+        except:
+            print("Response text:",r)
+            return {"url": url,"status": r.status_code, "reason": r.reason, "text": r.text}
+    else:
+        return {"url": url, "status": "error", "reason": f"Connection error, {count} attempts", "text": ""}
     
-    """
