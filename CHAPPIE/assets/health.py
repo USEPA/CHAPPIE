@@ -340,30 +340,7 @@ def geocode_addresses(serverName,  token=""):
     if token == "":
         token = get_geocode_token("chappie")
     params = {
-        "addresses": {
-            "records": [
-                {
-                    "attributes": {
-                        "OBJECTID": 1,
-                        "Address": "380 New York St",
-                        "Neighborhood": "",
-                        "City": "Redlands",
-                        "Subregion": "",
-                        "Region": "CA"
-                    }
-                },
-                {
-                    "attributes": {
-                        "OBJECTID": 2,
-                        "Address": "1 World Way",
-                        "Neighborhood": "",
-                        "City": "Los Angeles",
-                        "Subregion": "",
-                        "Region": "CA"
-                    }
-                }
-            ]
-        },
+        "addresses": "{'records': [{'attributes': {'OBJECTID': 1, 'Address': '380 New York St', 'Neighborhood': '', 'City': 'Redlands', 'Subregion': '', 'Region': 'CA'}}, {'attributes': {'OBJECTID': 2, 'Address': '1 World Way', 'Neighborhood': '', 'City': 'Los Angeles', 'Subregion': '', 'Region': 'CA'}}]}",
         "f": "json",
         "token": token
     }
