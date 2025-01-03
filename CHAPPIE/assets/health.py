@@ -20,6 +20,8 @@ param_list = ["firstName", "lastName", "organizationName", "aoFirstName", "skip"
               "enumerationType", "number", "city", "state", "country",
               "taxonomyDescription", "postalCode", "exactMatch", "addressType"]
 _npi_backup_basedict = {key: None for key in param_list}
+_geocode_base_url = "https://geocode.epa.gov"
+_geocode_api_key = os.environ['GEOCODE_API_KEY']
 
 
 def get_hospitals(aoi):
@@ -323,12 +325,15 @@ def provider_address(df, typ="LOCATION"):
     cols = ["address_1", "address_2", "city", "state", "postal_code", "country_name", "zip"]
     return df_temp.groupby(cols, dropna=False)['number'].apply(list).reset_index()
 
-def geocode_addresses(serverName,  token=""):
+def geocode_addresses(df,  token=""):
     """ Get a lat/long for a set of provider addresses
 
     Parameters
     ----------
-
+    df : pandas.DataFrame
+        Reduced join (many-to-one) table with number-to-address
+    token : str, optional
+        token for calls to EPA streetmap premium service
 
     Returns
     -------
@@ -344,39 +349,52 @@ def geocode_addresses(serverName,  token=""):
         "f": "json",
         "token": token
     }
-    serviceURL = "https://geocode.epa.gov/arcgis/rest/services/StreetmapPremium_USA/GeocodeServer/geocodeAddresses"
+    serviceURL = f"{_geocode_base_url}/arcgis/rest/services/StreetmapPremium_USA/GeocodeServer/geocodeAddresses"
     response = post_request(serviceURL, params)
     return response
 
 
-def get_geocode_token(userName):
+def get_geocode_token(user_name):
+    """ Get token from EPA geocode service url
+
+    Parameters
+    ----------
+    user_name : str
+        User name for EPA geocode service.
+
+    Returns
+    -------
+    str
+        Token string with 1 hour expiration.
+      
+    """
     try:
-        # Token URL 
-        url = "https://geocode.epa.gov/arcgis/tokens/"
-        password = os.environ['GEOCODE_API_KEY']
-        data = {"username": userName,
-                "password": password,
-                "referer" : "https://localhost",
-                "expiration" : 60, #1 hour
-                "f": "json"}
+        url = f"{_geocode_base_url}/arcgis/tokens/"
+        data = {
+            "username": user_name,
+            "password": _geocode_api_key,
+            "referer" : "https://localhost",
+            "expiration" : 60, #1 hour
+            "f": "json"
+            }
         json_response = post_request(url, data)
         if 'token' in json_response.keys():
             return json_response["token"]
         else:
-            raise ValueError(f"Problem with getToken. Url: {url} Response: {json_response}")
+            raise ValueError(f"Problem with get_geocode_token. Url: {url} Response: {json_response}")
     except Exception as e:
-        raise ValueError(f"Problem with getToken. Url: {url} Response: {json_response} Exception: {e}")
+        raise ValueError(f"Problem with get_geocode_token. Url: {url} Response: {json_response} Exception: {e}")
 
 
 def post_request(url, data):
-        # Connect to URL and post parameters
+    # Connect to URL and post parameters
     count = 0
     r = None
     while r is None and count < 2:
         try:
-            r = requests.post(url,data=data)
+            r = requests.post(url, data=data)
         except requests.exceptions.ConnectionError:
-            print("Connection error",str(count))
+            print("Connection error", str(count))
             count += 1
             time.sleep(30)
     if r:
