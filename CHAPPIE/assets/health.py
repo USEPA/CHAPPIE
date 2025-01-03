@@ -387,7 +387,21 @@ def get_geocode_token(user_name):
 
 
 def post_request(url, data):
-    # Connect to URL and post parameters
+    """ Generate post request from url and data.
+
+    Parameters
+    ----------
+    url : str
+        URL for post request.
+    data : dict
+        Data dictionary for post request body.
+
+    Returns
+    -------
+    json
+        Post request response json.
+      
+    """
     count = 0
     r = None
     while r is None and count < 2:
