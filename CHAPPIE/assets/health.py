@@ -344,13 +344,23 @@ def geocode_addresses(df,  token=""):
 
     if token == "":
         token = get_geocode_token("chappie")
+    # TODO: Load provider address data
+    # Create an array of objects (collection) from df
+    # each object has key "attributes" and value is an object
+    # Just take a slice of df as test and drop a few fields for bare minimum attributes
+    # Create a collection of records
+    obj = df.drop(['number', 'postal_code', 'country_name', 'address_2'], axis=1)[:10].to_dict(orient='records')
     params = {
-        "addresses": "{'records': [{'attributes': {'OBJECTID': 1, 'Address': '380 New York St', 'Neighborhood': '', 'City': 'Redlands', 'Subregion': '', 'Region': 'CA'}}, {'attributes': {'OBJECTID': 2, 'Address': '1 World Way', 'Neighborhood': '', 'City': 'Los Angeles', 'Subregion': '', 'Region': 'CA'}}]}",
+        "addresses": f"{'records': {str(obj)}}",
         "f": "json",
         "token": token
+        # TODO: Additional optional params, like sourceCountry=USA, searchExtent=bbox, outFields
     }
     serviceURL = f"{_geocode_base_url}/arcgis/rest/services/StreetmapPremium_USA/GeocodeServer/geocodeAddresses"
     response = post_request(serviceURL, params)
+    # TODO: Parse response and load into gdf
+    # TODO: Address max batch size or optimal batch size
+    # TODO: Detect and handle errors, like timeout and ambiguous address
     return response
 
 
