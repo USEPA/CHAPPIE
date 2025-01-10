@@ -21,8 +21,10 @@ EXPECTED_DIR = os.path.join(DIRPATH, 'expected')  # Expected
 DATA_DIR = os.path.join(DIRPATH, 'data')  # inputs
 TEST_DIR = os.path.join(DIRPATH, 'results')  # test results (have to create)
 
+PROVIDER_ADDRESSES = os.path.join(EXPECTED_DIR, "provider_address.parquet")
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 aoi_gdf = geopandas.read_file(AOI)
+provider_address_df = pandas.read_parquet(PROVIDER_ADDRESSES)
 
 def test_get_hospitals():
     actual = health.get_hospitals(aoi_gdf)
@@ -111,3 +113,7 @@ def test_provider_address(providers: pandas.DataFrame):
     expected = pandas.read_parquet(expected_file)  # No geo (addresses only)
     cols = ['address_1', 'address_2', 'city', 'state', 'postal_code']
     assert_frame_equal(actual.sort_values(by=cols), expected.sort_values(by=cols))
+
+
+def test_geocode_addresses():
+    actual = health.geocode_addresses(provider_address_df, "geocode.epa.gov")
