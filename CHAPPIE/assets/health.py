@@ -349,7 +349,11 @@ def geocode_addresses(df,  token=""):
     # each object has key "attributes" and value is an object
     # Just take a slice of df as test and drop a few fields for bare minimum attributes
     # Create a collection of records
-    obj = df.drop(['number', 'postal_code', 'country_name', 'address_2'], axis=1)[:10].to_dict(orient='records')
+    cols = {'address_1':'Address', 'city':'City','state':'Region','zip':'Postal','address_2':'Address2'}
+    # Fill null address_2 with empty string...this can be corrected in provider_address too
+    df['address_2'] = df['address_2'].fillna('')
+    obj = df.rename(columns=cols).drop(['number', 'postal_code', 'country_name'], axis=1)[:10].to_dict(orient='records')
+    # Add collection of records to params
     params = {
         "addresses": f"{'records': {str(obj)}}",
         "f": "json",
