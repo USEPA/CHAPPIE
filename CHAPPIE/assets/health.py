@@ -11,6 +11,7 @@ import time
 
 import pandas
 import requests
+import geopandas
 
 from CHAPPIE import layer_query
 
@@ -353,19 +354,23 @@ def geocode_addresses(df,  token=""):
     # Fill null address_2 with empty string...this can be corrected in provider_address too
     df['address_2'] = df['address_2'].fillna('')
     obj = df.rename(columns=cols).drop(['number', 'postal_code', 'country_name'], axis=1)[:10].to_dict(orient='records')
+    obj_str=json.dumps(obj)
     # Add collection of records to params
     params = {
-        "addresses": f"{'records': {str(obj)}}",
+        "addresses": "{'records': %s}" % obj_str,
         "f": "json",
         "token": token
         # TODO: Additional optional params, like sourceCountry=USA, searchExtent=bbox, outFields
     }
     serviceURL = f"{_geocode_base_url}/arcgis/rest/services/StreetmapPremium_USA/GeocodeServer/geocodeAddresses"
+    # How much data fits in post request?
     response = post_request(serviceURL, params)
-    # TODO: Parse response and load into gdf
+    # Parse response and load into gdf
+    r_df = pandas.json_normalize(response['locations'])
+    # Look into geopy parsing code
     # TODO: Address max batch size or optimal batch size
     # TODO: Detect and handle errors, like timeout and ambiguous address
-    return response
+    return geopandas.GeoDataFrame(r_df, geometry=geopandas.points_from_xy(r_df['location.x'], r_df['location.y']), crs="EPSG:4326")
 
 
 def get_geocode_token(user_name):
