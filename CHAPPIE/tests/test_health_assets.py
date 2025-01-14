@@ -118,9 +118,8 @@ def test_provider_address(providers: pandas.DataFrame):
 def test_geocode_addresses():
     actual = health.geocode_addresses(provider_address_df)
     assert isinstance(actual, geopandas.geodataframe.GeoDataFrame)
-    actual.to_file(os.path.join(EXPECTED_DIR, 'provider_geocode.shp'))
     
     expected_file = os.path.join(EXPECTED_DIR, 'provider_geocode.parquet')
     expected = geopandas.read_parquet(expected_file)
 
-    #assert_geodataframe_equal(actual, expected)
+    assert_geodataframe_equal(actual, expected)

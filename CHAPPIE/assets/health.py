@@ -347,30 +347,38 @@ def geocode_addresses(df,  token=""):
         token = get_geocode_token("chappie")
     # TODO: Load provider address data
     # Create an array of objects (collection) from df
-    # each object has key "attributes" and value is an object
     # Just take a slice of df as test and drop a few fields for bare minimum attributes
     # Create a collection of records
     cols = {'address_1':'Address', 'city':'City','state':'Region','zip':'Postal','address_2':'Address2'}
     # Fill null address_2 with empty string...this can be corrected in provider_address too
     df['address_2'] = df['address_2'].fillna('')
-    obj = df.rename(columns=cols).drop(['number', 'postal_code', 'country_name'], axis=1)[:10].to_dict(orient='records')
-    obj_str=json.dumps(obj)
+    records = df.rename(columns=cols).drop(['number', 'postal_code', 'country_name'], axis=1).to_dict(orient='records')
+    array = []
+    # each object has key "attributes" and value is dict of adresss attributes
+    # OBJECTID is required attribute for geocode API
+    for index, i in enumerate(records):
+        i['OBJECTID'] = index
+        x = {'attributes': i}
+        array.append(x)
     # Add collection of records to params
     params = {
-        "addresses": "{'records': %s}" % obj_str,
+        "addresses": '{"records":%s}' % array,
         "f": "json",
-        "token": token
-        # TODO: Additional optional params, like sourceCountry=USA, searchExtent=bbox, outFields
+        "token": token,
+        "sourceCountry": "USA",
+        "outSR": 4326
+        # TODO: Additional optional params, searchExtent=bbox, outFields?
     }
     serviceURL = f"{_geocode_base_url}/arcgis/rest/services/StreetmapPremium_USA/GeocodeServer/geocodeAddresses"
-    # How much data fits in post request?
+    # How much data fits in post request? 2000.
     response = post_request(serviceURL, params)
     # Parse response and load into gdf
     r_df = pandas.json_normalize(response['locations'])
+    r_gdf = geopandas.GeoDataFrame(r_df, geometry=geopandas.points_from_xy(r_df['location.x'], r_df['location.y']), crs="EPSG:4326")
     # Look into geopy parsing code
-    # TODO: Address max batch size or optimal batch size
+    # TODO: Address max batch size or optimal batch size...2000 is the max 
     # TODO: Detect and handle errors, like timeout and ambiguous address
-    return geopandas.GeoDataFrame(r_df, geometry=geopandas.points_from_xy(r_df['location.x'], r_df['location.y']), crs="EPSG:4326")
+    return r_gdf
 
 
 def get_geocode_token(user_name):
