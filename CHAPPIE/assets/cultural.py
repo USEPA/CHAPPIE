@@ -110,11 +110,11 @@ def get_worship(aoi):
 
     """
 
-    url = 'https://services.arcgis.com/XG15cJAlne2vxtgt/ArcGIS/rest/services/All_Places_Of_Worship__HiFLD_Open_/FeatureServer/42'
+    url = 'https://services.arcgis.com/XG15cJAlne2vxtgt/ArcGIS/rest/services/All_Places_Of_Worship__HiFLD_Open_/FeatureServer'
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
     
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
-                                layer=0,
+                                layer=42,
                                 in_crs=aoi.crs.to_epsg())
