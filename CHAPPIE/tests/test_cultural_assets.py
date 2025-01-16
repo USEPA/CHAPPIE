@@ -60,7 +60,7 @@ def test_get_worship():
     actual = cultural.get_worship(aoi_gdf)
     actual.drop(columns=['FID'], inplace=True)
     actual.sort_values(by=['EIN', 'NAME'], inplace=True, ignore_index=True)
-    actual.to_parquet(os.path.join(EXPECTED_DIR, 'cultural_worship.parquet'))
+    # actual.to_parquet(os.path.join(EXPECTED_DIR, 'cultural_worship.parquet'))
 
     expected_file = os.path.join(EXPECTED_DIR, 'cultural_worship.parquet')
     expected = geopandas.read_parquet(expected_file)
