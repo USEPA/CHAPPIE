@@ -350,12 +350,13 @@ def geocode_addresses(df,  token=""):
     # Fill null address_2 with empty string...this can be corrected in provider_address too
     df['address_2'] = df['address_2'].fillna('')
     # Load provider address data: create an array of objects (collection) of records from df
-    records = df.rename(columns=cols).drop(['number', 'postal_code', 'country_name'], axis=1).to_dict(orient='records')
+    records = df.rename(columns=cols).drop(['number', 'postal_code', 'country_name'], axis=1)
+    record_dict = records.to_dict(orient='records')
     array = []
     # Transform records
     # each address object has key "attributes" and value is dict of adresss attributes
     # OBJECTID is required attribute for geocode API
-    for index, i in enumerate(records):
+    for index, i in enumerate(record_dict):
         i['OBJECTID'] = index
         x = {'attributes': i}
         array.append(x)
@@ -372,10 +373,13 @@ def geocode_addresses(df,  token=""):
     response = post_request(serviceURL, params)
     # Parse response and load into gdf
     r_df = pandas.json_normalize(response['locations'])
-    r_gdf = geopandas.GeoDataFrame(r_df, geometry=geopandas.points_from_xy(r_df['location.x'], r_df['location.y']), crs="EPSG:4326")
+    # Drop all columns except coordinates and sortable ID
+    r_df = r_df[['location.x', 'location.y', 'address', 'attributes.ResultID']].rename(columns={'location.x':'X', 'location.y':'Y','attributes.ResultID':'ID'}).sort_values(by='address')
+    # Make into GeometryArray of shapely Point geometries from x,y coords and sort on ID
+    gdf = geopandas.GeoDataFrame(r_df, geometry=geopandas.points_from_xy(r_df['X'], r_df['Y']), crs="EPSG:4326")
     # TODO: Address max batch size or optimal batch size...2000 is the max 
     # TODO: Detect and handle errors, like timeout and ambiguous address
-    return r_gdf
+    return gdf
 
 
 def get_geocode_token(user_name):
@@ -432,17 +436,17 @@ def post_request(url, data):
         try:
             r = requests.post(url, data=data)
         except requests.exceptions.ConnectionError:
-            print("Connection error", str(count))
+            warn("Connection error", str(count))
             count += 1
             time.sleep(30)
     if r:
         try:
             r_json = r.json()
-            print("Response JSON:", r_json)
-            print("Request headers", r.headers)
+            #print("Response JSON:", r_json)
+            #print("Request headers", r.headers)
             return r_json
         except:
-            print("Response text:",r)
+            warn("Response text:",r)
             return {"url": url,"status": r.status_code, "reason": r.reason, "text": r.text}
     else:
         return {"url": url, "status": "error", "reason": f"Connection error, {count} attempts", "text": ""}
