@@ -376,7 +376,7 @@ def geocode_addresses(df,  token=""):
     r_df = r_df[['location.x', 'location.y', 'address', 'attributes.ResultID']].rename(columns={'location.x':'X', 'location.y':'Y','attributes.ResultID':'OBJECTID'}).sort_values(by='address')
     # Make into GeometryArray of shapely Point geometries from x,y coords and sort on ID
     gdf = geopandas.GeoDataFrame(r_df, geometry=geopandas.points_from_xy(r_df['X'], r_df['Y']), crs="EPSG:4326")
-    gdf = gdf.merge(records, on='OBJECTID')
+    gdf = gdf.merge(records, on='OBJECTID').set_index('OBJECTID')
     # TODO: Address max batch size or optimal batch size...2000 is the max 
     # TODO: Detect and handle errors, like timeout and ambiguous address
     return gdf
