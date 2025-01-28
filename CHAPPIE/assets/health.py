@@ -346,18 +346,17 @@ def geocode_addresses(df,  token=""):
     if token == "":
         token = get_geocode_token("chappie")
     # Dict of columns to rename...this can be corrected in provider_address
-    cols = {'address_1':'Address', 'city':'City','state':'Region','zip':'Postal','address_2':'Address2'}
+    # OBJECTID is required attribute for geocode API
+    cols = {'address_1':'Address', 'city':'City','state':'Region','zip':'Postal','address_2':'Address2','index':'OBJECTID'}
     # Fill null address_2 with empty string...this can be corrected in provider_address too
     df['address_2'] = df['address_2'].fillna('')
     # Load provider address data: create an array of objects (collection) of records from df
-    records = df.rename(columns=cols).drop(['number', 'postal_code', 'country_name'], axis=1)
-    record_dict = records.to_dict(orient='records')
+    records = df.reset_index().rename(columns=cols)[:1000]
+    record_dict = records.drop(['number', 'postal_code', 'country_name'], axis=1).to_dict(orient='records')
     array = []
     # Transform records
     # each address object has key "attributes" and value is dict of adresss attributes
-    # OBJECTID is required attribute for geocode API
     for index, i in enumerate(record_dict):
-        i['OBJECTID'] = index
         x = {'attributes': i}
         array.append(x)
     # Build params
@@ -374,9 +373,10 @@ def geocode_addresses(df,  token=""):
     # Parse response and load into gdf
     r_df = pandas.json_normalize(response['locations'])
     # Drop all columns except coordinates and sortable ID
-    r_df = r_df[['location.x', 'location.y', 'address', 'attributes.ResultID']].rename(columns={'location.x':'X', 'location.y':'Y','attributes.ResultID':'ID'}).sort_values(by='address')
+    r_df = r_df[['location.x', 'location.y', 'address', 'attributes.ResultID']].rename(columns={'location.x':'X', 'location.y':'Y','attributes.ResultID':'OBJECTID'}).sort_values(by='address')
     # Make into GeometryArray of shapely Point geometries from x,y coords and sort on ID
     gdf = geopandas.GeoDataFrame(r_df, geometry=geopandas.points_from_xy(r_df['X'], r_df['Y']), crs="EPSG:4326")
+    gdf = gdf.merge(records, on='OBJECTID')
     # TODO: Address max batch size or optimal batch size...2000 is the max 
     # TODO: Detect and handle errors, like timeout and ambiguous address
     return gdf
