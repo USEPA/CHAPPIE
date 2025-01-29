@@ -116,7 +116,10 @@ def test_provider_address(providers: pandas.DataFrame):
 
 
 def test_geocode_addresses():
-    actual = health.geocode_addresses(provider_address_df)
+    actual = health.batch_geocode(provider_address_df)
+    actual.sort_values(by=['OBJECTID'], inplace=True)
+    #actual.to_file(os.path.join(EXPECTED_DIR, 'provider_geocode.shp'))
+    #actual.to_parquet(os.path.join(EXPECTED_DIR, 'provider_geocode.parquet'))
     assert isinstance(actual, geopandas.geodataframe.GeoDataFrame)
     
     expected_file = os.path.join(EXPECTED_DIR, 'provider_geocode.parquet')

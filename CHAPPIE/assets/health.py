@@ -351,7 +351,7 @@ def geocode_addresses(df,  token=""):
     # Fill null address_2 with empty string...this can be corrected in provider_address too
     df['address_2'] = df['address_2'].fillna('')
     # Load provider address data: create an array of objects (collection) of records from df
-    records = df.reset_index().rename(columns=cols)[:1000]
+    records = df.reset_index().rename(columns=cols)
     record_dict = records.drop(['number', 'postal_code', 'country_name'], axis=1).to_dict(orient='records')
     array = []
     # Transform records
@@ -379,8 +379,37 @@ def geocode_addresses(df,  token=""):
     gdf = gdf.merge(records, on='OBJECTID').set_index('OBJECTID')
     # TODO: Address max batch size or optimal batch size...2000 is the max 
     # TODO: Detect and handle errors, like timeout and ambiguous address
+
     return gdf
 
+def batch_geocode(df, count_limit=None):
+    """Run query in batch.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Reduced join (many-to-one) table with number-to-address
+    count_limit : int, optional
+        The number of records to geocode at one. The default is 1000.
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        Table of combined results.
+
+    """
+    if not count_limit:
+        count_limit = 1000
+    # Get length of address dataframe to geocode 
+    count = len(df)
+    list_of_results = []
+    # Chunk the df and send each chunk to get geocoded
+    for chunk in [df[i:i+count_limit] for i in range(0, count, count_limit)]:
+        list_of_results.append([geocode_addresses(chunk)])
+    # Convert each result to geodataframe
+    gdfs = [geopandas.GeoDataFrame(result[0]) for result in list_of_results]
+
+    return pandas.concat(gdfs)
 
 def get_geocode_token(user_name):
     """ Get token from EPA geocode service url
