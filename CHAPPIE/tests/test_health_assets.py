@@ -11,6 +11,8 @@ import pandas
 import pytest
 from geopandas.testing import assert_geodataframe_equal
 from pandas.testing import assert_frame_equal
+from unittest.mock import patch, MagicMock
+from requests.exceptions import ConnectionError
 
 from CHAPPIE.assets import health
 
@@ -126,3 +128,17 @@ def test_geocode_addresses():
     expected = geopandas.read_parquet(expected_file)
 
     assert_geodataframe_equal(actual, expected)
+
+
+#Test how Connection error is handled, but patch the post_request call
+@patch('CHAPPIE.assets.health.requests.post')
+def test_post_request_connection_error(mock_post):
+    mock_resp = MagicMock()
+    mock_resp.raise_for_status.side_effect = ConnectionError
+    mock_post.return_value = mock_resp
+    url = "https://fake.epa.gov/GeocodeServer"
+    data = {}
+    
+    health.post_request(url=url, data=data)
+    assert mock_resp.raise_for_status.called == True
+    assert mock_post.call_count == 2 # Ensures the mocked method was called twice (one plus a retry)
