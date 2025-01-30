@@ -468,14 +468,14 @@ def post_request(url, data):
             r.raise_for_status()
             r_json = r.json()
             return r_json
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ConnectionError as e:
             count += 1
             if count < 2:
-                warn(f"Connection error, count is {count}")
+                warn(f"Connection error, count is {count}. Error: {e}")
                 time.sleep(30)
                 continue
             else: 
                 return {"url": url, "status": "error", "reason": f"Connection error, {count} attempts", "text": ""}
-        except Exception:
-            warn("Response text:", r)
-            return {"url": url,"status": r.status_code, "reason": r.reason, "text": r.text}
+        except Exception as e:
+            warn(f"Response: {r}, Error: {e}")
+            return {"url": url, "data": data, "status": r.status_code}

@@ -12,7 +12,7 @@ import pytest
 from geopandas.testing import assert_geodataframe_equal
 from pandas.testing import assert_frame_equal
 from unittest.mock import patch, MagicMock
-from requests.exceptions import ConnectionError
+from requests.exceptions import ConnectionError, HTTPError
 
 from CHAPPIE.assets import health
 
@@ -143,3 +143,19 @@ def test_post_request_connection_error(mock_post):
     assert mock_resp.raise_for_status.called == True
     assert mock_post.call_count == 2 # Ensures the mocked method was called twice (one plus a retry)
     assert result == {"url": url, "status": "error", "reason": f"Connection error, 2 attempts", "text": ""}
+
+
+# Test other exception branch of post_request function, which has no retry
+@patch('CHAPPIE.assets.health.requests.post')
+def test_post_request_502_error(mock_post):
+    mock_resp = MagicMock()
+    mock_resp.status_code = 502
+    mock_resp.raise_for_status.side_effect = HTTPError
+    mock_post.return_value = mock_resp
+    url = "https://fake.epa.gov/GeocodeServer"
+    data = {}
+    
+    result = health.post_request(url=url, data=data)
+    assert mock_resp.raise_for_status.called == True
+    assert mock_post.call_count == 1 # Ensures the mocked method was called once, no retries
+    assert result == {"url": url, "data": data, "status": 502}
