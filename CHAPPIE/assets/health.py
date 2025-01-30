@@ -366,7 +366,6 @@ def geocode_addresses(df,  token=""):
         "token": token,
         "sourceCountry": "USA",
         "outSR": 4326
-        # TODO: Additional optional params, searchExtent=bbox, outFields?
     }
     serviceURL = f"{_geocode_base_url}/arcgis/rest/services/StreetmapPremium_USA/GeocodeServer/geocodeAddresses"
     response = post_request(serviceURL, params)
@@ -377,13 +376,13 @@ def geocode_addresses(df,  token=""):
     # Make into GeometryArray of shapely Point geometries from x,y coords and sort on ID
     gdf = geopandas.GeoDataFrame(r_df, geometry=geopandas.points_from_xy(r_df['X'], r_df['Y']), crs="EPSG:4326")
     gdf = gdf.merge(records, on='OBJECTID').set_index('OBJECTID')
-    # TODO: Address max batch size or optimal batch size...2000 is the max 
     # TODO: Detect and handle errors, like timeout and ambiguous address
 
     return gdf
 
+
 def batch_geocode(df, count_limit=None):
-    """Run query in batch.
+    """Run geocode addresses in batches.
 
     Parameters
     ----------
@@ -398,6 +397,7 @@ def batch_geocode(df, count_limit=None):
         Table of combined results.
 
     """
+    # Address max batch size...2000 is the max, but 1000 seems to be the optimal batch size
     if not count_limit:
         count_limit = 1000
     # Get length of address dataframe to geocode 
@@ -410,6 +410,7 @@ def batch_geocode(df, count_limit=None):
     gdfs = [geopandas.GeoDataFrame(result[0]) for result in list_of_results]
 
     return pandas.concat(gdfs)
+
 
 def get_geocode_token(user_name):
     """ Get token from EPA geocode service url
@@ -460,23 +461,21 @@ def post_request(url, data):
       
     """
     count = 0
-    r = None
-    while r is None and count < 2:
+
+    while True:
         try:
             r = requests.post(url, data=data)
-        except requests.exceptions.ConnectionError:
-            warn("Connection error", str(count))
-            count += 1
-            time.sleep(30)
-    if r:
-        try:
+            r.raise_for_status()
             r_json = r.json()
-            #print("Response JSON:", r_json)
-            #print("Request headers", r.headers)
             return r_json
-        except:
-            warn("Response text:",r)
+        except requests.exceptions.ConnectionError:
+            count += 1
+            if count < 2:
+                warn(f"Connection error, count is {count}")
+                time.sleep(30)
+                continue
+            else: 
+                return {"url": url, "status": "error", "reason": f"Connection error, {count} attempts", "text": ""}
+        except Exception:
+            warn("Response text:", r)
             return {"url": url,"status": r.status_code, "reason": r.reason, "text": r.text}
-    else:
-        return {"url": url, "status": "error", "reason": f"Connection error, {count} attempts", "text": ""}
-    

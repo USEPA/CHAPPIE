@@ -139,6 +139,7 @@ def test_post_request_connection_error(mock_post):
     url = "https://fake.epa.gov/GeocodeServer"
     data = {}
     
-    health.post_request(url=url, data=data)
+    result = health.post_request(url=url, data=data)
     assert mock_resp.raise_for_status.called == True
     assert mock_post.call_count == 2 # Ensures the mocked method was called twice (one plus a retry)
+    assert result == {"url": url, "status": "error", "reason": f"Connection error, 2 attempts", "text": ""}
