@@ -349,7 +349,7 @@ def geocode_addresses(df,  token=""):
     # OBJECTID is required attribute for geocode API
     cols = {'address_1':'Address', 'city':'City','state':'Region','zip':'Postal','address_2':'Address2','index':'OBJECTID'}
     # Fill null address_2 with empty string...this can be corrected in provider_address too
-    df['address_2'] = df['address_2'].fillna('')
+    df['address_2'].fillna('')
     # Load provider address data: create an array of objects (collection) of records from df
     records = df.reset_index().rename(columns=cols)
     record_dict = records.drop(['number', 'postal_code', 'country_name'], axis=1).to_dict(orient='records')
@@ -426,22 +426,21 @@ def get_geocode_token(user_name):
         Token string with 1 hour expiration.
       
     """
-    try:
-        url = f"{_geocode_base_url}/arcgis/tokens/"
-        data = {
-            "username": user_name,
-            "password": _geocode_api_key,
-            "referer" : "https://localhost",
-            "expiration" : 60, #1 hour
-            "f": "json"
-            }
-        json_response = post_request(url, data)
-        if 'token' in json_response.keys():
-            return json_response["token"]
-        else:
-            raise ValueError(f"Problem with get_geocode_token. Url: {url} Response: {json_response}")
-    except Exception as e:
-        raise ValueError(f"Problem with get_geocode_token. Url: {url} Response: {json_response} Exception: {e}")
+
+    url = f"{_geocode_base_url}/arcgis/tokens/"
+    data = {
+        "username": user_name,
+        "password": _geocode_api_key,
+        "referer" : "https://localhost",
+        "expiration" : 60, #1 hour
+        "f": "json"
+        }
+    json_response = post_request(url, data)
+    if 'token' in json_response.keys():
+        return json_response["token"]
+    else:
+        warn(f"Problem with get_geocode_token. Url: {url} Response: {json_response}")
+        raise ValueError(f"Value Error. Url: {url} Response: {json_response}")
 
 
 def post_request(url, data):

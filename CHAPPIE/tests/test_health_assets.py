@@ -117,9 +117,10 @@ def test_provider_address(providers: pandas.DataFrame):
     assert_frame_equal(actual.sort_values(by=cols), expected.sort_values(by=cols))
 
 
-def test_geocode_addresses():
+def test_batch_geocode():
     actual = health.batch_geocode(provider_address_df)
     actual.sort_values(by=['OBJECTID'], inplace=True)
+    assert len(actual) == len(provider_address_df)
     #actual.to_file(os.path.join(EXPECTED_DIR, 'provider_geocode.shp'))
     #actual.to_parquet(os.path.join(EXPECTED_DIR, 'provider_geocode.parquet'))
     assert isinstance(actual, geopandas.geodataframe.GeoDataFrame)
@@ -159,3 +160,18 @@ def test_post_request_502_error(mock_post):
     assert mock_resp.raise_for_status.called == True
     assert mock_post.call_count == 1 # Ensures the mocked method was called once, no retries
     assert result == {"url": url, "data": data, "status": 502}
+
+# patch post_request function response to have no 'token' in response.keys; expect a ValueError
+@patch('CHAPPIE.assets.health.requests.post')
+def test_get_geocode_token_keys(mock_post):
+    mock_resp = MagicMock()
+    mock_resp.status_code = 200
+    mock_resp.json.return_value = {
+        'tokn': 'ttt'
+    }
+    mock_post.return_value = mock_resp
+    username = 'chaps'
+    with pytest.raises(ValueError):
+        health.get_geocode_token(user_name=username)
+
+
