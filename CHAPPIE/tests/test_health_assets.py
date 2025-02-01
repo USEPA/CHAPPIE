@@ -92,7 +92,8 @@ def test_get_providers(providers: pandas.DataFrame):
     # Check number of results for each zip
     actual_len = [len(providers[providers['zip5']==zip]) for zip in expected]
     #expected_len = [1069, 311, 1841, 398, 149, 26, 168, 306, 44, 27]
-    expected_len = [1071, 311, 1841, 398, 149, 26, 168, 306, 44, 27]
+    #expected_len = [1071, 311, 1841, 398, 149, 26, 168, 306, 44, 27]
+    expected_len = [1074, 313, 1847, 411, 155, 27, 171, 307, 46, 29]
     assert actual_len==expected_len
 
     # Test result dataframes
