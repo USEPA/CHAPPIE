@@ -471,7 +471,7 @@ def post_request(url, data):
             count += 1
             if count < 2:
                 warn(f"Connection error, count is {count}. Error: {e}")
-                time.sleep(30)
+                time.sleep(5)
                 continue
             else: 
                 return {"url": url, "status": "error", "reason": f"Connection error, {count} attempts", "text": ""}
