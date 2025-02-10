@@ -114,7 +114,7 @@ def test_get_providers(providers: pandas.DataFrame):
 
 
 def test_provider_address(static_providers: pandas.DataFrame):
-    actual = health.provider_address(providers)
+    actual = health.provider_address(static_providers)
 
     expected_file = os.path.join(EXPECTED_DIR, 'provider_address.parquet')
     expected = pandas.read_parquet(expected_file)  # No geo (addresses only)
