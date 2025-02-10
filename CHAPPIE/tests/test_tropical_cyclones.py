@@ -37,7 +37,7 @@ def test_get_cyclones(get_cyclones):
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'cyclones_aoi_1851_2022.shp')
     expected = geopandas.read_file(expected_file)
-    field_list = ['USA_WIND', 'USA_PRES', 'year', 'month', 'day']
+    field_list = ["WindSpdKts", 'USA_WIND', 'USA_PRES', 'year', 'month', 'day']
     for i in range(len(field_list)):
         expected[field_list[i]] = expected[field_list[i]].astype('int32')
 
