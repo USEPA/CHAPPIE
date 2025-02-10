@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Test technological 
+Test technological
 
 @author: thultgre
 """
 import os
+
 import geopandas
 from geopandas.testing import assert_geodataframe_equal
+
 from CHAPPIE.hazards import technological
+
 #import pytest
 
 # CI inputs/expected
@@ -47,7 +50,7 @@ def test_get_superfund():
     actual = technological.get_superfund_npl(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
     #actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_superfund.parquet'))
-    
+
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_superfund.parquet')
     expected = geopandas.read_parquet(expected_file)
@@ -66,25 +69,25 @@ def test_get_FRS_ACRES():
     expected_file = os.path.join(EXPECTED_DIR, 'get_FRS_ACRES.parquet')
     expected = geopandas.read_parquet(expected_file)
     expected['ACCURACY_VALUE'] = expected['ACCURACY_VALUE'].astype('int32')
- 
+
     assert_geodataframe_equal(actual, expected)
 
 def test_get_landfills():
     actual = technological.get_landfills(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
     actual.sort_values(by=['GlobalID', 'geometry', 'Company'], inplace=True, ignore_index=True)
- 
+
     # assert no changes
     expected = expected_32('get_landfills.parquet')
-    
+
     assert_geodataframe_equal(actual, expected, normalize=True)
 
 def test_get_tri():
     actual = technological.get_tri(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
     actual.sort_values(by=['EPA_REGISTRY_ID', 'geometry', 'FACILITY_NAME'], inplace=True, ignore_index=True)
- 
+
     # assert no changes
     expected = expected_32('get_tri.parquet')
-    
+
     assert_geodataframe_equal(actual, expected, normalize=True)
