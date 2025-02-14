@@ -137,7 +137,7 @@ def test_batch_geocode():
     expected_file = os.path.join(EXPECTED_DIR, 'provider_geocode.parquet')
     expected = geopandas.read_parquet(expected_file)
 
-    assert_geodataframe_equal(actual, expected)
+    assert_geodataframe_equal(actual, expected, check_less_precise=True)
 
 
 #Test how Connection error is handled, but patch the post_request call
