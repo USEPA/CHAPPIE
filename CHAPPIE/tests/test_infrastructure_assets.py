@@ -39,6 +39,8 @@ def test_get_dams():
     for col in field_list:
         expected[col] = expected[col].astype('int32')
 
+    expected["dataUpdated"] = expected["dataUpdated"].astype('datetime64[ms, UTC]')
+
     assert_geodataframe_equal(actual, expected, check_less_precise=True)
 
 def test_get_levees():
