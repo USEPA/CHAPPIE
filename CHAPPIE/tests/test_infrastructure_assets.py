@@ -40,6 +40,7 @@ def test_get_dams():
         expected[col] = expected[col].astype('int32')
 
     expected["dataUpdated"] = expected["dataUpdated"].astype('datetime64[ms, UTC]')
+    expected["inspectionDate"] = expected["inspectionDate"].astype('datetime64[ms, UTC]')
 
     assert_geodataframe_equal(actual, expected, check_less_precise=True)
 
