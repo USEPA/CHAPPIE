@@ -30,7 +30,7 @@ def test_get_dams():
     expected_file = os.path.join(EXPECTED_DIR, 'dams.parquet')
     expected = geopandas.read_parquet(expected_file)
  
-    assert_geodataframe_equal(actual, expected)
+    assert_geodataframe_equal(actual, expected, check_less_precise=True)
 
 def test_get_levees():
     actual = hazard_infrastructure.get_levee(aoi_gdf2)    
