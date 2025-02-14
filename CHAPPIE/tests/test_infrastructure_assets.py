@@ -39,7 +39,7 @@ def test_get_dams():
     for col in field_list:
         expected[col] = expected[col].astype('int32')
     
-    col_list ["dataUpdated", "inspectionDate", "conditionAssessDate"]
+    col_list = ["dataUpdated", "inspectionDate", "conditionAssessDate"]
     for col in col_list:
         expected[col] = expected[col].astype('datetime64[ms, UTC]')
 
