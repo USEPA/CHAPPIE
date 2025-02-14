@@ -38,7 +38,7 @@ def test_get_cyclones(get_cyclones: DataFrame):
     actual = get_cyclones
 
     # assert no changes
-    expected_file = os.path.join(EXPECTED_DIR, 'cyclones_aoi_1851_2022.parquet')
+    expected_file = os.path.join(EXPECTED_DIR, 'cyclones_aoi.parquet')
     #expected = geopandas.read_file(expected_file)
     expected = geopandas.read_parquet(expected_file)
 
@@ -53,7 +53,7 @@ def test_get_cyclones(get_cyclones: DataFrame):
 def test_process_cyclones(get_cyclones: DataFrame):
     actual = tropical_cyclones.process_cyclones(get_cyclones, aoi_gdf)
 
-    expected_file = os.path.join(EXPECTED_DIR, 'cyclones_processed_1851_2022.parquet')
+    expected_file = os.path.join(EXPECTED_DIR, 'cyclones_processed.parquet')
     expected = geopandas.read_parquet(expected_file)
 
     actual.sort_values(by='SID', inplace=True, ignore_index=True)
@@ -61,7 +61,10 @@ def test_process_cyclones(get_cyclones: DataFrame):
     # save to results
     #actual.to_parquet(expected_file)
 
-    assert_geodataframe_equal(actual, expected, check_like=True, check_less_precise=True)
+    assert_geodataframe_equal(actual,
+                              expected,
+                              check_like=True,
+                              check_less_precise=True)
 
 
 @pytest.mark.skip(reason="depricating")
