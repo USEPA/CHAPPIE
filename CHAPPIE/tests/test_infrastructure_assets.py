@@ -34,6 +34,11 @@ def test_get_dams():
     # Overwrite results
     #actual.to_parquet(expected_file)
 
+    field_list = ['nidHeight', 'distance', 'damHeight', 'damLength', 'volume',
+                  'nidStorage', 'normalStorage', 'surfaceArea']
+    for col in field_list:
+        expected[col] = expected[col].astype('int32')
+
     assert_geodataframe_equal(actual, expected, check_less_precise=True)
 
 def test_get_levees():
