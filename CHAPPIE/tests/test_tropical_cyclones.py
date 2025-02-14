@@ -64,7 +64,7 @@ def test_process_cyclones(get_cyclones: DataFrame):
 
     # save to results
     #actual.to_parquet(expected_file)
-    field_list = ['WindSpdKts', 'USA_WIND', 'USA_PRES', 'year', 'month', 'day']
+    field_list = ['WindSpdKts', 'PressureMb', 'year', 'month', 'day']
     for i in range(len(field_list)):
         expected[field_list[i]] = expected[field_list[i]].astype('int32')
 
