@@ -45,6 +45,10 @@ def test_get_cyclones(get_cyclones: DataFrame):
     # save to fixture results (sorted so expected doesn't need to be)
     #actual.to_parquet(os.path.join(expected)
 
+    field_list = ['USA_WIND', 'USA_PRES', 'year', 'month', 'day']
+    for i in range(len(field_list)):
+        expected[field_list[i]] = expected[field_list[i]].astype('int32')
+
     assert_geodataframe_equal(actual, expected)
 
     return actual
