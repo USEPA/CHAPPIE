@@ -31,8 +31,6 @@ def get_cyclones():
     actual = actual.sort_values(by=["SID", "day", "USA_WIND", "geometry"],
                                 ignore_index=True)
     actual.reset_index(drop=True, inplace=True)
-    # save to results (sorted so expected doesn't need to be)
-    #actual.to_parquet(os.path.join(EXPECTED_DIR, 'cyclones_aoi_1851_2022.parquet'))
 
     return actual
 
@@ -43,11 +41,9 @@ def test_get_cyclones(get_cyclones: DataFrame):
     expected_file = os.path.join(EXPECTED_DIR, 'cyclones_aoi_1851_2022.parquet')
     #expected = geopandas.read_file(expected_file)
     expected = geopandas.read_parquet(expected_file)
-    #expected = expected.sort_values(by=["SID", "day", "USA_WIND", "geometry"],
-    #                                ignore_index=True)
-    #field_list = ["WindSpdKts", 'USA_WIND', 'USA_PRES', 'year', 'month', 'day']
-    #for i in range(len(field_list)):
-    #    expected[field_list[i]] = expected[field_list[i]].astype('int32')
+
+    # save to fixture results (sorted so expected doesn't need to be)
+    #actual.to_parquet(os.path.join(expected)
 
     assert_geodataframe_equal(actual, expected)
 
