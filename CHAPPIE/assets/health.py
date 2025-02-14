@@ -3,15 +3,16 @@ Module for health assets.
 
 @author: tlomba01, jbousquin
 """
+import json
+import os
+import time
 from json import dumps
 from warnings import warn
-import os
-import json
-import time
 
+import geopandas
 import pandas
 import requests
-import geopandas
+from numpy import nan
 
 from CHAPPIE import layer_query
 
@@ -308,6 +309,8 @@ def provider_address(df, typ="LOCATION"):
     address_lines = []
     address_1_lst = df_temp.address_1.to_list()
     for i, val in enumerate(df_temp["address_2"].to_list()):
+        if val is None:
+            val = nan
         if not isinstance(val, float):
             address_lines.append(address_1_lst[i] + ', ' + val)
         else:
