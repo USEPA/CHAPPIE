@@ -21,8 +21,8 @@ from CHAPPIE.hazards import flood, technological, tornadoes, tropical_cyclones, 
 from CHAPPIE.vulnerability import svi
 
 main_dir = r"L:\lab\SHC_1012\Pensacola Model\PPBEP"
-out_dir = os.apth.join(main_dir, "auto_download")
-in_dir = os.apth.join(main_dir, "WatershedBoundaries_Blockgroups")
+out_dir = os.path.join(main_dir, "auto_download")
+in_dir = os.path.join(main_dir, "WatershedBoundaries_Blockgroups")
 in_dir = os.path.join(in_dir, "WatershedBoundaries_Blockgroups_Merged")
 in_dir = os.path.join(in_dir, "BothWatershedsMerged")
 aoi = os.path.join(in_dir, "tl_2023_12_01_bg_FL_AL_BothMerged.shp")
