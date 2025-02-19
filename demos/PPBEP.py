@@ -90,7 +90,7 @@ hazards_dict["landfills"] = technological.get_landfills(aoi_gdf)
 hazards_dict["tri"] = technological.get_tri(aoi_gdf)
 
 # Get hazard endpoints
-hazards_dict["losses"] = hazard_losses.get_hazard_losses
+#hazards_dict["losses"] = hazard_losses.get_hazard_losses
 
 # Get vulnerability metrics
 vulnerability_dict["svi"] = svi.get_SVI('12033',
@@ -98,9 +98,9 @@ vulnerability_dict["svi"] = svi.get_SVI('12033',
                                         year=2022)
 
 # Write
-for key, val in assets_dict:
+for key, val in assets_dict.items():
     val.to_parquet(os.path.join(out_dir, f"{key}.parquet"))
-for key, val in hazards_dict:
+for key, val in hazards_dict.items():
     val.to_parquet(os.path.join(out_dir, f"{key}.parquet"))
-for key, val in vulnerability_dict:
+for key, val in vulnerability_dict.items():
     val.to_parquet(os.path.join(out_dir, f"{key}.parquet"))
