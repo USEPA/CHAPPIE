@@ -57,6 +57,12 @@ def test_get_cyclones(get_cyclones: DataFrame):
 def test_process_cyclones(get_cyclones: DataFrame):
     actual = tropical_cyclones.process_cyclones(get_cyclones, aoi_gdf)
 
+    # save to results
+    #actual.to_file(os.path.join(TEST_DIR, 'cyclones_processed_1851_2022.shp'))
+
+    #expected_file = os.path.join(EXPECTED_DIR,
+    #                             'Hurr_Buffer_AOI_Intersection_1996_2016.shp')
+
     expected_file = os.path.join(EXPECTED_DIR, 'cyclones_processed.parquet')
     expected = geopandas.read_parquet(expected_file)
 

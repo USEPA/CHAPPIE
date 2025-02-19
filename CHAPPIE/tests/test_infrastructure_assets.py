@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-Test food assets. 
+Test hazard mitigating infrastructure assets.
 
 @author: tlomba01
 """
 import os
+
 import geopandas
 from geopandas.testing import assert_geodataframe_equal
-from CHAPPIE.assets import hazard_infrastructure
 
+from CHAPPIE.assets import hazard_infrastructure
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -45,13 +46,14 @@ def test_get_dams():
 
     assert_geodataframe_equal(actual, expected, check_less_precise=True)
 
+
 def test_get_levees():
-    actual = hazard_infrastructure.get_levee(aoi_gdf2)    
+    actual = hazard_infrastructure.get_levee(aoi_gdf2)
     assert isinstance(actual, geopandas.geodataframe.GeoDataFrame)
     actual.drop(columns=['OBJECTID'], inplace=True)
     actual.sort_values(by=['SYSTEM_ID', 'SYSTEM_NAME'], inplace=True, ignore_index=True)
-    
+
     expected_file = os.path.join(EXPECTED_DIR, 'levees.parquet')
     expected = geopandas.read_parquet(expected_file)
- 
+
     assert_geodataframe_equal(actual, expected)

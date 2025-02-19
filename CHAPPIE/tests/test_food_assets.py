@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Test food assets. 
+Test food assets.
 
 @author: jbousqui
 """
 import os
-import geopandas
-from shapely import Point
-from geopandas.testing import assert_geodataframe_equal
-from CHAPPIE.assets import food
 
+import geopandas
+from geopandas.testing import assert_geodataframe_equal
+from shapely import Point
+
+from CHAPPIE.assets import food
 
 # get key from env
 usda_API = os.environ['usda_API']
@@ -40,7 +41,7 @@ def test_get_agritourism():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_agritourism.parquet')
     expected = geopandas.read_parquet(expected_file)
-    
+
     assert_geodataframe_equal(actual, expected)
 
 def test_get_CSA():
@@ -56,7 +57,7 @@ def test_get_farmers_market():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_farmers_markets.parquet')
     expected = geopandas.read_parquet(expected_file)
-    
+
     assert_geodataframe_equal(actual, expected)
 
 def test_get_food_hub():
