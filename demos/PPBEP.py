@@ -61,13 +61,13 @@ assets_dict["farm_store"] = food.get_farm_store(aoi_gdf, usda_API)
 
 # Get health assets
 assets_dict["hospitals"] = health.get_hospitals(aoi_gdf)
-assets_dict["urgent_car"] = health.get_urgent_care(aoi_gdf)
-providers = health.get_providers(aoi_gdf)
-assets_dict["providers"] = health.provider_address(providers)
+#assets_dict["urgent_care"] = health.get_urgent_care(aoi_gdf)
+#providers = health.get_providers(aoi_gdf)
+#assets_dict["providers"] = health.provider_address(providers)
 
 # Get hazard infrastructure assets
-hazard_infrastructure.get_dams(aoi_gdf)
-hazard_infrastructure.get_levee(aoi_gdf)
+assets_dict["dams"] = hazard_infrastructure.get_dams(aoi_gdf)
+#hazard_infrastructure.get_levee(aoi_gdf)
 
 # Get flood hazard
 hazards_dict["flood_FEMA"] = flood.get_fema_nfhl(aoi_gdf)
@@ -86,7 +86,7 @@ hazards_dict["heat"] = weather.get_heat_events(aoi_gdf)
 # Get tech hazards
 hazards_dict["superfund"] = technological.get_superfund_npl(aoi_gdf)
 hazards_dict["brownfields"] = technological.get_FRS_ACRES(aoi_gdf)
-hazards_dict["landfils"] = technological.get_landfills(aoi_gdf)
+hazards_dict["landfills"] = technological.get_landfills(aoi_gdf)
 hazards_dict["tri"] = technological.get_tri(aoi_gdf)
 
 # Get hazard endpoints
