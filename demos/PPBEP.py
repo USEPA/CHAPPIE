@@ -75,9 +75,9 @@ hazards_dict["flood_FEMA"] = flood.get_fema_nfhl(aoi_gdf)
 # flood.get_flood()
 
 # Get hazards
-tornadoes = tornadoes.get_tornadoes(aoi_gdf)
+tornadoes = tornadoes.get_tornadoes(aoi_gdf.to_crs('ESRI:102005'))
 hazards_dict["tornadoes"] = tornadoes.process_tornadoes(tornadoes)
-cyclones = tropical_cyclones.get_cyclones(aoi_gdf)
+cyclones = tropical_cyclones.get_cyclones(aoi_gdf.to_crs('ESRI:102005'))
 hazards_dict["tropical_cyclones"] = tropical_cyclones.process_cyclones(cyclones)
 
 # Get weather hazards
