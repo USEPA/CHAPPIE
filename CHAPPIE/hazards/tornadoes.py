@@ -99,8 +99,9 @@ def get_tornadoes(aoi):
     #bbox = [xmin, xmax, ymin, ymax]
     bbox = [xmin, ymin, xmax,  ymax]
     out_fields = ['yr', 'date', 'om', 'mag', 'wid']
+    in_crs = aoi.crs.to_authority()[1]  # epsg or esri identifier
     
-    return layer_query.get_bbox(bbox, url, 0, out_fields, aoi.crs.to_epsg(), max_buff)
+    return layer_query.get_bbox(bbox, url, 0, out_fields, in_crs, max_buff)
     
 
 def process_tornadoes(tornadoes_gdf, aoi):

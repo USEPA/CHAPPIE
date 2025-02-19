@@ -3,11 +3,16 @@ Module for health assets.
 
 @author: tlomba01, jbousquin
 """
+import json
+import os
+import time
 from json import dumps
 from warnings import warn
 
+import geopandas
 import pandas
 import requests
+from numpy import nan
 
 from CHAPPIE import layer_query
 
@@ -17,6 +22,8 @@ param_list = ["firstName", "lastName", "organizationName", "aoFirstName", "skip"
               "enumerationType", "number", "city", "state", "country",
               "taxonomyDescription", "postalCode", "exactMatch", "addressType"]
 _npi_backup_basedict = {key: None for key in param_list}
+_geocode_base_url = "https://geocode.epa.gov"
+_geocode_api_key = os.environ['GEOCODE_API_KEY']
 
 
 def get_hospitals(aoi):
@@ -302,6 +309,8 @@ def provider_address(df, typ="LOCATION"):
     address_lines = []
     address_1_lst = df_temp.address_1.to_list()
     for i, val in enumerate(df_temp["address_2"].to_list()):
+        if val is None:
+            val = nan
         if not isinstance(val, float):
             address_lines.append(address_1_lst[i] + ', ' + val)
         else:
@@ -319,3 +328,156 @@ def provider_address(df, typ="LOCATION"):
     # TODO: if we don't use df1 get rid of it, keeping it for now
     cols = ["address_1", "address_2", "city", "state", "postal_code", "country_name", "zip"]
     return df_temp.groupby(cols, dropna=False)['number'].apply(list).reset_index()
+
+def geocode_addresses(df,  token=""):
+    """ Get a lat/long for a set of provider addresses
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Reduced join (many-to-one) table with number-to-address
+    token : str, optional
+        token for calls to EPA streetmap premium service
+
+    Returns
+    -------
+    gdf : geopandas.GeoDataFrame
+        Point locations
+
+    """
+
+    if token == "":
+        token = get_geocode_token("chappie")
+    # Dict of columns to rename...this can be corrected in provider_address
+    # OBJECTID is required attribute for geocode API
+    cols = {'address_1':'Address', 'city':'City','state':'Region','zip':'Postal','address_2':'Address2','index':'OBJECTID'}
+    # Fill null address_2 with empty string...this can be corrected in provider_address too
+    df['address_2'].fillna('')
+    # Load provider address data: create an array of objects (collection) of records from df
+    records = df.reset_index().rename(columns=cols)
+    record_dict = records.drop(['number', 'postal_code', 'country_name'], axis=1).to_dict(orient='records')
+    array = []
+    # Transform records
+    # each address object has key "attributes" and value is dict of adresss attributes
+    for index, i in enumerate(record_dict):
+        x = {'attributes': i}
+        array.append(x)
+    # Build params
+    params = {
+        "addresses": '{"records":%s}' % array,
+        "f": "json",
+        "token": token,
+        "sourceCountry": "USA",
+        "outSR": 4326
+    }
+    serviceURL = f"{_geocode_base_url}/arcgis/rest/services/StreetmapPremium_USA/GeocodeServer/geocodeAddresses"
+    response = post_request(serviceURL, params)
+    # Parse response and load into gdf
+    r_df = pandas.json_normalize(response['locations'])
+    # Drop all columns except coordinates and sortable ID
+    r_df = r_df[['location.x', 'location.y', 'address', 'attributes.ResultID']].rename(columns={'location.x':'X', 'location.y':'Y','attributes.ResultID':'OBJECTID'}).sort_values(by='address')
+    # Make into GeometryArray of shapely Point geometries from x,y coords and sort on ID
+    gdf = geopandas.GeoDataFrame(r_df, geometry=geopandas.points_from_xy(r_df['X'], r_df['Y']), crs="EPSG:4326")
+    gdf = gdf.merge(records, on='OBJECTID').set_index('OBJECTID')
+    # TODO: Detect and handle errors, like timeout and ambiguous address
+
+    return gdf
+
+
+def batch_geocode(df, count_limit=None):
+    """Run geocode addresses in batches.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Reduced join (many-to-one) table with number-to-address
+    count_limit : int, optional
+        The number of records to geocode at one. The default is 1000.
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        Table of combined results.
+
+    """
+    # Address max batch size...2000 is the max, but 1000 seems to be the optimal batch size
+    if not count_limit:
+        count_limit = 1000
+    # Get length of address dataframe to geocode 
+    count = len(df)
+    list_of_results = []
+    # Chunk the df and send each chunk to get geocoded
+    for chunk in [df[i:i+count_limit] for i in range(0, count, count_limit)]:
+        list_of_results.append([geocode_addresses(chunk)])
+    # Convert each result to geodataframe
+    gdfs = [geopandas.GeoDataFrame(result[0]) for result in list_of_results]
+
+    return pandas.concat(gdfs)
+
+
+def get_geocode_token(user_name):
+    """ Get token from EPA geocode service url
+
+    Parameters
+    ----------
+    user_name : str
+        User name for EPA geocode service.
+
+    Returns
+    -------
+    str
+        Token string with 1 hour expiration.
+      
+    """
+
+    url = f"{_geocode_base_url}/arcgis/tokens/"
+    data = {
+        "username": user_name,
+        "password": _geocode_api_key,
+        "referer" : "https://localhost",
+        "expiration" : 60, #1 hour
+        "f": "json"
+        }
+    json_response = post_request(url, data)
+    if 'token' in json_response.keys():
+        return json_response["token"]
+    else:
+        warn(f"Problem with get_geocode_token. Url: {url} Response: {json_response}")
+        raise ValueError(f"Value Error. Url: {url} Response: {json_response}")
+
+
+def post_request(url, data):
+    """ Generate post request from url and data.
+
+    Parameters
+    ----------
+    url : str
+        URL for post request.
+    data : dict
+        Data dictionary for post request body.
+
+    Returns
+    -------
+    json
+        Post request response json.
+      
+    """
+    count = 0
+
+    while True:
+        try:
+            r = requests.post(url, data=data)
+            r.raise_for_status()
+            r_json = r.json()
+            return r_json
+        except requests.exceptions.ConnectionError as e:
+            count += 1
+            if count < 2:
+                warn(f"Connection error, count is {count}. Error: {e}")
+                time.sleep(5)
+                continue
+            else: 
+                return {"url": url, "status": "error", "reason": f"Connection error, {count} attempts", "text": ""}
+        except Exception as e:
+            warn(f"Response: {r}, Error: {e}")
+            return {"url": url, "data": data, "status": r.status_code}

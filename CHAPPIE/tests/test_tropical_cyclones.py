@@ -27,18 +27,23 @@ aoi_gdf = geopandas.read_file(AOI)
 @pytest.fixture(scope='session')
 def get_cyclones():
     actual = tropical_cyclones.get_cyclones(aoi_gdf)
-    actual.sort_values(by=['geometry','day'], inplace=True, ignore_index=True)
-    # save to results (sorted so expected doesn't need to be)
-    #actual.to_file(os.path.join(TEST_DIR, 'cyclones_aoi_1851_2022.shp'))
+    actual = actual.sort_values(by=["SID", "day", "USA_WIND", "geometry"],
+                                ignore_index=True)
+    actual.reset_index(drop=True, inplace=True)
 
     return actual
 
-def test_get_cyclones(get_cyclones):
+def test_get_cyclones(get_cyclones: DataFrame):
     actual = get_cyclones
 
     # assert no changes
-    expected_file = os.path.join(EXPECTED_DIR, 'cyclones_aoi_1851_2022.shp')
-    expected = geopandas.read_file(expected_file)
+    expected_file = os.path.join(EXPECTED_DIR, 'cyclones_aoi.parquet')
+    #expected = geopandas.read_file(expected_file)
+    expected = geopandas.read_parquet(expected_file)
+
+    # save to fixture results (sorted so expected doesn't need to be)
+    #actual.to_parquet(os.path.join(expected)
+
     field_list = ['USA_WIND', 'USA_PRES', 'year', 'month', 'day']
     for i in range(len(field_list)):
         expected[field_list[i]] = expected[field_list[i]].astype('int32')
@@ -48,7 +53,7 @@ def test_get_cyclones(get_cyclones):
     return actual
 
 
-def test_process_cyclones(get_cyclones):
+def test_process_cyclones(get_cyclones: DataFrame):
     actual = tropical_cyclones.process_cyclones(get_cyclones, aoi_gdf)
 
     # save to results
@@ -56,17 +61,22 @@ def test_process_cyclones(get_cyclones):
 
     #expected_file = os.path.join(EXPECTED_DIR,
     #                             'Hurr_Buffer_AOI_Intersection_1996_2016.shp')
-    expected_file = os.path.join(EXPECTED_DIR, 'cyclones_processed_1851_2022.shp')
-    expected = geopandas.read_file(expected_file)
+
+    expected_file = os.path.join(EXPECTED_DIR, 'cyclones_processed.parquet')
+    expected = geopandas.read_parquet(expected_file)
 
     actual.sort_values(by='SID', inplace=True, ignore_index=True)
-    expected.sort_values(by='SID', inplace=True, ignore_index=True)
+
+    # save to results
+    #actual.to_parquet(expected_file)
     field_list = ['WindSpdKts', 'PressureMb', 'Year', 'month', 'day']
     for i in range(len(field_list)):
         expected[field_list[i]] = expected[field_list[i]].astype('int32')
 
-    assert_geodataframe_equal(actual, expected, check_like=True, check_less_precise=True)
-    #assert(len(actual)==len(expected)), f'{len(actual)}!={len(expected)}'
+    assert_geodataframe_equal(actual,
+                              expected,
+                              check_like=True,
+                              check_less_precise=True)
 
 
 @pytest.mark.skip(reason="depricating")

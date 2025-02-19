@@ -35,13 +35,13 @@ def search_pnt_radius(aoi, outEPSG=4326):
         Central point in outEPSG and search radius in miles (rounded up).
 
     """
-
     # Check crs units are meters and re-project if not
-    crs_units = aoi.crs.to_dict()['units']
-    if crs_units != 'm':
+    crs_dict = aoi.crs.to_dict()
+    crs_dict.setdefault('units', None)  # If missing None
+    if crs_dict['units'] != 'm':
         # TODO: better equa-distant projection for CONUS?
-        aoi = aoi.to_csr('ESRI:102005')
         inEPSG = 'ESRI:102005'
+        aoi = aoi.to_crs(inEPSG)
     else:
         inEPSG = aoi.crs.to_epsg()
 
