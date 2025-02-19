@@ -23,7 +23,6 @@ param_list = ["firstName", "lastName", "organizationName", "aoFirstName", "skip"
               "taxonomyDescription", "postalCode", "exactMatch", "addressType"]
 _npi_backup_basedict = {key: None for key in param_list}
 _geocode_base_url = "https://geocode.epa.gov"
-_geocode_api_key = os.environ['GEOCODE_API_KEY']
 
 
 def get_hospitals(aoi):
@@ -329,7 +328,8 @@ def provider_address(df, typ="LOCATION"):
     cols = ["address_1", "address_2", "city", "state", "postal_code", "country_name", "zip"]
     return df_temp.groupby(cols, dropna=False)['number'].apply(list).reset_index()
 
-def geocode_addresses(df,  token=""):
+
+def geocode_addresses(df, api_key=None):
     """ Get a lat/long for a set of provider addresses
 
     Parameters
@@ -346,8 +346,8 @@ def geocode_addresses(df,  token=""):
 
     """
 
-    if token == "":
-        token = get_geocode_token("chappie")
+    
+    token = get_geocode_token("chappie", api_key)
     # Dict of columns to rename...this can be corrected in provider_address
     # OBJECTID is required attribute for geocode API
     cols = {'address_1':'Address', 'city':'City','state':'Region','zip':'Postal','address_2':'Address2','index':'OBJECTID'}
@@ -384,7 +384,7 @@ def geocode_addresses(df,  token=""):
     return gdf
 
 
-def batch_geocode(df, count_limit=None):
+def batch_geocode(df, api_key=None, count_limit=None):
     """Run geocode addresses in batches.
 
     Parameters
@@ -408,14 +408,14 @@ def batch_geocode(df, count_limit=None):
     list_of_results = []
     # Chunk the df and send each chunk to get geocoded
     for chunk in [df[i:i+count_limit] for i in range(0, count, count_limit)]:
-        list_of_results.append([geocode_addresses(chunk)])
+        list_of_results.append([geocode_addresses(chunk, api_key)])
     # Convert each result to geodataframe
     gdfs = [geopandas.GeoDataFrame(result[0]) for result in list_of_results]
 
     return pandas.concat(gdfs)
 
 
-def get_geocode_token(user_name):
+def get_geocode_token(user_name, api_key=None):
     """ Get token from EPA geocode service url
 
     Parameters
@@ -433,7 +433,7 @@ def get_geocode_token(user_name):
     url = f"{_geocode_base_url}/arcgis/tokens/"
     data = {
         "username": user_name,
-        "password": _geocode_api_key,
+        "password": api_key,
         "referer" : "https://localhost",
         "expiration" : 60, #1 hour
         "f": "json"

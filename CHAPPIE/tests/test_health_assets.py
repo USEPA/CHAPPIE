@@ -16,6 +16,9 @@ from requests.exceptions import ConnectionError, HTTPError
 
 from CHAPPIE.assets import health
 
+# get key from env
+geocode_api_key = os.environ['GEOCODE_API_KEY']
+
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -127,7 +130,7 @@ def test_provider_address(static_providers: pandas.DataFrame):
 
 
 def test_batch_geocode():
-    actual = health.batch_geocode(provider_address_df)
+    actual = health.batch_geocode(provider_address_df, geocode_api_key)
     actual.sort_values(by=['OBJECTID'], inplace=True)
     assert len(actual) == len(provider_address_df)
     #actual.to_file(os.path.join(EXPECTED_DIR, 'provider_geocode.shp'))
