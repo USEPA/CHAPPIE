@@ -32,7 +32,7 @@ def get_cyclones(aoi):
                                 url,
                                 0,
                                 out_fields,
-                                aoi.crs.to_epsg(),
+                                aoi.crs.to_authority()[1],
                                 buff_dist_m = max_buff)
 
 
