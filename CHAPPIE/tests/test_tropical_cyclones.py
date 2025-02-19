@@ -9,6 +9,7 @@ import os
 import geopandas
 import pytest
 from geopandas.testing import assert_geodataframe_equal
+from pandas import DataFrame
 
 from CHAPPIE.hazards import tropical_cyclones
 
