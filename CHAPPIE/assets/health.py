@@ -329,15 +329,13 @@ def provider_address(df, typ="LOCATION"):
     return df_temp.groupby(cols, dropna=False)['number'].apply(list).reset_index()
 
 
-def geocode_addresses(df, api_key=None):
+def geocode_addresses(df):
     """ Get a lat/long for a set of provider addresses
 
     Parameters
     ----------
     df : pandas.DataFrame
         Reduced join (many-to-one) table with number-to-address
-    token : str, optional
-        token for calls to EPA streetmap premium service
 
     Returns
     -------
@@ -345,9 +343,7 @@ def geocode_addresses(df, api_key=None):
         Point locations
 
     """
-
-    
-    token = get_geocode_token("chappie", api_key)
+    token = get_geocode_token("chappie")
     # Dict of columns to rename...this can be corrected in provider_address
     # OBJECTID is required attribute for geocode API
     cols = {'address_1':'Address', 'city':'City','state':'Region','zip':'Postal','address_2':'Address2','index':'OBJECTID'}
@@ -384,7 +380,7 @@ def geocode_addresses(df, api_key=None):
     return gdf
 
 
-def batch_geocode(df, api_key=None, count_limit=None):
+def batch_geocode(df, count_limit=None):
     """Run geocode addresses in batches.
 
     Parameters
@@ -408,7 +404,7 @@ def batch_geocode(df, api_key=None, count_limit=None):
     list_of_results = []
     # Chunk the df and send each chunk to get geocoded
     for chunk in [df[i:i+count_limit] for i in range(0, count, count_limit)]:
-        list_of_results.append([geocode_addresses(chunk, api_key)])
+        list_of_results.append([geocode_addresses(chunk)])
     # Convert each result to geodataframe
     gdfs = [geopandas.GeoDataFrame(result[0]) for result in list_of_results]
 
@@ -422,6 +418,8 @@ def get_geocode_token(user_name, api_key=None):
     ----------
     user_name : str
         User name for EPA geocode service.
+    api_key : str, optional, defaults to os.environ[key]
+        key for calls to EPA streetmap premium service
 
     Returns
     -------
@@ -430,6 +428,8 @@ def get_geocode_token(user_name, api_key=None):
       
     """
 
+    if api_key == None:
+        api_key = os.environ['GEOCODE_API_KEY']
     url = f"{_geocode_base_url}/arcgis/tokens/"
     data = {
         "username": user_name,

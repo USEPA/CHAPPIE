@@ -130,7 +130,7 @@ def test_provider_address(static_providers: pandas.DataFrame):
 
 
 def test_batch_geocode():
-    actual = health.batch_geocode(provider_address_df, geocode_api_key)
+    actual = health.batch_geocode(provider_address_df)
     actual.sort_values(by=['OBJECTID'], inplace=True)
     assert len(actual) == len(provider_address_df)
     #actual.to_file(os.path.join(EXPECTED_DIR, 'provider_geocode.shp'))
