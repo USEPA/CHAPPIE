@@ -22,7 +22,7 @@ def get_superfund_npl(aoi):
 
     url = 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/ArcGIS/rest/services/FAC_Superfund_Site_Boundaries_EPA_Public/FeatureServer'
     xmin, ymin, xmax, ymax = aoi.total_bounds
-    bbox = [xmin, ymin, xmax,  ymax]
+    bbox = [xmin, ymin, xmax, ymax]
     
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
@@ -49,7 +49,7 @@ def get_FRS_ACRES(aoi):
     url = 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/ArcGIS/rest/services/FRS_INTERESTS_ACRES/FeatureServer'
    
     xmin, ymin, xmax, ymax = aoi.total_bounds
-    bbox = [xmin, ymin, xmax,  ymax]
+    bbox = [xmin, ymin, xmax, ymax]
    
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
@@ -74,7 +74,7 @@ def get_landfills(aoi):
     url = 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/ArcGIS/rest/services/EPA_Disaster_Debris_Recovery_Data/FeatureServer'
    
     xmin, ymin, xmax, ymax = aoi.total_bounds
-    bbox = [xmin, ymin, xmax,  ymax]
+    bbox = [xmin, ymin, xmax, ymax]
    
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
@@ -99,7 +99,7 @@ def get_tri(aoi):
     url = 'https://gispub.epa.gov/arcgis/rest/services/OCSPP/TRI_Reporting_Facilities/MapServer/'
    
     xmin, ymin, xmax, ymax = aoi.total_bounds
-    bbox = [xmin, ymin, xmax,  ymax]
+    bbox = [xmin, ymin, xmax, ymax]
    
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,

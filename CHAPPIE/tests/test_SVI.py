@@ -15,8 +15,7 @@ from CHAPPIE.vulnerability import svi
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
 #DIRPATH = r'D:\code\CHAPPIE\CHAPPIE\tests'
 
-expected_dir = os.path.join(DIRPATH, 'expected')  # Expected
-
+EXPECTED_DIR = os.path.join(DIRPATH, 'expected')  # Expected
 
 def test_get_SVI_by_county_all_tracts():
     gdf = svi.get_SVI('12033', level='tract', year=2020)
@@ -61,8 +60,10 @@ def test_get_SVI_by_county_all_tracts():
 
 def test_get_SVI_by_county_all_BG():
     actual = svi.get_SVI('12033', level='block group', year=2021)
-    expected_file = os.path.join(expected_dir, 'bg_12033_2021.geojson')
-    expected = geopandas.read_file(expected_file)
+    #actual.to_parquet(os.path.join(EXPECTED_DIR, 'bg_12033_2021.parquet'))
+
+    expected_file = os.path.join(EXPECTED_DIR, 'bg_12033_2021.parquet')
+    expected = geopandas.read_parquet(expected_file)
     #assert len(gdf_bg)==199
     assert_geodataframe_equal(actual, expected, check_like=True)
     
