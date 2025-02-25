@@ -50,7 +50,7 @@ def test_get_dams():
 def test_get_levees():
     actual = hazard_infrastructure.get_levee(aoi_gdf2)
     assert isinstance(actual, geopandas.geodataframe.GeoDataFrame)
-    #actual.drop(columns=['OBJECTID'], inplace=True)
+    actual.drop(columns=['OBJECTID'], inplace=True)
     actual.sort_values(by=['SYSTEM_ID', 'SYSTEM_NAME'], inplace=True, ignore_index=True)
 
     expected_file = os.path.join(EXPECTED_DIR, 'levees.parquet')
