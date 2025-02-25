@@ -23,7 +23,6 @@ param_list = ["firstName", "lastName", "organizationName", "aoFirstName", "skip"
               "taxonomyDescription", "postalCode", "exactMatch", "addressType"]
 _npi_backup_basedict = {key: None for key in param_list}
 _geocode_base_url = "https://geocode.epa.gov"
-_geocode_api_key = os.environ['GEOCODE_API_KEY']
 
 
 def get_hospitals(aoi):
@@ -329,15 +328,14 @@ def provider_address(df, typ="LOCATION"):
     cols = ["address_1", "address_2", "city", "state", "postal_code", "country_name", "zip"]
     return df_temp.groupby(cols, dropna=False)['number'].apply(list).reset_index()
 
-def geocode_addresses(df,  token=""):
+
+def geocode_addresses(df):
     """ Get a lat/long for a set of provider addresses
 
     Parameters
     ----------
     df : pandas.DataFrame
         Reduced join (many-to-one) table with number-to-address
-    token : str, optional
-        token for calls to EPA streetmap premium service
 
     Returns
     -------
@@ -345,9 +343,7 @@ def geocode_addresses(df,  token=""):
         Point locations
 
     """
-
-    if token == "":
-        token = get_geocode_token("chappie")
+    token = get_geocode_token("chappie")
     # Dict of columns to rename...this can be corrected in provider_address
     # OBJECTID is required attribute for geocode API
     cols = {'address_1':'Address', 'city':'City','state':'Region','zip':'Postal','address_2':'Address2','index':'OBJECTID'}
@@ -415,13 +411,15 @@ def batch_geocode(df, count_limit=None):
     return pandas.concat(gdfs)
 
 
-def get_geocode_token(user_name):
+def get_geocode_token(user_name, api_key=None):
     """ Get token from EPA geocode service url
 
     Parameters
     ----------
     user_name : str
         User name for EPA geocode service.
+    api_key : str, optional, defaults to os.environ[key]
+        key for calls to EPA streetmap premium service
 
     Returns
     -------
@@ -430,10 +428,12 @@ def get_geocode_token(user_name):
       
     """
 
+    if api_key == None:
+        api_key = os.environ['GEOCODE_API_KEY']
     url = f"{_geocode_base_url}/arcgis/tokens/"
     data = {
         "username": user_name,
-        "password": _geocode_api_key,
+        "password": api_key,
         "referer" : "https://localhost",
         "expiration" : 60, #1 hour
         "f": "json"

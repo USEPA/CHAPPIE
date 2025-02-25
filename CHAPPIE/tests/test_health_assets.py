@@ -16,6 +16,9 @@ from requests.exceptions import ConnectionError, HTTPError
 
 from CHAPPIE.assets import health
 
+# get key from env
+geocode_api_key = os.environ['GEOCODE_API_KEY']
+
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
 
