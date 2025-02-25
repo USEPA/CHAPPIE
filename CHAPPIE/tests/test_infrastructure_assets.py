@@ -55,10 +55,10 @@ def test_get_levees():
 
     expected_file = os.path.join(EXPECTED_DIR, 'levees.parquet')
     expected = geopandas.read_parquet(expected_file)
-
-    field_list = ['SYSTEM_ID', 'LEVEED_ID', 'SEG_COUNT',
+    #int64: 'SYSTEM_ID', 'LEVEED_ID', 
+    field_list = ['SEG_COUNT',
                   'Shape__Area', 'Shape__Length']
     for col in field_list:
-        expected[col] = expected[col].astype('int64')
+        expected[col] = expected[col].astype('int32')
 
     assert_geodataframe_equal(actual, expected)
