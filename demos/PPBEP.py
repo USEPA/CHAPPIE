@@ -7,6 +7,7 @@ Retrieve all data for a given AOI
 import os
 
 import geopandas
+import pandas
 
 from CHAPPIE.assets import (
     cultural,
@@ -96,9 +97,39 @@ hazards_dict["tri"] = technological.get_tri(aoi_gdf)
 vulnerability_dict["svi"] = svi.get_SVI('12033',
                                         level='block group',
                                         year=2022)
-#TODO: write QA txt
 
-# Write
+#TODO: write QA txt
+cols = ["Table", "Column", "data_type", "min", "max", "mean/mode", "NaN_Count"]
+df = pandas.DataFrame(columns=cols)
+for key, val in assets_dict.items():
+    if len(val)==0:
+        # Catch empty datsets where /0 will error
+        df.loc[len(df)] = [key, "NODATA", "NODATA", "NODATA", "NODATA", "NODATA", "NODATA"]
+    else:
+        for col in val.columns:
+            col_series = val[col]
+            col_type = col_series.dtype
+            try:
+                mean = sum(col_series)/len(col_series)
+            except TypeError:
+                mean = col_series.mode()
+            na = sum(col_series.isna())
+            try:
+                col_min = min(col_series.dropna())
+                col_max = max(col_series.dropna())
+            except TypeError:
+                col_min = "TYPE_ERROR"
+                col_max = "TYPE_ERROR"
+            except ValueError:
+                col_min = "VALUE_ERROR"
+                col_max = "VALUE_ERROR"
+            # Table, Column, dtype, min, max, mean, NaN
+            row = [key, col, col_type, col_min, col_max, mean, na]
+            df.loc[len(df)] = row
+# Write QAQC
+df.to_csv(os.path.join(out_dir, "assets.csv"))
+
+# Write results
 for key, val in assets_dict.items():
     val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
 for key, val in hazards_dict.items():
