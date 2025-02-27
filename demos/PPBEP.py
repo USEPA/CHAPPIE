@@ -96,11 +96,12 @@ hazards_dict["tri"] = technological.get_tri(aoi_gdf)
 vulnerability_dict["svi"] = svi.get_SVI('12033',
                                         level='block group',
                                         year=2022)
+#TODO: write QA txt
 
 # Write
 for key, val in assets_dict.items():
-    val.to_parquet(os.path.join(out_dir, f"{key}.parquet"))
+    val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
 for key, val in hazards_dict.items():
-    val.to_parquet(os.path.join(out_dir, f"{key}.parquet"))
+    val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
 for key, val in vulnerability_dict.items():
-    val.to_parquet(os.path.join(out_dir, f"{key}.parquet"))
+    val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
