@@ -44,11 +44,11 @@ def get_levee(aoi):
 
     """
 
-    url = 'https://geospatial.sec.usace.army.mil/server/rest/services/NLD2_PUBLIC/MapServer'
+    url = 'https://geospatial.sec.usace.army.mil/dls/rest/services/NLD/Public/FeatureServer'
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
     
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
-                                layer=14,
+                                layer=17,
                                 in_crs=aoi.crs.to_epsg())
