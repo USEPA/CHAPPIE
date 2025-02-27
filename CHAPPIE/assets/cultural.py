@@ -93,3 +93,28 @@ def get_museums(aoi):
     gdf.to_crs(aoi.crs, inplace=True)   # Coerce to export crs
     # Filter by those within aoi
     return gdf[gdf.geometry.within(aoi)]
+
+
+def get_worship(aoi):
+    """Get worship locations within AOI.
+
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        Spatial definition for Area Of Interest (AOI).
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame for worship locations.
+
+    """
+
+    url = 'https://services.arcgis.com/XG15cJAlne2vxtgt/ArcGIS/rest/services/All_Places_Of_Worship__HiFLD_Open_/FeatureServer'
+    xmin, ymin, xmax, ymax = aoi.total_bounds
+    bbox = [xmin, ymin, xmax, ymax]
+    
+    return layer_query.get_bbox(aoi=bbox,
+                                url=url,
+                                layer=42,
+                                in_crs=aoi.crs.to_epsg())

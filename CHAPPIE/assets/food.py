@@ -35,13 +35,13 @@ def search_pnt_radius(aoi, outEPSG=4326):
         Central point in outEPSG and search radius in miles (rounded up).
 
     """
-
     # Check crs units are meters and re-project if not
-    crs_units = aoi.crs.to_dict()['units']
-    if crs_units != 'm':
+    crs_dict = aoi.crs.to_dict()
+    crs_dict.setdefault('units', None)  # If missing None
+    if crs_dict['units'] != 'm':
         # TODO: better equa-distant projection for CONUS?
-        aoi = aoi.to_csr('ESRI:102005')
         inEPSG = 'ESRI:102005'
+        aoi = aoi.to_crs(inEPSG)
     else:
         inEPSG = aoi.crs.to_epsg()
 
@@ -87,7 +87,7 @@ def usda_res_as_gdf(res):
     gdf = geopandas.GeoDataFrame(df, geometry=geom, crs=4326)
     return gdf
 
-def get_agritourism(aoi, api_key):
+def get_agritourism(aoi, api_key=None):
     """Get businesses from the USDA Agritourism Business Directory.
 
     Examples include u-pick farms, pumpkin patches, corn mazes, and Christmas tree farms.
@@ -126,7 +126,7 @@ def get_agritourism(aoi, api_key):
     #TODO: throw error?
 
 
-def get_CSA(aoi, api_key):
+def get_CSA(aoi, api_key=None):
     """Get Community Supported Agriculture from the USDA CSA Enterprise Directory.
 
     Parameters
@@ -163,7 +163,7 @@ def get_CSA(aoi, api_key):
     #TODO: throw error?
 
 
-def get_farmers_market(aoi, api_key):
+def get_farmers_market(aoi, api_key=None):
     """Get farmers markets from the USDA Farmers Market Directory.
 
     Parameters
@@ -200,7 +200,7 @@ def get_farmers_market(aoi, api_key):
     #TODO: throw error?
 
 
-def get_food_hub(aoi, api_key):
+def get_food_hub(aoi, api_key=None):
     """Get food hubs from the USDA Food Hub Directory.
 
     Food hubs aggregate and distribute local source-identified food products.
@@ -239,7 +239,7 @@ def get_food_hub(aoi, api_key):
     #TODO: throw error?
 
 
-def get_farm_store(aoi, api_key):
+def get_farm_store(aoi, api_key=None):
     """Get on-farm markets from the USDA On-farm Market Directory.
 
     On-farm markets are farms selling produce and products directly to consumers.
