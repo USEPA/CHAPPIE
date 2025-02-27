@@ -131,8 +131,17 @@ df.to_csv(os.path.join(out_dir, "assets.csv"))
 
 # Write results
 for key, val in assets_dict.items():
+    if val.shape==(0,0):
+        # Skip empty
+        continue
+    if not os.path.exists(os.path.join(out_dir, key)):
+        os.makedirs(os.path.join(out_dir, key))
     val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
 for key, val in hazards_dict.items():
+    if not os.path.exists(os.path.join(out_dir, key)):
+        os.makedirs(os.path.join(out_dir, key))
     val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
 for key, val in vulnerability_dict.items():
+    if not os.path.exists(os.path.join(out_dir, key)):
+        os.makedirs(os.path.join(out_dir, key))
     val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
