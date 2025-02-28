@@ -14,3 +14,8 @@
 __pycache__
 
 .pyc
+
+/CHAPPIE/tests/results/*
+/CHAPPIE/tests/data/__MACOSX/*
+/CHAPPIE/tests/data/IBTrACS/*
+/CHAPPIE/tests/data/1950-2022-torn-aspath/*

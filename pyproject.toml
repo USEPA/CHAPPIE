@@ -15,12 +15,21 @@ classifiers = [
     "License ::  MIT",
     "Operating System :: OS Independent",
 ]
-dependencies = [
-    "pygris",
-    "geopandas>=0.10",
-    "pandas>=1",
-    "requests",
-]
+dynamic = ["dependencies", "optional-dependencies"]
+
 [project.urls]
 "Homepage" = "https://github.com/USEPA/CHAPPIE"
 "Bug Tracker" = "https://github.com/USEPA/CHAPPIE/issues"
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools.dynamic.optional-dependencies]
+dev = { file = ["requirements-dev.txt"] }
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["harmonize_wq"]
+
