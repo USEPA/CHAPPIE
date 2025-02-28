@@ -7,6 +7,7 @@ Test hazard mitigating infrastructure assets.
 import os
 
 import geopandas
+import pandas
 from geopandas.testing import assert_geodataframe_equal
 
 from CHAPPIE.assets import hazard_infrastructure
@@ -21,6 +22,7 @@ AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 AOI2 = os.path.join(DATA_DIR, "LittlePineIsland_ServiceArea.shp")
 aoi_gdf = geopandas.read_file(AOI)
 aoi_gdf2 = geopandas.read_file(AOI2)
+levee_areas_df = pandas.read_parquet(os.path.join(EXPECTED_DIR, "levees.parquet"))
 
 
 def test_get_dams():
@@ -62,3 +64,8 @@ def test_get_levees():
         expected[col] = expected[col].astype('int32')
 
     assert_geodataframe_equal(actual, expected)
+
+def test_get_levee_pump_stations():
+    actual = hazard_infrastructure.get_levee_pump_stations(levee_areas_df)
+    assert len(actual) == len(levee_areas_df)
+    assert isinstance(actual, pandas.Series)
