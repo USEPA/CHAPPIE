@@ -28,12 +28,7 @@ dependencies = { file = ["requirements.txt"] }
 dev = { file = ["requirements-dev.txt"] }
 
 [tool.ruff.lint]
-select = [
-    "E",
-    "F",
-    "W",
-    "I"
-]
+select = ["E", "F", "W", "I"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["harmonize_wq"]
