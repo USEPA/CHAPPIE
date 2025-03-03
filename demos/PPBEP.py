@@ -68,7 +68,7 @@ assets_dict["hospitals"] = health.get_hospitals(aoi_gdf)
 
 # Get hazard infrastructure assets
 assets_dict["dams"] = hazard_infrastructure.get_dams(aoi_gdf)
-#hazard_infrastructure.get_levee(aoi_gdf)
+assets_dict["levees"] = hazard_infrastructure.get_levee(aoi_gdf)
 
 # Get flood hazard
 hazards_dict["flood_FEMA"] = flood.get_fema_nfhl(aoi_gdf)
@@ -127,7 +127,7 @@ for key, val in assets_dict.items():
             row = [key, col, col_type, col_min, col_max, mean, na]
             df.loc[len(df)] = row
 # Write QAQC
-df.to_csv(os.path.join(out_dir, "assets.csv"))
+df.to_csv(os.path.join(out_dir, "assets2.csv"))
 
 # Write results
 for key, val in assets_dict.items():
