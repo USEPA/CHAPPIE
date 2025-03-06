@@ -9,6 +9,7 @@ import os
 import geopandas
 import pandas
 from geopandas.testing import assert_geodataframe_equal
+from pandas.testing import assert_series_equal
 
 from CHAPPIE.assets import hazard_infrastructure
 
@@ -67,6 +68,12 @@ def test_get_levees():
 
 def test_get_levee_pump_stations():
     actual = hazard_infrastructure.get_levee_pump_stations(levee_areas_df)
-    pandas.DataFrame(actual).to_parquet(os.path.join(EXPECTED_DIR, 'levee_pump_stations.parquet'))
+    #pandas.DataFrame(actual).to_parquet(os.path.join(EXPECTED_DIR, 'levee_pump_stations.parquet'))
     assert len(actual) == len(levee_areas_df)
     assert isinstance(actual, pandas.Series)
+    
+    expected_file = os.path.join(EXPECTED_DIR, 'levee_pump_stations.parquet')
+    expected_df = pandas.read_parquet(expected_file)
+    expected = expected_df.squeeze("columns")
+
+    assert_series_equal(actual, expected)
