@@ -67,5 +67,6 @@ def test_get_levees():
 
 def test_get_levee_pump_stations():
     actual = hazard_infrastructure.get_levee_pump_stations(levee_areas_df)
+    actual.to_parquet(os.path.join(EXPECTED_DIR, 'levee_pump_stations.parquet'))
     assert len(actual) == len(levee_areas_df)
-    assert isinstance(actual, pandas.Series)
+    assert isinstance(actual, pandas.DataFrame)

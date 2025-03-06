@@ -65,21 +65,21 @@ def get_levee_pump_stations(df):
 
     Returns
     -------
-    pandas.Series
-        Table of count of levee pump stations per levee area.
+    pandas.DataFrame
+        Table of count of levee pump stations per levee area by SYSTEM_ID.
 
     """
 
     # This isn't working as I expect yet
     url = 'https://geospatial.sec.usace.army.mil/dls/rest/services/NLD/Public/FeatureServer'
     field = "SYSTEM_ID"
-    pump_stations = []
-    for i, val in enumerate(df[field].to_list()):
-        pump_stations.append(layer_query.get_field_where(url=url,
-                                       layer=4,
-                                       field=field,
-                                       value=val))
-    pump_stations_df = pandas.DataFrame(pump_stations)
-    pump_station_counts = pump_stations_df[field].value_counts()
+    dfs = []
+    for index, row in df.iterrows():
+        resp = (layer_query.get_field_where(url=url,
+                                        layer=4,
+                                        field=field,
+                                        value=row[field]))
+        dfs.append(resp)
+        pump_stations = pandas.concat(dfs)
     
-    return pandas.Series(pump_station_counts)
+    return pandas.DataFrame(pump_stations[field].value_counts())
