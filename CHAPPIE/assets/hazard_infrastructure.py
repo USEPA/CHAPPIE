@@ -65,12 +65,11 @@ def get_levee_pump_stations(df):
 
     Returns
     -------
-    pandas.DataFrame
+    pandas.Series
         Table of count of levee pump stations per levee area by SYSTEM_ID.
 
     """
 
-    # This isn't working as I expect yet
     url = 'https://geospatial.sec.usace.army.mil/dls/rest/services/NLD/Public/FeatureServer'
     field = "SYSTEM_ID"
     dfs = []
@@ -82,4 +81,4 @@ def get_levee_pump_stations(df):
         dfs.append(resp)
         pump_stations = pandas.concat(dfs)
     
-    return pandas.DataFrame(pump_stations[field].value_counts())
+    return pandas.Series(pump_stations[field].value_counts())
