@@ -74,11 +74,10 @@ def get_levee_pump_stations(df):
     field = "SYSTEM_ID"
     dfs = []
     for val in df[field].to_list():
-        resp = (layer_query.get_field_where(url=url,
-                                        layer=4,
-                                        field=field,
-                                        value=val))
-        dfs.append(resp)
+        dfs.append(layer_query.get_field_where(url=url,
+                                               layer=4,
+                                               field=field,
+                                               value=val))
     
     pump_stations = pandas.concat(dfs)
     
