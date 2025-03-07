@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Test transit assets.
+
+@author: edamico
+"""
 import os
 
 import geopandas
@@ -26,7 +32,7 @@ def test_get_air():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_air.parquet')
     expected = geopandas.read_parquet(expected_file)
-    
+
     assert_geodataframe_equal(actual, expected)
 
 def test_get_bus():
@@ -37,7 +43,7 @@ def test_get_bus():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_bus.parquet')
     expected = geopandas.read_parquet(expected_file)
-    
+
     assert_geodataframe_equal(actual, expected)
 
 def test_get_rail():
@@ -48,5 +54,5 @@ def test_get_rail():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_rail.parquet')
     expected = geopandas.read_parquet(expected_file)
-    
+
     assert_geodataframe_equal(actual, expected)
