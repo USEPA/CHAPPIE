@@ -1,5 +1,5 @@
 """
-Module for transit assess
+Module for transit assets.
 
 @author: edamico
 """
