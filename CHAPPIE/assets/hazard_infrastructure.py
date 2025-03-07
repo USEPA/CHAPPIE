@@ -73,12 +73,13 @@ def get_levee_pump_stations(df):
     url = 'https://geospatial.sec.usace.army.mil/dls/rest/services/NLD/Public/FeatureServer'
     field = "SYSTEM_ID"
     dfs = []
-    for index, row in df.iterrows():
+    for val in df[field].to_list():
         resp = (layer_query.get_field_where(url=url,
                                         layer=4,
                                         field=field,
-                                        value=row[field]))
+                                        value=val))
         dfs.append(resp)
-        pump_stations = pandas.concat(dfs)
+    
+    pump_stations = pandas.concat(dfs)
     
     return pandas.Series(pump_stations[field].value_counts())
