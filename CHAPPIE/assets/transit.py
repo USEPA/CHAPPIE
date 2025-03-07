@@ -5,6 +5,7 @@ Module for transit assess
 """
 from CHAPPIE import layer_query
 
+
 def get_air(aoi):
     """Get Airport locations within AOI.
 
@@ -23,7 +24,7 @@ def get_air(aoi):
     url = 'https://services.arcgis.com/xOi1kZaI0eWDREZv/arcgis/rest/services/NTAD_Aviation_Facilities/FeatureServer'
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
-    
+
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
                                 layer=0,
@@ -48,7 +49,7 @@ def get_bus(aoi):
 
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
-    
+
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
                                 layer=0,
@@ -73,7 +74,7 @@ def get_rail(aoi):
 
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
-    
+
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
                                 layer=0,
