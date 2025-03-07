@@ -3,8 +3,6 @@ Module for recreation assets
 
 @author: tlomba01
 """
-import geopandas
-from numpy import nan
 from CHAPPIE import layer_query
 
 
