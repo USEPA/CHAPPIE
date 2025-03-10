@@ -3,6 +3,8 @@ Module for hazard infrastructure assets.
 
 @author: tlomba01
 """
+import pandas
+
 from CHAPPIE import layer_query
 
 def get_dams(aoi):
@@ -52,3 +54,31 @@ def get_levee(aoi):
                                 url=url,
                                 layer=17,
                                 in_crs=aoi.crs.to_epsg())
+
+def get_levee_pump_stations(df):
+    """Get the number of pump stations per Leveed Area.
+    
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Dataframe for Leveed Areas.
+
+    Returns
+    -------
+    pandas.Series
+        Table of count of levee pump stations per levee area by SYSTEM_ID.
+
+    """
+
+    url = 'https://geospatial.sec.usace.army.mil/dls/rest/services/NLD/Public/FeatureServer'
+    field = "SYSTEM_ID"
+    dfs = []
+    for val in df[field].to_list():
+        dfs.append(layer_query.get_field_where(url=url,
+                                               layer=4,
+                                               field=field,
+                                               value=val))
+    
+    pump_stations = pandas.concat(dfs)
+    
+    return pandas.Series(pump_stations[field].value_counts())
