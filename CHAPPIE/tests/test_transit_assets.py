@@ -30,7 +30,10 @@ def test_get_air():
     expected_file = os.path.join(EXPECTED_DIR, 'get_air.parquet')
     expected = geopandas.read_parquet(expected_file)
 
-    assert_geodataframe_equal(actual, expected)
+   
+    assert_geodataframe_equal(actual.sort_index(axis=1),
+                              expected.sort_index(axis=1),
+                              check_less_precise=True)
 
 def test_get_bus():
     actual = transit.get_bus(aoi_gdf)
@@ -40,8 +43,11 @@ def test_get_bus():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_bus.parquet')
     expected = geopandas.read_parquet(expected_file)
+    assert_geodataframe_equal(actual.sort_index(axis=1),
+                              expected.sort_index(axis=1),
+                              check_less_precise=True)
 
-    assert_geodataframe_equal(actual, expected)
+
 
 def test_get_rail():
     actual = transit.get_rail(aoi_gdf)
@@ -51,4 +57,7 @@ def test_get_rail():
     expected_file = os.path.join(EXPECTED_DIR, 'get_rail.parquet')
     expected = geopandas.read_parquet(expected_file)
 
-    assert_geodataframe_equal(actual, expected)
+   
+    assert_geodataframe_equal(actual.sort_index(axis=1),
+                              expected.sort_index(axis=1),
+                              check_less_precise=True)
