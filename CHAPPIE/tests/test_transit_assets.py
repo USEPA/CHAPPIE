@@ -25,19 +25,15 @@ def test_get_air():
     actual = transit.get_air(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
     actual.rename(columns={'GEOMETRY': 'geometry'}, inplace=True)
-    actual.sort_values(by=['ARPT_ID', 'geometry', 'ARPT_NAME'],
-                       inplace=True,
-                       ignore_index=True)
+    actual.sort_values(by=['ARPT_ID'], inplace=True, ignore_index=True)
     #actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_air.parquet'))
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_air.parquet')
     expected = geopandas.read_parquet(expected_file)
 
-   
-    assert_geodataframe_equal(actual.sort_index(axis=1),
-                              expected.sort_index(axis=1),
-                              check_less_precise=True)
+    assert_geodataframe_equal(actual, expected, check_less_precise=True)
+
 
 def test_get_bus():
     actual = transit.get_bus(aoi_gdf)
