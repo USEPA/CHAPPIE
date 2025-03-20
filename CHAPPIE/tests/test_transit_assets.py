@@ -37,6 +37,8 @@ def test_get_air():
 
     # Update dtypes on desired columns
     expected['EFF_DATE'] = expected['EFF_DATE'].astype('datetime64[ms]')
+    col = "DIST_CITY_TO_AIRPORT"
+    expected[col] = expected[col].astype('int32')
 
     assert_geodataframe_equal(actual, expected, check_less_precise=True)
 
