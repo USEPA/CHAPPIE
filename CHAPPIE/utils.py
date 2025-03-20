@@ -33,5 +33,4 @@ def get_regrid(aoi, api_key=None):
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
                                 layer=0,
-                                out_fields=['parcelnumb'],
                                 in_crs=aoi.crs.to_epsg())
