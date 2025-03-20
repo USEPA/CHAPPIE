@@ -32,6 +32,8 @@ def test_get_air():
     expected_file = os.path.join(EXPECTED_DIR, 'get_air.parquet')
     expected = geopandas.read_parquet(expected_file)
 
+    expected['EFF_DATE'] = expected['EFF_DATE'].astype('datetime64[ms]')
+
     assert_geodataframe_equal(actual, expected, check_less_precise=True)
 
 
