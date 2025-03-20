@@ -24,6 +24,8 @@ aoi_gdf = geopandas.read_file(AOI)
 def test_get_air():
     actual = transit.get_air(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
+    # Drop geometry redundant columns that cause trouble
+    actual.drop(columns=["LAT_DEG", "LONG_DEG"], inplace=True)
     actual.rename(columns={'GEOMETRY': 'geometry'}, inplace=True)
     actual.sort_values(by=['ARPT_ID'], inplace=True, ignore_index=True)
     #actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_air.parquet'))
