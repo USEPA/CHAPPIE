@@ -25,7 +25,8 @@ def test_get_air():
     actual = transit.get_air(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
     # Drop geometry redundant columns that cause trouble
-    actual.drop(columns=["LAT_DEG", "LONG_DEG"], inplace=True)
+    actual.drop(columns=["LAT_DEG", "LONG_DEG", 'LAT_MIN', 'LONG_MIN'],
+                inplace=True)
     actual.rename(columns={'GEOMETRY': 'geometry'}, inplace=True)
     actual.sort_values(by=['ARPT_ID'], inplace=True, ignore_index=True)
     #actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_air.parquet'))
@@ -34,6 +35,7 @@ def test_get_air():
     expected_file = os.path.join(EXPECTED_DIR, 'get_air.parquet')
     expected = geopandas.read_parquet(expected_file)
 
+    # Update dtypes on desired columns
     expected['EFF_DATE'] = expected['EFF_DATE'].astype('datetime64[ms]')
 
     assert_geodataframe_equal(actual, expected, check_less_precise=True)
