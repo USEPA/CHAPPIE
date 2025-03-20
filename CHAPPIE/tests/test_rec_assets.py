@@ -2,15 +2,18 @@
 """
 Test recreation assets. 
 
-@author: tlomba01
+@author: tlomba01, jbousquin
 """
 import os
+
 import geopandas
 from geopandas.testing import assert_geodataframe_equal
+
 from CHAPPIE.assets import recreation
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
+#DIRPATH = r"L:\lab\GitHub\CHAPPIE\CHAPPIE\tests"
 
 EXPECTED_DIR = os.path.join(DIRPATH, 'expected')  # Expected
 DATA_DIR = os.path.join(DIRPATH, 'data')  # inputs
@@ -27,7 +30,10 @@ def test_get_padus():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'padus.parquet')
     expected = geopandas.read_parquet(expected_file)
- 
+
     assert_geodataframe_equal(actual, 
                               expected,
                               check_less_precise=True)
+
+def test_get_water_access():
+    actual = recreation.get_water_access(aoi_gdf)
