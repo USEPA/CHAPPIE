@@ -39,10 +39,10 @@ def get_padus(aoi):
                                 in_crs=aoi.crs.to_epsg())
 
 
-def get_BEACON(aoi):
+def get_water_access(aoi):
     df_ids = get_BEACON_ids()
     # Get aoi county FIPS
-    county_names = layer_query.getCounty(aoi)['NAME'].to_list()
+    county_names = layer_query.get_county(aoi)['NAME'].to_list()
     state_abrevs = layer_query.getState(aoi)['STUSAB'].to_list()
     #subset by state and county columns
     st_df = df_ids[df_ids.BEACH_STATE.isin(state_abrevs)]
