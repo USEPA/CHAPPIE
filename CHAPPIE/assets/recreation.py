@@ -54,3 +54,28 @@ def get_parks(aoi):
                                 url=url,
                                 layer=0,
                                 in_crs=aoi.crs.to_epsg())
+
+def get_trails(aoi):
+    """Get Recreational trails of the United States within AOI.
+
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        Spatial definition for Area Of Interest (AOI).
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame for Recreational trails.
+
+    """
+
+    url = 'https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer'
+    
+    xmin, ymin, xmax, ymax = aoi.total_bounds
+    bbox = [xmin, ymin, xmax, ymax]
+
+    return layer_query.get_bbox(aoi=bbox,
+                                url=url,
+                                layer=37,
+                                in_crs=aoi.crs.to_epsg())

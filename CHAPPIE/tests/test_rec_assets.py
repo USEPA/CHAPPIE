@@ -49,3 +49,18 @@ def test_get_parks():
     assert_geodataframe_equal(actual, 
                               expected,
                               check_less_precise=True)
+    
+def test_get_trails():
+    actual = recreation.get_trails(aoi_gdf_sa)
+    actual.drop(columns=['objectid'], inplace=True)
+    actual.sort_values(by=['permanentidentifier', 'geometry'], inplace=True, ignore_index=True)
+    actual.rename(columns={'GEOMETRY': 'geometry'}, inplace=True)
+   # actual.to_parquet(os.path.join(EXPECTED_DIR, 'trails.parquet'))
+
+    #assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'trails.parquet')
+    expected = geopandas.read_parquet(expected_file)
+ 
+    assert_geodataframe_equal(actual, 
+                              expected,
+                              check_less_precise=True)
