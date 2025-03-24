@@ -28,7 +28,7 @@ CHAPPIE/ Repo contains package info (e.g., requirements.txt) and non-package scr
 
                   tornadoes/                folder for module reference materials
 
-            vulnerability
+            household
 
                   svi.py      module script
 
