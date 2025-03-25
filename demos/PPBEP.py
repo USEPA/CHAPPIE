@@ -19,7 +19,7 @@ from CHAPPIE.assets import (
 )
 from CHAPPIE.endpoints import hazard_losses
 from CHAPPIE.hazards import flood, technological, tornadoes, tropical_cyclones, weather
-from CHAPPIE.vulnerability import svi
+from CHAPPIE.household import svi
 
 main_dir = r"L:\lab\SHC_1012\Pensacola Model\PPBEP"
 out_dir = os.path.join(main_dir, "auto_download")
@@ -31,7 +31,7 @@ aoi_gdf = geopandas.read_file(aoi)
 
 assets_dict = {}
 hazards_dict = {}
-vulnerability_dict = {}
+house_dict = {}
 
 # API Key handling
 usda_API = os.environ['usda_API']
@@ -76,10 +76,13 @@ hazards_dict["flood_FEMA"] = flood.get_fema_nfhl(aoi_gdf)
 # flood.get_flood()
 
 # Get hazards
-tornadoes_gdf = tornadoes.get_tornadoes(aoi_gdf.to_crs('ESRI:102005'))
-hazards_dict["tornadoes"] = tornadoes.process_tornadoes(tornadoes_gdf, aoi_gdf.to_crs('ESRI:102005'))
+in_crs = 'ESRI:102005'
+tornadoes_gdf = tornadoes.get_tornadoes(aoi_gdf.to_crs(in_crs))
+hazards_dict["tornadoes"] = tornadoes.process_tornadoes(tornadoes_gdf,
+                                                        aoi_gdf.to_crs(in_crs))
 cyclones = tropical_cyclones.get_cyclones(aoi_gdf.to_crs('ESRI:102005'))
-hazards_dict["tropical_cyclones"] = tropical_cyclones.process_cyclones(cyclones, aoi_gdf.to_crs('ESRI:102005'))
+hazards_dict["tropical_cyclones"] = tropical_cyclones.process_cyclones(cyclones,
+                                                                       aoi_gdf.to_crs(in_crs))
 
 # Get weather hazards
 hazards_dict["heat"] = weather.get_heat_events(aoi_gdf)
@@ -93,8 +96,8 @@ hazards_dict["tri"] = technological.get_tri(aoi_gdf)
 # Get hazard endpoints
 #hazards_dict["losses"] = hazard_losses.get_hazard_losses
 
-# Get vulnerability metrics
-vulnerability_dict["svi"] = svi.get_SVI('12033',
+# Get svi metrics
+house_dict["svi"] = svi.get_SVI('12033',
                                         level='block group',
                                         year=2022)
 
@@ -141,7 +144,7 @@ for key, val in hazards_dict.items():
     if not os.path.exists(os.path.join(out_dir, key)):
         os.makedirs(os.path.join(out_dir, key))
     val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
-for key, val in vulnerability_dict.items():
+for key, val in house_dict.items():
     if not os.path.exists(os.path.join(out_dir, key)):
         os.makedirs(os.path.join(out_dir, key))
     val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
