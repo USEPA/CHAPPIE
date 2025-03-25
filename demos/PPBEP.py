@@ -96,7 +96,7 @@ hazards_dict["tri"] = technological.get_tri(aoi_gdf)
 # Get hazard endpoints
 #hazards_dict["losses"] = hazard_losses.get_hazard_losses
 
-# Get vulnerability metrics
+# Get svi metrics
 house_dict["svi"] = svi.get_SVI('12033',
                                         level='block group',
                                         year=2022)
