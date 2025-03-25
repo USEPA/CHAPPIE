@@ -1,10 +1,26 @@
-def get_NLCD(self, year, dataset="Land_Cover"):
+"""
+Module for National Landcover Dataset (nlcd) metrics
+
+@author: jbousquin
+"""
+from datetime import datetime
+
+import requests
+
+from CHAPPIE import layer_query
+
+TIMEOUT = 100
+
+
+def get_NLCD(aoi, year, dataset="Land_Cover"):
         """Download NLCD raster tiles by polygon extent.
 
         If not lower 48 only run one state at a time
 
         Parameters
         ----------
+        aoi : geopandas.GeoDataframe
+            Area of interest geometries.
         year : integer or string
             Year being retrieved.
         dataset : string
@@ -22,17 +38,20 @@ def get_NLCD(self, year, dataset="Land_Cover"):
         # Make sure year parameter is usable
         year = check_year(year, dataset)
 
+        bbox = aoi.total_bounds()
+
         # Create subset X and Y string from extent (minx, miny, maxx, maxy)
         subset = [
-            'X("{}","{}")'.format(self.bbox[0], self.bbox[2]),
-            'Y("{}","{}")'.format(self.bbox[1], self.bbox[3]),
+            'X("{}","{}")'.format(bbox[0], bbox[2]),
+            'Y("{}","{}")'.format(bbox[1], bbox[3]),
         ]
-        query_crs = self.geom.crs.to_epsg()  # CRS for query
+        query_crs = aoi.crs.to_epsg()  # CRS for query
 
         # Determine landmass (based on FIPs state)
-        if not set(self.FIPs.ST_ABBR).isdisjoint(["AK", "HI", "PR"]):
+        st_df = layer_query.getState(aoi)
+        if not set(st_df.ST_ABBR).isdisjoint(["AK", "HI", "PR"]):
             # TODO: not robust for multi: e.g., non-conus, or conus + non-conus
-            landmass = set(self.FIPs.ST_ABBR).intersection(["AK", "HI", "PR"]).pop()
+            landmass = set(st_df.ST_ABBR).intersection(["AK", "HI", "PR"]).pop()
         else:
             landmass = "L48"
         # Determine serviceName
@@ -64,31 +83,91 @@ def get_NLCD(self, year, dataset="Land_Cover"):
         # Get response
         res = get_url(url, params)
 
-        # Save result to D1
-        out_file = os.path.join(self.D1, f"NLCD_{year}_{dataset}.tif")
-        with open(out_file, "wb") as f:
-            f.write(res.content)
-        self.sl.logger.info(f"Download Succeeded: NLCD_{year}_{dataset}.tif")
+        # # Save result to D1
+        # out_file = os.path.join(self.D1, f"NLCD_{year}_{dataset}.tif")
+        # with open(out_file, "wb") as f:
+        #     f.write(res.content)
 
-        if dataset == "Land_Cover":
-            # Vectorize and return gdf in memory
-            nlcd_gdf = vectorize(out_file, mask=self.geom["geometry"])
-            # Reproject to 3857
-            nlcd_gdf = nlcd_gdf.to_crs(3857)
-            # set it
-            self.set_NLCD(out_file, in_memory=nlcd_gdf)
-            return nlcd_gdf
-        elif dataset in ["Tree_Canopy", "Impervious"]:
-            # Read in raster using rioxarray
-            rds = rioxarray.open_rasterio(out_file)
-            if not rds.rio.crs:
-                # TODO: confirm is none and make more robust?
-                rds.rio.set_crs(f"EPSG:{out_crs}")
-            cell = rds.rio.resolution()
-            rds_prj = rds.rio.reproject(f"EPSG:{3857}", resolution=cell)  # Reproject
-            band1 = rds_prj.to_series()  # numpy array
-            # save it to D2 (drop after testing?)
-            rds_prj.rio.to_raster(f"{self.D2}{os.sep}{os.path.basename(out_file)}")
-            # set it
-            self.set_NLCD(out_file, in_memory=band1)
+        # if dataset == "Land_Cover":
+        #     # Vectorize and return gdf in memory
+        #     nlcd_gdf = vectorize(out_file, mask=self.geom["geometry"])
+        #     # Reproject to 3857
+        #     nlcd_gdf = nlcd_gdf.to_crs(3857)
+        #     # set it
+        #     self.set_NLCD(out_file, in_memory=nlcd_gdf)
+        #     return nlcd_gdf
+        # elif dataset in ["Tree_Canopy", "Impervious"]:
+
+        # Read in raster using rioxarray
+        rds = rioxarray.open_rasterio(res.content)
+        if not rds.rio.crs:
+            # TODO: confirm is none and make more robust?
+            rds.rio.set_crs(f"EPSG:{out_crs}")
+        cell = rds.rio.resolution()
+        rds_prj = rds.rio.reproject(f"EPSG:{3857}", resolution=cell)  # Reproject
+        band1 = rds_prj.to_series()  # numpy array
+
+            # # save it to D2 (drop after testing?)
+            # rds_prj.rio.to_raster(f"{self.D2}{os.sep}{os.path.basename(out_file)}")
+            # # set it
+            # self.set_NLCD(out_file, in_memory=band1)
         return band1
+
+
+def check_year(year, dataset):
+    """
+    Check a given year is available from different datasets
+
+    Parameters
+    ----------
+    year : integer or string
+        Year being checked.
+    dataset : string
+        Valid datasets include Land_Cover, Tree_Canopy, Impervious, or roads.
+
+    Returns
+    -------
+    year : integer
+        Valid year.
+
+    """
+    year = int(year)  # Ensure year is expected format
+    # Make sure year is in dataset
+    latest = datetime.now().year
+    if dataset in ["Land_Cover", "Impervious"]:
+        years = [2001, 2004, 2006, 2008, 2011, 2013, 2016, 2019, 2021]
+    elif dataset == "Tree_Canopy":
+        years = list(range(2011, 2021))
+    elif dataset == "roads":
+        years = [1992, 1999, 2002, 2003] + list(range(2008, latest))
+    else:
+        years = "Problem"
+    assert year < latest, "Only available through {}".format(max(years))
+    assert year in years, "Year {} is not in {}".format(year, years)
+    return year
+
+
+def get_url(url, data=None):
+    """
+    Standard get request from url
+
+    Parameters
+    ----------
+    url : string
+        url to send request to.
+    data : dict, optional
+        The payload of data to request. The default is None.
+
+    Returns
+    -------
+    res : string or json
+        Response, type depends on service and data.
+
+    """
+    if data:
+        res = requests.get(url, data, timeout=TIMEOUT)
+    else:
+        res = requests.get(url, timeout=TIMEOUT)
+    # TODO: watch out for res.url vs url (added back, possibly removed it once)
+    assert res.ok, "Problem with {}".format(res.url)
+    return res
