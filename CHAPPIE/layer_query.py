@@ -326,16 +326,35 @@ def _batch_query(feature_layer, query_params, count_limit=None):
         count_limit = feature_layer.count()  # re-query
     # Get count of features in query result
     count = _get_count_only(feature_layer, query_params)
-    # Get rid of returnCountOnly
-    if "returnCountOnly" in query_params.keys():
-        query_params.pop("returnCountOnly")
-    # Compare to maxRecordCount from service
-    num_requests = math.ceil(count / count_limit)
-    list_of_results = []
-    # Offset is request number * service maxRecordCount
-    for offset in [idx * count_limit for idx in range(num_requests)]:
-        query_params["resultOffset"] = offset
-        list_of_results.append([feature_layer.query(**query_params)])
+    if count:
+        # Get rid of returnCountOnly
+        if "returnCountOnly" in query_params.keys():
+            query_params.pop("returnCountOnly")
+        # Compare to maxRecordCount from service
+        num_requests = math.ceil(count / count_limit)
+        list_of_results = []
+        # Offset is request number * service maxRecordCount
+        for offset in [idx * count_limit for idx in range(num_requests)]:
+            query_params["resultOffset"] = offset
+            list_of_results.append([feature_layer.query(**query_params)])
+    else:
+        if "returnCountOnly" in query_params.keys():
+            query_params.pop("returnCountOnly")
+        # Compare to maxRecordCount from service
+        list_of_results = []
+        # Offset starts at zero
+        offset = 0
+        query_params["orderByFields"] = 'parcelnumb'
+        while True:
+            query_params["resultOffset"] = offset
+            # returned raw datadict, so can only take a few attributes from response and to check the exceedTransferLimit to break the loop
+            res = feature_layer.query(raw=True, **query_params)
+            list_of_results.append([pandas.DataFrame.from_records(
+                        [(x["attributes"]["geoid"], x["attributes"]["parcelnumb"], x["attributes"]["fema_flood_zone"], x["geometry"]) for x in res["features"]]
+                    )])
+            if res["exceededTransferLimit"] == False:
+                break
+            offset += 2000
     # Convert each result to geodataframe
     # TODO: may need to drop all-NA results in FutureWarning
     gdfs = [geopandas.GeoDataFrame(result[0]) for result in list_of_results]
@@ -348,10 +367,14 @@ def _get_count_only(feature_layer, count_query_params):
     # Return count only
     count_query_params["returnCountOnly"] = "True"
     # Run query
-    datadict = feature_layer.query(raw=True, **count_query_params)
-    count = datadict["count"]
-
-    return count
+    # TOD0: regrid batch processing is getting bad gateway here sometimes, probably need error handling here
+    try: 
+        datadict = feature_layer.query(raw=True, **count_query_params)
+        count = datadict["count"]
+        return count
+    except requests.exceptions.HTTPError as e:
+        warnings.warn(f"Error: {e}")
+        return False
 
 
 class ESRILayer(object):
