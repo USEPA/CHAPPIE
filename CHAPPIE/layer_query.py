@@ -354,7 +354,7 @@ def _batch_query(feature_layer, query_params, count_limit=None):
                     )])
             if res["exceededTransferLimit"] == False:
                 break
-            offset += 2000
+            offset += count_limit
     # Convert each result to geodataframe
     # TODO: may need to drop all-NA results in FutureWarning
     gdfs = [geopandas.GeoDataFrame(result[0]) for result in list_of_results]
