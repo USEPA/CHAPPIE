@@ -460,6 +460,7 @@ class ESRILayer(object):
         kwargs = {"".join(k.split("_")): v for k, v in kwargs.items()}
 
         # construct query string
+        # Need to skip deepcopy for regrid because it doesn't want all those extra query params
         self._basequery = copy.deepcopy(_basequery)
         for k, v in kwargs.items():
             try:
