@@ -467,6 +467,11 @@ class ESRILayer(object):
                 self._basequery[k] = v
             except KeyError:
                 raise KeyError("Option '{k}' not recognized, check parameters")
+        # Drop empty key value pairs for query to regrid
+        if ('fs.regrid.com') in self._baseurl:
+            keys_to_delete = [k for k, v in self._basequery.items() if not v]
+            for key in keys_to_delete:
+                del self._basequery[key]
         qstr = "&".join([f"{k}={v}" for k, v in self._basequery.items()])
         self._last_query = self._baseurl + "/query?" + qstr
         # Note: second condition to not overide raw
@@ -478,6 +483,10 @@ class ESRILayer(object):
                 print(self._last_query())
                 raise e
         resp = requests.get(self._last_query + "&f=json")
+        # TODO: getting 502 Server Error: Bad Gateway for url for regrid...
+        # Need a retry strategy because the query is good
+        # Not sure if RegridLayer should be its own class instead of 
+        # adding more complexity/logic to EsriLayer to account for regrid query
         resp.raise_for_status()
         datadict = resp.json()
         if raw:
