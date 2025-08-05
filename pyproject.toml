@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["CHAPPIE", "CHAPPIE.hazards", "CHAPPIE.household", "CHAPPIE.assets"]
+packages = ["CHAPPIE", "CHAPPIE.hazards", "CHAPPIE.household", "CHAPPIE.assets", "CHAPPIE.eco_services"]
 
 [project]
 name = "CHAPPIE"
