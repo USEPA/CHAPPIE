@@ -1,13 +1,14 @@
 """
-Module for recreation assets
+Module for Get Assessment Total Maximum Daily Load (TMDL) Tracking and Implementation System (ATTAINS) geometry
 
-@author: tlomba01, edamico
+@author:  edamico
 """
 from CHAPPIE import layer_query
 
+url = 'https://gispub.epa.gov/arcgis/rest/services/OW/ATTAINS_Assessment/MapServer'
 
-def get_padus(aoi):
-    """Get protected area sites within AOI.
+def get_attains_points(aoi):
+    """Get ATTAINS points within AOI.
 
     Parameters
     ----------
@@ -17,11 +18,10 @@ def get_padus(aoi):
     Returns
     -------
     geopandas.GeoDataFrame
-        GeoDataFrame for protected area sites from PADUS.
+        GeoDataFrame for ATTAINS points.
 
     """
 
-    url = 'https://services.arcgis.com/v01gqwM5QqNysAAi/ArcGIS/rest/services/PADUS_Public_Access/FeatureServer'
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
 
@@ -30,8 +30,8 @@ def get_padus(aoi):
                                 layer=0,
                                 in_crs=aoi.crs.to_epsg())
 
-def get_parks(aoi):
-    """Get USA parks within AOI.
+def get_attains_lines(aoi):
+    """Get ATTAINS lines within AOI.
 
     Parameters
     ----------
@@ -41,22 +41,20 @@ def get_parks(aoi):
     Returns
     -------
     geopandas.GeoDataFrame
-        GeoDataFrame for USA parks.
+        GeoDataFrame for ATTAINS lines.
 
     """
 
-    url = 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Detailed_Parks/FeatureServer'
-    
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
 
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
-                                layer=0,
+                                layer=1,
                                 in_crs=aoi.crs.to_epsg())
 
-def get_trails(aoi):
-    """Get Recreational trails of the United States within AOI.
+def get_attains_polygons(aoi):
+    """Get ATTAINS polygons within AOI.
 
     Parameters
     ----------
@@ -66,16 +64,14 @@ def get_trails(aoi):
     Returns
     -------
     geopandas.GeoDataFrame
-        GeoDataFrame for Recreational trails.
+        GeoDataFrame for GeoDataFrame for ATTAINS polygons.
 
     """
 
-    url = 'https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer'
-    
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
 
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
-                                layer=37,
+                                layer=2,
                                 in_crs=aoi.crs.to_epsg())

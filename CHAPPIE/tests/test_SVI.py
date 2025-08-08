@@ -6,10 +6,12 @@ Created on Mon Sep 25 16:33:15 2023
 """
 
 import os
+
 import geopandas
 import pandas
 from geopandas.testing import assert_geodataframe_equal
-from CHAPPIE.vulnerability import svi
+
+from CHAPPIE.household import svi
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -54,7 +56,7 @@ def test_get_SVI_by_county_all_tracts():
                      4.500330906684315]
     expected_dict = {key:[val] for key, val in zip(check_cols, expected_vals)}
     expected_df = pandas.DataFrame.from_dict(expected_dict)
-    
+
     pandas.testing.assert_frame_equal(actual_df, expected_df)
 
 
@@ -66,4 +68,4 @@ def test_get_SVI_by_county_all_BG():
     expected = geopandas.read_parquet(expected_file)
     #assert len(gdf_bg)==199
     assert_geodataframe_equal(actual, expected, check_like=True)
-    
+
