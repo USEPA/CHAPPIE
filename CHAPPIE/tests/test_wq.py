@@ -18,9 +18,9 @@ EXPECTED_DIR = os.path.join(DIRPATH, 'expected')  # Expected
 DATA_DIR = os.path.join(DIRPATH, 'data')  # inputs
 
 AOI_MIT_BANK = os.path.join(DATA_DIR, "Somerset_30mBuffer.shp")
-AOI_MIT_BANK_poly = os.path.join(DATA_DIR, "Somerset_30mBuffer.shp")
+#AOI_MIT_BANK_poly = os.path.join(DATA_DIR, "Somerset_30mBuffer.shp")
 aoi_gdf = geopandas.read_file(AOI_MIT_BANK)
-aoi_gdf_poly = geopandas.read_file(AOI_MIT_BANK_poly)
+
 
 def test_get_attains_points():
     actual = wq.get_attains_points(aoi_gdf)
@@ -52,7 +52,7 @@ def test_get_attains_lines():
                               check_less_precise=True)
 
 def test_get_attains_polygons():
-    actual = wq.get_attains_polygons(aoi_gdf_poly)
+    actual = wq.get_attains_polygons(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
     actual.sort_values(by=['assessmentunitidentifier', 'geometry'], inplace=True, ignore_index=True)
    # actual.to_parquet(os.path.join(EXPECTED_DIR, 'attains_polygons.parquet'))

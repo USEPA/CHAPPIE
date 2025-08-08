@@ -5,6 +5,7 @@ Module for Get Assessment Total Maximum Daily Load (TMDL) Tracking and Implement
 """
 from CHAPPIE import layer_query
 
+url = 'https://gispub.epa.gov/arcgis/rest/services/OW/ATTAINS_Assessment/MapServer'
 
 def get_attains_points(aoi):
     """Get ATTAINS points within AOI.
@@ -21,7 +22,6 @@ def get_attains_points(aoi):
 
     """
 
-    url = 'https://gispub.epa.gov/arcgis/rest/services/OW/ATTAINS_Assessment/MapServer'
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
 
@@ -45,7 +45,6 @@ def get_attains_lines(aoi):
 
     """
 
-    url = 'https://gispub.epa.gov/arcgis/rest/services/OW/ATTAINS_Assessment/MapServer'
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
 
@@ -69,7 +68,6 @@ def get_attains_polygons(aoi):
 
     """
 
-    url = 'https://gispub.epa.gov/arcgis/rest/services/OW/ATTAINS_Assessment/MapServer'
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
 
