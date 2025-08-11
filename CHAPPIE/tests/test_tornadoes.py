@@ -82,9 +82,10 @@ def expected_32(file_name):
 def test_get_tornadoes(get_tornadoes):
     actual = get_tornadoes
     # assert no changes
-    expected = expected_32('get_tornaodes_aoi.shp')
-    expected['date'] = expected['date'].astype('datetime64[ms]')
-    expected = expected.sort_values(by=['geometry', 'date'], ignore_index=True)
+    expected_file = os.path.join(EXPECTED_DIR, 'get_tornaodes_aoi.parquet')
+    expected = geopandas.read_parquet(expected_file)
+    #expected['date'] = expected['date'].astype('datetime64[ms]')
+    #expected = expected.sort_values(by=['geometry', 'date'], ignore_index=True)
 
     assert_geodataframe_equal(actual, expected)
 
