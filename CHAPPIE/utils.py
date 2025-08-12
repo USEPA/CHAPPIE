@@ -4,6 +4,7 @@
 @author: tlomba01
 """
 import os
+import geopandas
 from CHAPPIE import layer_query
 
 _regrid_base_url = "https://fs.regrid.com/"
@@ -35,3 +36,6 @@ def get_regrid(aoi, api_key=None):
                                 layer=0,
                                 in_crs=aoi.crs.to_epsg())
     
+def process_regrid(regrid_gdf):
+    regrid_gdf.geometry = regrid_gdf.geometry.centroid
+    return regrid_gdf
