@@ -90,6 +90,20 @@ def get_trails(aoi):
 
 
 def get_water_access(aoi):
+    """Get water access info dataframe from BEACON for the area of interest.
+
+    Note: this function leverages functions from the dependency for CHAPPIE.
+
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        Area Of Interest (AOI) polygon(s).
+
+    Returns
+    -------
+    aoi : geopandas.GeoDataFrame
+        Lines for BEACON water access sites.
+    """
     df_ids = get_BEACON_ids()
     # Get aoi county FIPS
     county_names = layer_query.get_county(aoi)['NAME'].to_list()
@@ -106,15 +120,16 @@ def get_water_access(aoi):
 
 
 def get_BEACON_ids(date='20240228'):
+    #package.get_BEACON_ids()
     base_url = "https://dmap-data-commons-ow.s3.amazonaws.com/data/beach"
-    beach_data_url = f"{base_url}/geospatial/beach_attributes_{date}.xlsx"
-    changelog_url = f"{base_url}/geospatial/beach_changelog_{date}.xlsx"
+    beach_data_url = f"{base_url}/geospatial/beach_attributes_20240228.xlsx"
+    changelog_url = f"{base_url}/geospatial/beach_changelog_20240228.xlsx"
     beaches = pandas.read_excel(beach_data_url, header=2)
     chngs = pandas.read_excel(changelog_url)
 
     date_match = re.search(r"\(([^()]+)\)", chngs.iloc[0, 1])
     if date_match:
-        print(f"Beach ID list last updated on {date_match.group(1)}\n")
+        print(f"Beach attribute information was last updated on {date_match.group(1)}\n")
 
     return beaches
 
