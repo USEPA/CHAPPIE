@@ -66,3 +66,4 @@ def test_get_worship():
     expected = geopandas.read_parquet(expected_file)
  
     assert_geodataframe_equal(actual, expected)
+ 
