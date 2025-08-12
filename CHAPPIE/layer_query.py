@@ -326,35 +326,16 @@ def _batch_query(feature_layer, query_params, count_limit=None):
         count_limit = feature_layer.count()  # re-query
     # Get count of features in query result
     count = _get_count_only(feature_layer, query_params)
-    if count:
-        # Get rid of returnCountOnly
-        if "returnCountOnly" in query_params.keys():
-            query_params.pop("returnCountOnly")
-        # Compare to maxRecordCount from service
-        num_requests = math.ceil(count / count_limit)
-        list_of_results = []
-        # Offset is request number * service maxRecordCount
-        for offset in [idx * count_limit for idx in range(num_requests)]:
-            query_params["resultOffset"] = offset
-            list_of_results.append([feature_layer.query(**query_params)])
-    else:
-        if "returnCountOnly" in query_params.keys():
-            query_params.pop("returnCountOnly")
-        # Compare to maxRecordCount from service
-        list_of_results = []
-        # Offset starts at zero
-        offset = 0
-        query_params["orderByFields"] = 'parcelnumb'
-        while True:
-            query_params["resultOffset"] = offset
-            # returned raw datadict, so can only take a few attributes from response and to check the exceedTransferLimit to break the loop
-            res = feature_layer.query(raw=True, **query_params)
-            list_of_results.append([pandas.DataFrame.from_records(
-                        [(x["attributes"]["geoid"], x["attributes"]["parcelnumb"], x["attributes"]["fema_flood_zone"], x["geometry"]) for x in res["features"]]
-                    )])
-            if res["exceededTransferLimit"] == False:
-                break
-            offset += count_limit
+    # Get rid of returnCountOnly
+    if "returnCountOnly" in query_params.keys():
+        query_params.pop("returnCountOnly")
+    # Compare to maxRecordCount from service
+    num_requests = math.ceil(count / count_limit)
+    list_of_results = []
+    # Offset is request number * service maxRecordCount
+    for offset in [idx * count_limit for idx in range(num_requests)]:
+        query_params["resultOffset"] = offset
+        list_of_results.append([feature_layer.query(**query_params)])
     # Convert each result to geodataframe
     # TODO: may need to drop all-NA results in FutureWarning
     gdfs = [geopandas.GeoDataFrame(result[0]) for result in list_of_results]
@@ -367,10 +348,9 @@ def _get_count_only(feature_layer, count_query_params):
     # Return count only
     count_query_params["returnCountOnly"] = "True"
     # Run query
-    # TOD0: regrid batch processing is getting bad gateway here sometimes, probably need error handling here
     try: 
         datadict = feature_layer.query(raw=True, **count_query_params)
-        count = datadict["count"]
+        count = datadict["count"]        
         return count
     except requests.exceptions.HTTPError as e:
         warnings.warn(f"Error: {e}")
@@ -467,8 +447,12 @@ class ESRILayer(object):
                 self._basequery[k] = v
             except KeyError:
                 raise KeyError("Option '{k}' not recognized, check parameters")
-        # Drop empty key value pairs for query to regrid
+
         if ('fs.regrid.com') in self._baseurl:
+            # TODO: pop out return count true?
+            self._basequery["outFields"] = "id,geoid,parcelnumb,fema_flood_zone"
+            self._basequery["outSR"] = 4326
+            self._basequery["orderByFields"] = 'parcelnumb'
             keys_to_delete = [k for k, v in self._basequery.items() if not v]
             for key in keys_to_delete:
                 del self._basequery[key]
@@ -477,16 +461,18 @@ class ESRILayer(object):
         # Note: second condition to not overide raw
         if kwargs.get("returnGeometry", "true") == "True" and raw is False:
             try:
-                return geopandas.read_file(self._last_query + "&f=geojson")
+                if ('fs.regrid.com') in self._baseurl:
+                    resp = requests.get(self._last_query + "&f=geojson")
+                    resp.raise_for_status()
+                    datadict = resp.json()
+                    return geopandas.GeoDataFrame.from_features(datadict)
+                else:
+                    return geopandas.read_file(self._last_query + "&f=geojson")
             except requests.exceptions.HTTPError as e:
                 # TODO: this needs improvement, but getting url is good for debug
                 print(self._last_query())
                 raise e
         resp = requests.get(self._last_query + "&f=json")
-        # TODO: getting 502 Server Error: Bad Gateway for url for regrid...
-        # Need a retry strategy because the query is good
-        # Not sure if RegridLayer should be its own class instead of 
-        # adding more complexity/logic to EsriLayer to account for regrid query
         resp.raise_for_status()
         datadict = resp.json()
         if raw:

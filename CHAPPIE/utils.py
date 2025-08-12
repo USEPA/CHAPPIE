@@ -33,5 +33,5 @@ def get_regrid(aoi, api_key=None):
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
                                 layer=0,
-                                in_crs=aoi.crs.to_epsg())[['geoid', 'parcelnumb', 'fema_flood_zone', 'geometry']]
+                                in_crs=aoi.crs.to_epsg())
     
