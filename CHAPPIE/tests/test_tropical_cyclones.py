@@ -23,7 +23,6 @@ TEST_DIR = os.path.join(DIRPATH, 'results')  # test results (have to create)
 
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 aoi_gdf = geopandas.read_file(AOI)
-cyclones_static = os.path.join(os.path.join(EXPECTED_DIR, 'cyclones_aoi.parquet'))
 
 @pytest.fixture(scope='session')
 def get_cyclones():
