@@ -2,7 +2,7 @@
 """
 Test recreation assets.
 
-@author: tlomba01, edamico
+@author: tlomba01, edamico, jbousquin
 """
 import os
 
@@ -12,6 +12,7 @@ from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.assets import recreation
 
 # CI inputs/expected
+#DIRPATH = r"L:\lab\GitHub\CHAPPIE\CHAPPIE\tests"
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
 
 EXPECTED_DIR = os.path.join(DIRPATH, 'expected')  # Expected
@@ -68,3 +69,6 @@ def test_get_trails():
     assert_geodataframe_equal(actual,
                               expected,
                               check_less_precise=True)
+
+def test_get_water_access():
+    actual = recreation.get_water_access(aoi_gdf)
