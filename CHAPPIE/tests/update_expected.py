@@ -229,7 +229,9 @@ import CHAPPIE.tests.test_technological as test_tech
 ###test_get_FRS_ACRES()
 actual = technological.get_FRS_ACRES(aoi_gdf)
 actual.drop(columns=['OBJECTID'], inplace=True)
-actual.sort_values(by=['KEY_FIELD', 'geometry', 'REGISTRY_ID'], inplace=True, ignore_index=True)
+actual.sort_values(by=['KEY_FIELD', 'geometry', 'REGISTRY_ID'],
+                   inplace=True,
+                   ignore_index=True)
 #actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_FRS_ACRES.parquet'))
 
 # assert no changes
@@ -263,7 +265,6 @@ except AssertionError as ae:
 
 ##Tornadoes
 from CHAPPIE.hazards import tornadoes
-import CHAPPIE.tests.test_tornadoes as test_tor
 
 ###test_get_tornadoes()
 actual = tornadoes.get_tornadoes(aoi_gdf)
@@ -280,6 +281,35 @@ except AssertionError as ae:
     actual.to_parquet(expected_file)
 
 ###test_process_tornadoes_aoi()
+actual = tornadoes.process_tornadoes(actual, aoi_gdf)
+
+# save for now (sorted so expeccted doesn't have to be)
+actual = actual.sort_values(by=['TornNo', 'Date'], ignore_index=True)
+#actual.to_file(os.path.join(EXPECTED_DIR, 'process_tornaodes_aoi.shp'))
+#actual.to_parquet(os.path.join(EXPECTED_DIR, 'process_tornaodes_aoi.parquet'))
+
+# check columns
+expected_cols = ['Year', 'Date', 'TornNo', 'Magnitude', 'geometry']
+missing_cols = set(expected_cols) - set(actual.columns)
+assert not missing_cols, f"Columns missing: {', '.join(missing_cols)}"
+
+# assert no changes
+expected_file = os.path.join(EXPECTED_DIR, 'process_tornaodes_aoi.parquet')
+expected = geopandas.read_parquet(expected_file)
+expected = expected.sort_values(by=['TornNo', 'Date'], ignore_index=True)
+expected['Date'] = expected['Date'].astype('datetime64[ms]')
+field_list = ['Year', 'TornNo', 'Magnitude', 'wid']
+for i in range(len(field_list)):
+    expected[field_list[i]] = expected[field_list[i]].astype('int32')
+
+try:
+    assert_geodataframe_equal(actual,
+                                expected,
+                                check_like=True,
+                                check_less_precise=True)
+except AssertionError as ae:
+    print(ae)
+    actual.to_parquet(expected_file)
 
 #tropical_cyclones
 from CHAPPIE.hazards import tropical_cyclones
