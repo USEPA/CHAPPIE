@@ -227,22 +227,6 @@ def get_BEACON_by_id(beachids, year=2024):
 
 
 def parse_table(table, expected_name, col1):
-    """_summary_
-
-    Parameters
-    ----------
-    table : _type_
-        _description_
-    expected_name : _type_
-        _description_
-    col1 : _type_
-        _description_
-
-    Returns
-    -------
-    _type_
-        _description_
-    """
     if 0 not in table.columns:
         # Named columns - skip it
         return None
@@ -301,6 +285,10 @@ def points_BEACON(df, crs_out=4269):
         for crs in crs_list:
             if pandas.isnull(crs):
                 gdf_partial = gdf[gdf['Horizontal Ref Datum Name'].isna()]
+                gdf_partial = gdf_partial.set_crs(crs_out)  # Set crs to default
+            elif crs in ["OTHER", "UNKWN", "NR"]:
+                # Set CRS for that part of gdf using mask
+                gdf_partial = gdf[gdf['Horizontal Ref Datum Name'] == crs]
                 gdf_partial = gdf_partial.set_crs(crs_out)  # Set crs to default
             else:
                 # Set CRS for part of gdf using mask
