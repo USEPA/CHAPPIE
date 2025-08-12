@@ -85,7 +85,7 @@ def test_get_tornadoes(get_tornadoes):
     expected_file = os.path.join(EXPECTED_DIR, 'get_tornaodes_aoi.parquet')
     expected = expected_32(expected_file) # Also fixes int64->32
 
-    #expected['date'] = expected['date'].astype('datetime64[ms]')
+    expected['date'] = expected['date'].astype('datetime64[ms]')
     #expected = expected.sort_values(by=['geometry', 'date'], ignore_index=True)
 
     assert_geodataframe_equal(actual, expected)
