@@ -294,9 +294,9 @@ expected_file = os.path.join(EXPECTED_DIR, 'cyclones_aoi.parquet')
 expected = geopandas.read_parquet(expected_file)
 
 # Deal with int 32 vs 64
-field_list = ['USA_WIND', 'USA_PRES', 'year', 'month', 'day']
-for i in range(len(field_list)):
-    expected[field_list[i]] = expected[field_list[i]].astype('int32')
+#field_list = ['USA_WIND', 'USA_PRES', 'year', 'month', 'day']
+#for i in range(len(field_list)):
+#    expected[field_list[i]] = expected[field_list[i]].astype('int32')
 
 try:
     assert_geodataframe_equal(actual, expected)
