@@ -23,7 +23,7 @@ TEST_DIR = os.path.join(DIRPATH, 'results')  # test results (have to create)
 
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 aoi_gdf = geopandas.read_file(AOI)
-
+cyclones_static = os.path.join(os.path.join(EXPECTED_DIR, 'cyclones_aoi.parquet'))
 
 @pytest.fixture(scope='session')
 def get_cyclones():
@@ -54,8 +54,15 @@ def test_get_cyclones(get_cyclones: DataFrame):
     return actual
 
 
-def test_process_cyclones(get_cyclones: DataFrame):
-    actual = tropical_cyclones.process_cyclones(get_cyclones, aoi_gdf)
+@pytest.fixture(scope="session")
+def static_cyclones():
+    expected_file = os.path.join(EXPECTED_DIR, 'cyclones_aoi_static.parquet')
+    return geopandas.read_parquet(expected_file)
+
+
+def test_process_cyclones(static_cyclones: DataFrame):
+
+    actual = tropical_cyclones.process_cyclones(static_cyclones, aoi_gdf)
 
     # save to results
     #actual.to_file(os.path.join(TEST_DIR, 'cyclones_processed_1851_2022.shp'))
