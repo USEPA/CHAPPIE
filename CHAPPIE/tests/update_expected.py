@@ -32,9 +32,9 @@ actual.drop(columns=['OBJECTID']+int_cols, inplace=True)
 actual.sort_values(by=['PERMANENT_IDENTIFIER', 'geometry', 'NAME'],
                    inplace=True,
                    ignore_index=True)
+
 expected_file = os.path.join(EXPECTED_DIR, 'fire_ems.parquet')
 expected = geopandas.read_parquet(expected_file)
-# assert no changes
 try:
     assert_geodataframe_equal(actual, expected)
 except AssertionError as ae:
@@ -54,11 +54,8 @@ actual.sort_values(by=['PERMANENT_IDENTIFIER', 'geometry', 'NAME'],
                     inplace=True,
                     ignore_index=True)
 
-# open up old
 expected_file = os.path.join(EXPECTED_DIR, 'get_police.parquet')
 expected = geopandas.read_parquet(expected_file)
-
-# assert no changes
 try:
     assert_geodataframe_equal(actual, expected)
 except AssertionError as ae:
@@ -77,8 +74,6 @@ actual = food.get_farmers_market(aoi_gdf, usda_API)
 # Old file
 expected_file = os.path.join(EXPECTED_DIR, 'get_farmers_markets.parquet')
 expected = geopandas.read_parquet(expected_file)
-
-#assert no changes
 try:
     assert_geodataframe_equal(actual, expected)
 except AssertionError as ae:
@@ -87,10 +82,9 @@ except AssertionError as ae:
 
 ###test_get_farm_store()
 actual = food.get_farm_store(aoi_gdf, usda_API)
-# Old file
+
 expected_file = os.path.join(EXPECTED_DIR, 'get_farm_store.parquet')
 expected = geopandas.read_parquet(expected_file)
-#assert no changes
 try:
     assert_geodataframe_equal(actual, expected)
 except AssertionError as ae:
@@ -102,7 +96,7 @@ from CHAPPIE.assets import health
 
 ###test_get_providers()
 actual = health.get_providers(aoi_gdf)
-# Test result dataframes
+
 expected_file = os.path.join(EXPECTED_DIR, 'get_providers.parquet')
 expected = pandas.read_parquet(expected_file)  # No geo (addresses only)
 # NOTE: dict are not ordered, drop all columns where it contains a dict
@@ -110,7 +104,6 @@ expected = pandas.read_parquet(expected_file)  # No geo (addresses only)
 # 'taxonomies',
 cols = ['created_epoch', 'enumeration_type', 'last_updated_epoch', 'number',
         'identifiers', 'zip5']
-
 try:
     assert_frame_equal(actual[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True),
                     expected[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True))
@@ -120,6 +113,7 @@ except AssertionError as ae:
 
 ##Infrastructure
 from CHAPPIE.assets import hazard_infrastructure
+
 ###test_get_dams()
 actual = hazard_infrastructure.get_dams(aoi_gdf)
 actual.drop(columns=['OBJECTID', "primaryPurposeId"], inplace=True)
@@ -128,7 +122,6 @@ actual.sort_values(by=['id', 'name'], inplace=True, ignore_index=True)
 
 expected_file = os.path.join(EXPECTED_DIR, 'dams.parquet')
 expected = geopandas.read_parquet(expected_file)
-
 try:
     assert_geodataframe_equal(actual, expected, check_less_precise=True)
 except AssertionError as ae:
@@ -156,6 +149,7 @@ except AssertionError as ae:
     print(ae)
     actual.to_parquet(expected_file)
 
+
 ###test_get_trails()
 actual = recreation.get_trails(aoi_gdf)
 actual.drop(columns=['objectid'], inplace=True)
@@ -163,12 +157,9 @@ actual.sort_values(by=['permanentidentifier', 'geometry'],
                     inplace=True,
                     ignore_index=True)
 actual.rename(columns={'GEOMETRY': 'geometry'}, inplace=True)
-# actual.to_parquet(os.path.join(EXPECTED_DIR, 'trails.parquet'))
 
-#assert no changes
 expected_file = os.path.join(EXPECTED_DIR, 'trails.parquet')
 expected = geopandas.read_parquet(expected_file)
-
 try:
     assert_geodataframe_equal(actual,
                               expected,
@@ -176,6 +167,7 @@ try:
 except AssertionError as ae:
     print(ae)
     actual.to_parquet(expected_file)
+
 
 ##Transit
 from CHAPPIE.assets import transit
@@ -188,12 +180,9 @@ actual.drop(columns=["LAT_DEG", "LONG_DEG", 'LAT_MIN', 'LONG_MIN'],
             inplace=True)
 actual.rename(columns={'GEOMETRY': 'geometry'}, inplace=True)
 actual.sort_values(by=['ARPT_ID'], inplace=True, ignore_index=True)
-#actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_air.parquet'))
 
-# assert no changes
 expected_file = os.path.join(EXPECTED_DIR, 'get_air.parquet')
 expected = geopandas.read_parquet(expected_file)
-
 try:
     assert_geodataframe_equal(actual, expected, check_less_precise=True)
 except AssertionError as ae:
@@ -209,7 +198,6 @@ actual.sort_values(by=sort_list,
                     inplace=True,
                     ignore_index=True)
 
-# assert no changes
 expected_file = os.path.join(EXPECTED_DIR, 'get_bus.parquet')
 expected = geopandas.read_parquet(expected_file)
 try:
@@ -219,6 +207,7 @@ try:
 except AssertionError as ae:
     print(ae)
     actual.to_parquet(expected_file)
+
 
 # eco_services
 # hazards
@@ -232,13 +221,10 @@ actual.drop(columns=['OBJECTID'], inplace=True)
 actual.sort_values(by=['KEY_FIELD', 'geometry', 'REGISTRY_ID'],
                    inplace=True,
                    ignore_index=True)
-#actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_FRS_ACRES.parquet'))
 
-# assert no changes
 expected_file = os.path.join(EXPECTED_DIR, 'get_FRS_ACRES.parquet')
 expected = geopandas.read_parquet(expected_file)
 expected['ACCURACY_VALUE'] = expected['ACCURACY_VALUE'].astype('int32')
-
 try:
     assert_geodataframe_equal(actual, expected)
 except AssertionError as ae:
@@ -252,9 +238,7 @@ actual.sort_values(by=['EPA_REGISTRY_ID', 'geometry', 'FACILITY_NAME'],
                    inplace=True,
                    ignore_index=True)
 
-# assert no changes
 expected = test_tech.expected_32('get_tri.parquet')
-
 try:
     assert_geodataframe_equal(actual, expected, normalize=True)
 except AssertionError as ae:
@@ -271,9 +255,9 @@ actual = tornadoes.get_tornadoes(aoi_gdf)
 
 # Sorted so expeccted doesn't have to be
 actual = actual.sort_values(by=['geometry', 'date'], ignore_index=True)
+
 expected_file = os.path.join(EXPECTED_DIR, 'get_tornaodes_aoi.parquet')
 expected = geopandas.read_parquet(expected_file)
-
 try:
     assert_geodataframe_equal(actual, expected)
 except AssertionError as ae:
@@ -283,17 +267,14 @@ except AssertionError as ae:
 ###test_process_tornadoes_aoi()
 actual = tornadoes.process_tornadoes(actual, aoi_gdf)
 
-# save for now (sorted so expeccted doesn't have to be)
+# Sorted so expeccted doesn't have to be
 actual = actual.sort_values(by=['TornNo', 'Date'], ignore_index=True)
-#actual.to_file(os.path.join(EXPECTED_DIR, 'process_tornaodes_aoi.shp'))
-#actual.to_parquet(os.path.join(EXPECTED_DIR, 'process_tornaodes_aoi.parquet'))
 
 # check columns
 expected_cols = ['Year', 'Date', 'TornNo', 'Magnitude', 'geometry']
 missing_cols = set(expected_cols) - set(actual.columns)
 assert not missing_cols, f"Columns missing: {', '.join(missing_cols)}"
 
-# assert no changes
 expected_file = os.path.join(EXPECTED_DIR, 'process_tornaodes_aoi.parquet')
 expected = geopandas.read_parquet(expected_file)
 expected = expected.sort_values(by=['TornNo', 'Date'], ignore_index=True)
@@ -301,7 +282,6 @@ expected['Date'] = expected['Date'].astype('datetime64[ms]')
 field_list = ['Year', 'TornNo', 'Magnitude', 'wid']
 for i in range(len(field_list)):
     expected[field_list[i]] = expected[field_list[i]].astype('int32')
-
 try:
     assert_geodataframe_equal(actual,
                                 expected,
@@ -322,12 +302,6 @@ actual.reset_index(drop=True, inplace=True)
 
 expected_file = os.path.join(EXPECTED_DIR, 'cyclones_aoi.parquet')
 expected = geopandas.read_parquet(expected_file)
-
-# Deal with int 32 vs 64
-#field_list = ['USA_WIND', 'USA_PRES', 'year', 'month', 'day']
-#for i in range(len(field_list)):
-#    expected[field_list[i]] = expected[field_list[i]].astype('int32')
-
 try:
     assert_geodataframe_equal(actual, expected)
 except AssertionError as ae:
