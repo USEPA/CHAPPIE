@@ -140,7 +140,7 @@ def get_BEACON_by_id(beachids, year=2024):
     Parameters
     ----------
     beachids : [str] | str
-        BEACON Beach ID.
+        BEACON BEACH_ID.
     year : int | str, optional
         Year to get BEACON information for. The default is 2024.
 
@@ -165,51 +165,64 @@ def get_BEACON_by_id(beachids, year=2024):
     dfs = []
 
     for beachid in beachids:
-        params = {"beach_id":beachid, "year":year}
-        res = requests.get(profile_url, params)  # Get html
-        # Read into table
-        res_table = pandas.read_html(res.content, flavor='bs4')
+        try:
+            params = {"beach_id":beachid, "year":year}
+            res = requests.get(profile_url, params)  # Get html
+            # Read into table
+            res_table = pandas.read_html(res.content, flavor='bs4')
 
-        # General info
-        for tbl in range(0, len(res_table)+1):
-            # Note: we +1 to error if it doesn't find
-            if res_table[tbl][0][0]=="General and Map":
-                # Currentlt skips col:
-                #'Percent of Swim Season Days for the effective year that do not
-                # have a Beach Action (advisory, closure, etc.)'
-                cols = res_table[tbl][0][2:16]
-                row = res_table[tbl][1][2:16]
-                break  # Once found stop looping over tables
+            # General info
+            for tbl in range(0, len(res_table)+1):
+                # Note: we +1 to error if it doesn't find
+                if res_table[tbl][0][0]=="General and Map":
+                    # Currentlt skips col:
+                    #'Percent of Swim Season Days for the effective year that do not have a Beach Action (advisory, closure, etc.)'
+                    cols = res_table[tbl][0][2:16]
+                    row = res_table[tbl][1][2:16]
+                    break  # Once found stop looping over tables
 
-        # TODO: fixup cols by splitting at ":"
-        # SKIP: Links to Additional Data Reports
-        # SKIP: Swim Season and Water Quality Monitoring Frequency
-        # SKIP: WQS Criteria Names and Values
-        # SKIP: Local Action Decision Procedures
-        # SKIP: Advisories
+            # TODO: fixup cols by splitting at ":"
+            # SKIP: Links to Additional Data Reports
+            # SKIP: Swim Season and Water Quality Monitoring Frequency
+            # SKIP: WQS Criteria Names and Values
+            # SKIP: Local Action Decision Procedures
+            # SKIP: Advisories
 
-        # Location - loop over a few of the tables to find the right one
-        for tbl in range(11, len(res_table)+1):
-            # Note: we +1 to error if it doesn't find
-            additions = parse_table(res_table[tbl], 'Location', 'Start Latitude:')
-            if additions is not None:
-                cols = pandas.concat([cols, additions[0]], ignore_index=True)
-                row = pandas.concat([row, additions[1]], ignore_index=True)
-                break
+            # Location - loop over a few of the tables to find the right one
+            for tbl in range(11, len(res_table)+1):
+                # Note: we +1 to error if it doesn't find
+                additions = parse_table(res_table[tbl], 'Location', 'Start Latitude:')
+                if additions is not None:
+                    cols = pandas.concat([cols, additions[0]], ignore_index=True)
+                    row = pandas.concat([row, additions[1]], ignore_index=True)
+                    break
 
-        # SKIP: Contact Information
+            # SKIP: Contact Information
 
-        # Renames (drop colon)
-        cols = [col.strip(':') for col in cols]
-        # Build df from lists
-        df = pandas.DataFrame([row])
-        df.columns = cols
-        dfs+=[df]  # Add to list of resulting tables
+            # Renames (drop colon)
+            cols = [col.strip(':') for col in cols]
+            # Build df from lists
+            df = pandas.DataFrame([row])
+            df.columns = cols
+            dfs+=[df]  # Add to list of resulting tables
+        except Exception as E:
+            # TODO: this needs better handling
+            # IndexError - tends to be when site not longer has a website
+            # ValueError - ?
+            print(beachid)
+            print(E)
 
     out_df = pandas.concat(dfs)  # combine
     # Replace '-' with numpy.nan
     for col in out_df.columns:
         out_df.loc[out_df[col]=='-', col] = nan
+
+    # Fix up Beach ID index field
+    for col_name in ["Beach ID", "Beach Id"]:
+        if col_name in out_df.columns:
+            beach_id_col = col_name
+    out_df["BEACH_ID"] = out_df[beach_id_col]
+
     return out_df
 
 
