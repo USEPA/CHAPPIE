@@ -180,7 +180,7 @@ def get_county(aoi, in_crs=None):
     if isinstance(aoi, geopandas.GeoDataFrame):
         bbox = ",".join(map(str, aoi.total_bounds))
         if not in_crs:
-            in_crs = aoi.crs
+            in_crs = aoi.crs.to_epsg()
     elif isinstance(aoi, list):
         bbox = ",".join(map(str, aoi))
     else:
