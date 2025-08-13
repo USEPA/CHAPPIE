@@ -186,14 +186,14 @@ def get_county(aoi, in_crs=None):
     else:
         bbox = aoi
         # assert in_crs!=None?
-
+    # NOTE: NAME may have 'County' in it whereas BASENAME is short version
     query_params = {
         "geometry": bbox,
         "geometryType": "esriGeometryEnvelope",
         "spatialRel": "esriSpatialRelIntersects",
         "inSR": in_crs,
         "returnGeometry": "false",
-        "outFields": ", ".join(["GEOID", "NAME"]),
+        "outFields": ", ".join(["GEOID", "BASENAME"]),
     }
 
     return feature_layer.query(**query_params)
