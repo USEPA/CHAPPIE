@@ -1,5 +1,5 @@
 """
-Test education assets 
+Test get and process Regrid parcels.
 
 @author: tlomba01
 """

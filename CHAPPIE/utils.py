@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Module to query regrid API.
+"""Module to query Regrid API.
 
 @author: tlomba01
 """
 import os
-import geopandas
 from CHAPPIE import layer_query
 
 _regrid_base_url = "https://fs.regrid.com/"
@@ -21,7 +20,7 @@ def get_regrid(aoi, api_key=None):
     Returns
     -------
     geopandas.GeoDataFrame
-        GeoDataFrame for Hospital locations.
+        GeoDataFrame for Regrid parcels within AOI bounding box.
 
     """
     
@@ -37,5 +36,19 @@ def get_regrid(aoi, api_key=None):
                                 in_crs=aoi.crs.to_epsg())
     
 def process_regrid(regrid_gdf):
+    """Convert Regrid parcel geometry from Polygon to Point centroid.
+
+    Parameters
+    ----------
+    aoi : geopandas.GeoDataFrame
+        GeoDataFrame for Regrid parcels (polygons) within AOI bounding box.
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame for Regrid parcels (centroid points) within AOI bounding box.
+
+    """
     regrid_gdf.geometry = regrid_gdf.geometry.centroid
+    
     return regrid_gdf
