@@ -104,17 +104,34 @@ def get_water_access(aoi):
     aoi : geopandas.GeoDataFrame
         Lines for BEACON water access sites.
     """
-    df_ids = get_BEACON_ids()
-    # Get aoi county FIPS
-    county_names = layer_query.get_county(aoi)['NAME'].to_list()
-    state_abrevs = layer_query.getState(aoi)['STUSAB'].to_list()
-    #subset by state and county columns
-    st_df = df_ids[df_ids.BEACH_STATE.isin(state_abrevs)]
-    beach_ids = st_df[st_df.BEACH_COUNTY.isin(county_names)]["BEACH_ID"].to_list()
-    # get all the locations for those beach_ids
-    gdf_beacon = get_BEACON_by_id(beach_ids)
+    df_ids = get_BEACON_ids()  # Get a complete table
+
+    # Clean up county names in table
+    cnty_col = "BEACH_COUNTY"
+    # Drop all where county is NAN (all had a state assigned)
+    df_ids = df_ids[df_ids.BEACH_COUNTY.notna()]
+    # Note: 16 counties included "{BASENAME} COUNTY", mask by those
+    cond = [x for x in df_ids.BEACH_COUNTY.unique() if x.endswith(" COUNTY")]
+    mask = df_ids.BEACH_COUNTY.isin(cond)
+    # Update (drop end of str) using mask
+    df_ids.loc[mask, cnty_col] = [x[:-7] for x in df_ids.loc[mask, cnty_col]]
+
+    # Get aoi counties
+    counties = layer_query.get_county(aoi)
+    # Get all county names in upper case
+    county_names = [name.upper() for name in counties['BASENAME'].to_list()]
+    st_abrevs = layer_query.getState(counties['GEOID'].to_list())['STUSAB'].to_list()
+
+    # Subset BEACON table by state/county
+    st_df = df_ids[df_ids.BEACH_STATE.isin(st_abrevs)]  # Subset by state
+    beach_ids = st_df[st_df[cnty_col].isin(county_names)]["BEACH_ID"].to_list()
+
+    # get all the info for those beach_ids
+    beacon_df = get_BEACON_by_id(beach_ids)
+    # creat lines from the start/end points
+    beacon_gdf = points_BEACON(beacon_df, crs_out=aoi.crs)
     #subset those location by clipping them to the aoi
-    gdf = gdf_beacon.clip(aoi)
+    gdf = beacon_gdf.clip(aoi)
 
     return gdf
 
@@ -129,7 +146,7 @@ def get_BEACON_ids(date='20240228'):
 
     date_match = re.search(r"\(([^()]+)\)", chngs.iloc[0, 1])
     if date_match:
-        print(f"Beach attribute information was last updated on {date_match.group(1)}\n")
+        print(f"Beach attribute information last updated {date_match.group(1)}\n")
 
     return beaches
 
@@ -175,8 +192,9 @@ def get_BEACON_by_id(beachids, year=2024):
             for tbl in range(0, len(res_table)+1):
                 # Note: we +1 to error if it doesn't find
                 if res_table[tbl][0][0]=="General and Map":
-                    # Currentlt skips col:
-                    #'Percent of Swim Season Days for the effective year that do not have a Beach Action (advisory, closure, etc.)'
+                    # Currently skips col:
+                    #'Percent of Swim Season Days for the effective year that do
+                    # not have a Beach Action (advisory, closure, etc.)'
                     cols = res_table[tbl][0][2:16]
                     row = res_table[tbl][1][2:16]
                     break  # Once found stop looping over tables
