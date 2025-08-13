@@ -71,4 +71,12 @@ def test_get_trails():
                               check_less_precise=True)
 
 def test_get_water_access():
-    actual = recreation.get_water_access(aoi_gdf)
+    actual = recreation.get_water_access(aoi_gdf_sa)
+
+    # drop point objects as they'll have trouble as parquet (intermediate)
+    actual.drop(columns=["pnt1", "pnt2"], inplace=True)
+
+    expected_file = os.path.join(EXPECTED_DIR, 'get_BEACON.parquet')
+    expected = geopandas.read_parquet(expected_file)
+
+    assert_geodataframe_equal(actual, expected)
