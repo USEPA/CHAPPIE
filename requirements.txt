@@ -8,3 +8,4 @@ pyarrow>=1.0.1  #dev?
 requests
 numpy<2.0
 openpyxl
+html5lib
