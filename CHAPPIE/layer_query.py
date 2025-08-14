@@ -449,8 +449,6 @@ class ESRILayer(object):
                 raise KeyError("Option '{k}' not recognized, check parameters")
 
         if ('fs.regrid.com') in self._baseurl:
-            # TODO: pop out return count true?
-            self._basequery["outFields"] = "id,geoid,parcelnumb,fema_flood_zone"
             self._basequery["outSR"] = 4326
             self._basequery["orderByFields"] = 'parcelnumb'
             keys_to_delete = [k for k, v in self._basequery.items() if not v]

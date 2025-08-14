@@ -33,7 +33,8 @@ def get_regrid(aoi, api_key=None):
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
                                 layer=0,
-                                in_crs=aoi.crs.to_epsg())
+                                in_crs=aoi.crs.to_epsg(),
+                                out_fields="id,geoid,parcelnumb,fema_flood_zone")
     
 def process_regrid(regrid_gdf):
     """Convert Regrid parcel geometry from Polygon to Point centroid.
