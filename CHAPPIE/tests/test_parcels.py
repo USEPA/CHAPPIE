@@ -7,7 +7,7 @@ Test get and process Regrid parcels.
 # import os
 # import geopandas
 # from geopandas.testing import assert_geodataframe_equal
-# from CHAPPIE import utils
+# from CHAPPIE import parcels
 
 
 # # CI inputs/expected
