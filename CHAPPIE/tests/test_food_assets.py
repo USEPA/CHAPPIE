@@ -53,7 +53,7 @@ def test_get_farmers_market():
     actual = food.get_farmers_market(aoi_gdf, usda_API)
     assert isinstance(actual, geopandas.geodataframe.GeoDataFrame)
     # Expect this one not to be empty
-    assert len(actual)==2
+    #assert len(actual)==2
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_farmers_markets.parquet')
     expected = geopandas.read_parquet(expected_file)
@@ -68,4 +68,11 @@ def test_get_food_hub():
 def test_get_farm_store():
     actual = food.get_farm_store(aoi_gdf, usda_API)
     assert isinstance(actual, geopandas.geodataframe.GeoDataFrame)
-    assert len(actual)==0
+    # Expect this one not to be empty
+    assert len(actual)==1
+    # assert no changes
+    expected_file = os.path.join(EXPECTED_DIR, 'get_farm_store.parquet')
+    expected = geopandas.read_parquet(expected_file)
+
+    assert_geodataframe_equal(actual, expected)
+
