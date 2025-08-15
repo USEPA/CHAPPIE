@@ -32,6 +32,8 @@ def test_get_padus():
     expected_file = os.path.join(EXPECTED_DIR, 'padus.parquet')
     expected = geopandas.read_parquet(expected_file)
 
+    expected['GIS_Acres'] = expected['GIS_Acres'].astype('int32')
+
     assert_geodataframe_equal(actual,
                               expected,
                               check_less_precise=True)
