@@ -163,8 +163,9 @@ def getTract(aoi, year="Current"):
 
     return feature_layer.query(**query_params)
 
-def getCounty(aoi):
+def get_county(aoi, in_crs=None):
     """Get the GEOID and county intersecting polygon extent."""
+    #TODO: how much of this could leverage get_bbox()?
     # Build ESRI layer object to query
     baseurl = f"{_tiger_url}/tigerWMS_Census2010/MapServer"
     layer = 100  # County _id
@@ -175,12 +176,24 @@ def getCounty(aoi):
     # TODO: it was coming back empty so I transformed to layer CRS - EPSG 3857
     # and dropped "inSR": aoi.CRS.to_json(),
     # query from aoi object
+    # if geodataframe get bbox str
+    if isinstance(aoi, geopandas.GeoDataFrame):
+        bbox = ",".join(map(str, aoi.total_bounds))
+        if not in_crs:
+            in_crs = aoi.crs.to_epsg()
+    elif isinstance(aoi, list):
+        bbox = ",".join(map(str, aoi))
+    else:
+        bbox = aoi
+        # assert in_crs!=None?
+    # NOTE: NAME may have 'County' in it whereas BASENAME is short version
     query_params = {
-        "geometry": ",".join(map(str, aoi.bbox)),
+        "geometry": bbox,
         "geometryType": "esriGeometryEnvelope",
         "spatialRel": "esriSpatialRelIntersects",
+        "inSR": in_crs,
         "returnGeometry": "false",
-        "outFields": ", ".join(["GEOID", "NAME"]),
+        "outFields": ", ".join(["GEOID", "BASENAME"]),
     }
 
     return feature_layer.query(**query_params)
