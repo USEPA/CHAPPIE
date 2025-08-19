@@ -43,7 +43,7 @@ jobs:
           GEOCODE_API_KEY: ${{ secrets.GEOCODE_API_KEY }}
           REGRID_API_KEY: ${{ secrets.REGRID_API_KEY }}
         run: |
-          pytest -s CHAPPIE
+          #pytest -v -s CHAPPIE
           pytest --junitxml=pytest.xml \
           --cov-report=term-missing:skip-covered \
           --cov=CHAPPIE tests/ | tee pytest-coverage.txt
