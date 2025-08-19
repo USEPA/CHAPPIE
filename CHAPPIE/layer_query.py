@@ -361,10 +361,13 @@ def _get_count_only(feature_layer, count_query_params):
     # Return count only
     count_query_params["returnCountOnly"] = "True"
     # Run query
-    datadict = feature_layer.query(raw=True, **count_query_params)
-    count = datadict["count"]
-
-    return count
+    try: 
+        datadict = feature_layer.query(raw=True, **count_query_params)
+        count = datadict["count"]        
+        return count
+    except requests.exceptions.HTTPError as e:
+        warnings.warn(f"Error: {e}")
+        return False
 
 
 class ESRILayer(object):
@@ -450,18 +453,32 @@ class ESRILayer(object):
         kwargs = {"".join(k.split("_")): v for k, v in kwargs.items()}
 
         # construct query string
+        # Need to skip deepcopy for regrid because it doesn't want all those extra query params
         self._basequery = copy.deepcopy(_basequery)
         for k, v in kwargs.items():
             try:
                 self._basequery[k] = v
             except KeyError:
                 raise KeyError("Option '{k}' not recognized, check parameters")
+
+        if ('fs.regrid.com') in self._baseurl:
+            self._basequery["outSR"] = 4326
+            self._basequery["orderByFields"] = 'parcelnumb'
+            keys_to_delete = [k for k, v in self._basequery.items() if not v]
+            for key in keys_to_delete:
+                del self._basequery[key]
         qstr = "&".join([f"{k}={v}" for k, v in self._basequery.items()])
         self._last_query = self._baseurl + "/query?" + qstr
         # Note: second condition to not overide raw
         if kwargs.get("returnGeometry", "true") == "True" and raw is False:
             try:
-                return geopandas.read_file(self._last_query + "&f=geojson")
+                if ('fs.regrid.com') in self._baseurl:
+                    resp = requests.get(self._last_query + "&f=geojson")
+                    resp.raise_for_status()
+                    datadict = resp.json()
+                    return geopandas.GeoDataFrame.from_features(datadict)
+                else:
+                    return geopandas.read_file(self._last_query + "&f=geojson")
             except requests.exceptions.HTTPError as e:
                 # TODO: this needs improvement, but getting url is good for debug
                 print(self._last_query())

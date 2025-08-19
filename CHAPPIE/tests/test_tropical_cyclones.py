@@ -24,7 +24,6 @@ TEST_DIR = os.path.join(DIRPATH, 'results')  # test results (have to create)
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 aoi_gdf = geopandas.read_file(AOI)
 
-
 @pytest.fixture(scope='session')
 def get_cyclones():
     actual = tropical_cyclones.get_cyclones(aoi_gdf)
@@ -54,8 +53,15 @@ def test_get_cyclones(get_cyclones: DataFrame):
     return actual
 
 
-def test_process_cyclones(get_cyclones: DataFrame):
-    actual = tropical_cyclones.process_cyclones(get_cyclones, aoi_gdf)
+@pytest.fixture(scope="session")
+def static_cyclones():
+    expected_file = os.path.join(EXPECTED_DIR, 'cyclones_aoi_static.parquet')
+    return geopandas.read_parquet(expected_file)
+
+
+def test_process_cyclones(static_cyclones: DataFrame):
+
+    actual = tropical_cyclones.process_cyclones(static_cyclones, aoi_gdf)
 
     # save to results
     #actual.to_file(os.path.join(TEST_DIR, 'cyclones_processed_1851_2022.shp'))
@@ -70,9 +76,9 @@ def test_process_cyclones(get_cyclones: DataFrame):
 
     # save to results
     #actual.to_parquet(expected_file)
-    field_list = ['WindSpdKts', 'PressureMb', 'Year', 'month', 'day']
-    for i in range(len(field_list)):
-        expected[field_list[i]] = expected[field_list[i]].astype('int32')
+    #field_list = ['WindSpdKts', 'PressureMb', 'Year', 'month', 'day']
+    #for i in range(len(field_list)):
+    #    expected[field_list[i]] = expected[field_list[i]].astype('int32')
 
     assert_geodataframe_equal(actual,
                               expected,
