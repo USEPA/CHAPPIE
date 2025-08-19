@@ -39,10 +39,9 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          pytest --cov --cov=CHAPPIE \
+          pytest --junitxml=pytest.xml \
           --cov-report=term-missing:skip-covered \
-          --junitxml=pytest.xml \
-          tests/ | tee pytest-coverage.txt
+          --cov=CHAPPIE tests/ | tee pytest-coverage.txt
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
