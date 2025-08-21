@@ -31,5 +31,5 @@ dev = { file = ["requirements-dev.txt"] }
 select = ["E", "F", "W", "I"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["harmonize_wq"]
+known-first-party = ["CHAPPIE"]
 
