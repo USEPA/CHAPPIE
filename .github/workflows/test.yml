@@ -28,11 +28,11 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
 
       # Runs a single command using the runners shell
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       
@@ -54,6 +54,7 @@ jobs:
         env:
           usda_API: ${{ secrets.USDA_KEY1 }}
           GEOCODE_API_KEY: ${{ secrets.GEOCODE_API_KEY }}
+          REGRID_API_KEY: ${{ secrets.REGRID_API_KEY }}
         run: pytest -v -s CHAPPIE
 
       # upload artifact if results of run are needed, e.g., for freeze, deploy, etc.

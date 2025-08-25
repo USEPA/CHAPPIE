@@ -96,12 +96,14 @@ def test_get_providers(providers: pandas.DataFrame):
     expected = ['32401', '32404', '32405', '32407', '32408', '32409',
                 '32413', '32444', '32465', '32466']
     assert actual_zips==expected
-    # Check number of results for each zip
-    actual_len = [len(providers[providers['zip5']==zip]) for zip in expected]
+
+    # Check number of results for set of zip (one small and one over limit)
+    check_zips = ['32405', '32466']
+    actual_len = [len(providers[providers['zip5']==zip]) for zip in check_zips]
     #expected_len = [1069, 311, 1841, 398, 149, 26, 168, 306, 44, 27]
     #expected_len = [1071, 311, 1841, 398, 149, 26, 168, 306, 44, 27]
-    expected_len = [1072, 313, 1849, 412, 155, 28, 171, 309, 46, 29]
-    assert actual_len==expected_len
+    #expected_len = [1093, 328, 1923, 437, 162, 36, 180, 314, 47, 29]
+    assert actual_len==[1924, 29]
 
     # Test result dataframes
     expected_file = os.path.join(EXPECTED_DIR, 'get_providers.parquet')

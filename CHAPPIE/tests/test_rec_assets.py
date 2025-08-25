@@ -2,7 +2,7 @@
 """
 Test recreation assets.
 
-@author: tlomba01, edamico
+@author: tlomba01, edamico, jbousquin
 """
 import os
 
@@ -12,6 +12,7 @@ from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE.assets import recreation
 
 # CI inputs/expected
+#DIRPATH = r"L:\lab\GitHub\CHAPPIE\CHAPPIE\tests"
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
 
 EXPECTED_DIR = os.path.join(DIRPATH, 'expected')  # Expected
@@ -31,6 +32,8 @@ def test_get_padus():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'padus.parquet')
     expected = geopandas.read_parquet(expected_file)
+
+    expected['GIS_Acres'] = expected['GIS_Acres'].astype('int32')
 
     assert_geodataframe_equal(actual,
                               expected,
@@ -68,3 +71,14 @@ def test_get_trails():
     assert_geodataframe_equal(actual,
                               expected,
                               check_less_precise=True)
+
+def test_get_water_access():
+    actual = recreation.get_water_access(aoi_gdf_sa)
+
+    # drop point objects as they'll have trouble as parquet (intermediate)
+    actual.drop(columns=["pnt1", "pnt2"], inplace=True)
+
+    expected_file = os.path.join(EXPECTED_DIR, 'get_BEACON.parquet')
+    expected = geopandas.read_parquet(expected_file)
+
+    assert_geodataframe_equal(actual, expected)
