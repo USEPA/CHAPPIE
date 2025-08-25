@@ -8,3 +8,6 @@ pyarrow>=1.0.1  #dev?
 requests
 numpy<2.0
 py7zr
+openpyxl
+html5lib
+beautifulsoup4
