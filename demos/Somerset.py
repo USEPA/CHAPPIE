@@ -22,6 +22,7 @@ from CHAPPIE.assets import (
 #from CHAPPIE.endpoints import hazard_losses
 from CHAPPIE.hazards import flood, technological, tornadoes, tropical_cyclones, weather
 from CHAPPIE.household import svi
+from CHAPPIE.layer_query import get_county
 
 main_dir = r"L:\lab\SHC_1012\Crisfield, Maryland\Data"
 out_dir = os.path.join(main_dir, "auto_download")
@@ -33,7 +34,7 @@ assets_dict = {}
 hazards_dict = {}
 house_dict = {}
 
-# API Key handling
+# API Key handling (other users may way to switch these out here)
 usda_API = os.environ['usda_API']
 
 # Start by getting intersecting parcels to relate all characteristics to
@@ -42,10 +43,16 @@ parcel_gdf = parcels.get_regrid(aoi_gdf)
 parcel_centroids =  parcels.process_regrid(parcel_gdf)
 
 # Get household level characteristics
+# Get intersecting county
+county_FIPS = get_county(parcel_gdf, 4326)['GEOID'].to_list()
 # Get svi metrics
-house_dict["svi"] = svi.get_SVI('12033',
-                                level='block group',
-                                year=2022)
+dfs = []
+for geoid in county_FIPS:
+    dfs.append(svi.get_SVI(geoid,
+                           level='block group',
+                           year=2023))
+house_dict["svi"] = pandas.concat(dfs)
+
 # Get flood hazard
 hazards_dict["flood_FEMA"] = flood.get_fema_nfhl(parcel_gdf)
 #TODO: requires parcels first
