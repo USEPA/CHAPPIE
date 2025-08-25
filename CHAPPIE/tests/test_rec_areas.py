@@ -23,7 +23,7 @@ aoi_gdf_sa = geopandas.read_file(AOI_MIT_BANK_SA)
 def test_get_recAreas():
     actual = recreationalAreas.process_recreationalArea(aoi_gdf_sa)
     actual.sort_values(by=['NAME', 'geometry'], inplace=True, ignore_index=True)
-    actual.to_parquet(os.path.join(EXPECTED_DIR, 'recArea.parquet'))
+    #actual.to_parquet(os.path.join(EXPECTED_DIR, 'recArea.parquet'))
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'recArea.parquet')
