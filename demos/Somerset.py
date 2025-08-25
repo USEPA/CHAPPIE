@@ -36,10 +36,45 @@ house_dict = {}
 # API Key handling
 usda_API = os.environ['usda_API']
 
-# Get intersecting parcels
+# Start by getting intersecting parcels to relate all characteristics to
 parcel_gdf = parcels.get_regrid(aoi_gdf)
+# Get a generalized representation to join results to
 parcel_centroids =  parcels.process_regrid(parcel_gdf)
 
+# Get household level characteristics
+# Get svi metrics
+house_dict["svi"] = svi.get_SVI('12033',
+                                level='block group',
+                                year=2022)
+# Get flood hazard
+hazards_dict["flood_FEMA"] = flood.get_fema_nfhl(parcel_gdf)
+#TODO: requires parcels first
+# flood.get_flood()
+# Get hazards
+in_crs = 'ESRI:102005'
+tornadoes_gdf = tornadoes.get_tornadoes(parcel_gdf.to_crs(in_crs))
+hazards_dict["tornadoes"] = tornadoes.process_tornadoes(parcel_gdf,
+                                                        parcel_gdf.to_crs(in_crs))
+cyclones = tropical_cyclones.get_cyclones(parcel_gdf.to_crs('ESRI:102005'))
+hazards_dict["tropical_cyclones"] = tropical_cyclones.process_cyclones(cyclones,
+                                                                       parcel_gdf.to_crs(in_crs))
+
+# Get weather hazards
+hazards_dict["heat"] = weather.get_heat_events(parcel_gdf)
+
+# Get hazard endpoints
+#hazards_dict["losses"] = hazard_losses.get_hazard_losses
+
+
+#Note: these may have spatial relations other than overlap (e.g., range)
+# Get tech hazards
+hazards_dict["superfund"] = technological.get_superfund_npl(parcel_gdf)
+hazards_dict["brownfields"] = technological.get_FRS_ACRES(parcel_gdf)
+hazards_dict["landfills"] = technological.get_landfills(parcel_gdf)
+hazards_dict["tri"] = technological.get_tri(parcel_gdf)
+
+# Get community level characteristics
+# Note: these will be accessed by networks
 # Get cultural assets
 assets_dict["historic_sites"] = cultural.get_historic(parcel_gdf)
 assets_dict["libraries"] = cultural.get_library(parcel_gdf)
@@ -70,40 +105,11 @@ assets_dict["hospitals"] = health.get_hospitals(parcel_gdf)
 #providers = health.get_providers(parcel_gdf)
 #assets_dict["providers"] = health.provider_address(providers)
 
+# NOTE: Ecosystem services characteristics may be access by other networks
 # Get hazard infrastructure assets
 assets_dict["dams"] = hazard_infrastructure.get_dams(parcel_gdf)
 assets_dict["levees"] = hazard_infrastructure.get_levee(parcel_gdf)
 
-# Get flood hazard
-hazards_dict["flood_FEMA"] = flood.get_fema_nfhl(parcel_gdf)
-#TODO: requires parcels first
-# flood.get_flood()
-
-# Get hazards
-in_crs = 'ESRI:102005'
-tornadoes_gdf = tornadoes.get_tornadoes(parcel_gdf.to_crs(in_crs))
-hazards_dict["tornadoes"] = tornadoes.process_tornadoes(parcel_gdf,
-                                                        parcel_gdf.to_crs(in_crs))
-cyclones = tropical_cyclones.get_cyclones(parcel_gdf.to_crs('ESRI:102005'))
-hazards_dict["tropical_cyclones"] = tropical_cyclones.process_cyclones(cyclones,
-                                                                       parcel_gdf.to_crs(in_crs))
-
-# Get weather hazards
-hazards_dict["heat"] = weather.get_heat_events(parcel_gdf)
-
-# Get tech hazards
-hazards_dict["superfund"] = technological.get_superfund_npl(parcel_gdf)
-hazards_dict["brownfields"] = technological.get_FRS_ACRES(parcel_gdf)
-hazards_dict["landfills"] = technological.get_landfills(parcel_gdf)
-hazards_dict["tri"] = technological.get_tri(parcel_gdf)
-
-# Get hazard endpoints
-#hazards_dict["losses"] = hazard_losses.get_hazard_losses
-
-# Get svi metrics
-house_dict["svi"] = svi.get_SVI('12033',
-                                level='block group',
-                                year=2022)
 
 #TODO: write QA txt
 cols = ["Table", "Column", "data_type", "min", "max", "mean/mode", "NaN_Count"]
