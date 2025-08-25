@@ -4,11 +4,12 @@ Test get and process Regrid parcels.
 @author: tlomba01
 """
 import os
+
 import geopandas
 import pytest
+
 #from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE import parcels
-
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -26,6 +27,7 @@ aoi_gdf = geopandas.read_file(AOI)
 def parcels_gdf():
     return parcels.get_regrid(aoi_gdf)
 
+
 def test_get_regrid(parcels_gdf: geopandas.GeoDataFrame):
     #actual.drop(columns=['FID'], inplace=True)
     parcels_gdf.sort_values(by=['geometry', 'geoid'], inplace=True, ignore_index=True)
@@ -40,10 +42,12 @@ def test_get_regrid(parcels_gdf: geopandas.GeoDataFrame):
     assert(len(parcels_gdf)==27338), f'{len(parcels_gdf)}!={27338}'
     # The assert below can be run locally if an expected file exists
     #assert_geodataframe_equal(parcels_gdf, expected)
-    
+
 
 def test_process_regrid(parcels_gdf: geopandas.GeoDataFrame):
     actual_centroids = parcels.process_regrid(parcels_gdf)
-    assert(len(parcels_gdf)==len(actual_centroids))
-    assert(len(actual_centroids[actual_centroids['geometry'].geom_type == 'Point'])==len(parcels_gdf))
-    assert(len(actual_centroids[actual_centroids['geometry'].geom_type == 'Polygon'])==0)
+    assert(len(parcels_gdf)==len(actual_centroids))  # Same number of rows
+    mask_points = actual_centroids['geometry'].geom_type == 'Point'
+    assert(len(actual_centroids[mask_points])==len(parcels_gdf))
+    mask_polys = actual_centroids['geometry'].geom_type == 'Polygon'
+    assert(len(actual_centroids[mask_polys])==0)
