@@ -9,6 +9,7 @@ import os
 import geopandas
 import pandas
 
+from CHAPPIE import utils
 from CHAPPIE.assets import (
     cultural,
     education,
@@ -17,6 +18,7 @@ from CHAPPIE.assets import (
     hazard_infrastructure,
     health,
 )
+
 #from CHAPPIE.endpoints import hazard_losses
 from CHAPPIE.hazards import flood, technological, tornadoes, tropical_cyclones, weather
 from CHAPPIE.household import svi
@@ -99,50 +101,6 @@ house_dict["svi"] = svi.get_SVI('12033',
                                         level='block group',
                                         year=2022)
 
-#TODO: write QA txt
-cols = ["Table", "Column", "data_type", "min", "max", "mean/mode", "NaN_Count"]
-df = pandas.DataFrame(columns=cols)
-for key, val in assets_dict.items():
-    if len(val)==0:
-        # Catch empty datsets where /0 will error
-        df.loc[len(df)] = [key, "NODATA", "NODATA", "NODATA", "NODATA", "NODATA", "NODATA"]
-    else:
-        for col in val.columns:
-            col_series = val[col]
-            col_type = col_series.dtype
-            try:
-                mean = sum(col_series)/len(col_series)
-            except TypeError:
-                mean = col_series.mode()
-            na = sum(col_series.isna())
-            try:
-                col_min = min(col_series.dropna())
-                col_max = max(col_series.dropna())
-            except TypeError:
-                col_min = "TYPE_ERROR"
-                col_max = "TYPE_ERROR"
-            except ValueError:
-                col_min = "VALUE_ERROR"
-                col_max = "VALUE_ERROR"
-            # Table, Column, dtype, min, max, mean, NaN
-            row = [key, col, col_type, col_min, col_max, mean, na]
-            df.loc[len(df)] = row
-# Write QAQC
-df.to_csv(os.path.join(out_dir, "assets2.csv"))
 
-# Write results
-for key, val in assets_dict.items():
-    if val.shape==(0,0):
-        # Skip empty
-        continue
-    if not os.path.exists(os.path.join(out_dir, key)):
-        os.makedirs(os.path.join(out_dir, key))
-    val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
-for key, val in hazards_dict.items():
-    if not os.path.exists(os.path.join(out_dir, key)):
-        os.makedirs(os.path.join(out_dir, key))
-    val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
-for key, val in house_dict.items():
-    if not os.path.exists(os.path.join(out_dir, key)):
-        os.makedirs(os.path.join(out_dir, key))
-    val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
+utils.write_QA(assets_dict, os.path.join(out_dir, "assets2.csv"))
+utils.write_results_dict(assets_dict, out_dir)
