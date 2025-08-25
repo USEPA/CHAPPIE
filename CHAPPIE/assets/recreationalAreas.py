@@ -1,7 +1,7 @@
 """
 Module for recreation areas
 
-@author:  edamico
+@author:  edamico, jbosquin
 """
 import os
 
