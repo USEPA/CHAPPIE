@@ -148,6 +148,22 @@ def preprocess(df_in):
     return df
 
 def get_SVI(geo, level='block group', year=2020):
+    """Get Social Vulnerability metrics for a given GEOIDs/FIPs
+
+    Parameters
+    ----------
+    geo : str
+        FIPS/GEOID for desired area
+    level : str, optional
+        Tract or Block Group resolution results, by default 'block group'
+    year : int, optional
+        ACS vintage (5-year), by default 2020
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        Results as geospatial data frame
+    """    
     assert level in ['tract', 'block group'], f'{level} not a recognized level'
     #format params from geo (query census BGs) or id?
     if len(geo)==5:
