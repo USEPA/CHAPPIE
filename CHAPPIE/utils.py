@@ -63,6 +63,7 @@ def write_results_dict(results_dict, out_dir):
         if val.shape==(0,0):
             # Skip empty
             continue
+        # Generating a folder for each because esri wanted it that way...
         if not os.path.exists(os.path.join(out_dir, key)):
             os.makedirs(os.path.join(out_dir, key))
         val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
