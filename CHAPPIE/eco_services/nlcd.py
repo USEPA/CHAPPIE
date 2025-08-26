@@ -3,7 +3,9 @@ Module for National Landcover Dataset (nlcd) metrics
 
 @author: jbousquin
 """
+import os
 from datetime import datetime
+from tempfile import TemporaryDirectory
 
 import requests
 import rioxarray
@@ -85,23 +87,14 @@ def get_NLCD(aoi, year, dataset="Land_Cover"):
         res = get_url(url, params)
         res.raise_for_status()  # Check response
 
-        # # Save result to D1
-        # out_file = os.path.join(self.D1, f"NLCD_{year}_{dataset}.tif")
-        # with open(out_file, "wb") as f:
-        #     f.write(res.content)
+        # # Save result to TempDir
+        with TemporaryDirectory as temp_dir:
+            out_file = os.path.join(temp_dir, f"NLCD_{year}_{dataset}.tif")
+            with open(out_file, "wb") as f:
+                f.write(res.content)
+            # Read in raster using rioxarray
+            rds = rioxarray.open_rasterio(out_file)
 
-        # if dataset == "Land_Cover":
-        #     # Vectorize and return gdf in memory
-        #     nlcd_gdf = vectorize(out_file, mask=self.geom["geometry"])
-        #     # Reproject to 3857
-        #     nlcd_gdf = nlcd_gdf.to_crs(3857)
-        #     # set it
-        #     self.set_NLCD(out_file, in_memory=nlcd_gdf)
-        #     return nlcd_gdf
-        # elif dataset in ["Tree_Canopy", "Impervious"]:
-
-        # Read in raster using rioxarray
-        rds = rioxarray.open_rasterio(res.content)
         if not rds.rio.crs:
             # TODO: confirm is none and make more robust?
             rds.rio.set_crs(f"EPSG:{out_crs}")
