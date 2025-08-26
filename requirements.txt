@@ -10,3 +10,4 @@ numpy<2.0
 openpyxl
 html5lib
 beautifulsoup4
+rioxarray
