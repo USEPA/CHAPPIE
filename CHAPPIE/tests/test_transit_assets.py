@@ -56,6 +56,9 @@ def test_get_bus():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_bus.parquet')
     expected = geopandas.read_parquet(expected_file)
+    # Update dtypes on desired columns
+    expected['download_date'] = expected['download_date'].astype('datetime64[ms]')
+
     assert_geodataframe_equal(actual,
                               expected,
                               check_less_precise=True)
