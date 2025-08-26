@@ -36,9 +36,9 @@ def get_NLCD(aoi, year, dataset="Land_Cover"):
         datasets = ["Land_Cover", "Impervious", "Tree_Canopy"]
         assert dataset in datasets, f"'{dataset}' not in NLCD datasets"
         # Make sure year parameter is usable
-        year = check_year(year, dataset)
+        year = check_year_NLCD(year, dataset)
 
-        bbox = aoi.total_bounds()
+        bbox = aoi.total_bounds
 
         # Create subset X and Y string from extent (minx, miny, maxx, maxy)
         subset = [
@@ -48,10 +48,10 @@ def get_NLCD(aoi, year, dataset="Land_Cover"):
         query_crs = aoi.crs.to_epsg()  # CRS for query
 
         # Determine landmass (based on FIPs state)
-        st_df = layer_query.getState(aoi)
-        if not set(st_df.ST_ABBR).isdisjoint(["AK", "HI", "PR"]):
+        st_df = layer_query.get_state_by_aoi(aoi)
+        if not set(st_df.STUSAB).isdisjoint(["AK", "HI", "PR"]):
             # TODO: not robust for multi: e.g., non-conus, or conus + non-conus
-            landmass = set(st_df.ST_ABBR).intersection(["AK", "HI", "PR"]).pop()
+            landmass = set(st_df.STUSAB).intersection(["AK", "HI", "PR"]).pop()
         else:
             landmass = "L48"
         # Determine serviceName
@@ -82,6 +82,7 @@ def get_NLCD(aoi, year, dataset="Land_Cover"):
 
         # Get response
         res = get_url(url, params)
+        res.raise_for_status()  # Check response
 
         # # Save result to D1
         # out_file = os.path.join(self.D1, f"NLCD_{year}_{dataset}.tif")
@@ -114,7 +115,7 @@ def get_NLCD(aoi, year, dataset="Land_Cover"):
         return band1
 
 
-def check_year(year, dataset):
+def check_year_NLCD(year, dataset):
     """
     Check a given year is available from different datasets
 
