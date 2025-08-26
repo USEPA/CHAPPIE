@@ -6,6 +6,7 @@ Module for National Landcover Dataset (nlcd) metrics
 from datetime import datetime
 
 import requests
+import rioxarray
 
 from CHAPPIE import layer_query
 
