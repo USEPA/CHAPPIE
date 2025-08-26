@@ -42,7 +42,7 @@ def test_write_QA(assets_results_dict: dict):
       contents = csv.read()
     assert len(contents)==7723, f'File content length mismatch: {len(contents)}'
 
-def write_results_dict(assets_results_dict: dict):
+def test_write_results_dict(assets_results_dict: dict):
   with TemporaryDirectory() as temp_dir:
     utils.write_results_dict(assets_results_dict, temp_dir)
     # Check for files
