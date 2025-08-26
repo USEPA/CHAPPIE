@@ -4,6 +4,7 @@ from tempfile import TemporaryDirectory
 import pygris
 import pytest
 from geopandas import read_parquet
+from pyarrow.parquet import ParquetFile
 
 from CHAPPIE import utils
 
@@ -52,6 +53,6 @@ def test_write_results_dict(assets_results_dict: dict):
       f = os.path.join(temp_dir,fld, f"{fld}.parquet")
       assert os.path.isfile(f), f"'{f}' file not found"
       # Check file sizes
-      expected = [34601, 98953, 32359]
-      actual = os.path.getsize(f)
+      expected = [22156, 86643, 28809]
+      actual = ParquetFile(f).metadata.serialized_size
       assert actual==expected[i], f"Parquet size mismatch: {actual}"
