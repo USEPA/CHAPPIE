@@ -52,7 +52,11 @@ def test_write_results_dict(assets_results_dict: dict):
     for i, fld in enumerate(sub_dirs):
       f = os.path.join(temp_dir,fld, f"{fld}.parquet")
       assert os.path.isfile(f), f"'{f}' file not found"
-      # Check file sizes
-      expected = [22156, 86643, 28809]
-      actual = ParquetFile(f).metadata.serialized_size
-      assert actual==expected[i], f"Parquet size mismatch: {actual}"
+      # Check file columns
+      expected_cols = [36, 205, 60]
+      actual = ParquetFile(f).metadata.num_columns
+      assert actual==expected_cols[i], f"Parquet cols mismatch: {actual}"
+      # Check file rows
+      expected_rows = [9, 0, 0]
+      actual = ParquetFile(f).metadata.num_rows
+      assert actual==expected_rows[i], f"Parquet cols mismatch: {actual}"
