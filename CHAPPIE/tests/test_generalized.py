@@ -1,9 +1,11 @@
 import os
+from tempfile import TemporaryDirectory
+
 import pygris
 import pytest
-from CHAPPIE import utils
-from tempfile import TemporaryDirectory
 from geopandas import read_parquet
+
+from CHAPPIE import utils
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
