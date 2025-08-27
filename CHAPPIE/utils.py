@@ -50,7 +50,7 @@ def write_QA(results_dict, out_csv_file):
     df.to_csv(out_csv_file)
 
 def write_results_dict(results_dict, out_dir):
-    """Write mutliple dataframe results as parquet to a folder
+    """Write multiple dataframe results as parquet to a folder
 
     Parameters
     ----------
