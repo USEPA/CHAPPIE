@@ -5,18 +5,19 @@ Created on Fri Oct 23 10:36:03 2020
 
 @author: jbousqui
 """
-import os
 import copy
-import math
-import zipfile
-import urllib.request
-import requests
-import pandas
-import geopandas
 import json
-from io import BytesIO
+import math
+import os
+import urllib.request
 import warnings
+import zipfile
+from io import BytesIO
 from time import sleep
+
+import geopandas
+import pandas
+import requests
 
 _basequery = {
     "where": "",  # sql query component
@@ -84,7 +85,7 @@ def get_from_zip(url, expected_csvs, encoding="utf-8"):
     -------
         df : pandas.DataFrame
             Combined table of results from expected csv file(s).
-    """    
+    """
     # TODO: try except encoding instead?
     if isinstance(expected_csvs, str):
         expected_csvs = list(expected_csvs)
@@ -96,7 +97,7 @@ def get_from_zip(url, expected_csvs, encoding="utf-8"):
             with zip_file.open(filename) as extracted_file:
                 content = extracted_file.read()
                 dfs.append(pandas.read_csv(BytesIO(content), encoding=encoding))
-    df = pandas.concat(dfs, ignore_index=True) 
+    df = pandas.concat(dfs, ignore_index=True)
     return df
 
 
@@ -361,9 +362,9 @@ def _get_count_only(feature_layer, count_query_params):
     # Return count only
     count_query_params["returnCountOnly"] = "True"
     # Run query
-    try: 
+    try:
         datadict = feature_layer.query(raw=True, **count_query_params)
-        count = datadict["count"]        
+        count = datadict["count"]
         return count
     except requests.exceptions.HTTPError as e:
         warnings.warn(f"Error: {e}")
@@ -498,16 +499,16 @@ class ESRILayer(object):
 
 class ESRIImageService(object):
     """Fundamental building block to access an image in an ESRI Image Service"""
- 
+
     def __init__(self, baseurl, **kwargs):
         """
         Class representing an image service
- 
+
         Parameters
         ----------
         baseurl :   str
                     the url for the image service.
- 
+
         """
         if baseurl[:4] != 'http':
             baseurl = 'https://' + baseurl
@@ -515,18 +516,18 @@ class ESRIImageService(object):
         if hasattr(self, "_fields"):
             self.variables = pandas.DataFrame(self._fields)
         self._baseurl = baseurl
- 
+
     def __repr__(self):
         try:
             return "(ESRIImageService) " + self._name
         except:
             return ""
- 
+
     def computeStatHist(self, **kwargs):
         retry = 0
         # Parse args
         kwargs = {"".join(k.split("_")): v for k, v in kwargs.items()}
-       
+
         # construct query string
         self._baseComputeStatisticsHistograms = copy.deepcopy(_baseComputeStatisticsHistograms)
         for k, v in kwargs.items():
@@ -560,9 +561,9 @@ class ESRIImageService(object):
         # Moved to flood.py
         # except IndexError as e:
             # TODO: if response is empty, provide some metadata for the response, like a warning
-            # return 
-            
-    
+            # return
+
+
 def get_image_by_poly(aoi, url, row):
     # if geodataframe, get geometry of the row
     if isinstance(aoi, geopandas.GeoDataFrame):
@@ -578,8 +579,8 @@ def get_image_by_poly(aoi, url, row):
                 geometry_object = { "rings": rings,
                     "spatialReference": { "wkid": aoi.crs.to_epsg() }
                     }
-                    
-            elif geometry_type == "MultiPolygon": 
+
+            elif geometry_type == "MultiPolygon":
                 # Parse geodataframe polygon object to get coordinates
                 rings = data["features"][0]["geometry"]["coordinates"]
                 # Pull out polygons from exploded gdf and fit into rest syntax for rest request
@@ -592,7 +593,7 @@ def get_image_by_poly(aoi, url, row):
                     data = json.loads(json_string)
                     rings = data["features"][0]["geometry"]["coordinates"][0]
                     multipoly.append(rings)
-                
+
                 geometry_object = { "rings": multipoly,
                     "spatialReference": { "wkid": aoi.crs.to_epsg() }
                     }
@@ -603,10 +604,10 @@ def get_image_by_poly(aoi, url, row):
             print(e)
 
         if geometry_object:
-            try:    
+            try:
                 feature_layer = ESRIImageService(url)
                 # query
-                query_params = {       
+                query_params = {
                         "geometry": geometry_object,
                         "geometryType": "esriGeometryPolygon",
                         "f": "json"
