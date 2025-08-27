@@ -67,3 +67,40 @@ def write_results_dict(results_dict, out_dir):
         if not os.path.exists(os.path.join(out_dir, key)):
             os.makedirs(os.path.join(out_dir, key))
         val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
+
+
+def post_request(url, data):
+    """ Generate post request from url and data.
+
+    Parameters
+    ----------
+    url : str
+        URL for post request.
+    data : dict
+        Data dictionary for post request body.
+
+    Returns
+    -------
+    json
+        Post request response json.
+      
+    """
+    count = 0
+
+    while True:
+        try:
+            r = requests.post(url, data=data)
+            r.raise_for_status()
+            r_json = r.json()
+            return r_json
+        except requests.exceptions.ConnectionError as e:
+            count += 1
+            if count < 2:
+                warn(f"Connection error, count is {count}. Error: {e}")
+                time.sleep(5)
+                continue
+            else: 
+                return {"url": url, "status": "error", "reason": f"Connection error, {count} attempts", "text": ""}
+        except Exception as e:
+            warn(f"Response: {r}, Error: {e}")
+            return {"url": url, "data": data, "status": r.status_code}
