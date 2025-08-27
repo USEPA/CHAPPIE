@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Module to query and process tropical cyclone hazards
+
+@author: jbousquin, rennis
+"""
 import geopandas
 import os
 from CHAPPIE import layer_query
