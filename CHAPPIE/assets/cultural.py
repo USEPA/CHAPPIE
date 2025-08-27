@@ -6,6 +6,7 @@ Module for cultural assets
 import geopandas
 from numpy import nan
 from CHAPPIE import layer_query
+from CHAPPIE import utils
 
 
 IMLS_URL = "https://www.imls.gov/sites/default/files"
@@ -55,7 +56,7 @@ def get_library(aoi):
     expected_csvs = ["PLS_FY2022 PUD_CSV/PLS_FY22_AE_pud22i.csv",
                      "PLS_FY2022 PUD_CSV/pls_fy22_outlet_pud22i.csv"]
 
-    df = layer_query.get_from_zip(zip_url, expected_csvs, encoding="Windows-1252")
+    df = utils.get_from_zip(zip_url, expected_csvs, encoding="Windows-1252")
     
     geom = geopandas.points_from_xy(df['LATITUDE'], df['LONGITUD'])
     gdf = geopandas.GeoDataFrame(df, geometry=geom, crs=4326)
