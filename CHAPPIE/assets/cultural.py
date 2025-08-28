@@ -5,9 +5,8 @@ Module for cultural assets
 """
 import geopandas
 from numpy import nan
-from CHAPPIE import layer_query
-from CHAPPIE import utils
 
+from CHAPPIE import layer_query, utils
 
 IMLS_URL = "https://www.imls.gov/sites/default/files"
 
@@ -49,7 +48,7 @@ def get_library(aoi):
     -------
     geopandas.GeoDataFrame
         GeoDataFrame for library points within aoi.
-    """    
+    """
     # TODO: use refresh or parent url to identify latest?
     zip_url = f"{IMLS_URL}/2024-06/pls_fy2022_csv.zip"
 
@@ -57,7 +56,7 @@ def get_library(aoi):
                      "PLS_FY2022 PUD_CSV/pls_fy22_outlet_pud22i.csv"]
 
     df = utils.get_from_zip(zip_url, expected_csvs, encoding="Windows-1252")
-    
+
     geom = geopandas.points_from_xy(df['LATITUDE'], df['LONGITUD'])
     gdf = geopandas.GeoDataFrame(df, geometry=geom, crs=4326)
     gdf.to_crs(aoi.crs, inplace=True)  # Coerce to export crs
@@ -77,7 +76,7 @@ def get_museums(aoi):
     -------
     geopandas.GeoDataFrame
         GeoDataFrame for museum points within aoi.
-    """    
+    """
     zip_url = f"{IMLS_URL}/2018_csv_museum_data_files.zip"
 
     expected_csvs = ["MuseumFile2018_File1_Nulls.csv",
@@ -88,7 +87,7 @@ def get_museums(aoi):
     #TODO: null geom?
     df_geoms = df[['LATITUDE', 'LONGITUDE']].copy()
     df_geoms.replace(" ", nan, inplace=True)  # Must be able to coerce to float
-    
+
     geom = geopandas.points_from_xy(df_geoms['LATITUDE'], df_geoms['LONGITUDE'])
     gdf = geopandas.GeoDataFrame(df, geometry=geom, crs=4326)
     gdf.to_crs(aoi.crs, inplace=True)   # Coerce to export crs
@@ -114,7 +113,7 @@ def get_worship(aoi):
     url = 'https://services.arcgis.com/XG15cJAlne2vxtgt/ArcGIS/rest/services/All_Places_Of_Worship__HiFLD_Open_/FeatureServer'
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
-    
+
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
                                 layer=42,
