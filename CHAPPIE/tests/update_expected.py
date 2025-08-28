@@ -309,3 +309,27 @@ except AssertionError as ae:
 ###test_process_cyclones()
 
 ## Flood
+from CHAPPIE.hazards import flood
+
+### test_get_fema_nfhl()
+actual = flood.get_fema_nfhl(aoi_gdf)
+actual.drop(columns=['OBJECTID', 'VERSION_ID', 'STUDY_TYP', 'SFHA_TF',
+                        'STATIC_BFE', 'V_DATUM', 'DEPTH', 'LEN_UNIT',
+                        'VELOCITY', 'VEL_UNIT', 'DUAL_ZONE', 'SOURCE_CIT',
+                        'GFID', 'esri_symbology', 'GlobalID', 'Shape__Area',
+                        'Shape__Length'], inplace=True)
+actual.sort_values(by=['DFIRM_ID', 'FLD_AR_ID', 'geometry'],
+                   inplace=True,
+                   ignore_index=True)
+
+expected_file = os.path.join(EXPECTED_DIR, 'get_fema_nfhl.parquet')
+expected = geopandas.read_parquet(expected_file)
+
+try:
+    assert_geodataframe_equal(actual,
+                              expected,
+                              check_like=True,
+                              check_less_precise=True)
+except AssertionError as ae:
+    print(ae)
+    actual.to_parquet(expected_file)
