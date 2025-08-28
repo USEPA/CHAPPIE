@@ -8,11 +8,7 @@ Created on Fri Oct 23 10:36:03 2020
 import copy
 import json
 import math
-import os
-import urllib.request
 import warnings
-import zipfile
-from io import BytesIO
 from time import sleep
 
 import geopandas
@@ -58,47 +54,6 @@ _baseComputeStatisticsHistograms = {
 
 _tiger_url = "tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb"
 
-
-def get_zip(url, temp_file):
-    """Retaining  this retrive function here for now - but not in use."""
-    out_dir = os.path.dirname(temp_file)
-    urllib.request.urlretrieve(url, temp_file)  # Download zip
-
-    # Extract
-    with zipfile.ZipFile(temp_file, "r") as zip_ref:
-        zip_ref.extractall(out_dir)
-
-
-def get_from_zip(url, expected_csvs, encoding="utf-8"):
-    """Get csvs from zip as pandas.DataFrame.
-
-    Parameters
-    ----------
-        url : str
-            Uniform Resource Locator (URL) for the zip file.
-        expected_csvs : list | str
-            csv file(s) to retrieve from zip.
-        encoding : str, optional
-            Encoding for pandas to use. Defaults to "utf-8".
-
-    Returns
-    -------
-        df : pandas.DataFrame
-            Combined table of results from expected csv file(s).
-    """
-    # TODO: try except encoding instead?
-    if isinstance(expected_csvs, str):
-        expected_csvs = list(expected_csvs)
-    res = requests.get(url)
-    res.raise_for_status()  # exception if not OK
-    with zipfile.ZipFile(BytesIO(res.content)) as zip_file:
-        dfs = []
-        for filename in expected_csvs:
-            with zip_file.open(filename) as extracted_file:
-                content = extracted_file.read()
-                dfs.append(pandas.read_csv(BytesIO(content), encoding=encoding))
-    df = pandas.concat(dfs, ignore_index=True)
-    return df
 
 
 def getCRSUnits(CRS):
@@ -454,7 +409,7 @@ class ESRILayer(object):
         kwargs = {"".join(k.split("_")): v for k, v in kwargs.items()}
 
         # construct query string
-        # Need to skip deepcopy for regrid because it doesn't want all those extra query params
+        # For regrid: doesn't want all extra query params - could skip deepcopy
         self._basequery = copy.deepcopy(_basequery)
         for k, v in kwargs.items():
             try:
@@ -481,7 +436,7 @@ class ESRILayer(object):
                 else:
                     return geopandas.read_file(self._last_query + "&f=geojson")
             except requests.exceptions.HTTPError as e:
-                # TODO: this needs improvement, but getting url is good for debug
+                # TODO: needs improvement, but getting url is good for debug
                 print(self._last_query())
                 raise e
         resp = requests.get(self._last_query + "&f=json")
@@ -560,7 +515,7 @@ class ESRIImageService(object):
                     return {}
         # Moved to flood.py
         # except IndexError as e:
-            # TODO: if response is empty, provide some metadata for the response, like a warning
+            # TODO: if response is empty, provide response metadata in warning
             # return
 
 

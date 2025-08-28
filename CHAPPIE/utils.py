@@ -1,12 +1,72 @@
-
 # -*- coding: utf-8 -*-
 """Module with utility functions
 
 @author: jbousquin
 """
 import os
+import time
+import urllib.request
+import zipfile
+from io import BytesIO
+from warnings import warn
 
 import pandas
+import requests
+
+
+def get_zip(url, temp_file):
+    """Download and extract contants of zip file from url to specified directory
+
+    Note: this is used for download of full datasets (tornadoes and cyclones)
+
+    Parameters
+    ----------
+    url : str
+        url for zipfile download
+    temp_file : str
+        Directory to write contents of zip file to
+    """
+    out_dir = os.path.dirname(temp_file)
+    urllib.request.urlretrieve(url, temp_file)  # Download zip
+
+    # Extract
+    with zipfile.ZipFile(temp_file, "r") as zip_ref:
+        zip_ref.extractall(out_dir)
+
+
+def get_from_zip(url, expected_csvs, encoding="utf-8"):
+    """Get csvs from zip as pandas.DataFrame.
+
+    Note: this doesn't seem to be implemented anywhere
+
+    Parameters
+    ----------
+        url : str
+            Uniform Resource Locator (URL) for the zip file.
+        expected_csvs : list | str
+            csv file(s) to retrieve from zip.
+        encoding : str, optional
+            Encoding for pandas to use. Defaults to "utf-8".
+
+    Returns
+    -------
+        df : pandas.DataFrame
+            Combined table of results from expected csv file(s).
+    """
+    # TODO: try except encoding instead?
+    if isinstance(expected_csvs, str):
+        expected_csvs = list(expected_csvs)
+    res = requests.get(url)
+    res.raise_for_status()  # exception if not OK
+    with zipfile.ZipFile(BytesIO(res.content)) as zip_file:
+        dfs = []
+        for filename in expected_csvs:
+            with zip_file.open(filename) as extracted_file:
+                content = extracted_file.read()
+                dfs.append(pandas.read_csv(BytesIO(content), encoding=encoding))
+    df = pandas.concat(dfs, ignore_index=True)
+
+    return df
 
 
 def write_QA(results_dict, out_csv_file):
@@ -49,6 +109,7 @@ def write_QA(results_dict, out_csv_file):
     # Write QAQC
     df.to_csv(out_csv_file)
 
+
 def write_results_dict(results_dict, out_dir):
     """Write multiple dataframe results as parquet to a folder
 
@@ -83,7 +144,7 @@ def post_request(url, data):
     -------
     json
         Post request response json.
-      
+
     """
     count = 0
 
@@ -99,8 +160,11 @@ def post_request(url, data):
                 warn(f"Connection error, count is {count}. Error: {e}")
                 time.sleep(5)
                 continue
-            else: 
-                return {"url": url, "status": "error", "reason": f"Connection error, {count} attempts", "text": ""}
+            else:
+                return {"url": url,
+                        "status": "error",
+                        "reason": f"Connection error, {count} attempts",
+                        "text": ""}
         except Exception as e:
             warn(f"Response: {r}, Error: {e}")
             return {"url": url, "data": data, "status": r.status_code}
