@@ -25,7 +25,7 @@ aoi_gdf = geopandas.read_file(AOI)
 
 # get() as fixture to assure full dataset has been downloaded 1st
 #@pytest.fixture(scope='session')
-@pytest.mark.skip(reason="no change")
+@pytest.mark.skip(reason="Not implemented")
 def test_get_tornadoes_all():
     actual = tornadoes.get_tornadoes_all(DATA_DIR)
     #NOTE/TODO: 1950-2022-torn-aspath is too big to save in expected?
@@ -93,6 +93,7 @@ def test_get_tornadoes(get_tornadoes):
     return actual
 
 
+@pytest.mark.integration
 def test_process_tornadoes_aoi(get_tornadoes):
     actual = tornadoes.process_tornadoes(get_tornadoes, aoi_gdf)
 
@@ -120,6 +121,8 @@ def test_process_tornadoes_aoi(get_tornadoes):
                               check_like=True,
                               check_less_precise=True)
 
+
+@pytest.mark.unit
 def test_max_buffer():
     max_buffer = tornadoes.max_buffer()
     expected_max_buffer = 2092

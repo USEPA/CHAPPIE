@@ -8,7 +8,7 @@ import os
 
 import geopandas
 import pandas
-
+import pytest
 from geopandas.testing import assert_geodataframe_equal
 from pandas.testing import assert_series_equal
 
@@ -44,7 +44,7 @@ def test_get_dams():
                   'nidStorage', 'normalStorage', 'surfaceArea']
     for col in field_list:
         expected[col] = expected[col].astype('int32')
-    
+
     col_list = ["dataUpdated", "inspectionDate", "conditionAssessDate"]
     for col in col_list:
         expected[col] = expected[col].astype('datetime64[ms, UTC]')
@@ -60,7 +60,7 @@ def test_get_levees():
 
     expected_file = os.path.join(EXPECTED_DIR, 'levees.parquet')
     expected = geopandas.read_parquet(expected_file)
-    #int64: 'SYSTEM_ID', 'LEVEED_ID', 
+    #int64: 'SYSTEM_ID', 'LEVEED_ID',
     field_list = ['SEG_COUNT',
                   'Shape__Area', 'Shape__Length']
     for col in field_list:
@@ -68,13 +68,15 @@ def test_get_levees():
 
     assert_geodataframe_equal(actual, expected)
 
+
+@pytest.mark.integration
 def test_get_levee_pump_stations():
     levee_areas_df = pandas.read_parquet(EXPECTED_LEVEE_AREAS)  # Prep input
     actual = hazard_infrastructure.get_levee_pump_stations(levee_areas_df)
     #pandas.DataFrame(actual).to_parquet(os.path.join(EXPECTED_DIR, 'levee_pump_stations.parquet'))
     assert len(actual) == len(levee_areas_df)
     assert isinstance(actual, pandas.Series)
-    
+
     expected_file = os.path.join(EXPECTED_DIR, 'levee_pump_stations.parquet')
     expected_df = pandas.read_parquet(expected_file)
     expected = expected_df.squeeze("columns")

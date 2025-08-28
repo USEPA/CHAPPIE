@@ -51,6 +51,7 @@ def test_get_attains_lines():
                               expected,
                               check_less_precise=True)
 
+
 def test_get_attains_polygons():
     actual = wq.get_attains_polygons(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
