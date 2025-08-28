@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Test flood
+Test cultural assets
 
 @author: tlomba01, jbousquin, edamico
 """
