@@ -2,7 +2,6 @@ pyarrow>=1.0.1
 pytest
 pytest-cov
 coverage
-py7zr
 #sphinx
 #sphinx_rtd_theme
 #sphinxcontrib-spelling
