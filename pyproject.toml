@@ -27,6 +27,11 @@ dependencies = { file = ["requirements.txt"] }
 [tool.setuptools.dynamic.optional-dependencies]
 dev = { file = ["requirements-dev.txt"] }
 
+[tool.pytest.ini_options]
+markers =
+    unit: marks tests as unit tests
+    integration: marks tests as integration tests 
+
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
 
