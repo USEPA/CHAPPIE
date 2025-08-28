@@ -90,7 +90,6 @@ def static_providers():
     expected_file = os.path.join(EXPECTED_DIR, 'static_providers.parquet')
     return pandas.read_parquet(expected_file)
 
-@pytest.mark.integration_tests
 def test_get_providers(providers: pandas.DataFrame):
     # Check zips are correct
     actual_zips = sorted(list(providers['zip5'].unique()))
@@ -118,7 +117,7 @@ def test_get_providers(providers: pandas.DataFrame):
     assert_frame_equal(providers[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True),
                        expected[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True))
 
-@pytest.mark.unit_tests
+@pytest.mark.integration_tests
 def test_provider_address(static_providers: pandas.DataFrame):
     actual = health.provider_address(static_providers)
 
