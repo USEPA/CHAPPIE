@@ -5,13 +5,15 @@ Module for cultural assets
 """
 import geopandas
 from numpy import nan
+
 import os
 from io import BytesIO
 from tempfile import TemporaryDirectory
 import py7zr
 import requests
 
-from CHAPPIE import layer_query
+from CHAPPIE import layer_query, utils
+
 
 IMLS_URL = "https://www.imls.gov/sites/default/files"
 REC_AREA_URL = "https://epa.maps.arcgis.com/sharing/rest/content/items/4f14ea9215d1498eb022317458437d19/data"
@@ -54,15 +56,15 @@ def get_library(aoi):
     -------
     geopandas.GeoDataFrame
         GeoDataFrame for library points within aoi.
-    """    
+    """
     # TODO: use refresh or parent url to identify latest?
     zip_url = f"{IMLS_URL}/2024-06/pls_fy2022_csv.zip"
 
     expected_csvs = ["PLS_FY2022 PUD_CSV/PLS_FY22_AE_pud22i.csv",
                      "PLS_FY2022 PUD_CSV/pls_fy22_outlet_pud22i.csv"]
 
-    df = layer_query.get_from_zip(zip_url, expected_csvs, encoding="Windows-1252")
-    
+    df = utils.get_from_zip(zip_url, expected_csvs, encoding="Windows-1252")
+
     geom = geopandas.points_from_xy(df['LATITUDE'], df['LONGITUD'])
     gdf = geopandas.GeoDataFrame(df, geometry=geom, crs=4326)
     gdf.to_crs(aoi.crs, inplace=True)  # Coerce to export crs
@@ -82,7 +84,7 @@ def get_museums(aoi):
     -------
     geopandas.GeoDataFrame
         GeoDataFrame for museum points within aoi.
-    """    
+    """
     zip_url = f"{IMLS_URL}/2018_csv_museum_data_files.zip"
 
     expected_csvs = ["MuseumFile2018_File1_Nulls.csv",
@@ -93,7 +95,7 @@ def get_museums(aoi):
     #TODO: null geom?
     df_geoms = df[['LATITUDE', 'LONGITUDE']].copy()
     df_geoms.replace(" ", nan, inplace=True)  # Must be able to coerce to float
-    
+
     geom = geopandas.points_from_xy(df_geoms['LATITUDE'], df_geoms['LONGITUDE'])
     gdf = geopandas.GeoDataFrame(df, geometry=geom, crs=4326)
     gdf.to_crs(aoi.crs, inplace=True)   # Coerce to export crs
@@ -119,7 +121,7 @@ def get_worship(aoi):
     url = 'https://services.arcgis.com/XG15cJAlne2vxtgt/ArcGIS/rest/services/All_Places_Of_Worship__HiFLD_Open_/FeatureServer'
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax, ymax]
-    
+
     return layer_query.get_bbox(aoi=bbox,
                                 url=url,
                                 layer=42,
@@ -209,4 +211,3 @@ def process_recreationalArea(aoi):
     recAreas_aoi = recAreas_gdf.clip(aoi.total_bounds)
 
     return recAreas_aoi
-

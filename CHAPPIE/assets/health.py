@@ -3,9 +3,7 @@ Module for health assets.
 
 @author: tlomba01, jbousquin
 """
-import json
 import os
-import time
 from json import dumps
 from warnings import warn
 
@@ -14,7 +12,7 @@ import pandas
 import requests
 from numpy import nan
 
-from CHAPPIE import layer_query
+from CHAPPIE import layer_query, utils
 
 _npi_url = "https://npiregistry.cms.hhs.gov/api"
 _npi_url_backup = f"{_npi_url[:-3]}RegistryBack/search"
@@ -323,7 +321,7 @@ def provider_address(df, typ="LOCATION"):
     # Sort by number before aggregating
     df_temp.sort_values(by=['number'], inplace=True)
     # Groupby combined address column and list the IDs (number) for each
-    df1 = df_temp.groupby("street_address")['number'].apply(list).reset_index()
+    #df1 = df_temp.groupby("street_address")['number'].apply(list).reset_index()
     # TODO: if we don't use df1 get rid of it, keeping it for now
     cols = ["address_1", "address_2", "city", "state", "postal_code", "country_name", "zip"]
     return df_temp.groupby(cols, dropna=False)['number'].apply(list).reset_index()
@@ -367,11 +365,12 @@ def geocode_addresses(df):
         "outSR": 4326
     }
     serviceURL = f"{_geocode_base_url}/arcgis/rest/services/StreetmapPremium_USA/GeocodeServer/geocodeAddresses"
-    response = post_request(serviceURL, params)
+    response = utils.post_request(serviceURL, params)
     # Parse response and load into gdf
     r_df = pandas.json_normalize(response['locations'])
     # Drop all columns except coordinates and sortable ID
-    r_df = r_df[['location.x', 'location.y', 'address', 'attributes.ResultID']].rename(columns={'location.x':'X', 'location.y':'Y','attributes.ResultID':'OBJECTID'}).sort_values(by='address')
+    keep_cols = ['location.x', 'location.y', 'address', 'attributes.ResultID']
+    r_df = r_df[keep_cols].rename(columns={keep_cols[0]:'X', keep_cols[1]:'Y', keep_cols[2]:'OBJECTID'}).sort_values(by=keep_cols[3])
     # Make into GeometryArray of shapely Point geometries from x,y coords and sort on ID
     gdf = geopandas.GeoDataFrame(r_df, geometry=geopandas.points_from_xy(r_df['X'], r_df['Y']), crs="EPSG:4326")
     gdf = gdf.merge(records, on='OBJECTID').set_index('OBJECTID')
@@ -399,7 +398,7 @@ def batch_geocode(df, count_limit=None):
     # Address max batch size...2000 is the max, but 1000 seems to be the optimal batch size
     if not count_limit:
         count_limit = 1000
-    # Get length of address dataframe to geocode 
+    # Get length of address dataframe to geocode
     count = len(df)
     list_of_results = []
     # Chunk the df and send each chunk to get geocoded
@@ -425,10 +424,10 @@ def get_geocode_token(user_name, api_key=None):
     -------
     str
         Token string with 1 hour expiration.
-      
+
     """
 
-    if api_key == None:
+    if api_key is None:
         api_key = os.environ['GEOCODE_API_KEY']
     url = f"{_geocode_base_url}/arcgis/tokens/"
     data = {
@@ -438,46 +437,9 @@ def get_geocode_token(user_name, api_key=None):
         "expiration" : 60, #1 hour
         "f": "json"
         }
-    json_response = post_request(url, data)
+    json_response = utils.post_request(url, data)
     if 'token' in json_response.keys():
         return json_response["token"]
     else:
         warn(f"Problem with get_geocode_token. Url: {url} Response: {json_response}")
         raise ValueError(f"Value Error. Url: {url} Response: {json_response}")
-
-
-def post_request(url, data):
-    """ Generate post request from url and data.
-
-    Parameters
-    ----------
-    url : str
-        URL for post request.
-    data : dict
-        Data dictionary for post request body.
-
-    Returns
-    -------
-    json
-        Post request response json.
-      
-    """
-    count = 0
-
-    while True:
-        try:
-            r = requests.post(url, data=data)
-            r.raise_for_status()
-            r_json = r.json()
-            return r_json
-        except requests.exceptions.ConnectionError as e:
-            count += 1
-            if count < 2:
-                warn(f"Connection error, count is {count}. Error: {e}")
-                time.sleep(5)
-                continue
-            else: 
-                return {"url": url, "status": "error", "reason": f"Connection error, {count} attempts", "text": ""}
-        except Exception as e:
-            warn(f"Response: {r}, Error: {e}")
-            return {"url": url, "data": data, "status": r.status_code}
