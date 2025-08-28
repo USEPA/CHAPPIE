@@ -56,7 +56,6 @@ jobs:
           GEOCODE_API_KEY: ${{ secrets.GEOCODE_API_KEY }}
           REGRID_API_KEY: ${{ secrets.REGRID_API_KEY }}
         run: |
-          pytest -v -s CHAPPIE -m unit
-          pytest -v -s CHAPPIE -m integration
+          pytest -v -s CHAPPIE -m "unit and integration"
 
       # upload artifact if results of run are needed, e.g., for freeze, deploy, etc.
