@@ -28,9 +28,11 @@ dependencies = { file = ["requirements.txt"] }
 dev = { file = ["requirements-dev.txt"] }
 
 [tool.pytest.ini_options]
-markers =
-    unit # marks tests as unit tests
-    integration # marks tests as integration tests 
+addopts = "--strict-markers"
+markers = [
+    "unit: marks tests as unit tests",
+    "integration: marks tests as integration tests"
+    ]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
