@@ -23,7 +23,8 @@ aoi_gdf = geopandas.read_file(AOI)
 
 def test_get_air():
     actual = transit.get_air(aoi_gdf)
-    actual.drop(columns=['OBJECTID'], inplace=True)
+    # Effective Date (EFF_DATE) is updated when info is verified
+    actual.drop(columns=['OBJECTID', "EFF_DATE"], inplace=True)
     # Drop geometry redundant columns that cause trouble
     actual.drop(columns=["LAT_DEG", "LONG_DEG", 'LAT_MIN', 'LONG_MIN'],
                 inplace=True)
@@ -36,7 +37,7 @@ def test_get_air():
     expected = geopandas.read_parquet(expected_file)
 
     # Update dtypes on desired columns
-    expected['EFF_DATE'] = expected['EFF_DATE'].astype('datetime64[ms]')
+    #expected['EFF_DATE'] = expected['EFF_DATE'].astype('datetime64[ms]')
     col = "DIST_CITY_TO_AIRPORT"
     expected[col] = expected[col].astype('int32')
 
