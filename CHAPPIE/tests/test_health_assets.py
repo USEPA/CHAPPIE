@@ -117,7 +117,7 @@ def test_get_providers(providers: pandas.DataFrame):
     assert_frame_equal(providers[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True),
                        expected[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True))
 
-@pytest.mark.integration_tests
+@pytest.mark.integration
 def test_provider_address(static_providers: pandas.DataFrame):
     actual = health.provider_address(static_providers)
 
@@ -147,7 +147,7 @@ def test_batch_geocode():
 
 #Test how Connection error is handled, but patch the post_request call
 @patch('CHAPPIE.assets.health.requests.post')
-@pytest.mark.unit_tests
+@pytest.mark.unit
 def test_post_request_connection_error(mock_post):
     mock_resp = MagicMock()
     mock_resp.raise_for_status.side_effect = ConnectionError
@@ -164,7 +164,7 @@ def test_post_request_connection_error(mock_post):
 
 # Test other exception branch of post_request function, which has no retry
 @patch('CHAPPIE.assets.health.requests.post')
-@pytest.mark.unit_tests
+@pytest.mark.unit
 def test_post_request_502_error(mock_post):
     mock_resp = MagicMock()
     mock_resp.status_code = 502
@@ -181,7 +181,7 @@ def test_post_request_502_error(mock_post):
 
 # patch post_request function response to have no 'token' in response.keys; expect a ValueError
 @patch('CHAPPIE.assets.health.requests.post')
-@pytest.mark.unit_tests
+@pytest.mark.unit
 def test_get_geocode_token_keys(mock_post):
     mock_resp = MagicMock()
     mock_resp.status_code = 200
