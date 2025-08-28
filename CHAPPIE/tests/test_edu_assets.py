@@ -21,6 +21,7 @@ AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 aoi_gdf = geopandas.read_file(AOI)
 
 
+@pytest.mark.skip(reason="Temporary - service down")
 def test_get_schools_public():
     actual = education.get_schools_public(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
@@ -32,6 +33,7 @@ def test_get_schools_public():
     
     assert_geodataframe_equal(actual, expected)
 
+@pytest.mark.skip(reason="Temporary - service down")
 def test_get_schools_private():
     actual = education.get_schools_private(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
@@ -43,6 +45,7 @@ def test_get_schools_private():
     
     assert_geodataframe_equal(actual, expected)
 
+@pytest.mark.skip(reason="Temporary - service down")
 def test_get_child_care():
     actual = education.get_child_care(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
@@ -54,6 +57,7 @@ def test_get_child_care():
     
     assert_geodataframe_equal(actual, expected)
 
+@pytest.mark.skip(reason="Temporary - service down")
 def test_get_colleges_universities():
     actual = education.get_colleges_universities(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
@@ -65,6 +69,7 @@ def test_get_colleges_universities():
     
     assert_geodataframe_equal(actual, expected)
 
+@pytest.mark.skip(reason="Temporary - service down")
 def test_get_supplemental_colleges():
     actual = education.get_supplemental_colleges(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
