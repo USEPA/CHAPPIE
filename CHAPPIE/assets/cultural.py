@@ -3,17 +3,16 @@ Module for cultural assets
 
 @author: tlomba01, jbousquin, edamico
 """
-import geopandas
-from numpy import nan
-
 import os
 from io import BytesIO
 from tempfile import TemporaryDirectory
+
+import geopandas
 import py7zr
 import requests
+from numpy import nan
 
 from CHAPPIE import layer_query, utils
-
 
 IMLS_URL = "https://www.imls.gov/sites/default/files"
 REC_AREA_URL = "https://epa.maps.arcgis.com/sharing/rest/content/items/4f14ea9215d1498eb022317458437d19/data"
@@ -91,7 +90,7 @@ def get_museums(aoi):
                      "MuseumFile2018_File2_Nulls.csv",
                      "MuseumFile2018_File3_Nulls.csv"]
 
-    df = layer_query.get_from_zip(zip_url, expected_csvs, encoding="Windows-1252")
+    df = utils.get_from_zip(zip_url, expected_csvs, encoding="Windows-1252")
     #TODO: null geom?
     df_geoms = df[['LATITUDE', 'LONGITUDE']].copy()
     df_geoms.replace(" ", nan, inplace=True)  # Must be able to coerce to float
@@ -147,7 +146,6 @@ def download_unzip_lyrpkg(url, save_path=None):
     response = requests.get(url)  # Send GET request to the URL
     response.raise_for_status()  # Assert request was successful
 
-        
     with TemporaryDirectory() as temp_dir:
         with py7zr.SevenZipFile(BytesIO(response.content), mode='r') as z:
                 # List all archived file names from the zip
@@ -164,7 +162,7 @@ def download_unzip_lyrpkg(url, save_path=None):
                 z.extract(path=temp_dir, targets=select_files)
                 #extract the selected files using the custom factory
                 gdf = geopandas.read_file(os.path.join(temp_dir, f'{folder}', "recareas.gdb"))
-      
+
     return gdf
 
 
@@ -181,7 +179,7 @@ def get_recreationalArea():
         GeoDataFrame for recreation areas.
 
     """
-    
+
     recAreas_gdf = download_unzip_lyrpkg(REC_AREA_URL)
     return recAreas_gdf
 
@@ -203,7 +201,7 @@ def process_recreationalArea(aoi):
 
     """
     #get all recreational areas
-    
+
     recAreas_gdf = get_recreationalArea()
     recAreas_gdf = recAreas_gdf.to_crs(aoi.crs)  # match crs for clip
 
