@@ -3,9 +3,8 @@ import os
 
 import geopandas
 import pandas
-from pandas.testing import assert_frame_equal
 from geopandas.testing import assert_geodataframe_equal
-
+from pandas.testing import assert_frame_equal
 
 #DIRPATH =r"L:\lab\GitHub\CHAPPIE\CHAPPIE\tests"
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -212,8 +211,8 @@ except AssertionError as ae:
 # eco_services
 # hazards
 ## Technological
-from CHAPPIE.hazards import technological
 import CHAPPIE.tests.test_technological as test_tech
+from CHAPPIE.hazards import technological
 
 ###test_get_FRS_ACRES()
 actual = technological.get_FRS_ACRES(aoi_gdf)
