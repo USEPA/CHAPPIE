@@ -9,7 +9,7 @@ import os
 import geopandas
 import pandas
 
-from CHAPPIE import parcels
+from CHAPPIE import parcels, utils
 from CHAPPIE.assets import (
     cultural,
     education,
