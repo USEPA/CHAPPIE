@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Test education assets
+Test education assets 
 
 @author: tlomba01
 """
 import os
-
 import geopandas
-import pytest
 from geopandas.testing import assert_geodataframe_equal
-
 from CHAPPIE.assets import education
+#import pytest
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -23,72 +21,57 @@ AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 aoi_gdf = geopandas.read_file(AOI)
 
 
-@pytest.mark.skip(reason="Temporary - service down")
 def test_get_schools_public():
     actual = education.get_schools_public(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
-    actual.sort_values(by=['NCESID', 'geometry', 'NAME'],
-                       inplace=True,
-                       ignore_index=True)
+    actual.sort_values(by=['NCESID', 'geometry', 'NAME'], inplace=True, ignore_index=True)
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'schools_public.parquet')
     expected = geopandas.read_parquet(expected_file)
-
+    
     assert_geodataframe_equal(actual, expected)
 
-@pytest.mark.skip(reason="Temporary - service down")
 def test_get_schools_private():
     actual = education.get_schools_private(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
-    actual.sort_values(by=['NCESID', 'geometry', 'NAME'],
-                       inplace=True,
-                       ignore_index=True)
+    actual.sort_values(by=['NCESID', 'geometry', 'NAME'], inplace=True, ignore_index=True)
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'schools_private.parquet')
     expected = geopandas.read_parquet(expected_file)
-
+    
     assert_geodataframe_equal(actual, expected)
 
-@pytest.mark.skip(reason="Temporary - service down")
 def test_get_child_care():
     actual = education.get_child_care(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
-    actual.sort_values(by=['ID', 'geometry', 'NAME'],
-                       inplace=True,
-                       ignore_index=True)
+    actual.sort_values(by=['ID', 'geometry', 'NAME'], inplace=True, ignore_index=True)
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'child_care.parquet')
     expected = geopandas.read_parquet(expected_file)
-
+    
     assert_geodataframe_equal(actual, expected)
 
-@pytest.mark.skip(reason="Temporary - service down")
 def test_get_colleges_universities():
     actual = education.get_colleges_universities(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
-    actual.sort_values(by=['IPEDSID', 'geometry', 'NAME'],
-                       inplace=True,
-                       ignore_index=True)
+    actual.sort_values(by=['IPEDSID', 'geometry', 'NAME'], inplace=True, ignore_index=True)
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'colleges_universities.parquet')
     expected = geopandas.read_parquet(expected_file)
-
+    
     assert_geodataframe_equal(actual, expected)
 
-@pytest.mark.skip(reason="Temporary - service down")
 def test_get_supplemental_colleges():
     actual = education.get_supplemental_colleges(aoi_gdf)
     actual.drop(columns=['OBJECTID'], inplace=True)
-    actual.sort_values(by=['UNIQUEID', 'geometry', 'NAME'],
-                       inplace=True,
-                       ignore_index=True)
+    actual.sort_values(by=['UNIQUEID', 'geometry', 'NAME'], inplace=True, ignore_index=True)
 
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'supplemental_colleges.parquet')
     expected = geopandas.read_parquet(expected_file)
-
+    
     assert_geodataframe_equal(actual, expected)
