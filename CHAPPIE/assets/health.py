@@ -370,7 +370,7 @@ def geocode_addresses(df):
     r_df = pandas.json_normalize(response['locations'])
     # Drop all columns except coordinates and sortable ID
     keep_cols = ['location.x', 'location.y', 'address', 'attributes.ResultID']
-    r_df = r_df[keep_cols].rename(columns={keep_cols[0]:'X', keep_cols[1]:'Y', keep_cols[2]:'OBJECTID'}).sort_values(by=keep_cols[3])
+    r_df = r_df[keep_cols].rename(columns={keep_cols[0]:'X', keep_cols[1]:'Y', keep_cols[3]:'OBJECTID'}).sort_values(by=keep_cols[2])
     # Make into GeometryArray of shapely Point geometries from x,y coords and sort on ID
     gdf = geopandas.GeoDataFrame(r_df, geometry=geopandas.points_from_xy(r_df['X'], r_df['Y']), crs="EPSG:4326")
     gdf = gdf.merge(records, on='OBJECTID').set_index('OBJECTID')
