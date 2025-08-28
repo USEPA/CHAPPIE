@@ -15,6 +15,7 @@ import requests
 from numpy import nan
 
 from CHAPPIE import layer_query
+from CHAPPIE import utils
 
 _npi_url = "https://npiregistry.cms.hhs.gov/api"
 _npi_url_backup = f"{_npi_url[:-3]}RegistryBack/search"
@@ -367,7 +368,7 @@ def geocode_addresses(df):
         "outSR": 4326
     }
     serviceURL = f"{_geocode_base_url}/arcgis/rest/services/StreetmapPremium_USA/GeocodeServer/geocodeAddresses"
-    response = post_request(serviceURL, params)
+    response = utils.post_request(serviceURL, params)
     # Parse response and load into gdf
     r_df = pandas.json_normalize(response['locations'])
     # Drop all columns except coordinates and sortable ID
@@ -438,46 +439,9 @@ def get_geocode_token(user_name, api_key=None):
         "expiration" : 60, #1 hour
         "f": "json"
         }
-    json_response = post_request(url, data)
+    json_response = utils.post_request(url, data)
     if 'token' in json_response.keys():
         return json_response["token"]
     else:
         warn(f"Problem with get_geocode_token. Url: {url} Response: {json_response}")
         raise ValueError(f"Value Error. Url: {url} Response: {json_response}")
-
-
-def post_request(url, data):
-    """ Generate post request from url and data.
-
-    Parameters
-    ----------
-    url : str
-        URL for post request.
-    data : dict
-        Data dictionary for post request body.
-
-    Returns
-    -------
-    json
-        Post request response json.
-      
-    """
-    count = 0
-
-    while True:
-        try:
-            r = requests.post(url, data=data)
-            r.raise_for_status()
-            r_json = r.json()
-            return r_json
-        except requests.exceptions.ConnectionError as e:
-            count += 1
-            if count < 2:
-                warn(f"Connection error, count is {count}. Error: {e}")
-                time.sleep(5)
-                continue
-            else: 
-                return {"url": url, "status": "error", "reason": f"Connection error, {count} attempts", "text": ""}
-        except Exception as e:
-            warn(f"Response: {r}, Error: {e}")
-            return {"url": url, "data": data, "status": r.status_code}
