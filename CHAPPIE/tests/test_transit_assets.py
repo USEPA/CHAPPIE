@@ -37,7 +37,7 @@ def test_get_air():
     expected = geopandas.read_parquet(expected_file)
 
     # Update dtypes on desired columns
-    expected['EFF_DATE'] = expected['EFF_DATE'].astype('datetime64[ms]')
+    #expected['EFF_DATE'] = expected['EFF_DATE'].astype('datetime64[ms]')
     col = "DIST_CITY_TO_AIRPORT"
     expected[col] = expected[col].astype('int32')
 
