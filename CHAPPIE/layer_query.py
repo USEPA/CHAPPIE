@@ -432,8 +432,7 @@ class ESRILayer(object):
                     resp = requests.get(self._last_query + "&f=geojson")
                     resp.raise_for_status()
                     datadict = resp.json()
-                    gdf = geopandas.GeoDataFrame.from_features(datadict)
-                    return gdf.set_crs(f'epsg:{self._basequery["outSR"]}')
+                    return geopandas.GeoDataFrame.from_features(datadict)
                 else:
                     return geopandas.read_file(self._last_query + "&f=geojson")
             except requests.exceptions.HTTPError as e:
