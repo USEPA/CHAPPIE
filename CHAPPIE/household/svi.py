@@ -177,7 +177,7 @@ def get_SVI(geo, level='block group', year=2020):
     return SVI_results_gdf
 
 
-def infer_BG_from_tract(BG_GEOID, metric_col, year =2020, method='uniform'):
+def infer_BG_from_tract(bg_geoid, metric_col, year =2020, method='uniform'):
     """Estimate metric value for the block group from tract data.
 
     Note: "uniform" is the only method currently available and assumes a 
@@ -185,7 +185,7 @@ def infer_BG_from_tract(BG_GEOID, metric_col, year =2020, method='uniform'):
 
     Parameters
     ----------
-    BG_GEOID : str
+    bg_geoid : str
         Twelve (12) digit ID for the block group being estimated.
     metric_col : str
         Metric name from ACS.
@@ -197,17 +197,17 @@ def infer_BG_from_tract(BG_GEOID, metric_col, year =2020, method='uniform'):
     tuple
         geoid for the block group and the tract level value retrieved.
     """
-    state, county = BG_GEOID[:2], BG_GEOID[2:5]
-    geo_id_str = f'state:{BG_GEOID[:2]};county:{BG_GEOID[2:5]}'
-    tract_geoid = BG_GEOID[5:11]
+    # Get parent geoids
+    geo_id_str = f'state:{bg_geoid[:2]};county:{bg_geoid[2:5]}'
+    tract_geoid = bg_geoid[5:11]
 
     metric_data = get_census(dataset = "acs/acs5",
-                                variables = metric_col,
-                                year=year,
-                                params = {"for": f"tract:{tract_geoid}",
-                                          "in": geo_id_str},
-                                return_geoid = False,
-                                guess_dtypes = True,
-                                )
+                             variables = metric_col,
+                             year=year,
+                             params = {"for": f"tract:{tract_geoid}",
+                                       "in": geo_id_str},
+                             return_geoid = False,
+                             guess_dtypes = True,
+                             )
 
-    return (BG_GEOID, metric_data[metric_col])
+    return (bg_geoid, metric_data[metric_col])
