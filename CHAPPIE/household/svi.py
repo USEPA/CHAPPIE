@@ -3,7 +3,7 @@
 Lookups for SVI
 
 NOTE: imports are all for last function
-    
+
 Created on Mon Sep 25 14:41:17 2023
 
 @author: jbousqui
@@ -47,7 +47,7 @@ def variables(subset=None):
                        'B01001_044E', 'B01001_045E', 'B01001_046E',
                        'B01001_047E', 'B01001_048E', 'B01001_049E'],
          '17andbelow': ['B01001_001E', 'B01001_003E', 'B01001_004E',
-                        'B01001_005E', 'B01001_006E', 
+                        'B01001_005E', 'B01001_006E',
                         'B01001_027E', 'B01001_028E', 'B01001_029E',
                         'B01001_030E'],
          'DisableCiv': ['C21007_001E', 'C21007_005E', 'C21007_008E',
@@ -72,7 +72,7 @@ def variables(subset=None):
                       'B25024_008E', 'B25024_009E'],
          'MobHome': ['B25024_001E', 'B25024_010E'],
          'Crowd': ['B25014_001E', 'B25014_005E', 'B25014_006E', 'B25014_007E',
-                   'B25014_011E', 'B25014_012E', 'B25014_013E'], 
+                   'B25014_011E', 'B25014_012E', 'B25014_013E'],
          'NoVeh': ['B25044_001E', 'B25044_003E', 'B25044_010E'],
          'GrpQuarter': ['B09019_002E', 'B09019_026E'],
          }
@@ -100,7 +100,7 @@ def indicators(subset=None):
                                              'NoVeh', 'GrpQuarter'],
          }
     if subset:
-        return x[subset] 
+        return x[subset]
     return x
 
 
@@ -113,7 +113,7 @@ def preprocess(df_in):
     # cols maths: just rename, percents where col2/col1,
     # and difs where col2-col1/col1
     renames = ['TotPop', 'HousUnits', 'Household']
-    
+
     # Percent of population ([0] is TotPop)
     pct_pop = ['Poverty150', '65andover', '17andbelow', 'Hisp', 'Black',
                'Asian', 'AIAN', 'NHPI', 'TwoRace', 'OtherRace', 'ELP']
@@ -124,7 +124,7 @@ def preprocess(df_in):
 
     for col in variables('keys'):
         metric_cols = variables(col)
-        
+
         if col in renames:
             df = df.rename(columns={metric_cols[0]: col})
         elif col in pct:
@@ -144,7 +144,7 @@ def preprocess(df_in):
             # TODO: throw error
             print('{} has no preprocessing assigned'.format(col))
     #TODO: drop original cols?
-    
+
     return df
 
 def get_SVI(geo, level='block group', year=2020):
@@ -163,7 +163,7 @@ def get_SVI(geo, level='block group', year=2020):
                                 guess_dtypes = True,
                                 )
     SVI_tract_results = preprocess(SVI_tract_data)
-    
+
     if level == 'tract':
         # Get track geos (2020)
         tract_geos = pygris.tracts(state=state, county=county, year=year)
