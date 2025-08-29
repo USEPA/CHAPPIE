@@ -9,7 +9,7 @@ import os
 import geopandas
 import pandas
 
-from CHAPPIE import utils
+from CHAPPIE import parcels, utils
 from CHAPPIE.assets import (
     cultural,
     education,
@@ -44,7 +44,7 @@ parcel_centroids =  parcels.process_regrid(parcel_gdf)
 
 # Get household level characteristics
 # Get intersecting county
-county_FIPS = get_county(parcel_gdf, 4326)['GEOID'].to_list()
+county_FIPS = get_county(parcel_gdf)['GEOID'].to_list()
 # Get svi metrics
 dfs = []
 for geoid in county_FIPS:
