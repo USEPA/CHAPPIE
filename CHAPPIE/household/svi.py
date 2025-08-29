@@ -8,6 +8,8 @@ Created on Mon Sep 25 14:41:17 2023
 
 @author: jbousqui
 """
+from warnings import warn
+
 import pygris
 from pygris.data import get_census
 
@@ -104,7 +106,7 @@ def indicators(subset=None):
     return x
 
 
-def preprocess(df_in):
+def preprocess(df_in, year=2020):
     # Deep copy table
     df = df_in.copy()
     # List new column names
@@ -135,7 +137,30 @@ def preprocess(df_in):
                     df[col] = [100.0 - x for x in df[col]]  # Invert
             else:
                 # Numerator is last in list
-                df[col] = df[metric_cols[1]].divide(df[metric_cols[0]]) *100.0
+                try:
+                    df[col] = df[metric_cols[1]].divide(df[metric_cols[0]]) *100.0
+                except ValueError as e:
+                    # Meant to catch when some or all of the 2 values are None
+                    numerators = df[metric_cols[1]].to_list()
+                    dednominators = df[metric_cols[0]].to_list()
+                    if None in numerators or dednominators:
+                        metrics = []
+                        if None in numerators:
+                            metrics += metric_cols[1]
+                        if None in dednominators:
+                            metrics += metric_cols[0]
+                        for metric in metrics:
+                            # geoids where na
+                            bad_ids = df[df[metric].isna()]['GEOID'].to_list()
+                            for id in bad_ids:
+                                df.loc[id, metric] = infer_bg_from_tract(id,
+                                                                         metric,
+                                                                         year=year)[0]
+                            # Warning
+                            warn("Infered block-group {metric} at {geoids} from tract")
+                    else:
+                        # Something else went awry
+                        raise e
         elif col == 'HouseBurd':
             renter = df[metric_cols[1:29]].sum(axis=1).divide(df[metric_cols[0]])
             owner = df[metric_cols[30:]].sum(axis=1).divide(df[metric_cols[29]])
@@ -210,4 +235,4 @@ def infer_bg_from_tract(bg_geoid, metric_col, year=2020, method='uniform'):
                              guess_dtypes = True,
                              )
 
-    return (bg_geoid, metric_data[metric_col])
+    return metric_data[metric_col]
