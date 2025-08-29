@@ -205,7 +205,7 @@ def get_SVI(geo, level='block group', year=2020):
 def infer_bg_from_tract(bg_geoid, metric_col, year=2020, method='uniform'):
     """Estimate metric value for the block group from tract data.
 
-    Note: "uniform" is the only method currently available and assumes a 
+    Note: "uniform" is the only method currently available and assumes a
     uniform distribution of the metric across all block groups in the tract.
 
     Parameters
