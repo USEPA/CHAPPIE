@@ -9,6 +9,7 @@ import os
 
 import geopandas
 import pandas
+import pytest
 from geopandas.testing import assert_geodataframe_equal
 
 from CHAPPIE.household import svi
@@ -69,7 +70,7 @@ def test_get_SVI_by_county_all_BG():
     #assert len(gdf_bg)==199
     assert_geodataframe_equal(actual, expected, check_like=True)
 
-
+pytest.mark("unit")
 def test_infer_bg_from_tract():
     #infer_BG_from_tract(bg_geoid, metric_col, year=2020, method='uniform')
     bg_id = "510010901011"
@@ -78,3 +79,9 @@ def test_infer_bg_from_tract():
     expected = (bg_id, pandas.Series(data=[1864], name=metric_col))
     assert actual[0] == expected[0], "Mismatched block group ID"
     assert actual[1].all() == expected[1].all(), "Mismatched tract-level result"
+
+#pytest.mark("integration")
+# def test_infer_bg_from_tract_from_preprocess()
+#     df_in = 
+#     actual = svi.preprocess(df_in, 2023)
+#     asster actual[metric]==expected[metric]
