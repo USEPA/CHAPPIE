@@ -187,7 +187,7 @@ def get_SVI(geo, level='block group', year=2020):
                           return_geoid = True,
                           guess_dtypes = True,
                           )
-    SVI_results = preprocess(SVI_data)
+    SVI_results = preprocess(SVI_data, year)
 
     if level == 'tract':
         # Get track geos (2020)
