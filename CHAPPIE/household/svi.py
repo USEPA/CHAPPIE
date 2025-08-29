@@ -154,30 +154,30 @@ def get_SVI(geo, level='block group', year=2020):
         state, county = geo[:2], geo[2:5]
         geo_id_str = f'state:{geo[:2]};county:{geo[2:5]}'
 
-    SVI_tract_data = get_census(dataset = "acs/acs5",
-                                variables = variables(),
-                                year=year,
-                                params = {"for": f"{level}:*",
-                                          "in": geo_id_str},
-                                return_geoid = True,
-                                guess_dtypes = True,
-                                )
-    SVI_tract_results = preprocess(SVI_tract_data)
+    SVI_data = get_census(dataset = "acs/acs5",
+                          variables = variables(),
+                          year=year,
+                          params = {"for": f"{level}:*",
+                                    "in": geo_id_str},
+                          return_geoid = True,
+                          guess_dtypes = True,
+                          )
+    SVI_results = preprocess(SVI_data)
 
     if level == 'tract':
         # Get track geos (2020)
         tract_geos = pygris.tracts(state=state, county=county, year=year)
         # Combine with geos
-        SVI_results_gdf = tract_geos.merge(SVI_tract_results, on='GEOID')
+        SVI_results_gdf = tract_geos.merge(SVI_results, on='GEOID')
     elif level == 'block group':
         # Get block group geos (2020)
         bg_geos = pygris.block_groups(state=state, county=county, year=year)
         # Combine with geos
-        SVI_results_gdf = bg_geos.merge(SVI_tract_results, on='GEOID')
+        SVI_results_gdf = bg_geos.merge(SVI_results, on='GEOID')
     return SVI_results_gdf
 
 
-def infer_BG_from_tract(bg_geoid, metric_col, year =2020, method='uniform'):
+def infer_bg_from_tract(bg_geoid, metric_col, year=2020, method='uniform'):
     """Estimate metric value for the block group from tract data.
 
     Note: "uniform" is the only method currently available and assumes a 

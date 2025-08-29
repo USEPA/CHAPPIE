@@ -69,3 +69,12 @@ def test_get_SVI_by_county_all_BG():
     #assert len(gdf_bg)==199
     assert_geodataframe_equal(actual, expected, check_like=True)
 
+
+def test_infer_bg_from_tract():
+    #infer_BG_from_tract(bg_geoid, metric_col, year=2020, method='uniform')
+    bg_id = "510010901011"
+    metric_col = "B09019_002E"
+    actual = svi.infer_bg_from_tract("510010901011", "B09019_002E", year=2023)
+    expected = (bg_id, pandas.Series(data=[1864], name=metric_col))
+    assert actual[0] == expected[0], "Mismatched block group ID"
+    assert actual[1].all() == expected[1].all(), "Mismatched tract-level result"
