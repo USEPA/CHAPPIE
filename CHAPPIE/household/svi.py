@@ -175,3 +175,39 @@ def get_SVI(geo, level='block group', year=2020):
         # Combine with geos
         SVI_results_gdf = bg_geos.merge(SVI_tract_results, on='GEOID')
     return SVI_results_gdf
+
+
+def infer_BG_from_tract(BG_GEOID, metric_col, year =2020, method='uniform'):
+    """Estimate metric value for the block group from tract data.
+
+    Note: "uniform" is the only method currently available and assumes a 
+    uniform distribution of the metric across all block groups in the tract.
+
+    Parameters
+    ----------
+    BG_GEOID : str
+        Twelve (12) digit ID for the block group being estimated.
+    metric_col : str
+        Metric name from ACS.
+    method : str, optional
+        Which built in method to use, by default 'uniform_distribution'
+
+    Returns
+    -------
+    tuple
+        geoid for the block group and the tract level value retrieved.
+    """
+    state, county = BG_GEOID[:2], BG_GEOID[2:5]
+    geo_id_str = f'state:{BG_GEOID[:2]};county:{BG_GEOID[2:5]}'
+    tract_geoid = BG_GEOID[5:11]
+
+    metric_data = get_census(dataset = "acs/acs5",
+                                variables = metric_col,
+                                year=year,
+                                params = {"for": f"tract:{tract_geoid}",
+                                          "in": geo_id_str},
+                                return_geoid = False,
+                                guess_dtypes = True,
+                                )
+
+    return (BG_GEOID, metric_data[metric_col])
