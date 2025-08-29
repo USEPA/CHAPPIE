@@ -3,9 +3,8 @@ import os
 
 import geopandas
 import pandas
-from pandas.testing import assert_frame_equal
 from geopandas.testing import assert_geodataframe_equal
-
+from pandas.testing import assert_frame_equal
 
 #DIRPATH =r"L:\lab\GitHub\CHAPPIE\CHAPPIE\tests"
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -174,7 +173,7 @@ from CHAPPIE.assets import transit
 
 #test_get_air()
 actual = transit.get_air(aoi_gdf)
-actual.drop(columns=['OBJECTID'], inplace=True)
+actual.drop(columns=["OBJECTID", "EFF_DATE"], inplace=True)
 # Drop geometry redundant columns that cause trouble
 actual.drop(columns=["LAT_DEG", "LONG_DEG", 'LAT_MIN', 'LONG_MIN'],
             inplace=True)
@@ -212,8 +211,8 @@ except AssertionError as ae:
 # eco_services
 # hazards
 ## Technological
-from CHAPPIE.hazards import technological
 import CHAPPIE.tests.test_technological as test_tech
+from CHAPPIE.hazards import technological
 
 ###test_get_FRS_ACRES()
 actual = technological.get_FRS_ACRES(aoi_gdf)
@@ -310,3 +309,27 @@ except AssertionError as ae:
 ###test_process_cyclones()
 
 ## Flood
+from CHAPPIE.hazards import flood
+
+### test_get_fema_nfhl()
+actual = flood.get_fema_nfhl(aoi_gdf)
+actual.drop(columns=['OBJECTID', 'VERSION_ID', 'STUDY_TYP', 'SFHA_TF',
+                        'STATIC_BFE', 'V_DATUM', 'DEPTH', 'LEN_UNIT',
+                        'VELOCITY', 'VEL_UNIT', 'DUAL_ZONE', 'SOURCE_CIT',
+                        'GFID', 'esri_symbology', 'GlobalID', 'Shape__Area',
+                        'Shape__Length'], inplace=True)
+actual.sort_values(by=['DFIRM_ID', 'FLD_AR_ID', 'geometry'],
+                   inplace=True,
+                   ignore_index=True)
+
+expected_file = os.path.join(EXPECTED_DIR, 'get_fema_nfhl.parquet')
+expected = geopandas.read_parquet(expected_file)
+
+try:
+    assert_geodataframe_equal(actual,
+                              expected,
+                              check_like=True,
+                              check_less_precise=True)
+except AssertionError as ae:
+    print(ae)
+    actual.to_parquet(expected_file)

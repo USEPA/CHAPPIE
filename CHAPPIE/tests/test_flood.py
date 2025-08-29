@@ -1,19 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-Test flood 
+Test flood
 
 @author: tlomba01
 """
 import os
+import random
+from unittest.mock import MagicMock, patch
+
 import geopandas
 import pandas
-from pandas.testing import assert_frame_equal
-from geopandas.testing import assert_geodataframe_equal
-from CHAPPIE.hazards import flood
 import pytest
-from unittest.mock import patch, MagicMock
-import random
+from geopandas.testing import assert_geodataframe_equal
+from pandas.testing import assert_frame_equal
 from requests.exceptions import HTTPError
+
+from CHAPPIE.hazards import flood
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -31,10 +33,10 @@ parcels_gdf = geopandas.read_file(PARCELS)
 def test_get_fema_nfhl():
     """ Test get FEMA NFHL """
     actual = flood.get_fema_nfhl(aoi_gdf)
-    actual.drop(columns=['OBJECTID', 'VERSION_ID', 'STUDY_TYP', 'SFHA_TF', 
-                         'STATIC_BFE', 'V_DATUM', 'DEPTH', 'LEN_UNIT', 
-                         'VELOCITY', 'VEL_UNIT', 'DUAL_ZONE', 'SOURCE_CIT', 
-                         'GFID', 'esri_symbology', 'GlobalID', 'Shape__Area', 
+    actual.drop(columns=['OBJECTID', 'VERSION_ID', 'STUDY_TYP', 'SFHA_TF',
+                         'STATIC_BFE', 'V_DATUM', 'DEPTH', 'LEN_UNIT',
+                         'VELOCITY', 'VEL_UNIT', 'DUAL_ZONE', 'SOURCE_CIT',
+                         'GFID', 'esri_symbology', 'GlobalID', 'Shape__Area',
                          'Shape__Length'], inplace=True)
     actual.sort_values(by=['DFIRM_ID', 'FLD_AR_ID', 'geometry'], inplace=True, ignore_index=True)
     #actual.to_parquet(os.path.join(EXPECTED_DIR, 'get_fema_nfhl.parquet'))
@@ -42,28 +44,28 @@ def test_get_fema_nfhl():
     # assert no changes
     expected_file = os.path.join(EXPECTED_DIR, 'get_fema_nfhl.parquet')
     expected = geopandas.read_parquet(expected_file)
- 
-    assert_geodataframe_equal(actual, 
+
+    assert_geodataframe_equal(actual,
                               expected,
                               check_like=True,
                               check_less_precise=True)
-    
+
 class TestGetFlood:
     """ Test cases for get_flood """
 
-    parcels = {"Multipolygon": 
-               ['03814-000-000', 
+    parcels = {"Multipolygon":
+               ['03814-000-000',
                 '03608-010-000',
-                '32719-000-000', 
-                '03798-000-000', 
-                '32736-350-000', 
-                '40000-975-312', 
-                '03805-150-000', 
-                '26496-000-000', 
+                '32719-000-000',
+                '03798-000-000',
+                '32736-350-000',
+                '40000-975-312',
+                '03805-150-000',
+                '26496-000-000',
                 '32738-639-000', #this returns 0, but has a small corner of raster pixel present
                 '03613-000-000', #this returns 0, but has a corner of raster pixel present
-                '05964-000-000'], #Multipolygon (Donut with null value);	
-                "Tiny": 
+                '05964-000-000'], #Multipolygon (Donut with null value);
+                "Tiny":
                 ['31668-150-000', #14.5 m2 parcel no overlap NULL
                 '34801-158-000', #14.3 m2 parcel no overlap NULL
                 '40001-175-010', #14.3 m2 parcel complete overlap NULL
@@ -73,7 +75,7 @@ class TestGetFlood:
                 '31423-031-000', #74.3 m2 parcel complete overlap NULL
                 '38187-505-000', #Smallest parcel to return overlap value of 0 (74.9 m2)
                 '38466-020-000'], #Smallest parcel to return overlap value of 1 (96.5 m2)
-                "Investigate": 
+                "Investigate":
                 ['08344-000-000', #74.4 m2 parcel complete overlap NULL; not a unique parcel numb (3 polygons)
                 '26529-020-000', #parcel with overlap but returned 0 value; yes returns 0, but has a corner of raster pixel present
                 '38186-090-000', #parcel with no overlap but returned a value (0.5)
@@ -83,31 +85,31 @@ class TestGetFlood:
                 '36238-010-000', #greater than 75m2 (205.6) returned NULL
                 '36459-720-010', #greater than 75m2 (486.1) returned NULL
                 '38373-019-000'], #greater than 75m2 (200.1) returned NULL
-                "exterior some overlap": 
-                ['03841-000-000', 
-                '32736-000-000', 
-                '32736-026-010', 
-                '26410-000-000', 
-                '36076-023-000', 
-                '36081-010-000', 
-                '36071-029-000', 
-                '36468-000-000', 
-                '36719-000-000', 
-                '05152-000-000'], 
-                "partial (0.75-0.99) overlap": 
+                "exterior some overlap":
+                ['03841-000-000',
+                '32736-000-000',
+                '32736-026-010',
+                '26410-000-000',
+                '36076-023-000',
+                '36081-010-000',
+                '36071-029-000',
+                '36468-000-000',
+                '36719-000-000',
+                '05152-000-000'],
+                "partial (0.75-0.99) overlap":
                 ['03869-000-000',
-                '03799-000-000', 
+                '03799-000-000',
                 '03805-257-000',
-                '03805-342-000', 
-                '33997-000-000', 
-                '32720-000-000', 
-                '26618-000-000', 
-                '26466-010-000', 
-                '07566-010-000', 
+                '03805-342-000',
+                '33997-000-000',
+                '32720-000-000',
+                '26618-000-000',
+                '26466-010-000',
+                '07566-010-000',
                 '26626-030-000'],
-                "partial (0.01-0.25) overlap":  
-                ['33722-000-000', 
-                '32767-010-000', 
+                "partial (0.01-0.25) overlap":
+                ['33722-000-000',
+                '32767-010-000',
                 '32807-000-000',
                 '32807-007-000',
                 '07564-125-000',
@@ -116,10 +118,10 @@ class TestGetFlood:
                 '03726-040-000',
                 '03802-050-000',
                 '34024-322-000'],
-                "complete overlap":  
-                ['36630-000-000', 
-                '32736-000-000', 
-                '32736-015-000', 
+                "complete overlap":
+                ['36630-000-000',
+                '32736-000-000',
+                '32736-015-000',
                 '32734-010-000',
                 '32728-000-000',
                 '26630-000-000',
@@ -132,10 +134,10 @@ class TestGetFlood:
                 '26487-000-000',
                 '26484-030-000',
                 '26470-000-000',
-                '07533-450-090', 
-                '26509-020-000', 
+                '07533-450-090',
+                '26509-020-000',
                 '26567-000-000',
-                '26551-005-000', 
+                '26551-005-000',
                 '38324-000-000',
                 '36617-000-000'
                 ]}
@@ -176,7 +178,7 @@ class TestGetFlood:
     def test_get_flood_gt75pct_lt99pct_overlap(self):
         """ Test get flood when parcels have partial (0.75-0.99) overlap """
         test_parcels = self.parcels["partial (0.75-0.99) overlap"]
-        
+
         # Get subset of parcels with partial (0.75-0.99) known overlap with flood areas
         gt75pct_lt99pct_overlap_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
         actual = flood.get_flood(gt75pct_lt99pct_overlap_parcels)
@@ -217,12 +219,12 @@ class TestGetFlood:
         actual = flood.get_flood(tiny_parcels,
                                 #actual_file
                                 )
-        
+
         # test for parcel size
         # expect mean value is not empty if Shape_Area is greater than or equal to 74.334286
         # the parcels for 08344-000-000 make this fail, not sure why, so moved to needs investigation
         assert actual['mean'].count()==len(tiny_parcels[tiny_parcels["Shape_Area"] > 74.334285])
-        
+
         expected_file = os.path.join(EXPECTED_DIR, 'get_tiny.csv')
         expected = pandas.read_csv(expected_file)
         assert_frame_equal(actual, expected, check_dtype=False)
@@ -233,7 +235,7 @@ class TestGetFlood:
         # Get subset of parcels with unexpected results
         needs_investigation_parcels = parcels_gdf[parcels_gdf['parcelnumb'].isin(test_parcels)].reset_index()
         actual = flood.get_flood(needs_investigation_parcels)
-        
+
         expected_file = os.path.join(EXPECTED_DIR, 'get_needs_investigation.csv')
         expected = pandas.read_csv(expected_file)
         assert_frame_equal(actual, expected, check_dtype=False)
@@ -246,12 +248,12 @@ class TestGetFlood:
         for i in range(len(subset_parcels)):
             row = subset_parcels.iloc[[i]]
             geom = row.geometry
-            if geom.is_valid.item() == False:
+            if not geom.is_valid.item():
                 invalid_geom.append(row)
-        assert len(invalid_geom)==0       
+        assert len(invalid_geom)==0
 
 @pytest.fixture
-# GeoDataFrame with single point feature 
+# GeoDataFrame with single point feature
 def point_gdf():
     data = {
         'geometry': geopandas.GeoSeries.from_wkt(["POINT (-85.763623 30.329186)"])
@@ -263,16 +265,16 @@ def point_gdf():
 
 # Test sending point data to get_image_by_poly, but patch the computeStatHist endpoint call
 @patch('test_flood.flood.layer_query.ESRIImageService.computeStatHist')
-def test_get_image_by_poly_point(mock_computeStatHist, point_gdf):
+def test_get_image_by_poly_point(mock_computeStatHist, point_gdf: geopandas.GeoDataFrame):
     url = "https://fake.org/ImageServer"
     row = point_gdf.iloc[[0]]
-    
+
     result = flood.layer_query.get_image_by_poly(aoi=point_gdf, url=url, row=row)
-    assert result == None 
+    assert result is None
     mock_computeStatHist.assert_not_called() # Ensures the mocked method was never called
 
 @pytest.fixture
-# GeoDataFrame with single polygon feature 
+# GeoDataFrame with single polygon feature
 def polygon_gdf():
     data = {
         'geometry': geopandas.GeoSeries.from_wkt(["POLYGON ((-85.76298351599996 30.32878118700006, -85.76305759399997 30.32884191600005, -85.76316722699994 30.328925333000036, -85.76326076499998 30.32898948400003, -85.76337258599995 30.32905792500004, -85.76348870399994 30.329121772000065, -85.76362266399997 30.329186308, -85.76300802099996 30.329986128000023, -85.76235017699997 30.329637642000055, -85.76221772699995 30.329535969000062, -85.76211676699995 30.32929401400003, -85.76220841399999 30.328930764000056, -85.76228414799994 30.32877965800003, -85.76273981899999 30.328780179000045, -85.76298351599996 30.32878118700006))"])
@@ -284,7 +286,7 @@ def polygon_gdf():
 
 #Test how 502 server error is handled, but patch the computeStatHist endpoint call
 @patch('CHAPPIE.layer_query.requests.get')
-def test_get_image_by_poly_502_error(mock_get, polygon_gdf):
+def test_get_image_by_poly_502_error(mock_get, polygon_gdf: geopandas.GeoDataFrame):
     mock_resp = MagicMock()
     mock_resp.status_code = 502
     mock_resp.raise_for_status.side_effect = HTTPError
