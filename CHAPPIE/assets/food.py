@@ -63,7 +63,7 @@ def search_pnt_radius(aoi, outEPSG=4326):
     return Point(pnt_out), ceil(radius/1609)
 
 
-def usda_res_as_gdf(res):
+def usda_res_as_gdf(res_json):
     """Build geopandas.GeoDataFrame from a USDA Directory response.
 
     Parameters
@@ -77,14 +77,14 @@ def usda_res_as_gdf(res):
         GeoDataFrame for locations from USDA directory.
 
     """
-    if res.content==b'{"data":""}':
+    if res_json.content==b'{"data":""}':
         # empty result, return empty gdf
         return geopandas.GeoDataFrame()
     try:
-        df = pandas.DataFrame(res.json()['data'])
+        df = pandas.DataFrame(res_json['data'])
     except Exception as e:
         # TODO: catch just TypeError if not seeing anything else
-        print(f'Check {res.url}')
+        print(f'Check {res_json.url}')
         print(e)
     geom = geopandas.points_from_xy(df['location_x'], df['location_y'])
     gdf = geopandas.GeoDataFrame(df, geometry=geom, crs=4326)
@@ -122,10 +122,9 @@ def get_agritourism(aoi, api_key=None):
         'ftype': 'fjson'}
 
     res = utils.post_request(url, params, headers=USDA_header)
-    if res.ok:
-        return usda_res_as_gdf(res)
+    return usda_res_as_gdf(res)
     # there was a problem
-    print(f'Problem, check {res.url}')
+    #print(f'Problem, check {res.url}')
     #TODO: throw error?
 
 
