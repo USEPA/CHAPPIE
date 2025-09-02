@@ -9,7 +9,6 @@ from warnings import warn
 
 import geopandas
 import pandas
-import requests
 from numpy import nan
 
 from CHAPPIE import layer_query, utils
@@ -243,9 +242,8 @@ def _get_npi_registry(params):
     dfs=[]
     new_results=True
     while new_results:
-        res = requests.post(_npi_url_backup, dumps(params), headers=headers)
-        res.raise_for_status()
-        df = pandas.DataFrame(res.json())
+        res = utils.post_request(_npi_url_backup, dumps(params), headers=headers)
+        df = pandas.DataFrame(res)
         dfs.append(df)
         # Get all pages of results
         if len(df)==101:
