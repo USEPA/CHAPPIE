@@ -294,7 +294,7 @@ def test_get_image_by_poly_502_error(mock_post_request, polygon_gdf: geopandas.G
     url = "https://fake.org/ImageServer"
     row = polygon_gdf.iloc[[0]]
     result = flood.layer_query.get_image_by_poly(aoi=polygon_gdf, url=url, row=row)
-    assert result == {}
+    assert result['data'] is None
     assert mock_resp.raise_for_status.called == True
     # Ensure the mocked method was called twice (one plus a retry)
     assert mock_post_request.call_count == 2
