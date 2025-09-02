@@ -8,10 +8,13 @@ import time
 import urllib.request
 import zipfile
 from io import BytesIO
+from tempfile import TemporaryDirectory
 from warnings import warn
 
 import pandas
+import py7zr
 import requests
+from geopandas import read_file
 
 
 def get_zip(url, temp_file):
@@ -67,6 +70,48 @@ def get_from_zip(url, expected_csvs, encoding="utf-8"):
     df = pandas.concat(dfs, ignore_index=True)
 
     return df
+
+
+def download_unzip_lyrpkg(url, save_path=None):
+    """Download and unzip recreation area layer packages from URL
+
+    Parameters
+    ----------
+    url : str
+        The layer package download url
+    save_path : str, optional
+        Folder path for download, by default None uses tempfile.TemporaryDirectory
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame for recreation areas.
+    """
+    #Download the file from `url` and save it as tempfile
+    response = requests.get(url)  # Send GET request to the URL
+    response.raise_for_status()  # Assert request was successful
+
+    gdb_file = "recareas.gdb"
+
+    with TemporaryDirectory() as temp_dir:
+        with py7zr.SevenZipFile(BytesIO(response.content), mode='r') as z:
+                # List all archived file names from the zip
+                file_list = z.namelist()
+                # List all top level folders (unique). NOTE: no sort/order
+                folders = list(set([f.split('/')[0] for f in file_list]))
+                # List folder version suffix
+                v_sufs = ["".join(c for c in x if c.isdigit()) for x in folders]
+                # Folder name with largest version suffix
+                folder = [x for x in folders if x.endswith(max(v_sufs))][0]
+                # Get files in desired folder
+                # Note: this excludes ~/0000USA Recreational Areas.lyr')
+                select_files = [f for f in file_list if f.startswith(f'{folder}/{gdb_file}')]
+                # Extract the selected files to a temp directory
+                z.extract(path=temp_dir, targets=select_files)
+                #extract the selected files using the custom factory
+                gdf = read_file(os.path.join(temp_dir, f'{folder}', gdb_file))
+
+    return gdf
 
 
 def write_QA(results_dict, out_csv_file):
