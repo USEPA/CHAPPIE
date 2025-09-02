@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 """
-Module for food assets. 
+Module for food assets.
 
 For additional definitions: https://www.usdalocalfoodportal.com/fe/definitions/
 
 @author: jbousqui
 """
-import requests
+from math import ceil
+
 import geopandas
 import pandas
-from shapely import Point
+import requests
 from pyproj import Transformer
-from math import ceil
+from shapely import Point
 
 API_URL = "https://www.usdalocalfoodportal.com/api/"
 USDA_header = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'}
@@ -52,7 +53,7 @@ def search_pnt_radius(aoi, outEPSG=4326):
     pnt = Point(x_mid, y_mid)
     max_pnt = Point(xmax, ymax)
     radius = pnt.distance(max_pnt)
-    
+
     # transform center point to desired EPSG
     transformer = Transformer.from_crs(inEPSG, "epsg:{}".format(outEPSG), always_xy=True)
     pnt_out = transformer.transform(pnt.x, pnt.y)
@@ -110,7 +111,7 @@ def get_agritourism(aoi, api_key=None):
 
     # Get query geos
     pnt, radius = search_pnt_radius(aoi)
-    
+
     params = {
         'apikey': api_key,
         'x': pnt.x,
@@ -147,7 +148,7 @@ def get_CSA(aoi, api_key=None):
 
     # Get query geos
     pnt, radius = search_pnt_radius(aoi)
-    
+
     params = {
         'apikey': api_key,
         'x': pnt.x,
@@ -184,7 +185,7 @@ def get_farmers_market(aoi, api_key=None):
 
     # Get query geos
     pnt, radius = search_pnt_radius(aoi)
-    
+
     params = {
         'apikey': api_key,
         'x': pnt.x,
@@ -223,7 +224,7 @@ def get_food_hub(aoi, api_key=None):
 
     # Get query geos
     pnt, radius = search_pnt_radius(aoi)
-    
+
     params = {
         'apikey': api_key,
         'x': pnt.x,
@@ -262,7 +263,7 @@ def get_farm_store(aoi, api_key=None):
 
     # Get query geos
     pnt, radius = search_pnt_radius(aoi)
-    
+
     params = {
         'apikey': api_key,
         'x': pnt.x,
