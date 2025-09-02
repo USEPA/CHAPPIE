@@ -9,11 +9,9 @@ import copy
 import json
 import math
 import warnings
-from time import sleep
 
 import geopandas
 import pandas
-import requests
 
 from CHAPPIE import utils
 
@@ -319,13 +317,9 @@ def _get_count_only(feature_layer, count_query_params):
     # Return count only
     count_query_params["returnCountOnly"] = "True"
     # Run query
-    try:
-        datadict = feature_layer.query(raw=True, **count_query_params)
-        count = datadict["count"]
-        return count
-    except requests.exceptions.HTTPError as e:
-        warnings.warn(f"Error: {e}")
-        return False
+    datadict = feature_layer.query(raw=True, **count_query_params)
+    count = datadict["count"]
+    return count
 
 
 class ESRILayer(object):
@@ -429,17 +423,12 @@ class ESRILayer(object):
         self._last_query = self._baseurl + "/query?" + qstr
         # Note: second condition to not overide raw
         if kwargs.get("returnGeometry", "true") == "True" and raw is False:
-            try:
-                if ('fs.regrid.com') in self._baseurl:
-                    resp = utils.post_request(self._last_query + "&f=geojson")
-                    gdf = geopandas.GeoDataFrame.from_features(resp)
-                    return gdf.set_crs(f'epsg:{self._basequery["outSR"]}')
-                else:
-                    return geopandas.read_file(self._last_query + "&f=geojson")
-            except requests.exceptions.HTTPError as e:
-                # TODO: needs improvement, but getting url is good for debug
-                print(self._last_query())
-                raise e
+            if ('fs.regrid.com') in self._baseurl:
+                resp = utils.post_request(self._last_query + "&f=geojson")
+                gdf = geopandas.GeoDataFrame.from_features(resp)
+                return gdf.set_crs(f'epsg:{self._basequery["outSR"]}')
+            else:
+                return geopandas.read_file(self._last_query + "&f=geojson")
         resp = utils.post_request(self._last_query + "&f=json")
         if raw:
             return resp
@@ -478,7 +467,6 @@ class ESRIImageService(object):
             return ""
 
     def computeStatHist(self, **kwargs):
-        retry = 0
         # Parse args
         kwargs = {"".join(k.split("_")): v for k, v in kwargs.items()}
 
