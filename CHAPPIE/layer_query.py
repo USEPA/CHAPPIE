@@ -495,12 +495,10 @@ class ESRIImageService(object):
         #print(self._last_query)
         while True:
             try:
-                resp = requests.get(self._last_query)
-                resp.raise_for_status()
-                datadict = resp.json()
+                resp = utils.post_request(self._last_query)
                 # moved this to parse in flood.py
                 #mean = datadict["statistics"][0]["mean"]
-                return datadict
+                return resp
             except requests.exceptions.HTTPError as e:
                 #TODO: this needs improvement, but getting url is good for debug
                 retry += 1
