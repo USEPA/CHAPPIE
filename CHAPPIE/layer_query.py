@@ -364,7 +364,7 @@ class ESRILayer(object):
             maxRecordCount.
 
         """
-        res = utils.post_request(self._baseurl + "?f=pjson", None)
+        res = utils.post_request(self._baseurl + "?f=pjson")
         return res["maxRecordCount"]
 
     def query(self, raw=False, **kwargs):
@@ -431,10 +431,8 @@ class ESRILayer(object):
         if kwargs.get("returnGeometry", "true") == "True" and raw is False:
             try:
                 if ('fs.regrid.com') in self._baseurl:
-                    resp = requests.get(self._last_query + "&f=geojson")
-                    resp.raise_for_status()
-                    datadict = resp.json()
-                    gdf = geopandas.GeoDataFrame.from_features(datadict)
+                    resp = utils.post_request(self._last_query + "&f=geojson")
+                    gdf = geopandas.GeoDataFrame.from_features(resp)
                     return gdf.set_crs(f'epsg:{self._basequery["outSR"]}')
                 else:
                     return geopandas.read_file(self._last_query + "&f=geojson")
@@ -442,14 +440,12 @@ class ESRILayer(object):
                 # TODO: needs improvement, but getting url is good for debug
                 print(self._last_query())
                 raise e
-        resp = requests.get(self._last_query + "&f=json")
-        resp.raise_for_status()
-        datadict = resp.json()
+        resp = utils.post_request(self._last_query + "&f=json")
         if raw:
-            return datadict
+            return resp
         if kwargs.get("returnGeometry", "true") == "false":
             return pandas.DataFrame.from_records(
-                [x["attributes"] for x in datadict["features"]]
+                [x["attributes"] for x in resp["features"]]
             )
         else:
             # return resp
