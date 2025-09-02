@@ -1,7 +1,7 @@
 """
 Module for cultural assets
 
-@author: tlomba01, jbousquin
+@author: tlomba01, jbousquin, edamico
 """
 import geopandas
 from numpy import nan
@@ -9,6 +9,7 @@ from numpy import nan
 from CHAPPIE import layer_query, utils
 
 IMLS_URL = "https://www.imls.gov/sites/default/files"
+REC_AREA_URL = "https://epa.maps.arcgis.com/sharing/rest/content/items/4f14ea9215d1498eb022317458437d19/data"
 
 def get_historic(aoi):
     """Get culturally historic sites within AOI.
@@ -83,7 +84,7 @@ def get_museums(aoi):
                      "MuseumFile2018_File2_Nulls.csv",
                      "MuseumFile2018_File3_Nulls.csv"]
 
-    df = layer_query.get_from_zip(zip_url, expected_csvs, encoding="Windows-1252")
+    df = utils.get_from_zip(zip_url, expected_csvs, encoding="Windows-1252")
     #TODO: null geom?
     df_geoms = df[['LATITUDE', 'LONGITUDE']].copy()
     df_geoms.replace(" ", nan, inplace=True)  # Must be able to coerce to float
@@ -118,3 +119,48 @@ def get_worship(aoi):
                                 url=url,
                                 layer=42,
                                 in_crs=aoi.crs.to_epsg())
+
+
+def get_recreationalArea():
+    """Get recreational areas
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame for recreation areas.
+
+    """
+
+    recAreas_gdf = utils.download_unzip_lyrpkg(REC_AREA_URL)
+    return recAreas_gdf
+
+
+def process_recreationalArea(aoi):
+    """Process recreational areas for AOI.
+
+    Parameters
+    ----------
+    recAreas_gdf : geopandas.GeoDataFrame
+        Recreational areas in raw format.
+    aoi : geopandas.GeoDataFrame
+        Spatial definition for Area Of Interest (AOI). CRS must be in meters.
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        GeoDataFrame for recreational areas with expected columns.
+
+    """
+    #get all recreational areas
+
+    recAreas_gdf = get_recreationalArea()
+    recAreas_gdf = recAreas_gdf.to_crs(aoi.crs)  # match crs for clip
+
+    # clip buffered paths to aoi extent
+    recAreas_aoi = recAreas_gdf.clip(aoi.total_bounds)
+
+    return recAreas_aoi
