@@ -20,71 +20,148 @@ Households - represented spatially by parcel boundaries and generalized by centr
 
 ## Package Structure
 
-CHAPPIE/ Repo contains package info (e.g., pyproject.toml, requirements.txt, demos, etc.)
-
-      CHAPPIE/ Package contains tests, utils functions, layer querying, parcel querying, and 6 sub-package folders:
-
-            access
-
-                  OSMnx/          folder for module reference materials
-
-                  timeMatrix/     folder for module reference materials
-
-            assets
-
-                  bluespace/      folder for module reference materials
-                  
-                  cultural.py     Module for cultural assets
-                  
-                  education.py    Module for education assets.
-                  
-                  emergency.py    Module for emergency assets.
-                  
-                  food.py         Module for food assets.
-                  
-                  hazard_infrastructure.py  Module for hazard infrastructure assets.
-                  
-                  health.py        Module for health assets.
-                  
-                  recreation.py    Module for recreation assets.
-                  
-                  transit.py       Module for transit assets.
-
-            eco_services
-
-                  infiltration/      folder for module reference materials
-                  
-                  wq.py              Module for Get Assessment Total Maximum Daily Load (TMDL) Tracking and Implementation System (ATTAINS) geometry
-
-            endpoints
-
-                  Health/      folder for module reference materials
-
-            hazards
-
-                  SeaLevelRise/      folder for module reference materials
-
-                  StormSurge/      folder for module reference materials
-                                    
-                  Tornadoes/      folder for module reference materials
-
-                  TropicalCyclones/                folder for module reference materials
-
-                  flood.py             Module for flood hazards
-                  
-                  tenological.py       Module for technological hazards
-                  
-                  tornadoes.py          Module to query and process tornadoe hazards
-                  
-                  tropical_cyclones.py  Module to query and process tropical cyclone hazards
-                  
-                  weather.py            Get weather related natural hazards data
-
-            household
-
-                  SVI/        folder for module reference materials
-
-                  svi.py      Lookups for SVI
+<table class="table table-condensed" style="font-size: 14px; color: black; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;">  </th>
+   <th style="text-align:left;">  </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;width: 20em; "> CHAPPIE/ </td>
+   <td style="text-align:left;"> Repo contains package info (e.g., pyproject.toml, requirements.txt, demos, etc.) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 2em;" indentlevel="1"> CHAPPIE/ </td>
+   <td style="text-align:left;"> Package contains tests, utils functions, layer querying, parcel querying, and 6 sub-package folders: </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 4em;" indentlevel="2"> access/ </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> OSMnx/ </td>
+   <td style="text-align:left;"> Folder for module reference materials </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> timeMatrix/ </td>
+   <td style="text-align:left;"> Folder for module reference materials </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 4em;" indentlevel="2"> assets/ </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> bluespace/ </td>
+   <td style="text-align:left;"> Folder for module reference materials </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> cultural.py </td>
+   <td style="text-align:left;"> Module for cultural assets </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> education.py </td>
+   <td style="text-align:left;"> Module for education assets </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> emergency.py </td>
+   <td style="text-align:left;"> Module for emergency assets </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> food.py </td>
+   <td style="text-align:left;"> Module for food assets </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> hazard_infrastructure.py </td>
+   <td style="text-align:left;"> Module for hazard infrastructure assets </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> health.py </td>
+   <td style="text-align:left;"> Module for health assets </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> recreation.py </td>
+   <td style="text-align:left;"> Module for recreation assets </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> transit.py </td>
+   <td style="text-align:left;"> Module for transit assets </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 4em;" indentlevel="2"> eco_services/ </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> infiltration/ </td>
+   <td style="text-align:left;"> Folder for module reference materials </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> wq.py </td>
+   <td style="text-align:left;"> Module for Get Assessment Total Maximum Daily Load (TMDL) Tracking and Implementation System (ATTAINS) geometry </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 4em;" indentlevel="2"> endpoints/ </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> Health/ </td>
+   <td style="text-align:left;"> Folder for module reference materials </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 4em;" indentlevel="2"> hazards/ </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> SeaLevelRise/ </td>
+   <td style="text-align:left;"> Folder for module reference materials </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> StormSurge/ </td>
+   <td style="text-align:left;"> Folder for module reference materials </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> Tornadoes/ </td>
+   <td style="text-align:left;"> Folder for module reference materials </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> TropicalCyclones/ </td>
+   <td style="text-align:left;"> Folder for module reference materials </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> flood.py </td>
+   <td style="text-align:left;"> Module for flood hazards </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> technological.py </td>
+   <td style="text-align:left;"> Module for technological hazards </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> tornadoes.py </td>
+   <td style="text-align:left;"> Module to query and process tornadoes hazards </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> tropical_cyclones.py </td>
+   <td style="text-align:left;"> Module to query and process tropical cyclones hazards </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> weather.py </td>
+   <td style="text-align:left;"> Get weather related natural hazards data </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 4em;" indentlevel="2"> household/ </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> SVI/ </td>
+   <td style="text-align:left;"> Folder for module reference materials </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;width: 20em; padding-left: 6em;" indentlevel="3"> svi.py </td>
+   <td style="text-align:left;"> Lookups for SVI </td>
+  </tr>
+</tbody>
+</table>
 
 ## Disclaimer
 
