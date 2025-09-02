@@ -494,22 +494,10 @@ class ESRIImageService(object):
         self._last_query = self._baseurl + "/computeStatisticsHistograms?" + cstr
         #print(self._last_query)
         while True:
-            try:
-                resp = utils.post_request(self._last_query)
-                # moved this to parse in flood.py
-                #mean = datadict["statistics"][0]["mean"]
-                return resp
-            except requests.exceptions.HTTPError as e:
-                #TODO: this needs improvement, but getting url is good for debug
-                retry += 1
-                if retry < 2:
-                    warnings.warn(f"Retry number: {retry}")
-                    sleep(5)
-                    continue
-                else:
-                    print(self._last_query)
-                    print(e)
-                    return {}
+            resp = utils.post_request(self._last_query)
+            # moved this to parse in flood.py
+            #mean = datadict["statistics"][0]["mean"]
+            return resp
         # Moved to flood.py
         # except IndexError as e:
             # TODO: if response is empty, provide response metadata in warning
