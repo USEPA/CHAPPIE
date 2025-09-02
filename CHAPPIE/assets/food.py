@@ -67,8 +67,8 @@ def usda_res_as_gdf(res_json):
 
     Parameters
     ----------
-    res : requests.response
-        Response object from query to one of the USDA directories
+    res_json : json response
+        Reponse as decoded json from query to one of the USDA directories.
 
     Returns
     -------
