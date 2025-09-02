@@ -7,9 +7,8 @@ Get weather related natural hazards data
 import json
 
 import pandas
-import requests
 
-from CHAPPIE import layer_query
+from CHAPPIE import layer_query, utils
 
 _EPH_URL = "https://ephtracking.cdc.gov/apigateway/api/v1"
 
@@ -96,14 +95,15 @@ def get_heat_events(aoi, stratificationLevelId=2194, localIDs=None, years=["2023
               "temporalItemsFilter": ",".join(years),
               }
     headers = {"Content-Type": "application/json"}
-    res = requests.post(f"{EPH_url}{url_tail}", json.dumps(params), headers=headers)
-    res.raise_for_status() # res.ok True even on failure, check len of results?
+    res = utils.post_request(f"{EPH_url}{url_tail}",
+                             json.dumps(params),
+                             headers=headers)
     # TODO: catch the following error to tell user to get token?
     #"code":429,"errorTypeId":8,"helpURL":"http://ephtracking.cdc.gov/apihelp",
     # "message":"Server has serviced too many non-token requests",
     # "status":"Too Many Requests"
     # TODO: response seems to contain metadata and results (split)
-    df = pandas.DataFrame(res.json()['tableResult'])
+    df = pandas.DataFrame(res['tableResult'])
     if len(df)>0:
         return df
     return None
