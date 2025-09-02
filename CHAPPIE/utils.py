@@ -175,14 +175,14 @@ def write_results_dict(results_dict, out_dir):
         val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
 
 
-def post_request(url, data):
+def post_request(url, data=None):
     """ Generate post request from url and data.
 
     Parameters
     ----------
     url : str
         URL for post request.
-    data : dict
+    data : dict, optional
         Data dictionary for post request body.
 
     Returns
