@@ -64,7 +64,6 @@ def test_get_bus():
                               check_less_precise=True)
 
 
-
 def test_get_rail():
     actual = transit.get_rail(aoi_gdf)
     actual.rename(columns={'GEOMETRY': 'geometry'}, inplace=True)
