@@ -20,7 +20,7 @@ def get_cyclones(aoi):
 
     """
     baseurl = 'https://services2.arcgis.com/FiaPA4ga0iQKduv3/ArcGIS/rest/services/'
-    # starting / lines only
+    # starting w/ lines only
     url = f'{baseurl}IBTrACS_ALL_list_v04r00_lines_1/FeatureServer'
     #url_pnts =
     max_buff = 160934
