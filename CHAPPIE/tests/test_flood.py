@@ -286,17 +286,18 @@ def polygon_gdf():
 
 #Test how 502 server error is handled, but patch the computeStatHist endpoint call
 @patch('CHAPPIE.layer_query.utils.post_request')
-def test_get_image_by_poly_502_error(mock_get, polygon_gdf: geopandas.GeoDataFrame):
+def test_get_image_by_poly_502_error(mock_post_request, polygon_gdf: geopandas.GeoDataFrame):
     mock_resp = MagicMock()
     mock_resp.status_code = 502
     mock_resp.raise_for_status.side_effect = HTTPError
-    mock_get.return_value = mock_resp # mock return value
+    mock_post_request.return_value = mock_resp # mock return value
     url = "https://fake.org/ImageServer"
     row = polygon_gdf.iloc[[0]]
     result = flood.layer_query.get_image_by_poly(aoi=polygon_gdf, url=url, row=row)
     assert result == {}
     assert mock_resp.raise_for_status.called == True
-    assert mock_get.call_count == 2 # Ensures the mocked method was called twice (one plus a retry)
+    # Ensure the mocked method was called twice (one plus a retry)
+    assert mock_post_request.call_count == 2
 
 # Test mock return object {'statistics': []}, but patch the computeStatHist endpoint call
 # @patch('CHAPPIE.layer_query.ESRIImageService.computeStatHist')
