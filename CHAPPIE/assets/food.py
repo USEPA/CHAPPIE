@@ -77,7 +77,7 @@ def usda_res_as_gdf(res_json):
         GeoDataFrame for locations from USDA directory.
 
     """
-    if res_json.content==b'{"data":""}':
+    if res_json["data"]=="":
         # empty result, return empty gdf
         return geopandas.GeoDataFrame()
     try:
