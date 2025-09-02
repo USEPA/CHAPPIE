@@ -88,9 +88,9 @@ def _get_npi_api(params):
     pandas.DataFrame
         Table of API results
     """
-    res = requests.get(_npi_url, params)
-    res.raise_for_status()
-    return pandas.DataFrame(res.json()['results'])
+    res = utils.post_request(_npi_url, params)
+
+    return pandas.DataFrame(res['results'])
 
 
 def get_providers(aoi):
