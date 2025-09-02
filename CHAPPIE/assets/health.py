@@ -88,6 +88,7 @@ def _get_npi_api(params):
         Table of API results
     """
     res = utils.post_request(_npi_url, params)
+    print(res)
 
     return pandas.DataFrame(res['results'])
 
