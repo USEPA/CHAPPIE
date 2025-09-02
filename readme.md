@@ -33,7 +33,7 @@ Households - represented spatially by parcel boundaries and generalized by centr
    <td style="text-align:left;"> Repo contains package info (e.g., pyproject.toml, requirements.txt, demos, etc.) </td>
   </tr>
   <tr>
-   <td style="text-align:left;width: 20em; padding-left: 2em; padding: 10em"> CHAPPIE/ </td>
+   <td style="text-align:left;width: 20em; padding-left: 2em; "><div style="margin-left: 30em; "> CHAPPIE/ </div></td>
    <td style="text-align:left;"> Package contains tests, utils functions, layer querying, parcel querying, and 6 sub-package folders: </td>
   </tr>
   <tr>
