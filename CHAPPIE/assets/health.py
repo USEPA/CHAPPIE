@@ -9,6 +9,7 @@ from warnings import warn
 
 import geopandas
 import pandas
+import requests
 from numpy import nan
 
 from CHAPPIE import layer_query, utils
@@ -87,10 +88,10 @@ def _get_npi_api(params):
     pandas.DataFrame
         Table of API results
     """
-    res = utils.post_request(_npi_url, params)
-    print(res)
+    res = requests.get(_npi_url, params)
+    res.raise_for_status()
 
-    return pandas.DataFrame(res['results'])
+    return pandas.DataFrame(res.json()['results'])
 
 
 def get_providers(aoi):
