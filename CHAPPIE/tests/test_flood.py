@@ -285,7 +285,7 @@ def polygon_gdf():
     return point_gdf
 
 #Test how 502 server error is handled, but patch the computeStatHist endpoint call
-@patch('CHAPPIE.layer_query.utils.post_request')
+@patch('CHAPPIE.layer_query.utils.requests.post')
 def test_get_image_by_poly_502_error(mock_post_request, polygon_gdf: geopandas.GeoDataFrame):
     mock_resp = MagicMock()
     mock_resp.status_code = 502
