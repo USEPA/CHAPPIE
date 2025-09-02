@@ -90,6 +90,7 @@ def usda_res_as_gdf(res_json):
     gdf = geopandas.GeoDataFrame(df, geometry=geom, crs=4326)
     return gdf
 
+
 def get_agritourism(aoi, api_key=None):
     """Get businesses from the USDA Agritourism Business Directory.
 
@@ -123,9 +124,6 @@ def get_agritourism(aoi, api_key=None):
 
     res = utils.post_request(url, params, headers=USDA_header)
     return usda_res_as_gdf(res)
-    # there was a problem
-    #print(f'Problem, check {res.url}')
-    #TODO: throw error?
 
 
 def get_CSA(aoi, api_key=None):
@@ -157,12 +155,8 @@ def get_CSA(aoi, api_key=None):
         'radius': radius,
         'ftype': 'fjson'}
 
-    res = requests.get(url, params, headers=USDA_header)
-    if res.ok:
-        return usda_res_as_gdf(res)
-    # there was a problem
-    print(f'Problem, check {res.url}')
-    #TODO: throw error?
+    res = utils.post_request(url, params, headers=USDA_header)
+    return usda_res_as_gdf(res)
 
 
 def get_farmers_market(aoi, api_key=None):
@@ -194,12 +188,8 @@ def get_farmers_market(aoi, api_key=None):
         'radius': radius,
         'ftype': 'fjson'}
 
-    res = requests.get(url, params, headers=USDA_header)
-    if res.ok:
-        return usda_res_as_gdf(res)
-    # there was a problem
-    print(f'Problem, check {res.url}')
-    #TODO: throw error?
+    res = utils.post_request(url, params, headers=USDA_header)
+    return usda_res_as_gdf(res)
 
 
 def get_food_hub(aoi, api_key=None):
@@ -233,12 +223,8 @@ def get_food_hub(aoi, api_key=None):
         'radius': radius,
         'ftype': 'fjson'}
 
-    res = requests.get(url, params, headers=USDA_header)
-    if res.ok:
-        return usda_res_as_gdf(res)
-    # there was a problem
-    print(f'Problem, check {res.url}')
-    #TODO: throw error?
+    res = utils.post_request(url, params, headers=USDA_header)
+    return usda_res_as_gdf(res)
 
 
 def get_farm_store(aoi, api_key=None):
@@ -272,9 +258,5 @@ def get_farm_store(aoi, api_key=None):
         'radius': radius,
         'ftype': 'fjson'}
 
-    res = requests.get(url, params, headers=USDA_header)
-    if res.ok:
-        return usda_res_as_gdf(res)
-    # there was a problem
-    print(f'Problem, check {res.url}')
-    #TODO: throw error?
+    res = utils.post_request(url, params, headers=USDA_header)
+    return usda_res_as_gdf(res)
