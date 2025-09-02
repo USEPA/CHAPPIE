@@ -7,6 +7,7 @@ Test food assets.
 import os
 
 import geopandas
+import pytest
 from geopandas.testing import assert_geodataframe_equal
 from shapely import Point
 
@@ -25,6 +26,7 @@ AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 aoi_gdf = geopandas.read_file(AOI)
 
 
+@pytest.mark.unit
 def test_radius():
     pnt, radius = food.search_pnt_radius(aoi_gdf)
     assert radius == 25

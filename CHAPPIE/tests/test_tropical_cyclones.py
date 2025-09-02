@@ -15,7 +15,6 @@ from CHAPPIE.hazards import tropical_cyclones
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
-#DIRPATH = r'L:\Public\jbousqui\Code\GitHub\CHAPPIE\CHAPPIE\tests'
 
 EXPECTED_DIR = os.path.join(DIRPATH, 'expected')  # Expected
 DATA_DIR = os.path.join(DIRPATH, 'data')  # inputs
@@ -59,6 +58,7 @@ def static_cyclones():
     return geopandas.read_parquet(expected_file)
 
 
+@pytest.mark.integration
 def test_process_cyclones(static_cyclones: DataFrame):
 
     actual = tropical_cyclones.process_cyclones(static_cyclones, aoi_gdf)
