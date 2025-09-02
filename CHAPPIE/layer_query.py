@@ -15,6 +15,8 @@ import geopandas
 import pandas
 import requests
 
+from CHAPPIE import utils
+
 _basequery = {
     "where": "",  # sql query component
     "text": "",  # raw text search
@@ -362,8 +364,8 @@ class ESRILayer(object):
             maxRecordCount.
 
         """
-        res = requests.get(self._baseurl + "?f=pjson")
-        return res.json()["maxRecordCount"]
+        res = utils.post_request(self._baseurl + "?f=pjson", None)
+        return res["maxRecordCount"]
 
     def query(self, raw=False, **kwargs):
         """Run query to extract data out of MapServer layers.
