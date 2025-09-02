@@ -175,7 +175,7 @@ def write_results_dict(results_dict, out_dir):
         val.to_parquet(os.path.join(out_dir, key, f"{key}.parquet"))
 
 
-def post_request(url, data=None):
+def post_request(url, data=None, headers=None):
     """ Generate post request from url and data.
 
     Parameters
@@ -195,7 +195,10 @@ def post_request(url, data=None):
 
     while True:
         try:
-            r = requests.post(url, data=data)
+            if headers:
+                 r = requests.post(url, data=data, headers=headers)
+            else:
+                r = requests.post(url, data=data)
             r.raise_for_status()
             r_json = r.json()
             return r_json

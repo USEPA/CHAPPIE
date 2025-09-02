@@ -14,6 +14,8 @@ import requests
 from pyproj import Transformer
 from shapely import Point
 
+from CHAPPIE import utils
+
 API_URL = "https://www.usdalocalfoodportal.com/api/"
 USDA_header = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'}
 
@@ -119,7 +121,7 @@ def get_agritourism(aoi, api_key=None):
         'radius': radius,
         'ftype': 'fjson'}
 
-    res = requests.get(url, params, headers=USDA_header)
+    res = utils.post_request(url, params, headers=USDA_header)
     if res.ok:
         return usda_res_as_gdf(res)
     # there was a problem
