@@ -10,7 +10,6 @@ from math import ceil
 
 import geopandas
 import pandas
-import requests
 from pyproj import Transformer
 from shapely import Point
 
@@ -80,12 +79,7 @@ def usda_res_as_gdf(res_json):
     if res_json["data"]=="":
         # empty result, return empty gdf
         return geopandas.GeoDataFrame()
-    try:
-        df = pandas.DataFrame(res_json['data'])
-    except Exception as e:
-        # TODO: catch just TypeError if not seeing anything else
-        print(f'Check {res_json.url}')
-        print(e)
+    df = pandas.DataFrame(res_json['data'])
     geom = geopandas.points_from_xy(df['location_x'], df['location_y'])
     gdf = geopandas.GeoDataFrame(df, geometry=geom, crs=4326)
     return gdf
