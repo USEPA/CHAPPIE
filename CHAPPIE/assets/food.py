@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 """
-Module for food assets. 
+Module for food assets.
 
 For additional definitions: https://www.usdalocalfoodportal.com/fe/definitions/
 
 @author: jbousqui
 """
-import requests
+from math import ceil
+
 import geopandas
 import pandas
-from shapely import Point
 from pyproj import Transformer
-from math import ceil
+from shapely import Point
+
+from CHAPPIE import utils
 
 API_URL = "https://www.usdalocalfoodportal.com/api/"
 USDA_header = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'}
@@ -52,7 +54,7 @@ def search_pnt_radius(aoi, outEPSG=4326):
     pnt = Point(x_mid, y_mid)
     max_pnt = Point(xmax, ymax)
     radius = pnt.distance(max_pnt)
-    
+
     # transform center point to desired EPSG
     transformer = Transformer.from_crs(inEPSG, "epsg:{}".format(outEPSG), always_xy=True)
     pnt_out = transformer.transform(pnt.x, pnt.y)
@@ -60,13 +62,13 @@ def search_pnt_radius(aoi, outEPSG=4326):
     return Point(pnt_out), ceil(radius/1609)
 
 
-def usda_res_as_gdf(res):
+def usda_res_as_gdf(res_json):
     """Build geopandas.GeoDataFrame from a USDA Directory response.
 
     Parameters
     ----------
-    res : requests.response
-        Response object from query to one of the USDA directories
+    res_json : json response
+        Reponse as decoded json from query to one of the USDA directories.
 
     Returns
     -------
@@ -74,18 +76,14 @@ def usda_res_as_gdf(res):
         GeoDataFrame for locations from USDA directory.
 
     """
-    if res.content==b'{"data":""}':
+    if res_json["data"]=="":
         # empty result, return empty gdf
         return geopandas.GeoDataFrame()
-    try:
-        df = pandas.DataFrame(res.json()['data'])
-    except Exception as e:
-        # TODO: catch just TypeError if not seeing anything else
-        print(f'Check {res.url}')
-        print(e)
+    df = pandas.DataFrame(res_json['data'])
     geom = geopandas.points_from_xy(df['location_x'], df['location_y'])
     gdf = geopandas.GeoDataFrame(df, geometry=geom, crs=4326)
     return gdf
+
 
 def get_agritourism(aoi, api_key=None):
     """Get businesses from the USDA Agritourism Business Directory.
@@ -110,7 +108,7 @@ def get_agritourism(aoi, api_key=None):
 
     # Get query geos
     pnt, radius = search_pnt_radius(aoi)
-    
+
     params = {
         'apikey': api_key,
         'x': pnt.x,
@@ -118,12 +116,8 @@ def get_agritourism(aoi, api_key=None):
         'radius': radius,
         'ftype': 'fjson'}
 
-    res = requests.get(url, params, headers=USDA_header)
-    if res.ok:
-        return usda_res_as_gdf(res)
-    # there was a problem
-    print(f'Problem, check {res.url}')
-    #TODO: throw error?
+    res = utils.post_request(url, params, headers=USDA_header)
+    return usda_res_as_gdf(res)
 
 
 def get_CSA(aoi, api_key=None):
@@ -147,7 +141,7 @@ def get_CSA(aoi, api_key=None):
 
     # Get query geos
     pnt, radius = search_pnt_radius(aoi)
-    
+
     params = {
         'apikey': api_key,
         'x': pnt.x,
@@ -155,12 +149,8 @@ def get_CSA(aoi, api_key=None):
         'radius': radius,
         'ftype': 'fjson'}
 
-    res = requests.get(url, params, headers=USDA_header)
-    if res.ok:
-        return usda_res_as_gdf(res)
-    # there was a problem
-    print(f'Problem, check {res.url}')
-    #TODO: throw error?
+    res = utils.post_request(url, params, headers=USDA_header)
+    return usda_res_as_gdf(res)
 
 
 def get_farmers_market(aoi, api_key=None):
@@ -184,7 +174,7 @@ def get_farmers_market(aoi, api_key=None):
 
     # Get query geos
     pnt, radius = search_pnt_radius(aoi)
-    
+
     params = {
         'apikey': api_key,
         'x': pnt.x,
@@ -192,12 +182,8 @@ def get_farmers_market(aoi, api_key=None):
         'radius': radius,
         'ftype': 'fjson'}
 
-    res = requests.get(url, params, headers=USDA_header)
-    if res.ok:
-        return usda_res_as_gdf(res)
-    # there was a problem
-    print(f'Problem, check {res.url}')
-    #TODO: throw error?
+    res = utils.post_request(url, params, headers=USDA_header)
+    return usda_res_as_gdf(res)
 
 
 def get_food_hub(aoi, api_key=None):
@@ -223,7 +209,7 @@ def get_food_hub(aoi, api_key=None):
 
     # Get query geos
     pnt, radius = search_pnt_radius(aoi)
-    
+
     params = {
         'apikey': api_key,
         'x': pnt.x,
@@ -231,12 +217,8 @@ def get_food_hub(aoi, api_key=None):
         'radius': radius,
         'ftype': 'fjson'}
 
-    res = requests.get(url, params, headers=USDA_header)
-    if res.ok:
-        return usda_res_as_gdf(res)
-    # there was a problem
-    print(f'Problem, check {res.url}')
-    #TODO: throw error?
+    res = utils.post_request(url, params, headers=USDA_header)
+    return usda_res_as_gdf(res)
 
 
 def get_farm_store(aoi, api_key=None):
@@ -262,7 +244,7 @@ def get_farm_store(aoi, api_key=None):
 
     # Get query geos
     pnt, radius = search_pnt_radius(aoi)
-    
+
     params = {
         'apikey': api_key,
         'x': pnt.x,
@@ -270,9 +252,5 @@ def get_farm_store(aoi, api_key=None):
         'radius': radius,
         'ftype': 'fjson'}
 
-    res = requests.get(url, params, headers=USDA_header)
-    if res.ok:
-        return usda_res_as_gdf(res)
-    # there was a problem
-    print(f'Problem, check {res.url}')
-    #TODO: throw error?
+    res = utils.post_request(url, params, headers=USDA_header)
+    return usda_res_as_gdf(res)

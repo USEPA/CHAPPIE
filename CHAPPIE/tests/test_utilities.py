@@ -1,10 +1,12 @@
 import os
 from tempfile import TemporaryDirectory
+from unittest.mock import MagicMock, patch
 
 import pygris
 import pytest
 from geopandas import read_parquet
 from pyarrow.parquet import ParquetFile
+from requests.exceptions import ConnectionError, HTTPError
 
 from CHAPPIE import utils
 
@@ -67,3 +69,46 @@ def test_write_results_dict(assets_results_dict: dict):
       expected_rows = [9, 0, 0]
       actual = ParquetFile(f).metadata.num_rows
       assert actual==expected_rows[i], f"Parquet cols mismatch: {actual}"
+
+
+@pytest.mark.unit
+#Test how Connection error is handled, but patch the post_request call
+@patch('CHAPPIE.utils.requests.post')
+@pytest.mark.unit
+def test_post_request_connection_error(mock_post):
+    mock_resp = MagicMock()
+    mock_resp.raise_for_status.side_effect = ConnectionError
+    mock_post.return_value = mock_resp
+    url = "https://fake.epa.gov/GeocodeServer"
+    data = {}
+
+    result = utils.post_request(url=url, data=data)
+    #assert mock_resp.raise_for_status.called
+    assert mock_resp.raise_for_status.called == True
+    # Ensures the mocked method was called twice (one plus a retry)
+    assert mock_post.call_count == 2
+    assert result == {"url": url,
+                      "status": "error",
+                      "reason": "Connection error, 2 attempts",
+                      "text": ""
+                      }
+
+
+@pytest.mark.unit
+# Test other exception branch of post_request function, which has no retry
+@patch('CHAPPIE.utils.requests.post')
+@pytest.mark.unit
+def test_post_request_502_error(mock_post):
+    mock_resp = MagicMock()
+    mock_resp.status_code = 502
+    mock_resp.raise_for_status.side_effect = HTTPError
+    mock_post.return_value = mock_resp
+    url = "https://fake.epa.gov/GeocodeServer"
+    data = {}
+
+    result = utils.post_request(url=url, data=data)
+    #assert mock_resp.raise_for_status.called
+    assert mock_resp.raise_for_status.called == True
+    # Ensures the mocked method was called once, no retries
+    assert mock_post.call_count == 1
+    assert result == {"url": url, "data": data, "status": 502}

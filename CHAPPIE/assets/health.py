@@ -90,6 +90,7 @@ def _get_npi_api(params):
     """
     res = requests.get(_npi_url, params)
     res.raise_for_status()
+
     return pandas.DataFrame(res.json()['results'])
 
 
@@ -243,9 +244,8 @@ def _get_npi_registry(params):
     dfs=[]
     new_results=True
     while new_results:
-        res = requests.post(_npi_url_backup, dumps(params), headers=headers)
-        res.raise_for_status()
-        df = pandas.DataFrame(res.json())
+        res = utils.post_request(_npi_url_backup, dumps(params), headers=headers)
+        df = pandas.DataFrame(res)
         dfs.append(df)
         # Get all pages of results
         if len(df)==101:

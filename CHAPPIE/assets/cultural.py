@@ -3,13 +3,7 @@ Module for cultural assets
 
 @author: tlomba01, jbousquin, edamico
 """
-import os
-from io import BytesIO
-from tempfile import TemporaryDirectory
-
 import geopandas
-import py7zr
-import requests
 from numpy import nan
 
 from CHAPPIE import layer_query, utils
@@ -127,45 +121,6 @@ def get_worship(aoi):
                                 in_crs=aoi.crs.to_epsg())
 
 
-def download_unzip_lyrpkg(url, save_path=None):
-    """Download and unzip recreation area layer packages from URL
-
-    Parameters
-    ----------
-    url : str
-        The layer package download url
-    save_path : str, optional
-        Folder path for download, by default None uses a tempfile.TemporaryDirectory
-
-    Returns
-    -------
-    geopandas.GeoDataFrame
-        GeoDataFrame for recreation areas.
-    """
-    #Download the file from `url` and save it as tempfile
-    response = requests.get(url)  # Send GET request to the URL
-    response.raise_for_status()  # Assert request was successful
-
-    with TemporaryDirectory() as temp_dir:
-        with py7zr.SevenZipFile(BytesIO(response.content), mode='r') as z:
-                # List all archived file names from the zip
-                file_list = z.namelist()
-                # List all top level folders (unique). NOTE: no sort/order
-                folders = list(set([f.split('/')[0] for f in file_list]))
-                # List folder version suffix
-                v_sufs = ["".join(c for c in x if c.isdigit()) for x in folders]
-                # Folder name with largest version suffix
-                folder = [x for x in folders if x.endswith(max(v_sufs))][0]
-                # Get files in desired folder (excludes ~/0000USA Recreational Areas.lyr')
-                select_files = [f for f in file_list if f.startswith(f'{folder}/recareas.gdb')]
-                # Extract the selected files to a temp directory
-                z.extract(path=temp_dir, targets=select_files)
-                #extract the selected files using the custom factory
-                gdf = geopandas.read_file(os.path.join(temp_dir, f'{folder}', "recareas.gdb"))
-
-    return gdf
-
-
 def get_recreationalArea():
     """Get recreational areas
 
@@ -180,7 +135,7 @@ def get_recreationalArea():
 
     """
 
-    recAreas_gdf = download_unzip_lyrpkg(REC_AREA_URL)
+    recAreas_gdf = utils.download_unzip_lyrpkg(REC_AREA_URL)
     return recAreas_gdf
 
 
