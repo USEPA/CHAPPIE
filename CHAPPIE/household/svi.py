@@ -418,6 +418,8 @@ def infer_bg_from_tract(bg_geoid, metric_col, year=2020, method="uniform"):
         Twelve (12) digit ID for the block group being estimated.
     metric_col : str
         Metric name from ACS.
+    year : int, optional
+        5-year ACS vintage year, by default 2020
     method : str, optional
         Which built in method to use, by default 'uniform_distribution'
 
