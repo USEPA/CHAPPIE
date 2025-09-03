@@ -20,40 +20,40 @@ Households - represented spatially by parcel boundaries and generalized by centr
 
 ## Package Structure
 
-| CHAPPIE/ &emsp; | Repo contains package info (e.g., pyproject.toml, requirements.txt, demos, etc.) |
+| CHAPPIE/ | Repo contains package info (e.g., pyproject.toml, requirements.txt, demos, etc.) |
 | :--- | :--- |
-| &emsp; CHAPPIE/ &emsp; | Package contains tests, utils functions, layer querying, parcel querying, and 6 sub-package folders: |
-| &emsp; &emsp; access/ &emsp; | |
-| &emsp; &emsp; &emsp; OSMnx/ &emsp; | Folder for module reference materials |
-| &emsp; &emsp; &emsp; timeMatrix/ &emsp; | Folder for module reference materials |
-| &emsp; &emsp; assets/ &emsp; | |
-| &emsp; &emsp; &emsp; bluespace/ &emsp; | Folder for module reference materials |
-| &emsp; &emsp; &emsp; cultural.py &emsp; | Module for cultural assets |
-| &emsp; &emsp; &emsp; education.py &emsp; | Module for education assets |
-| &emsp; &emsp; &emsp; emergency.py &emsp; | Module for emergency assets |
-| &emsp; &emsp; &emsp; food.py &emsp; | Module for food assets |
-| &emsp; &emsp; &emsp; hazard_infrastructure.py &emsp; &emsp; &emsp; | Module for hazard infrastructure assets |
-| &emsp; &emsp; &emsp; health.py &emsp; | Module for health assets |
-| &emsp; &emsp; &emsp; recreation.py &emsp; | Module for recreation assets |
-| &emsp; &emsp; &emsp; transit.py &emsp; | Module for transit assets |
-| &emsp; &emsp; eco_services/ &emsp; | |
-| &emsp; &emsp; &emsp; infiltration/ &emsp; | Folder for module reference materials |
-| &emsp; &emsp; &emsp; wq.py &emsp; | Module for Get Assessment Total Maximum Daily Load (TMDL) Tracking and Implementation System (ATTAINS) geometry |
-| &emsp; &emsp; endpoints/ &emsp; | |
-| &emsp; &emsp; &emsp; Health/ &emsp; | Folder for module reference materials |
-| &emsp; &emsp; hazards/ &emsp; | |
-| &emsp; &emsp; &emsp; SeaLevelRise/ &emsp; | Folder for module reference materials |
-| &emsp; &emsp; &emsp; StormSurge/ &emsp; | Folder for module reference materials |
-| &emsp; &emsp; &emsp; Tornadoes/ &emsp; | Folder for module reference materials |
-| &emsp; &emsp; &emsp; TropicalCyclones/ &emsp; | Folder for module reference materials |
-| &emsp; &emsp; &emsp; flood.py &emsp; | Module for flood hazards |
-| &emsp; &emsp; &emsp; technological.py &emsp; | Module for technological hazards |
-| &emsp; &emsp; &emsp; tornadoes.py &emsp; | Module to query and process tornado hazards |
-| &emsp; &emsp; &emsp; tropical_cyclones.py &emsp; | Module to query and process tropical cyclone hazards |
-| &emsp; &emsp; &emsp; weather.py &emsp; | Get weather related natural hazards data |
-| &emsp; &emsp; household/ &emsp; | |
-| &emsp; &emsp; &emsp; SVI/ &emsp; | Folder for module reference materials |
-| &emsp; &emsp; &emsp; svi.py &emsp; | Lookups for SVI |
+| &emsp; CHAPPIE/ | Package contains tests, utils functions, layer querying, parcel querying, and 6 sub-package folders: |
+| &emsp; &emsp; access/ | |
+| &emsp; &emsp; &emsp; OSMnx/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; timeMatrix/ | Folder for module reference materials |
+| &emsp; &emsp; assets/ | |
+| &emsp; &emsp; &emsp; bluespace/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; cultural.py | Module for cultural assets |
+| &emsp; &emsp; &emsp; education.py | Module for education assets |
+| &emsp; &emsp; &emsp; emergency.py | Module for emergency assets |
+| &emsp; &emsp; &emsp; food.py | Module for food assets |
+| &emsp; &emsp; &emsp; hazard_infrastructure.py &emsp; &emsp; &emsp; &emsp; | Module for hazard infrastructure assets |
+| &emsp; &emsp; &emsp; health.py | Module for health assets |
+| &emsp; &emsp; &emsp; recreation.py | Module for recreation assets |
+| &emsp; &emsp; &emsp; transit.py | Module for transit assets |
+| &emsp; &emsp; eco_services/ | |
+| &emsp; &emsp; &emsp; infiltration/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; wq.py | Module for Get Assessment Total Maximum Daily Load (TMDL) Tracking and Implementation System (ATTAINS) geometry |
+| &emsp; &emsp; endpoints/ | |
+| &emsp; &emsp; &emsp; Health/ | Folder for module reference materials |
+| &emsp; &emsp; hazards/ | |
+| &emsp; &emsp; &emsp; SeaLevelRise/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; StormSurge/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; Tornadoes/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; TropicalCyclones/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; flood.py | Module for flood hazards |
+| &emsp; &emsp; &emsp; technological.py | Module for technological hazards |
+| &emsp; &emsp; &emsp; tornadoes.py | Module to query and process tornado hazards |
+| &emsp; &emsp; &emsp; tropical_cyclones.py | Module to query and process tropical cyclone hazards |
+| &emsp; &emsp; &emsp; weather.py | Get weather related natural hazards data |
+| &emsp; &emsp; household/ | |
+| &emsp; &emsp; &emsp; SVI/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; svi.py | Lookups for SVI |
 
 ## Disclaimer
 
