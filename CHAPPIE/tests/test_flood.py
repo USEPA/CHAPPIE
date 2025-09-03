@@ -263,6 +263,7 @@ def point_gdf():
     point_gdf['parcelnumb'] = random.randint(1,10)
     return point_gdf
 
+@pytest.mark.unit
 # Test sending point data to get_image_by_poly, but patch the computeStatHist endpoint call
 @patch('test_flood.flood.layer_query.ESRIImageService.computeStatHist')
 def test_get_image_by_poly_point(mock_computeStatHist, point_gdf: geopandas.GeoDataFrame):
@@ -284,6 +285,8 @@ def polygon_gdf():
     point_gdf['parcelnumb'] = random.randint(1,10)
     return point_gdf
 
+
+@pytest.mark.unit
 #Test how 502 server error is handled, but patch the computeStatHist endpoint call
 @patch('CHAPPIE.layer_query.utils.requests.post')
 def test_get_image_by_poly_502_error(mock_post_request, polygon_gdf: geopandas.GeoDataFrame):
