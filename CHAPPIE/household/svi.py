@@ -14,7 +14,19 @@ from pygris.data import get_census
 
 # SVI dict
 def variables(subset=None):
-        x = {
+    """List of ACS variables for calculating SVI.
+
+    Parameters
+    ----------
+    subset : str, optional
+        Subset what variables to return by indicator, default None returns all
+
+    Returns
+    -------
+    list
+        ACS variable names
+    """
+    x = {
         "FIPS": [],
         "Area": [],
         "TotPop": ["B01003_001E"],
