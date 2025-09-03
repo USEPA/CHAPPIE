@@ -14,10 +14,13 @@ DIRPATH = os.path.dirname(os.path.realpath(__file__))
 
 EXPECTED_DIR = os.path.join(DIRPATH, 'expected')  # Expected
 
+
 # Make sure pygris imports/functions as expected
+@pytest.mark.unit
 def test_bg():
   g_geos = pygris.block_groups(state='12', county='033', year='2021')
   assert 'GEOID' in g_geos.columns, 'Missing expected column'
+
 
 # results_dict fixture from assets in expected to use in tests
 @pytest.fixture(scope='session')
@@ -31,6 +34,8 @@ def assets_results_dict():
     results_dict["museums"] = read_parquet(expected_file)
     return results_dict
 
+
+@pytest.mark.unit
 def test_write_QA(assets_results_dict: dict):
   with TemporaryDirectory() as temp_dir:
     qa_csv = os.path.join(temp_dir, "assets_qa.csv")
@@ -43,6 +48,8 @@ def test_write_QA(assets_results_dict: dict):
       contents = csv.read()
     assert len(contents)==7723, f'File content length mismatch: {len(contents)}'
 
+
+@pytest.mark.unit
 def test_write_results_dict(assets_results_dict: dict):
   with TemporaryDirectory() as temp_dir:
     utils.write_results_dict(assets_results_dict, temp_dir)

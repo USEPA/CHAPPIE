@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: test
+name: test_data_services
 
 # Controls when the workflow will run
 on:
@@ -55,7 +55,6 @@ jobs:
           usda_API: ${{ secrets.USDA_KEY1 }}
           GEOCODE_API_KEY: ${{ secrets.GEOCODE_API_KEY }}
           REGRID_API_KEY: ${{ secrets.REGRID_API_KEY }}
-        run: |
-          pytest -v -s CHAPPIE -m "unit or integration"
+        run: pytest -v -s CHAPPIE -m "not unit and not integration"
 
       # upload artifact if results of run are needed, e.g., for freeze, deploy, etc.
