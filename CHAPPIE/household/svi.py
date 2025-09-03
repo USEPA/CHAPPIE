@@ -312,23 +312,23 @@ def get_SVI(geo, level="block group", year=2020):
     geopandas.GeoDataFrame
         Table of SVI results and associated polygons
     """
-    assert level in ['tract', 'block group'], f'{level} not a recognized level'
-    #format params from geo (query census BGs) or id?
-    if len(geo)==5:
-        state, county = geo[:2], geo[2:5]
-        geo_id_str = f'state:{geo[:2]};county:{geo[2:5]}'
+    assert level in ["tract", "block group"], f"{level} not a recognized level"
+    # format params from geo (query census BGs) or id?
+    assert len(geo) >= 5, "Currently requires GEOID/FIP of 5 or more digits"
+    state, county = geo[:2], geo[2:5]
+    geo_id_str = f"state:{geo[:2]};county:{geo[2:5]}"
 
-    SVI_tract_data = get_census(dataset = "acs/acs5",
-                                variables = variables(),
-                                year=year,
-                                params = {"for": f"{level}:*",
-                                          "in": geo_id_str},
-                                return_geoid = True,
-                                guess_dtypes = True,
-                                )
-    SVI_tract_results = preprocess(SVI_tract_data)
+    svi_data = get_census(
+        dataset="acs/acs5",
+        variables=variables(),
+        year=year,
+        params={"for": f"{level}:*", "in": geo_id_str},
+        return_geoid=True,
+        guess_dtypes=True,
+    )
+    svi_results = preprocess(svi_data, year)
 
-    if level == 'tract':
+    if level == "tract":
         # Get track geos (2020)
         tract_geos = pygris.tracts(state=state, county=county, year=year)
         # Combine with geos
