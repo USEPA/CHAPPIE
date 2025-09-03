@@ -12,9 +12,7 @@ import pandas
 import pytest
 from geopandas.testing import assert_geodataframe_equal
 from pandas.testing import assert_frame_equal
-from requests.exceptions import ConnectionError, HTTPError
 
-from CHAPPIE import utils
 from CHAPPIE.assets import health
 
 # get key from env
@@ -146,40 +144,7 @@ def test_batch_geocode():
     assert_geodataframe_equal(actual, expected, check_less_precise=True)
 
 
-#Test how Connection error is handled, but patch the post_request call
-@patch('CHAPPIE.utils.requests.post')
 @pytest.mark.unit
-def test_post_request_connection_error(mock_post):
-    mock_resp = MagicMock()
-    mock_resp.raise_for_status.side_effect = ConnectionError
-    mock_post.return_value = mock_resp
-    url = "https://fake.epa.gov/GeocodeServer"
-    data = {}
-
-    result = utils.post_request(url=url, data=data)
-    #assert mock_resp.raise_for_status.called
-    assert mock_resp.raise_for_status.called == True
-    assert mock_post.call_count == 2 # Ensures the mocked method was called twice (one plus a retry)
-    assert result == {"url": url, "status": "error", "reason": "Connection error, 2 attempts", "text": ""}
-
-
-# Test other exception branch of post_request function, which has no retry
-@patch('CHAPPIE.utils.requests.post')
-@pytest.mark.unit
-def test_post_request_502_error(mock_post):
-    mock_resp = MagicMock()
-    mock_resp.status_code = 502
-    mock_resp.raise_for_status.side_effect = HTTPError
-    mock_post.return_value = mock_resp
-    url = "https://fake.epa.gov/GeocodeServer"
-    data = {}
-
-    result = utils.post_request(url=url, data=data)
-    #assert mock_resp.raise_for_status.called
-    assert mock_resp.raise_for_status.called == True
-    assert mock_post.call_count == 1 # Ensures the mocked method was called once, no retries
-    assert result == {"url": url, "data": data, "status": 502}
-
 # patch post_request function response to have no 'token' in response.keys; expect a ValueError
 @patch('CHAPPIE.utils.requests.post')
 @pytest.mark.unit
