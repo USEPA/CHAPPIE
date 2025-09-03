@@ -314,11 +314,12 @@ def preprocess(df_in, year=2020):
                     df[col] = [100.0 - x for x in df[col]]  # Invert
             else:
                 # Numerator is last in list
+                num_col = metric_cols[1]  # Numerator column
+                dem_col = metric_cols[0]  # Denominator column
                 try:
-                    num_col = metric_cols[1]  # Numerator column
-                    dem_col = metric_cols[0]  # Denominator column
                     df[col] = df[num_col].divide(df[dem_col]) * 100.0
                 except TypeError as e:
+                    # TODO: move to function if needed for any other cols
                     # Meant to catch when some or all of the 2 values are None
                     numerators = df[num_col].to_list()
                     denominators = df[dem_col].to_list()
@@ -333,6 +334,8 @@ def preprocess(df_in, year=2020):
                             # geoids where na
                             bad_ids = df[df[metric].isna()]["GEOID"].to_list()
                             for fip in bad_ids:
+                                # TODO: currently assumes missing bg not tract
+                                assert len(fip)>11, 'Meant for block-group'
                                 val = infer_bg_from_tract(fip, metric, year=year)[0]
                                 mask = df["GEOID"] == fip
                                 df.loc[mask, metric] = val
