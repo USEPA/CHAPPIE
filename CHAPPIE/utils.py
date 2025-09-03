@@ -184,6 +184,8 @@ def post_request(url, data=None, headers=None):
         URL for post request.
     data : dict, optional
         Data dictionary for post request body.
+    headers : dict, optional
+        Custom HTTP headers to pass with the request, deault None adds none
 
     Returns
     -------
