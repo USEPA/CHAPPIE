@@ -20,6 +20,14 @@ Households - represented spatially by parcel boundaries and generalized by centr
 
 ## Package Structure
 
+| | |
+| :--- | :--- |
+| CHAPPIE/ | Repo contains package info (e.g., pyproject.toml, requirements.txt, demos, etc.) |
+| &emsp; CHAPPIE/ | Package contains tests, utils functions, layer querying, parcel querying, and 6 sub-package folders: |
+| &emsp; &emsp; access/ | |
+| &emsp; &emsp; &emsp; OSMnx/ | Folder for module reference materials |
+
+
 <table class="table table-condensed" style="font-size: 14px; color: black; margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
@@ -33,7 +41,7 @@ Households - represented spatially by parcel boundaries and generalized by centr
    <td style="text-align:left;"> Repo contains package info (e.g., pyproject.toml, requirements.txt, demos, etc.) </td>
   </tr>
   <tr>
-   <td style="text-align:left;width: 20em; padding-left: 2em; "><div style="margin-left: 30em; "> CHAPPIE/ </div></td>
+   <td style="text-align:left;width: 20em; padding-left: 2em; "> CHAPPIE/ </td>
    <td style="text-align:left;"> Package contains tests, utils functions, layer querying, parcel querying, and 6 sub-package folders: </td>
   </tr>
   <tr>
