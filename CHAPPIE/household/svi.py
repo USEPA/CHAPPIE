@@ -8,6 +8,9 @@ Created on Mon Sep 25 14:41:17 2023
 
 @author: jbousqui
 """
+
+from warnings import warn
+
 import pygris
 from pygris.data import get_census
 
@@ -181,7 +184,7 @@ def variables(subset=None):
     }
 
     if subset:
-        if subset in ['keys', 'indicators']:
+        if subset in ["keys", "indicators"]:
             return list(x.keys())
         else:
             return x[subset]
@@ -191,27 +194,77 @@ def variables(subset=None):
 
 
 def indicators(subset=None):
-    x = {'Base_Data': ['FIPS', 'Area', 'TotPop', 'HousUnits', 'Household'],
-         'Socioeconomic_Status': ['Poverty150', 'Unemploy', 'HouseBurd',
-                                  'NoHSDiplo', 'NoHlthIns'],
-         'Household Characteristics': ['65andover', '17andbelow', 'DisableCiv',
-                                       'SPH', 'ELP'],
-         'Racial_and_Ethnic_Minority Status': ['Hisp', 'Black', 'Asian',
-                                               'AIAN', 'NHPI', 'TwoRace',
-                                               'OtherRace',],
-         'Housing_Type_and_Transportation': ['MUStruct', 'MobHome', 'Crowd',
-                                             'NoVeh', 'GrpQuarter'],
-         }
+    """SVI indicator short names organized by domain
+
+    Parameters
+    ----------
+    subset : str, optional
+        Subset of indicators by domain, default None returns all
+
+    Returns
+    -------
+    dict
+        Dictionary where {Domain: [indicators]}
+    """
+    x = {
+        "Base_Data": ["FIPS", "Area", "TotPop", "HousUnits", "Household"],
+        "Socioeconomic_Status": [
+            "Poverty150",
+            "Unemploy",
+            "HouseBurd",
+            "NoHSDiplo",
+            "NoHlthIns",
+        ],
+        "Household Characteristics": [
+            "65andover",
+            "17andbelow",
+            "DisableCiv",
+            "SPH",
+            "ELP",
+        ],
+        "Racial_and_Ethnic_Minority Status": [
+            "Hisp",
+            "Black",
+            "Asian",
+            "AIAN",
+            "NHPI",
+            "TwoRace",
+            "OtherRace",
+        ],
+        "Housing_Type_and_Transportation": [
+            "MUStruct",
+            "MobHome",
+            "Crowd",
+            "NoVeh",
+            "GrpQuarter",
+        ],
+    }
     if subset:
         return x[subset]
     return x
 
 
-def preprocess(df_in):
+def preprocess(df_in, year=2020):
+    """Calculate SVI indicators from ACS metrics in DataFrame.
+
+    Note: year is only used if data needs to be retrieved (e.g., None)
+
+    Parameters
+    ----------
+    df_in : pandas.DataFrame
+        Table with columns for expected ACS metrics and rows for FIPs
+    year : int, optional
+        Year the ACS data came from, by default 2020 (census year)
+
+    Returns
+    -------
+    pandas.DataFrame
+        Table with added columns for calculated indicators.
+    """
     # Deep copy table
     df = df_in.copy()
     # List new column names
-    #indicators = SVI_variables('keys')
+    # indicators = SVI_variables('keys')
 
     # cols maths: just rename, percents where col2/col1,
     # and difs where col2-col1/col1
@@ -344,10 +397,49 @@ def get_SVI(geo, level="block group", year=2020):
         # Get track geos (2020)
         tract_geos = pygris.tracts(state=state, county=county, year=year)
         # Combine with geos
-        SVI_results_gdf = tract_geos.merge(SVI_tract_results, on='GEOID')
-    elif level == 'block group':
+        svi_results_gdf = tract_geos.merge(svi_results, on="GEOID")
+    elif level == "block group":
         # Get block group geos (2020)
         bg_geos = pygris.block_groups(state=state, county=county, year=year)
         # Combine with geos
-        SVI_results_gdf = bg_geos.merge(SVI_tract_results, on='GEOID')
-    return SVI_results_gdf
+        svi_results_gdf = bg_geos.merge(svi_results, on="GEOID")
+    return svi_results_gdf
+
+
+def infer_bg_from_tract(bg_geoid, metric_col, year=2020, method="uniform"):
+    """Estimate metric value for the block group from tract data.
+
+    Note: "uniform" is the only method currently available and assumes a
+    uniform distribution of the metric across all block groups in the tract.
+
+    Parameters
+    ----------
+    bg_geoid : str
+        Twelve (12) digit ID for the block group being estimated.
+    metric_col : str
+        Metric name from ACS.
+    year : int, optional
+        5-year ACS vintage year, by default 2020
+    method : str, optional
+        Which built in method to use, by default 'uniform_distribution'
+
+    Returns
+    -------
+    tuple
+        geoid for the block group and the tract level value retrieved.
+    """
+    assert method == "uniform", "Only uniform method currently available."
+    # Get parent geoids
+    geo_id_str = f"state:{bg_geoid[:2]};county:{bg_geoid[2:5]}"
+    tract_geoid = bg_geoid[5:11]
+
+    metric_data = get_census(
+        dataset="acs/acs5",
+        variables=metric_col,
+        year=year,
+        params={"for": f"tract:{tract_geoid}", "in": geo_id_str},
+        return_geoid=False,
+        guess_dtypes=True,
+    )
+
+    return metric_data[metric_col]
