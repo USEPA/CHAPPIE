@@ -76,52 +76,34 @@ def test_infer_bg_from_tract():
     #infer_BG_from_tract(bg_geoid, metric_col, year=2020, method='uniform')
     bg_id = "510010901011"
     metric_col = "B09019_002E"
-    actual = svi.infer_bg_from_tract("510010901011", "B09019_002E", year=2023)
-    expected = (bg_id, pandas.Series(data=[1864], name=metric_col))
-    assert actual[0] == expected[0], "Mismatched block group ID"
-    assert actual[1].all() == expected[1].all(), "Mismatched tract-level result"
+    expected_val = 1864
+    actual = svi.infer_bg_from_tract(bg_id, metric_col, year=2023)
+    expected = pandas.Series(data=[expected_val], name=metric_col)
+    assert actual.equals(expected), "Mismatched tract-level result"
 
-#pytest.mark("integration")
-# def test_infer_bg_from_tract_from_preprocess():
-#     #df.loc[mask, 'B25074_007E']
-#     data = {"GEOIDS": ['510010901011', '510010901012'],
-#             "B29003_002E": [9, 113],
-#             "B29003_001E": [811, 798],
-#             "B23025_005E": [0, 70],
-#             "B23025_003E": [389, 441],
-#             'B25074_006E': [0, 0],
-#             'B25074_007E': [0, 0],
-#             'B25074_008E': [0, 0],
-#             'B25074_009E': [0, 0],
-#             'B25074_015E': [0, 0],
-#             'B25074_016E': [0, 0],
-#             'B25074_017E': [0, 0],
-#             'B25074_018E': [0, 0],
-#             'B25074_024E': [0, 0],
-#             'B25074_025E': [0, 0],
-#             'B25074_026E': [0, 0],
-#             'B25074_027E': [0, 0],
-#             'B25074_033E': [0, 0],
-#             'B25074_034E': [0, 0],
-#             'B25074_035E': [0, 0],
-#             'B25074_036E': [0, 0],
-#             'B25074_042E': [0, 0],
-#             'B25074_043E': [0, 0],
-#             'B25074_044E': [0, 0],
-#             'B25074_045E': [0, 0],
-#             'B25074_051E': [0, 0],
-#             'B25074_052E': [0, 0],
-#             'B25074_053E': [0, 0],
-#             'B25074_054E': [0, 0],
-#             'B25074_060E': [0, 0],
-#             'B25074_061E': [0, 0],
-#             'B25074_062E': [0, 0],
-#             'B25074_063E': [0, 0],
-#             'B25074_001E': [0, 0],
-#             'B25091_008E', 'B25091_009E', 'B25091_010E', 'B25091_011E'
-#             'B25091_019E', 'B25091_020E', 'B25091_021E', 'B25091_022E'
-#             "B09019_002E": [None, None]}
-#     df_in = pandas.DataFrame(data=data)
-#     actual = preprocess(df_in, 2023)
-    #actual = svi.preprocess(df_in, 2023)
-#     asster actual[metric]==expected[metric]
+
+@pytest.mark.integration
+def test_infer_bg_from_tract_from_preprocess():
+    # NOTE: B09019_026E/B09019_002E for "GrpQuarter"
+    # generate set of vars with real and test (None) values
+    data = {"GEOID": ['510010901011', '510010901012'],
+            "B29003_002E": [9, 113],
+            "B29003_001E": [811, 798],
+            "B23025_005E": [0, 70],
+            "B23025_003E": [389, 441],
+            "B09019_002E": [None, None],
+            "B09019_026E": [None, None]}
+    # generate full set of vars with junk values
+    empty_data = {var:[0, 0] for var in svi.variables()}
+    data = empty_data | data  # Note: piping (py3.9) over-writes from right-side
+    df_in = pandas.DataFrame(data=data)
+    actual = svi.preprocess(df_in, 2023)
+
+    # Check replaced values
+    expected_numerator = [0, 0]
+    assert actual["B09019_026E"].to_list() == expected_numerator
+    expected_denominator = [1864, 1864]
+    assert actual["B09019_002E"].to_list() == expected_denominator
+    # Check calculated value
+    expected_pct = [0.0, 0.0]
+    assert actual["GrpQuarter"].to_list()==expected_pct

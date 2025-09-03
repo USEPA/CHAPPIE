@@ -138,26 +138,31 @@ def preprocess(df_in, year=2020):
             else:
                 # Numerator is last in list
                 try:
-                    df[col] = df[metric_cols[1]].divide(df[metric_cols[0]]) *100.0
-                except ValueError as e:
+                    num_col = metric_cols[1]  # Numerator column
+                    dem_col = metric_cols[0]  # Denominator column
+                    df[col] = df[num_col].divide(df[dem_col]) *100.0
+                except TypeError as e:
                     # Meant to catch when some or all of the 2 values are None
-                    numerators = df[metric_cols[1]].to_list()
-                    dednominators = df[metric_cols[0]].to_list()
-                    if None in numerators or dednominators:
-                        metrics = []
+                    numerators = df[num_col].to_list()
+                    denominators = df[dem_col].to_list()
+
+                    if None in numerators or denominators:
+                        metrics = []  # Build list of metrics to infer
                         if None in numerators:
-                            metrics += metric_cols[1]
-                        if None in dednominators:
-                            metrics += metric_cols[0]
+                            metrics += [num_col]
+                        if None in denominators:
+                            metrics += [dem_col]
                         for metric in metrics:
                             # geoids where na
                             bad_ids = df[df[metric].isna()]['GEOID'].to_list()
                             for id in bad_ids:
-                                df.loc[id, metric] = infer_bg_from_tract(id,
-                                                                         metric,
-                                                                         year=year)[0]
-                            # Warning
-                            warn("Infered block-group {metric} at {geoids} from tract")
+                                val = infer_bg_from_tract(id, metric, year=year)[0]
+                                mask = df['GEOID']==id
+                                df.loc[mask, metric] = val
+                            # Warning what metrics were infered at what ids
+                            warn(f'"{metric}" infered at {bad_ids} block-groups from tract')
+                        # Re-try
+                        df[col] = df[num_col].divide(df[dem_col]) *100.0
                     else:
                         # Something else went awry
                         raise e
@@ -171,6 +176,7 @@ def preprocess(df_in, year=2020):
     #TODO: drop original cols?
 
     return df
+
 
 def get_SVI(geo, level='block group', year=2020):
     assert level in ['tract', 'block group'], f'{level} not a recognized level'
