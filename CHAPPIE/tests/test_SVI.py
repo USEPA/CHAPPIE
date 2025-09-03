@@ -71,7 +71,7 @@ def test_get_SVI_by_county_all_BG():
     assert_geodataframe_equal(actual, expected, check_like=True)
 
 
-@pytest.mark("unit")
+@pytest.mark.unit
 def test_infer_bg_from_tract():
     #infer_BG_from_tract(bg_geoid, metric_col, year=2020, method='uniform')
     bg_id = "510010901011"
