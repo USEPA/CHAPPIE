@@ -360,17 +360,17 @@ def preprocess(df_in, year=2020):
     return df
 
 
-def get_SVI(geo, level="block group", year=2020):
-    """Get geograhpies and a table of SVI indicators for a given geoid
+def get_SVI(geoid, level="block group", year=2020):
+    """Get Social Vulnerability metrics and geograhpies for a given geoid
 
     Parameters
     ----------
-    geo : str
+    geoid : str
         GEOID/FIPs code representing an area. Must be 5 or more digits.
     level : str, optional
         Census level to calculate SVI (default "block group" or "tract")
     year : int, optional
-        5-year ACS vintage year, by default 2020
+        ACS vintage (5-year), by default 2020
 
     Returns
     -------
@@ -379,9 +379,9 @@ def get_SVI(geo, level="block group", year=2020):
     """
     assert level in ["tract", "block group"], f"{level} not a recognized level"
     # format params from geo (query census BGs) or id?
-    assert len(geo) >= 5, "Currently requires GEOID/FIP of 5 or more digits"
-    state, county = geo[:2], geo[2:5]
-    geo_id_str = f"state:{geo[:2]};county:{geo[2:5]}"
+    assert len(geoid) >= 5, "Currently requires GEOID/FIP of 5 or more digits"
+    state, county = geoid[:2], geoid[2:5]
+    geo_id_str = f"state:{geoid[:2]};county:{geoid[2:5]}"
 
     svi_data = get_census(
         dataset="acs/acs5",
