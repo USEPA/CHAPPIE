@@ -397,13 +397,12 @@ def get_SVI(geo, level="block group", year=2020):
         # Get track geos (2020)
         tract_geos = pygris.tracts(state=state, county=county, year=year)
         # Combine with geos
-        svi_results_gdf = tract_geos.merge(svi_results, on="GEOID")
+        return tract_geos.merge(svi_results, on="GEOID")
     elif level == "block group":
         # Get block group geos (2020)
         bg_geos = pygris.block_groups(state=state, county=county, year=year)
         # Combine with geos
-        svi_results_gdf = bg_geos.merge(svi_results, on="GEOID")
-    return svi_results_gdf
+        return bg_geos.merge(svi_results, on="GEOID")
 
 
 def infer_bg_from_tract(bg_geoid, metric_col, year=2020, method="uniform"):
