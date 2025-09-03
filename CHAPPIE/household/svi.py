@@ -380,7 +380,7 @@ def get_SVI(geo, level="block group", year=2020):
     state, county = geo[:2], geo[2:5]
     geo_id_str = f"state:{geo[:2]};county:{geo[2:5]}"
 
-    SVI_data = get_census(
+    svi_data = get_census(
         dataset="acs/acs5",
         variables=variables(),
         year=year,
@@ -388,19 +388,19 @@ def get_SVI(geo, level="block group", year=2020):
         return_geoid=True,
         guess_dtypes=True,
     )
-    SVI_results = preprocess(SVI_data, year)
+    svi_results = preprocess(svi_data, year)
 
     if level == "tract":
         # Get track geos (2020)
         tract_geos = pygris.tracts(state=state, county=county, year=year)
         # Combine with geos
-        SVI_results_gdf = tract_geos.merge(SVI_results, on="GEOID")
+        svi_results_gdf = tract_geos.merge(svi_results, on="GEOID")
     elif level == "block group":
         # Get block group geos (2020)
         bg_geos = pygris.block_groups(state=state, county=county, year=year)
         # Combine with geos
-        SVI_results_gdf = bg_geos.merge(SVI_results, on="GEOID")
-    return SVI_results_gdf
+        svi_results_gdf = bg_geos.merge(svi_results, on="GEOID")
+    return svi_results_gdf
 
 
 def infer_bg_from_tract(bg_geoid, metric_col, year=2020, method="uniform"):
