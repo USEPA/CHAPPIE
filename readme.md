@@ -27,6 +27,33 @@ Households - represented spatially by parcel boundaries and generalized by centr
 | &emsp; &emsp; &emsp; OSMnx/ | Folder for module reference materials |
 | &emsp; &emsp; &emsp; timeMatrix/ | Folder for module reference materials |
 | &emsp; &emsp; assets/ | |
+| &emsp; &emsp; &emsp; bluespace/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; cultural.py | Module for cultural assets |
+| &emsp; &emsp; &emsp; education.py | Module for education assets |
+| &emsp; &emsp; &emsp; emergency.py | Module for emergency assets |
+| &emsp; &emsp; &emsp; food.py | Module for food assets |
+| &emsp; &emsp; &emsp; hazard_infrastructure.py | Module for hazard infrastructure assets |
+| &emsp; &emsp; &emsp; health.py | Module for health assets |
+| &emsp; &emsp; &emsp; recreation.py | Module for recreation assets |
+| &emsp; &emsp; &emsp; transit.py | Module for transit assets |
+| &emsp; &emsp; eco_services/ | |
+| &emsp; &emsp; &emsp; infiltration/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; wq.py | Module for Get Assessment Total Maximum Daily Load (TMDL) Tracking and Implementation System (ATTAINS) geometry |
+| &emsp; &emsp; endpoints/ | |
+| &emsp; &emsp; &emsp; Health/ | Folder for module reference materials |
+| &emsp; &emsp; hazards/ | |
+| &emsp; &emsp; &emsp; SeaLevelRise/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; StormSurge/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; Tornadoes/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; TropicalCyclones/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; flood.py | Module for flood hazards |
+| &emsp; &emsp; &emsp; technological.py | Module for technological hazards |
+| &emsp; &emsp; &emsp; tornadoes.py | Module to query and process tornado hazards |
+| &emsp; &emsp; &emsp; tropical_cyclones.py | Module to query and process tropical cyclone hazards |
+| &emsp; &emsp; &emsp; weather.py | Get weather related natural hazards data |
+| &emsp; &emsp; household/ | |
+| &emsp; &emsp; &emsp; SVI/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; svi.py | Lookups for SVI |
 
 ## Disclaimer
 
