@@ -44,10 +44,9 @@ def test_get_regrid(parcels_gdf: geopandas.GeoDataFrame):
     #assert_geodataframe_equal(parcels_gdf, expected)
 
 
+@pytest.mark.integration
 def test_process_regrid(parcels_gdf: geopandas.GeoDataFrame):
     actual_centroids = parcels.process_regrid(parcels_gdf)
-    assert(len(parcels_gdf)==len(actual_centroids))  # Same number of rows
-    mask_points = actual_centroids['geometry'].geom_type == 'Point'
-    assert(len(actual_centroids[mask_points])==len(parcels_gdf))
-    mask_polys = actual_centroids['geometry'].geom_type == 'Polygon'
-    assert(len(actual_centroids[mask_polys])==0)
+    assert(len(parcels_gdf)==len(actual_centroids))
+    assert(len(actual_centroids[actual_centroids['geometry'].geom_type == 'Point'])==len(parcels_gdf))
+    assert(len(actual_centroids[actual_centroids['geometry'].geom_type == 'Polygon'])==0)
