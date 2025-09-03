@@ -5,18 +5,15 @@ Created on Fri Oct 23 10:36:03 2020
 
 @author: jbousqui
 """
-import os
 import copy
-import math
-import zipfile
-import urllib.request
-import requests
-import pandas
-import geopandas
 import json
-from io import BytesIO
+import math
 import warnings
-from time import sleep
+
+import geopandas
+import pandas
+
+from CHAPPIE import utils
 
 _basequery = {
     "where": "",  # sql query component
@@ -57,47 +54,6 @@ _baseComputeStatisticsHistograms = {
 
 _tiger_url = "tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb"
 
-
-def get_zip(url, temp_file):
-    """Retaining  this retrive function here for now - but not in use."""
-    out_dir = os.path.dirname(temp_file)
-    urllib.request.urlretrieve(url, temp_file)  # Download zip
-
-    # Extract
-    with zipfile.ZipFile(temp_file, "r") as zip_ref:
-        zip_ref.extractall(out_dir)
-
-
-def get_from_zip(url, expected_csvs, encoding="utf-8"):
-    """Get csvs from zip as pandas.DataFrame.
-
-    Parameters
-    ----------
-        url : str
-            Uniform Resource Locator (URL) for the zip file.
-        expected_csvs : list | str
-            csv file(s) to retrieve from zip.
-        encoding : str, optional
-            Encoding for pandas to use. Defaults to "utf-8".
-
-    Returns
-    -------
-        df : pandas.DataFrame
-            Combined table of results from expected csv file(s).
-    """    
-    # TODO: try except encoding instead?
-    if isinstance(expected_csvs, str):
-        expected_csvs = list(expected_csvs)
-    res = requests.get(url)
-    res.raise_for_status()  # exception if not OK
-    with zipfile.ZipFile(BytesIO(res.content)) as zip_file:
-        dfs = []
-        for filename in expected_csvs:
-            with zip_file.open(filename) as extracted_file:
-                content = extracted_file.read()
-                dfs.append(pandas.read_csv(BytesIO(content), encoding=encoding))
-    df = pandas.concat(dfs, ignore_index=True) 
-    return df
 
 
 def getCRSUnits(CRS):
@@ -361,13 +317,9 @@ def _get_count_only(feature_layer, count_query_params):
     # Return count only
     count_query_params["returnCountOnly"] = "True"
     # Run query
-    try: 
-        datadict = feature_layer.query(raw=True, **count_query_params)
-        count = datadict["count"]        
-        return count
-    except requests.exceptions.HTTPError as e:
-        warnings.warn(f"Error: {e}")
-        return False
+    datadict = feature_layer.query(raw=True, **count_query_params)
+    count = datadict["count"]
+    return count
 
 
 class ESRILayer(object):
@@ -406,8 +358,8 @@ class ESRILayer(object):
             maxRecordCount.
 
         """
-        res = requests.get(self._baseurl + "?f=pjson")
-        return res.json()["maxRecordCount"]
+        res = utils.post_request(self._baseurl + "?f=pjson")
+        return res["maxRecordCount"]
 
     def query(self, raw=False, **kwargs):
         """Run query to extract data out of MapServer layers.
@@ -453,7 +405,7 @@ class ESRILayer(object):
         kwargs = {"".join(k.split("_")): v for k, v in kwargs.items()}
 
         # construct query string
-        # Need to skip deepcopy for regrid because it doesn't want all those extra query params
+        # For regrid: doesn't want all extra query params - could skip deepcopy
         self._basequery = copy.deepcopy(_basequery)
         for k, v in kwargs.items():
             try:
@@ -471,27 +423,18 @@ class ESRILayer(object):
         self._last_query = self._baseurl + "/query?" + qstr
         # Note: second condition to not overide raw
         if kwargs.get("returnGeometry", "true") == "True" and raw is False:
-            try:
-                if ('fs.regrid.com') in self._baseurl:
-                    resp = requests.get(self._last_query + "&f=geojson")
-                    resp.raise_for_status()
-                    datadict = resp.json()
-                    gdf = geopandas.GeoDataFrame.from_features(datadict)
-                    return gdf.set_crs(f'epsg:{self._basequery["outSR"]}')
-                else:
-                    return geopandas.read_file(self._last_query + "&f=geojson")
-            except requests.exceptions.HTTPError as e:
-                # TODO: this needs improvement, but getting url is good for debug
-                print(self._last_query())
-                raise e
-        resp = requests.get(self._last_query + "&f=json")
-        resp.raise_for_status()
-        datadict = resp.json()
+            if ('fs.regrid.com') in self._baseurl:
+                resp = utils.post_request(self._last_query + "&f=geojson")
+                gdf = geopandas.GeoDataFrame.from_features(resp)
+                return gdf.set_crs(f'epsg:{self._basequery["outSR"]}')
+            else:
+                return geopandas.read_file(self._last_query + "&f=geojson")
+        resp = utils.post_request(self._last_query + "&f=json")
         if raw:
-            return datadict
+            return resp
         if kwargs.get("returnGeometry", "true") == "false":
             return pandas.DataFrame.from_records(
-                [x["attributes"] for x in datadict["features"]]
+                [x["attributes"] for x in resp["features"]]
             )
         else:
             # return resp
@@ -499,16 +442,16 @@ class ESRILayer(object):
 
 class ESRIImageService(object):
     """Fundamental building block to access an image in an ESRI Image Service"""
- 
+
     def __init__(self, baseurl, **kwargs):
         """
         Class representing an image service
- 
+
         Parameters
         ----------
         baseurl :   str
                     the url for the image service.
- 
+
         """
         if baseurl[:4] != 'http':
             baseurl = 'https://' + baseurl
@@ -516,18 +459,17 @@ class ESRIImageService(object):
         if hasattr(self, "_fields"):
             self.variables = pandas.DataFrame(self._fields)
         self._baseurl = baseurl
- 
+
     def __repr__(self):
         try:
             return "(ESRIImageService) " + self._name
         except:
             return ""
- 
+
     def computeStatHist(self, **kwargs):
-        retry = 0
         # Parse args
         kwargs = {"".join(k.split("_")): v for k, v in kwargs.items()}
-       
+
         # construct query string
         self._baseComputeStatisticsHistograms = copy.deepcopy(_baseComputeStatisticsHistograms)
         for k, v in kwargs.items():
@@ -540,30 +482,16 @@ class ESRIImageService(object):
         self._last_query = self._baseurl + "/computeStatisticsHistograms?" + cstr
         #print(self._last_query)
         while True:
-            try:
-                resp = requests.get(self._last_query)
-                resp.raise_for_status()
-                datadict = resp.json()
-                # moved this to parse in flood.py
-                #mean = datadict["statistics"][0]["mean"]
-                return datadict
-            except requests.exceptions.HTTPError as e:
-                #TODO: this needs improvement, but getting url is good for debug
-                retry += 1
-                if retry < 2:
-                    warnings.warn(f"Retry number: {retry}")
-                    sleep(5)
-                    continue
-                else:
-                    print(self._last_query)
-                    print(e)
-                    return {}
+            resp = utils.post_request(self._last_query)
+            # moved this to parse in flood.py
+            #mean = datadict["statistics"][0]["mean"]
+            return resp
         # Moved to flood.py
         # except IndexError as e:
-            # TODO: if response is empty, provide some metadata for the response, like a warning
-            # return 
-            
-    
+            # TODO: if response is empty, provide response metadata in warning
+            # return
+
+
 def get_image_by_poly(aoi, url, row):
     # if geodataframe, get geometry of the row
     if isinstance(aoi, geopandas.GeoDataFrame):
@@ -579,8 +507,8 @@ def get_image_by_poly(aoi, url, row):
                 geometry_object = { "rings": rings,
                     "spatialReference": { "wkid": aoi.crs.to_epsg() }
                     }
-                    
-            elif geometry_type == "MultiPolygon": 
+
+            elif geometry_type == "MultiPolygon":
                 # Parse geodataframe polygon object to get coordinates
                 rings = data["features"][0]["geometry"]["coordinates"]
                 # Pull out polygons from exploded gdf and fit into rest syntax for rest request
@@ -593,7 +521,7 @@ def get_image_by_poly(aoi, url, row):
                     data = json.loads(json_string)
                     rings = data["features"][0]["geometry"]["coordinates"][0]
                     multipoly.append(rings)
-                
+
                 geometry_object = { "rings": multipoly,
                     "spatialReference": { "wkid": aoi.crs.to_epsg() }
                     }
@@ -604,10 +532,10 @@ def get_image_by_poly(aoi, url, row):
             print(e)
 
         if geometry_object:
-            try:    
+            try:
                 feature_layer = ESRIImageService(url)
                 # query
-                query_params = {       
+                query_params = {
                         "geometry": geometry_object,
                         "geometryType": "esriGeometryPolygon",
                         "f": "json"
