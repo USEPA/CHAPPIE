@@ -82,6 +82,12 @@ def test_infer_bg_from_tract():
     assert actual.equals(expected), "Mismatched tract-level result"
 
 
+@pytest.mark.unit
+def test_indicators():
+    actual = svi.indicators('Base_Data')
+    assert actual == ['FIPS', 'Area', 'TotPop', 'HousUnits', 'Household']
+
+
 @pytest.mark.integration
 def test_infer_bg_from_tract_from_preprocess():
     # NOTE: B09019_026E/B09019_002E for "GrpQuarter"
