@@ -44,7 +44,7 @@ def process_regrid(regrid_gdf):
 
     Parameters
     ----------
-    aoi : geopandas.GeoDataFrame
+    regrid_gdf : geopandas.GeoDataFrame
         GeoDataFrame for Regrid parcels (polygons) within AOI bounding box.
 
     Returns
@@ -53,6 +53,7 @@ def process_regrid(regrid_gdf):
         GeoDataFrame for Regrid parcels (centroid points) within AOI bounding box.
 
     """
-    regrid_gdf.geometry = regrid_gdf.geometry.centroid
+    gdf_out = regrid_gdf.copy()
+    gdf_out.geometry = gdf_out.geometry.centroid
 
-    return regrid_gdf
+    return gdf_out
