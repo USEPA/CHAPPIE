@@ -69,17 +69,17 @@ def get_flood(aoi, output=None):
         df.to_csv(output, mode="a", index=False, header=True)
 
     for i in range(len(aoi)):  # TODO: use iterrows instead?
-        row = aoi.iloc[[i]]
+        row = aoi.iloc[[i]]  # [[]] for df not series
         datadict = layer_query.get_image_by_poly(aoi=aoi, url=url, row=row)
         try:
             mean_val = datadict["statistics"][0]["mean"]
         except IndexError:
             warnings.warn(f"Response does not contain mean value: {datadict}")
             mean_val = nan
-        df.loc[i] = [row[parcel_id], mean_val]
+        df.loc[i] = [row.loc[i, parcel_id], mean_val]
         # This probably could be improved by using iterrows.
         # Iterrows may obscure the geometry somewhat, but is worth revisiting.
         if output:
             df.to_csv(output, mode="a", index=False, header=False)
-            df.drop(df.index, inplace=True)  # TODO: not sure what this is doing
+            df.drop(df.index, inplace=True)  #TODO: should this be before write?
     return df
