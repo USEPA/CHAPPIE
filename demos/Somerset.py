@@ -63,25 +63,37 @@ households = parcel_centroids.sjoin(svi_gdf, how="left")  # Keep all points
 hazards_dict["flood_FEMA"] = flood.get_fema_nfhl(parcel_gdf)
 hazards_dict["flood_EA"] = flood.get_flood(parcel_gdf)
 
-# These hazards can be attributes to households, like household characteristics
+# Some hazards are attributed to households, like household characteristics
 # either as those that intersect the parcel polygon or centroid. We use centroid
-# to avoid one-to-many relationships, but that most relevant relationship is if
+# to avoid one-to-many relationships, but the most relevant relationship is if
 # the building footprint itself intersects the flood zone.
 for gdf in hazards_dict.values():
 #TODO: faster/better join on parcelID?
     households = households.sjoin(gdf, how="left")
 
-# Get hazards
+# Get event hazards
 in_crs = 'ESRI:102005'
 tornadoes_gdf = tornadoes.get_tornadoes(parcel_gdf.to_crs(in_crs))
-hazards_dict["tornadoes"] = tornadoes.process_tornadoes(parcel_gdf,
+hazards_dict["tornadoes"] = tornadoes.process_tornadoes(tornadoes_gdf,
                                                         parcel_gdf.to_crs(in_crs))
 cyclones = tropical_cyclones.get_cyclones(parcel_gdf.to_crs('ESRI:102005'))
 hazards_dict["tropical_cyclones"] = tropical_cyclones.process_cyclones(cyclones,
                                                                        parcel_gdf.to_crs(in_crs))
 
+# Wind event hazards cover large areas and likely impact a household when
+# the parcel is in their path. Here we used the parcel, but because the path is
+# buffered based on wind speed, using centroids shouldn't impact most results.
+parcel_results = parcel_gdf.sjon(hazards_dict["tropical_cyclones"], how="left")
+parcel_results = parcel_results.sjon(hazards_dict["tornadoes"], how="left")
+
 # Get weather hazards
 hazards_dict["heat"] = weather.get_heat_events(parcel_gdf)
+
+# Heat hazards are gatherd by census tract (11 digit ID)
+# This allows them to be joined (many parcels to one heat vale) on SVI geoid
+hazards_dict["heat"] = hazards_dict["heat"].rename(columns={"geoId": "GEOID"})
+households["tract_id"] = [id[:11] for id in households["GEOID"]]  # Add tract_id
+households = households.join(hazards_dict["heat"], on="GEOID")
 
 # Get hazard endpoints
 #hazards_dict["losses"] = hazard_losses.get_hazard_losses
@@ -93,6 +105,17 @@ hazards_dict["superfund"] = technological.get_superfund_npl(parcel_gdf)
 hazards_dict["brownfields"] = technological.get_FRS_ACRES(parcel_gdf)
 hazards_dict["landfills"] = technological.get_landfills(parcel_gdf)
 hazards_dict["tri"] = technological.get_tri(parcel_gdf)
+
+# For demonstration purposes we used a 5 km buffer around centroids
+households = households.drop(columns=["index_right"])  # TODO: where is this added?
+households = households.to_crs('ESRI:102005')  # Use CONUS equidistant conic
+for df in ["superfund", "brownfields", "landfills", "tri"]:
+    households = households.sjoin(hazards_dict[df].to_crs(households.crs),
+                                  how="left",
+                                  predicate="dwithin",
+                                  distance="5000")
+# Multiple tech hazards can be in range of each parcel centroid
+
 
 # Get community level characteristics
 # Note: these will be accessed by networks
