@@ -67,8 +67,9 @@ hazards_dict["flood_EA"] = flood.get_flood(parcel_gdf)
 # either as those that intersect the parcel polygon or centroid. We use centroid
 # to avoid one-to-many relationships, but that most relevant relationship is if
 # the building footprint itself intersects the flood zone.
-for gdf in hazards_dict:
-    households = households.sjoin(svi_gdf, how="left")
+for gdf in hazards_dict.values():
+#TODO: faster/better join on parcelID?
+    households = households.sjoin(gdf, how="left")
 
 # Get hazards
 in_crs = 'ESRI:102005'
