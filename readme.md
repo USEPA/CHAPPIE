@@ -14,7 +14,7 @@ To install the latest development version of CHAPPIE using pip:
 pip install git+https://github.com/USEPA/CHAPPIE.git
 ```
 ## Overview
-Community Hazard-scape and Amenity Placement for Providing Improved Endpoints (CHAPPIE) is desgned to characterize household on the hazards they face and ammerities that contribute to their resilience with the aim to identify ways to improve community resilence.
+Community Hazard-scape and Amenity Placement for Providing Improved Endpoints (CHAPPIE) is designed to characterize household on the hazards they face and ammenities that contribute to their resilience with the aim to identify ways to improve community resilience.
 
 Households - represented spatially by parcel boundaries and generalized by centroids, have on-site characteristics (e.g., placement in flood zones, socio-demographics from ACS, etc.). These households also receive benefits from local amenities (e.g., parks) through a variety of networks (e.g., road networks).   
 
@@ -32,7 +32,7 @@ Households - represented spatially by parcel boundaries and generalized by centr
 | &emsp; &emsp; &emsp; education.py | Module for education assets |
 | &emsp; &emsp; &emsp; emergency.py | Module for emergency assets |
 | &emsp; &emsp; &emsp; food.py | Module for food assets |
-| &emsp; &emsp; &emsp; hazard_infrastructure.py &emsp; &emsp; &emsp; | Module for hazard infrastructure assets |
+| &emsp; &emsp; &emsp; hazard_infrastructure.py &nbsp; | Module for hazard infrastructure assets |
 | &emsp; &emsp; &emsp; health.py | Module for health assets |
 | &emsp; &emsp; &emsp; recreation.py | Module for recreation assets |
 | &emsp; &emsp; &emsp; transit.py | Module for transit assets |
