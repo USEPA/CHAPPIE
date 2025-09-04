@@ -19,6 +19,21 @@ aoi_bank_gdf = geopandas.read_file(AOI_BANK)
 
 # assets
 ## Cultural
+from CHAPPIE.assets import cultural
+
+### test_get_worship()
+actual = cultural.get_worship(aoi_gdf)
+actual.drop(columns=['FID'], inplace=True)
+actual.sort_values(by=['EIN', 'NAME'], inplace=True, ignore_index=True)
+
+expected_file = os.path.join(EXPECTED_DIR, 'cultural_worship.parquet')
+expected = geopandas.read_parquet(expected_file)
+try:
+    assert_geodataframe_equal(actual, expected)
+except AssertionError as ae:
+    print(ae)
+    actual.to_parquet(expected_file)
+
 ## Emergency
 from CHAPPIE.assets import emergency
 
