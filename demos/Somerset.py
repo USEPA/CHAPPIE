@@ -58,6 +58,8 @@ house_dict["svi"] = pandas.concat(dfs)
 # household to block group by joining the parcel centroids and svi polygons.
 svi_gdf = house_dict["svi"].to_crs(parcel_centroids.crs)  # CRS must match
 households = parcel_centroids.sjoin(svi_gdf, how="left")  # Keep all points
+# TODO: can likely drop the index but may be useful for one vs many
+households = households.rename(columns={"index_right": "svi_index"})
 
 # Get flood hazard
 hazards_dict["flood_FEMA"] = flood.get_fema_nfhl(parcel_gdf)
@@ -67,9 +69,11 @@ hazards_dict["flood_EA"] = flood.get_flood(parcel_gdf)
 # either as those that intersect the parcel polygon or centroid. We use centroid
 # to avoid one-to-many relationships, but the most relevant relationship is if
 # the building footprint itself intersects the flood zone.
-for gdf in hazards_dict.values():
-#TODO: faster/better join on parcelID?
+for key, gdf in hazards_dict.items():
+    #TODO: faster/better join on parcelID?
     households = households.sjoin(gdf, how="left")
+    # TODO: can likely drop the index but may be useful for one vs many
+    households = households.rename(columns={"index_right": f"{key}_index"})
 
 # Get event hazards
 in_crs = 'ESRI:102005'
@@ -91,9 +95,10 @@ hazards_dict["heat"] = weather.get_heat_events(parcel_gdf)
 
 # Heat hazards are gatherd by census tract (11 digit ID)
 # This allows them to be joined (many parcels to one heat vale) on SVI geoid
-hazards_dict["heat"] = hazards_dict["heat"].rename(columns={"geoId": "GEOID"})
+hazards_dict["heat"] = hazards_dict["heat"].rename(columns={"id": "heat_id"})
 households["tract_id"] = [id[:11] for id in households["GEOID"]]  # Add tract_id
-households = households.join(hazards_dict["heat"], on="GEOID")
+households = households.set_index("tract_id").join(hazards_dict["heat"].set_index("geoId"))
+households.reset_index(inplace=True)
 
 # Get hazard endpoints
 #hazards_dict["losses"] = hazard_losses.get_hazard_losses
@@ -107,14 +112,17 @@ hazards_dict["landfills"] = technological.get_landfills(parcel_gdf)
 hazards_dict["tri"] = technological.get_tri(parcel_gdf)
 
 # For demonstration purposes we used a 5 km buffer around centroids
-households = households.drop(columns=["index_right"])  # TODO: where is this added?
+# Note index_right is added in first sjoin, not the pandas.join and then each 
+#subsequent sjoin TODO: figure out if it is needed?
 households = households.to_crs('ESRI:102005')  # Use CONUS equidistant conic
-for df in ["superfund", "brownfields", "landfills", "tri"]:
-    households = households.sjoin(hazards_dict[df].to_crs(households.crs),
+for key in ["superfund", "brownfields", "landfills", "tri"]:
+    households = households.sjoin(hazards_dict[key].to_crs(households.crs),
                                   how="left",
                                   predicate="dwithin",
                                   distance="5000")
+    households = households.rename(columns={"index_right": f"{key}_index"})
 # Multiple tech hazards can be in range of each parcel centroid
+# TODO: aggregate?
 
 
 # Get community level characteristics
