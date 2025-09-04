@@ -62,25 +62,24 @@ def get_flood(aoi, output=None):
     parcel_id = "parcelnumb"  # unique id column name for parcel data
 
     df = pandas.DataFrame(columns=[parcel_id, "mean"])
-    # Add headers to the csv at beginning once, since the rows are appended to csv one by one hereafter
+    # Add headers to the csv at beginning once, since the rows are appended to
+    # csv one by one hereafter
+    # TODO: could these be added to the csv all at once at the end?
     if output:
         df.to_csv(output, mode="a", index=False, header=True)
 
     for i in range(len(aoi)):  # TODO: use iterrows instead?
-        data = []
-        data.append(aoi[parcel_id][i])
         row = aoi.iloc[[i]]
         datadict = layer_query.get_image_by_poly(aoi=aoi, url=url, row=row)
         try:
-            actual = datadict["statistics"][0]["mean"]
+            mean_val = datadict["statistics"][0]["mean"]
         except IndexError:
             warnings.warn(f"Response does not contain mean value: {datadict}")
-            actual = nan
-        data.append(actual)
-        df.loc[i] = data
+            mean_val = nan
+        df.loc[i] = [row[parcel_id], mean_val]
         # This probably could be improved by using iterrows.
         # Iterrows may obscure the geometry somewhat, but is worth revisiting.
         if output:
             df.to_csv(output, mode="a", index=False, header=False)
-            df.drop(df.index, inplace=True)
+            df.drop(df.index, inplace=True)  # TODO: not sure what this is doing
     return df
