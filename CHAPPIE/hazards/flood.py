@@ -73,7 +73,7 @@ def get_flood(aoi, output=None):
         datadict = layer_query.get_image_by_poly(aoi=aoi, url=url, row=row)
         try:
             actual = datadict["statistics"][0]["mean"]
-        except IndexError as e:
+        except IndexError:
             warnings.warn(f"Response does not contain mean value: {datadict}")
             actual = nan
         data.append(actual)
