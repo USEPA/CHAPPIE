@@ -32,7 +32,7 @@ Households - represented spatially by parcel boundaries and generalized by centr
 | &emsp; &emsp; &emsp; education.py | Module for education assets |
 | &emsp; &emsp; &emsp; emergency.py | Module for emergency assets |
 | &emsp; &emsp; &emsp; food.py | Module for food assets |
-| &emsp; &emsp; &emsp; hazard_infrastructure.py &emsp; &emsp; $ensp; | Module for hazard infrastructure assets |
+| &emsp; &emsp; &emsp; hazard_infrastructure.py &emsp; &emsp; &ensp; | Module for hazard infrastructure assets |
 | &emsp; &emsp; &emsp; health.py | Module for health assets |
 | &emsp; &emsp; &emsp; recreation.py | Module for recreation assets |
 | &emsp; &emsp; &emsp; transit.py | Module for transit assets |
