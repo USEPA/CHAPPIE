@@ -53,10 +53,23 @@ for geoid in county_FIPS:
                            year=2023))
 house_dict["svi"] = pandas.concat(dfs)
 
+# There are a couple ways to associate metrics from house_dict to houesholds,
+# i.e., parcel polygons or parcel centroids. Here we ensure a one-to-one
+# household to block group by joining the parcel centroids and svi polygons.
+svi_gdf = house_dict["svi"].to_crs(parcel_centroids.crs)  # CRS must match
+households = parcel_centroids.sjoin(svi_gdf, how="left")  # Keep all points
+
 # Get flood hazard
 hazards_dict["flood_FEMA"] = flood.get_fema_nfhl(parcel_gdf)
-#TODO: requires parcels first
-# flood.get_flood()
+hazards_dict["flood_EA"] = flood.get_flood(parcel_gdf)
+
+# These hazards can be attributes to households, like household characteristics
+# either as those that intersect the parcel polygon or centroid. We use centroid
+# to avoid one-to-many relationships, but that most relevant relationship is if
+# the building footprint itself intersects the flood zone.
+for gdf in hazards_dict:
+    households = households.sjoin(svi_gdf, how="left")
+
 # Get hazards
 in_crs = 'ESRI:102005'
 tornadoes_gdf = tornadoes.get_tornadoes(parcel_gdf.to_crs(in_crs))
