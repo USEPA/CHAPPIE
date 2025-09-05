@@ -40,6 +40,8 @@ usda_API = os.environ["usda_API"]
 
 # Start by getting intersecting parcels to relate all characteristics to
 parcel_gdf = parcels.get_regrid(aoi_gdf)
+parcel_gdf.drop_duplicates(inplace=True)  # Drop duplicates
+parcel_gdf.reset_index(inplace=True, drop=True)  # Fix index
 # Get a generalized representation to join results to
 parcel_centroids = parcels.process_regrid(parcel_gdf)
 
@@ -56,9 +58,12 @@ house_dict["svi"] = pandas.concat(dfs)
 # i.e., parcel polygons or parcel centroids. Here we ensure a one-to-one
 # household to block group by joining the parcel centroids and svi polygons.
 svi_gdf = house_dict["svi"].to_crs(parcel_centroids.crs)  # CRS must match
-households = parcel_centroids.sjoin(svi_gdf, how="left")  # Keep all points
-# TODO: can likely drop the index but may be useful for one vs many
-households = households.rename(columns={"index_right": "svi_index"})
+households = parcel_centroids.sjoin(svi_gdf,
+                                    how="left",  # Keep all points
+                                    rsuffix="svi",
+                                    )
+# TODO: can likely drop the index, rsuffix took care of the rename
+#households = households.rename(columns={"index_right": "svi_index"})
 
 # Get flood hazard
 hazards_dict["flood_FEMA"] = flood.get_fema_nfhl(parcel_gdf)
@@ -101,7 +106,7 @@ households["tract_id"] = [id[:11] for id in households["GEOID"]]  # Add tract_id
 households = households.set_index("tract_id").join(
     hazards_dict["heat"].set_index("geoId")
 )
-households.reset_index(inplace=True)
+households.reset_index(inplace=True)  # Fix it after the join
 
 # Get hazard endpoints
 # hazards_dict["losses"] = hazard_losses.get_hazard_losses
@@ -109,10 +114,10 @@ households.reset_index(inplace=True)
 
 # Note: these may have spatial relations other than overlap (e.g., range)
 # Get tech hazards
-hazards_dict["superfund"] = technological.get_superfund_npl(parcel_gdf)
-hazards_dict["brownfields"] = technological.get_FRS_ACRES(parcel_gdf)
-hazards_dict["landfills"] = technological.get_landfills(parcel_gdf)
-hazards_dict["tri"] = technological.get_tri(parcel_gdf)
+hazards_dict["superfund"] = technological.get_superfund_npl(parcel_gdf)  #n=1
+hazards_dict["brownfields"] = technological.get_FRS_ACRES(parcel_gdf)  #n=8
+hazards_dict["landfills"] = technological.get_landfills(parcel_gdf)  #n=5
+hazards_dict["tri"] = technological.get_tri(parcel_gdf)  #n=8
 
 # For demonstration purposes we used a 5 km buffer around centroids
 # Note index_right is added in first sjoin, not the pandas.join and then each
@@ -124,13 +129,19 @@ for key in ["superfund", "brownfields", "landfills", "tri"]:
         "how": "left",
         "predicate": "dwithin",
         "distance": "5000",
-        "rsuffix": f"_{key}",
+        "rsuffix": f"{key}",
     }
     households = households.sjoin(**join_params)
-    households = households.rename(columns={"index_right": f"{key}_index"})
-# Multiple tech hazards can be in range of each parcel centroid
-# TODO: aggregate?
+    #households = households.rename(columns={"index_right": f"{key}_index"})
 
+# TODO: aggregate?
+# NOTE: superfund result wasn't in range (ACCOMACK county, VA)
+# NOTE:some 5700 parcel points fall in range of multiple brownfields,
+# REGISTRY_ID '110038762416' & '110002476614'
+# Multiple tech hazards can be in range of each parcel centroid
+# NOTE: landfills didnt generate more duplicate parcel points (all one-to-one)
+# NOTE: TRI didn't generate more duplciate parcel points, OBJECTID_left warning
+len(households)
 
 # Get community level characteristics
 # Note: these will be accessed by networks
@@ -163,6 +174,10 @@ assets_dict["hospitals"] = health.get_hospitals(parcel_gdf)
 # assets_dict["urgent_care"] = health.get_urgent_care(parcel_gdf)
 # providers = health.get_providers(parcel_gdf)
 # assets_dict["providers"] = health.provider_address(providers)
+
+#for key, df in assets_dict.items():
+#    #route?
+
 
 # NOTE: Ecosystem services characteristics may be access by other networks
 # Get hazard infrastructure assets
