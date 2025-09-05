@@ -4,6 +4,7 @@ Retrieve all data for a given AOI
 
 @author: jbousqui
 """
+
 import os
 
 import geopandas
@@ -19,7 +20,7 @@ from CHAPPIE.assets import (
     health,
 )
 
-#from CHAPPIE.endpoints import hazard_losses
+# from CHAPPIE.endpoints import hazard_losses
 from CHAPPIE.hazards import flood, technological, tornadoes, tropical_cyclones, weather
 from CHAPPIE.household import svi
 from CHAPPIE.layer_query import get_county
@@ -35,22 +36,20 @@ hazards_dict = {}
 house_dict = {}
 
 # API Key handling (other users may way to switch these out here)
-usda_API = os.environ['usda_API']
+usda_API = os.environ["usda_API"]
 
 # Start by getting intersecting parcels to relate all characteristics to
 parcel_gdf = parcels.get_regrid(aoi_gdf)
 # Get a generalized representation to join results to
-parcel_centroids =  parcels.process_regrid(parcel_gdf)
+parcel_centroids = parcels.process_regrid(parcel_gdf)
 
 # Get household level characteristics
 # Get intersecting county
-county_FIPS = get_county(parcel_gdf)['GEOID'].to_list()
+county_FIPS = get_county(parcel_gdf)["GEOID"].to_list()
 # Get svi metrics
 dfs = []
 for geoid in county_FIPS:
-    dfs.append(svi.get_SVI(geoid,
-                           level='block group',
-                           year=2023))
+    dfs.append(svi.get_SVI(geoid, level="block group", year=2023))
 house_dict["svi"] = pandas.concat(dfs)
 
 # There are a couple ways to associate metrics from house_dict to houesholds,
@@ -70,19 +69,21 @@ hazards_dict["flood_EA"] = flood.get_flood(parcel_gdf)
 # to avoid one-to-many relationships, but the most relevant relationship is if
 # the building footprint itself intersects the flood zone.
 for key, gdf in hazards_dict.items():
-    #TODO: faster/better join on parcelID?
+    # TODO: faster/better join on parcelID?
     households = households.sjoin(gdf, how="left")
     # TODO: can likely drop the index but may be useful for one vs many
     households = households.rename(columns={"index_right": f"{key}_index"})
 
 # Get event hazards
-in_crs = 'ESRI:102005'
+in_crs = "ESRI:102005"
 tornadoes_gdf = tornadoes.get_tornadoes(parcel_gdf.to_crs(in_crs))
-hazards_dict["tornadoes"] = tornadoes.process_tornadoes(tornadoes_gdf,
-                                                        parcel_gdf.to_crs(in_crs))
-cyclones = tropical_cyclones.get_cyclones(parcel_gdf.to_crs('ESRI:102005'))
-hazards_dict["tropical_cyclones"] = tropical_cyclones.process_cyclones(cyclones,
-                                                                       parcel_gdf.to_crs(in_crs))
+hazards_dict["tornadoes"] = tornadoes.process_tornadoes(
+    tornadoes_gdf, parcel_gdf.to_crs(in_crs)
+)
+cyclones = tropical_cyclones.get_cyclones(parcel_gdf.to_crs("ESRI:102005"))
+hazards_dict["tropical_cyclones"] = tropical_cyclones.process_cyclones(
+    cyclones, parcel_gdf.to_crs(in_crs)
+)
 
 # Wind event hazards cover large areas and likely impact a household when
 # the parcel is in their path. Here we used the parcel, but because the path is
@@ -97,14 +98,16 @@ hazards_dict["heat"] = weather.get_heat_events(parcel_gdf)
 # This allows them to be joined (many parcels to one heat vale) on SVI geoid
 hazards_dict["heat"] = hazards_dict["heat"].rename(columns={"id": "heat_id"})
 households["tract_id"] = [id[:11] for id in households["GEOID"]]  # Add tract_id
-households = households.set_index("tract_id").join(hazards_dict["heat"].set_index("geoId"))
+households = households.set_index("tract_id").join(
+    hazards_dict["heat"].set_index("geoId")
+)
 households.reset_index(inplace=True)
 
 # Get hazard endpoints
-#hazards_dict["losses"] = hazard_losses.get_hazard_losses
+# hazards_dict["losses"] = hazard_losses.get_hazard_losses
 
 
-#Note: these may have spatial relations other than overlap (e.g., range)
+# Note: these may have spatial relations other than overlap (e.g., range)
 # Get tech hazards
 hazards_dict["superfund"] = technological.get_superfund_npl(parcel_gdf)
 hazards_dict["brownfields"] = technological.get_FRS_ACRES(parcel_gdf)
@@ -112,14 +115,18 @@ hazards_dict["landfills"] = technological.get_landfills(parcel_gdf)
 hazards_dict["tri"] = technological.get_tri(parcel_gdf)
 
 # For demonstration purposes we used a 5 km buffer around centroids
-# Note index_right is added in first sjoin, not the pandas.join and then each 
-#subsequent sjoin TODO: figure out if it is needed?
-households = households.to_crs('ESRI:102005')  # Use CONUS equidistant conic
+# Note index_right is added in first sjoin, not the pandas.join and then each
+# subsequent sjoin TODO: figure out if it is needed?
+households = households.to_crs("ESRI:102005")  # Use CONUS equidistant conic
 for key in ["superfund", "brownfields", "landfills", "tri"]:
-    households = households.sjoin(hazards_dict[key].to_crs(households.crs),
-                                  how="left",
-                                  predicate="dwithin",
-                                  distance="5000")
+    join_params = {
+        "df": hazards_dict[key].to_crs(households.crs),
+        "how": "left",
+        "predicate": "dwithin",
+        "distance": "5000",
+        "rsuffix": f"_{key}",
+    }
+    households = households.sjoin(**join_params)
     households = households.rename(columns={"index_right": f"{key}_index"})
 # Multiple tech hazards can be in range of each parcel centroid
 # TODO: aggregate?
@@ -153,15 +160,14 @@ assets_dict["farm_store"] = food.get_farm_store(parcel_gdf, usda_API)
 
 # Get health assets
 assets_dict["hospitals"] = health.get_hospitals(parcel_gdf)
-#assets_dict["urgent_care"] = health.get_urgent_care(parcel_gdf)
-#providers = health.get_providers(parcel_gdf)
-#assets_dict["providers"] = health.provider_address(providers)
+# assets_dict["urgent_care"] = health.get_urgent_care(parcel_gdf)
+# providers = health.get_providers(parcel_gdf)
+# assets_dict["providers"] = health.provider_address(providers)
 
 # NOTE: Ecosystem services characteristics may be access by other networks
 # Get hazard infrastructure assets
 assets_dict["dams"] = hazard_infrastructure.get_dams(parcel_gdf)
 assets_dict["levees"] = hazard_infrastructure.get_levee(parcel_gdf)
-
 
 
 utils.write_QA(assets_dict, os.path.join(out_dir, "assets2.csv"))
