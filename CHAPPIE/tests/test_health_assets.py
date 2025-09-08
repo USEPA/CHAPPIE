@@ -117,7 +117,7 @@ def test_get_providers(providers: pandas.DataFrame):
     # Subset actual where number and zip5 in expected (lacking good unique id)
     # NOTE: this should ignore rows added to actual but not expected and fail on removed
     unique_cols = ['number', 'zip5']
-    mask = actual[unique_cols].isin(expected[unique_cols].all(axis=1)
+    mask = actual[unique_cols].isin(expected[unique_cols]).all(axis=1)
 
     assert_frame_equal(providers.loc[mask, cols].sort_values(by=unique_cols).reset_index(drop=True),
                        expected[cols].sort_values(by=unique_cols).reset_index(drop=True))
