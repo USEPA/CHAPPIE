@@ -8,7 +8,6 @@ Retrieve all data for a given AOI
 import os
 
 import geopandas
-import pandas
 
 from CHAPPIE import parcels, utils
 from CHAPPIE.assets import (
@@ -55,8 +54,6 @@ households = parcel_centroids.sjoin(svi_gdf,
                                     how="left",  # Keep all points
                                     rsuffix="svi",
                                     )
-# TODO: can likely drop the index, rsuffix took care of the rename
-#households = households.rename(columns={"index_right": "svi_index"})
 
 # Get flood hazard
 hazards_dict["flood_FEMA"] = flood.get_fema_nfhl(parcel_gdf)
