@@ -12,7 +12,10 @@ Created on Mon Sep 25 14:41:17 2023
 from warnings import warn
 
 import pygris
+from pandas import concat
 from pygris.data import get_census
+
+from CHAPPIE.layer_query import get_county
 
 
 # SVI dict
@@ -358,6 +361,28 @@ def preprocess(df_in, year=2020):
     # TODO: drop original cols?
 
     return df
+
+
+def get_SVI_by_aoi(aoi, level="block group", year=2020):
+    """Get Social Vulnerability metrics and geograhpies for a given area
+
+    Parameters
+    ----------
+    geoid : geopandas.GeoDataFrame
+        Area to return metrics for (entire overlapping county).
+    level : str, optional
+        Census level to calculate SVI (default "block group" or "tract")
+    year : int, optional
+        ACS vintage (5-year), by default 2020
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        Table of SVI results and associated polygons
+    """
+    # List 5-digist geoid from intersecting counties
+    geoids = get_county(aoi)["GEOID"].to_list()
+    return concat([get_SVI(geoid, level, year) for geoid in geoids])
 
 
 def get_SVI(geoid, level="block group", year=2020):
