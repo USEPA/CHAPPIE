@@ -144,7 +144,7 @@ for key in ["superfund", "brownfields", "landfills", "tri"]:
 len(households)
 
 # Get community level characteristics
-# Note: these will be accessed by networks
+# Note: these will be accessed by networks, for now just get nearest
 # Get cultural assets
 assets_dict["historic_sites"] = cultural.get_historic(parcel_gdf)
 assets_dict["libraries"] = cultural.get_library(parcel_gdf)
@@ -175,9 +175,16 @@ assets_dict["hospitals"] = health.get_hospitals(parcel_gdf)
 # providers = health.get_providers(parcel_gdf)
 # assets_dict["providers"] = health.provider_address(providers)
 
-#for key, df in assets_dict.items():
-#    #route?
+households = households.to_crs("ESRI:102005")
 
+for key, df in assets_dict.items():
+    #route?
+    households.sjoin_nearest(df.to_crs(households.crs),
+                             how="left",
+                             rsuffix=f"{key}",
+                             distance_col=f"{key}_dist"
+                             )
+#len 30730 vs 32242 - if two points exactly nearest both will be joined?
 
 # NOTE: Ecosystem services characteristics may be access by other networks
 # Get hazard infrastructure assets
