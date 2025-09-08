@@ -23,7 +23,6 @@ from CHAPPIE.assets import (
 # from CHAPPIE.endpoints import hazard_losses
 from CHAPPIE.hazards import flood, technological, tornadoes, tropical_cyclones, weather
 from CHAPPIE.household import svi
-from CHAPPIE.layer_query import get_county
 
 main_dir = r"L:\lab\SHC_1012\Crisfield, Maryland\Data"
 out_dir = os.path.join(main_dir, "auto_download")
@@ -46,13 +45,7 @@ parcel_gdf.reset_index(inplace=True, drop=True)  # Fix index
 parcel_centroids = parcels.process_regrid(parcel_gdf)
 
 # Get household level characteristics
-# Get intersecting county
-county_FIPS = get_county(parcel_gdf)["GEOID"].to_list()
-# Get svi metrics
-dfs = []
-for geoid in county_FIPS:
-    dfs.append(svi.get_SVI(geoid, level="block group", year=2023))
-house_dict["svi"] = pandas.concat(dfs)
+house_dict["svi"] = svi.get_SVI_by_aoi(parcel_gdf, year=2023)
 
 # There are a couple ways to associate metrics from house_dict to houesholds,
 # i.e., parcel polygons or parcel centroids. Here we ensure a one-to-one
