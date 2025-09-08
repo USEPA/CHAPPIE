@@ -119,7 +119,7 @@ def test_get_providers(providers: pandas.DataFrame):
     unique_cols = ['number', 'zip5']
     mask = actual[unique_cols].isin(expected[unique_cols].all(axis=1)
 
-    assert_frame_equal(providers[mask, cols].sort_values(by=unique_cols).reset_index(drop=True),
+    assert_frame_equal(providers.loc[mask, cols].sort_values(by=unique_cols).reset_index(drop=True),
                        expected[cols].sort_values(by=unique_cols).reset_index(drop=True))
 
 @pytest.mark.integration
