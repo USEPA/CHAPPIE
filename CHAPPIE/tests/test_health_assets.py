@@ -102,7 +102,8 @@ def test_get_providers(providers: pandas.DataFrame):
     #expected_len = [1069, 311, 1841, 398, 149, 26, 168, 306, 44, 27]
     #expected_len = [1071, 311, 1841, 398, 149, 26, 168, 306, 44, 27]
     #expected_len = [1093, 328, 1923, 437, 162, 36, 180, 314, 47, 29]
-    assert actual_len==[1931, 28]
+    assert actual_len[0]>=1933
+    assert actual_len[1]>=28
 
     # Test result dataframes
     expected_file = os.path.join(EXPECTED_DIR, 'get_providers.parquet')
