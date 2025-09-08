@@ -143,10 +143,8 @@ for key in ["superfund", "brownfields", "landfills", "tri"]:
 # List fields from joined
 cols = hazards_dict["brownfields"].columns
 
-def c_suf(name):
-    return f"{name}_brownfields"  # Immitate rsuffix
-
-cols = [c_suf(col) if c_suf(col) in households else col for col in cols]
+suf = "_brownfields"  # Immitate rsuffix
+cols = [f"{col}{suf}" if f"{col}{suf}" in households else col for col in cols]
 cols.pop(cols.index('geometry'))  # drop geometry (not joined)
 
 for col in cols:
