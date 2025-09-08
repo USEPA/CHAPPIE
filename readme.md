@@ -14,9 +14,14 @@ To install the latest development version of CHAPPIE using pip:
 pip install git+https://github.com/USEPA/CHAPPIE.git
 ```
 ## Overview
-Community Hazard-scape and Amenity Placement for Providing Improved Endpoints (CHAPPIE) is designed to characterize household on the hazards they face and ammenities that contribute to their resilience with the aim to identify ways to improve community resilience.
+Community Hazard-scape and Amenity Placement for Providing Improved Endpoints (CHAPPIE) is designed to characterize households on the hazards they face and ammenities that contribute to their resilience with the aim to identify ways to improve community resilience.
 
 Households - represented spatially by parcel boundaries and generalized by centroids, have on-site characteristics (e.g., placement in flood zones, socio-demographics from ACS, etc.). These households also receive benefits from local amenities (e.g., parks) through a variety of networks (e.g., road networks).   
+
+## Demos
+The package currently helps a user gather datasets for their area of interest. To start to synthesize those datasets for analysis they can be aggregated to units (e.g., parcels). Two [demos](https://github.com/USEPA/CHAPPIE/tree/main/demos) are currenlty included to demonstrate examples of data gathering and synthesis steps:
+- [PPBEP](https://github.com/USEPA/CHAPPIE/blob/main/demos/PPBEP.py) - Retrieve all data for the Pensacola and Perdido Bays Watersheds
+- [Somerset](https://github.com/USEPA/CHAPPIE/blob/main/demos/Somerset.py) - Retrieve all data for Somerset County MD and aggregate it all to households (parcel centroids)
 
 ## Package Structure
 
@@ -58,6 +63,7 @@ Households - represented spatially by parcel boundaries and generalized by centr
 ## Disclaimer
 
 The United States Environmental Protection Agency (EPA) GitHub project code is provided on an "as is" basis and the user assumes responsibility for its use. EPA has relinquished control of the information and no longer has responsibility to protect the integrity, confidentiality, or availability of the information. Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by EPA. The EPA seal and logo shall not be used in any manner to imply endorsement of any commercial product or activity by EPA or the United States Government.
+
 
 
 
