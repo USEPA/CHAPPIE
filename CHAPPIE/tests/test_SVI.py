@@ -9,6 +9,7 @@ import os
 
 import geopandas
 import pandas
+import pytest
 from geopandas.testing import assert_geodataframe_equal
 
 from CHAPPIE.household import svi
@@ -69,3 +70,46 @@ def test_get_SVI_by_county_all_BG():
     #assert len(gdf_bg)==199
     assert_geodataframe_equal(actual, expected, check_like=True)
 
+
+@pytest.mark.unit
+def test_infer_bg_from_tract():
+    #infer_BG_from_tract(bg_geoid, metric_col, year=2020, method='uniform')
+    bg_id = "510010901011"
+    metric_col = "B09019_002E"
+    expected_val = 1864
+    actual = svi.infer_bg_from_tract(bg_id, metric_col, year=2023)
+    expected = pandas.Series(data=[expected_val], name=metric_col)
+    assert actual.equals(expected), "Mismatched tract-level result"
+
+
+@pytest.mark.unit
+def test_indicators():
+    actual = svi.indicators('Base_Data')
+    assert actual == ['FIPS', 'Area', 'TotPop', 'HousUnits', 'Household']
+
+
+@pytest.mark.integration
+def test_infer_bg_from_tract_from_preprocess():
+    # NOTE: B09019_026E/B09019_002E for "GrpQuarter"
+    # generate set of vars with real and test (None) values
+    data = {"GEOID": ['510010901011', '510010901012'],
+            "B29003_002E": [9, 113],
+            "B29003_001E": [811, 798],
+            "B23025_005E": [0, 70],
+            "B23025_003E": [389, 441],
+            "B09019_002E": [None, None],
+            "B09019_026E": [None, None]}
+    # generate full set of vars with junk values
+    empty_data = {var:[0, 0] for var in svi.variables()}
+    data = empty_data | data  # Note: piping (py3.9) over-writes from right-side
+    df_in = pandas.DataFrame(data=data)
+    actual = svi.preprocess(df_in, 2023)
+
+    # Check replaced values
+    expected_numerator = [0, 0]
+    assert actual["B09019_026E"].to_list() == expected_numerator
+    expected_denominator = [1864, 1864]
+    assert actual["B09019_002E"].to_list() == expected_denominator
+    # Check calculated value
+    expected_pct = [0.0, 0.0]
+    assert actual["GrpQuarter"].to_list()==expected_pct

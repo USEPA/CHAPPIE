@@ -4,11 +4,12 @@ Test get and process Regrid parcels.
 @author: tlomba01
 """
 import os
+
 import geopandas
 import pytest
+
 #from geopandas.testing import assert_geodataframe_equal
 from CHAPPIE import parcels
-
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -40,8 +41,9 @@ def test_get_regrid(parcels_gdf: geopandas.GeoDataFrame):
     assert(len(parcels_gdf)==27338), f'{len(parcels_gdf)}!={27338}'
     # The assert below can be run locally if an expected file exists
     #assert_geodataframe_equal(parcels_gdf, expected)
-    
 
+
+@pytest.mark.integration
 def test_process_regrid(parcels_gdf: geopandas.GeoDataFrame):
     actual_centroids = parcels.process_regrid(parcels_gdf)
     assert(len(parcels_gdf)==len(actual_centroids))
