@@ -188,14 +188,30 @@ assets_dict["hospitals"] = health.get_hospitals(parcel_gdf)
 # assets_dict["providers"] = health.provider_address(providers)
 
 households = households.to_crs("ESRI:102005")
+
+# When two points are nearest it results in multiple rows
+key, df = "historic_sites", assets_dict["historic_sites"]
+test_join = households.sjoin_nearest(df.to_crs(households.crs),
+                                     how="left",
+                                     rsuffix=f"{key}",
+                                     distance_col=f"{key}_dist"
+                                     )
+test_join[test_join.index.duplicated()]  # Examine duplicates (e.g., 1304)
+test_prop_ids = test_join.loc[1304]['PROPERTY_ID'].to_list()
+# Look at original geometry for the duplicates
+df[df['PROPERTY_ID'].isin(test_prop_ids)]['geometry']
+# In a full evaluation the best row/point should be chosen, arbitrary here
+# assets_dict["historic_sites0"] = assets_dict["historic_sites"]  # Retain OG
+assets_dict["historic_sites"] = df.drop_duplicates(subset=['geometry'])
+
 for key, df in assets_dict.items():
     #route?
-    households = households.sjoin_nearest(df.to_crs(households.crs),
+    x = households.sjoin_nearest(df.to_crs(households.crs),
                                           how="left",
                                           rsuffix=f"{key}",
                                           distance_col=f"{key}_dist"
                                           )
-# 30730 vs 32242 (historic_sites) - if two points exactly nearest both joined?
+    print(f'{key}: {len(x)}')
 
 # NOTE: Ecosystem services characteristics may be access by other networks
 # Get hazard infrastructure assets
