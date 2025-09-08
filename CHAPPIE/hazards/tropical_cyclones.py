@@ -4,9 +4,12 @@ Module to query and process tropical cyclone hazards
 
 @author: jbousquin, rennis
 """
-import geopandas
+
 import os
-from CHAPPIE import layer_query
+
+import geopandas
+
+from CHAPPIE import layer_query, utils
 
 
 def get_cyclones(aoi):
@@ -26,14 +29,15 @@ def get_cyclones(aoi):
     baseurl = 'https://services2.arcgis.com/FiaPA4ga0iQKduv3/ArcGIS/rest/services/'
     # starting w/ lines only
     url = f'{baseurl}IBTrACS_ALL_list_v04r00_lines_1/FeatureServer'
-    #url_pnts = 
+    #url_pnts =
     max_buff = 160934
-    assert layer_query.getCRSUnits(aoi.crs) == 'm', f"Expected units to be meters, found {layer_query.getCRSUnits(aoi.crs)}"
+    query_crs = layer_query.getCRSUnits(aoi.crs)
+    assert query_crs == 'm', f"Expected units to be meters, found {query_crs}"
 
     xmin, ymin, xmax, ymax = aoi.total_bounds
     bbox = [xmin, ymin, xmax,  ymax]
     out_fields = ['SID', 'NAME', 'USA_WIND', 'USA_PRES', 'year', 'month', 'day']
-    
+
     return layer_query.get_bbox(bbox,
                                 url,
                                 0,
@@ -43,11 +47,11 @@ def get_cyclones(aoi):
 
 
 def process_cyclones(cyclones_gdf, aoi):
-    """Buffer hurricane tracks by 100 miles (160934 meters) and fix up columns. 
+    """Buffer hurricane tracks by 100 miles (160934 meters) and fix up columns.
 
     Note: where there are multiple track segments for a single storm these are
     combined and the attributes of the first are kept.
-        
+
     Parameters
     ----------
     cyclones_gdf : geopandas.GeoDataFrame
@@ -62,7 +66,8 @@ def process_cyclones(cyclones_gdf, aoi):
 
     """
     # project to aoi CRS
-    assert layer_query.getCRSUnits(aoi.crs) == 'm', f"Expected units to be meters, found {layer_query.getCRSUnits(aoi.crs)}"
+    query_crs = layer_query.getCRSUnits(aoi.crs)
+    assert query_crs == 'm', f"Expected units to be meters, found {query_crs}"
     cyclones_gdf = cyclones_gdf.to_crs(aoi.crs)  # match crs for clip
     # Fix up geometries
     # Note: this uses default first for groupby
@@ -70,7 +75,7 @@ def process_cyclones(cyclones_gdf, aoi):
     cyclones_gdf['geometry'] = cyclones_gdf.buffer(160934)  # Buffer track
     # clip buffered paths to aoi extent
     cyclones_gdf = cyclones_gdf.clip(aoi.total_bounds)
-    
+
     # Fix up fields
     cyclones_gdf.reset_index(inplace=True)
     # Add storm level
@@ -82,17 +87,17 @@ def process_cyclones(cyclones_gdf, aoi):
     cyclones_gdf.loc[cyclones_gdf.USA_WIND < 64, 'StormLevel'] = "Tropical Storm"
     cyclones_gdf.loc[cyclones_gdf.USA_WIND < 34, 'StormLevel'] = "Tropical Depression"
     # Date
-    cyclones_gdf['Date'] = [f'{row.year}-{row.month}-{row.day}' for i, row in cyclones_gdf.iterrows()]
+    cyclones_gdf['Date'] = [f'{row.year}-{row.month}-{row.day}' for _, row in cyclones_gdf.iterrows()]
     # Rename cols
-    update_cols = {'SID': 'SID', 
+    update_cols = {'SID': 'SID',
                    'year': 'Year',
                    'NAME': 'StormName',
                    'USA_WIND': 'WindSpdKts',
                    'USA_PRES': 'PressureMb',
                    }
     return cyclones_gdf.rename(columns=update_cols)
-                              
-    
+
+
 def get_cyclones_all(out_dir, dataset=['lines', 'points']):
     """Get all hurricane points or tracks.
 
@@ -113,13 +118,13 @@ def get_cyclones_all(out_dir, dataset=['lines', 'points']):
     base_url = "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r00/access/shapefile/"
     results = []  # use named tuple instead?
     for data in dataset:
-        url = f'{base_url}IBTrACS.ALL.list.v04r00.{data}.zip'       
+        url = f'{base_url}IBTrACS.ALL.list.v04r00.{data}.zip'
         temp = os.path.join(out_dir, f"{data}_temp.zip")  # temp zip out_file
-        layer_query.get_zip(url, temp)  # Download & extract zip
+        utils.get_zip(url, temp)  # Download & extract zip
         shp = os.path.join(out_dir, f"IBTrACS.ALL.list.v04r00.{data}.shp")
         results.append(geopandas.read_file(shp))
-    
+
     if len(results)==1:
         return results[0]
-    
+
     return results
