@@ -237,15 +237,33 @@ for key, df in assets_dict.items():
                                           distance_col=f"{key}_dist"
                                           )
 
-# NOTE: Ecosystem services characteristics may be accessed by other networks
-# Get hazard infrastructure assets
+# Get hazard infrastructure assets (floods were assessed to houeeholds)
 assets_dict["dams"] = hazard_infrastructure.get_dams(parcel_gdf)
-assets_dict["levees"] = hazard_infrastructure.get_levee(parcel_gdf)
+# assets_dict["levees"] = hazard_infrastructure.get_levee(parcel_gdf)  #500 error
+
+# NOTE: Ecosystem services characteristics may be accessed by other networks,
+# e.g., downatream from dams along stream networks, but here we'll keep distance
+#for key in ["dams", "levees"]:
+key = 'dams'
+join_params = {
+    "df": assets_dict[key].to_crs(households.crs),
+    "how": "left",
+    "predicate": "dwithin",
+    "distance": "5000",
+    "rsuffix": f"{key}",
+}
+households = households.sjoin(**join_params)
 
 # Intermediate query results from the dictionary can be QA-ed/saved
 utils.write_QA(assets_dict, os.path.join(out_dir, "assets2.csv"))
 utils.write_results_dict(assets_dict, out_dir)
 
-# Results aggregated to households and parcels can be saved, e.g., as parquet
-parcel_results.to_parquet()
-households.to_parquet()
+# Results aggregated to parcels can be joined to households
+households = households.rename(columns={"id_left": "id"})
+ # Drop cols in parcels duplicated in households
+cols = ['geometry', 'geoid', 'parcelnumb', 'fema_flood_zone']
+parcel_results = parcel_results.drop(columns=cols)
+households = households.join(parcel_results, on='id', rsuffix='parcel')
+
+# Results aggregated to households can be saved, e.g., as parquet
+households.to_parquet(os.path.join(out_dir, "parcels.parquet"))
