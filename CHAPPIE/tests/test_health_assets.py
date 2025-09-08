@@ -114,8 +114,13 @@ def test_get_providers(providers: pandas.DataFrame):
     cols = ['created_epoch', 'enumeration_type', 'last_updated_epoch', 'number',
             'identifiers', 'zip5']
 
-    assert_frame_equal(providers[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True),
-                       expected[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True))
+    # Subset actual where number and zip5 in expected (lacking good unique id)
+    # NOTE: this should ignore rows added to actual but not expected and fail on removed
+    unique_cols = ['number', 'zip5']
+    mask = actual[unique_cols].isin(expected[unique_cols].all(axis=1)
+
+    assert_frame_equal(providers[mask, cols].sort_values(by=unique_cols).reset_index(drop=True),
+                       expected[cols].sort_values(by=unique_cols).reset_index(drop=True))
 
 @pytest.mark.integration
 def test_provider_address(static_providers: pandas.DataFrame):
