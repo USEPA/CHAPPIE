@@ -163,15 +163,15 @@ assets_dict["libraries"] = cultural.get_library(parcel_gdf)
 assets_dict["museums"] = cultural.get_museums(parcel_gdf)
 assets_dict["worship"] = cultural.get_worship(parcel_gdf)
 
-# Get educational assets
-assets_dict["schools_public"] = education.get_schools_public(parcel_gdf)
-assets_dict["schools_private"] = education.get_schools_private(parcel_gdf)
-assets_dict["child_care"] = education.get_child_care(parcel_gdf)
-assets_dict["colleges_uni"] = education.get_colleges_universities(parcel_gdf)
-assets_dict["colleges_sup"] = education.get_supplemental_colleges(parcel_gdf)
+# Get educational assets (currently down - skip)
+#assets_dict["schools_public"] = education.get_schools_public(parcel_gdf)
+#assets_dict["schools_private"] = education.get_schools_private(parcel_gdf)
+#assets_dict["child_care"] = education.get_child_care(parcel_gdf)
+#assets_dict["colleges_uni"] = education.get_colleges_universities(parcel_gdf)
+#assets_dict["colleges_sup"] = education.get_supplemental_colleges(parcel_gdf)
 
 # Get emergency assets
-assets_dict["fire_ems"] = emergency.get_fire_ems(parcel_gdf)
+assets_dict["fire_ems"] = emergency.get_fire_ems(parcel_gdf)  # check url
 assets_dict["police"] = emergency.get_police(parcel_gdf)
 
 # Get food assets
@@ -189,7 +189,16 @@ assets_dict["hospitals"] = health.get_hospitals(parcel_gdf)
 
 households = households.to_crs("ESRI:102005")
 
-# When two points are nearest it results in multiple rows
+# When two points are nearest it results in multiple rows, we can check for
+# these by getting len() of results
+for key, df in assets_dict.items():
+    x = households.sjoin_nearest(df.to_crs(households.crs),
+                                 how="left",
+                                 rsuffix=f"{key}",
+                                 distance_col=f"{key}_dist"
+                                 )
+    print(f'{key}: {len(x)}')
+# We can then explore each (historic_sites, worship) to see why this happened
 key, df = "historic_sites", assets_dict["historic_sites"]
 test_join = households.sjoin_nearest(df.to_crs(households.crs),
                                      how="left",
@@ -204,20 +213,39 @@ df[df['PROPERTY_ID'].isin(test_prop_ids)]['geometry']
 # assets_dict["historic_sites0"] = assets_dict["historic_sites"]  # Retain OG
 assets_dict["historic_sites"] = df.drop_duplicates(subset=['geometry'])
 
+# Now look at worship
+key, df = "worship", assets_dict["worship"]
+test_join = households.sjoin_nearest(df.to_crs(households.crs),
+                                     how="left",
+                                     rsuffix=f"{key}",
+                                     distance_col=f"{key}_dist"
+                                     )
+test_join[test_join.index.duplicated()]  # Examine duplicates (e.g., 1024)
+test_join.loc[1024, "NAME"] # Unique places
+test_join.loc[1024, ["STREET", "MATCH_ADDR"]]  # PO Box -> address used
+test_ids = test_join.loc[1024, "GlobalID_worship"].to_list()
+# Look at original geometry for the duplicates
+df[df['GlobalID'].isin(test_ids)]['geometry']
+# assets_dict["worship0"] = assets_dict["worship"]  # Retain OG
+assets_dict["worship"] = df.drop_duplicates(subset=['geometry'])  # 104 -> 83
+
 for key, df in assets_dict.items():
     #route?
-    x = households.sjoin_nearest(df.to_crs(households.crs),
+    households = households.sjoin_nearest(df.to_crs(households.crs),
                                           how="left",
                                           rsuffix=f"{key}",
                                           distance_col=f"{key}_dist"
                                           )
-    print(f'{key}: {len(x)}')
 
-# NOTE: Ecosystem services characteristics may be access by other networks
+# NOTE: Ecosystem services characteristics may be accessed by other networks
 # Get hazard infrastructure assets
 assets_dict["dams"] = hazard_infrastructure.get_dams(parcel_gdf)
 assets_dict["levees"] = hazard_infrastructure.get_levee(parcel_gdf)
 
-
+# Intermediate query results from the dictionary can be QA-ed/saved
 utils.write_QA(assets_dict, os.path.join(out_dir, "assets2.csv"))
 utils.write_results_dict(assets_dict, out_dir)
+
+# Results aggregated to households and parcels can be saved, e.g., as parquet
+parcel_results.to_parquet()
+households.to_parquet()
