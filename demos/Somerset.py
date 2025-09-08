@@ -57,7 +57,11 @@ households = parcel_centroids.sjoin(svi_gdf,
 
 # Get flood hazard
 hazards_dict["flood_FEMA"] = flood.get_fema_nfhl(parcel_gdf)
+# above currently hits failure:
+#pyogrio.errors.DataSourceError: Failed to read GeoJSON data; At line 1,
+#character 1024001: Unterminated object; Range downloading not supported by this server!
 hazards_dict["flood_EA"] = flood.get_flood(parcel_gdf)
+# above hits KeyError: 'statistics'
 
 # Some hazards are attributed to households, like household characteristics
 # either as those that intersect the parcel polygon or centroid. We use centroid
@@ -71,20 +75,22 @@ for key, gdf in hazards_dict.items():
 
 # Get event hazards
 in_crs = "ESRI:102005"
-tornadoes_gdf = tornadoes.get_tornadoes(parcel_gdf.to_crs(in_crs))
-hazards_dict["tornadoes"] = tornadoes.process_tornadoes(
-    tornadoes_gdf, parcel_gdf.to_crs(in_crs)
-)
-cyclones = tropical_cyclones.get_cyclones(parcel_gdf.to_crs("ESRI:102005"))
-hazards_dict["tropical_cyclones"] = tropical_cyclones.process_cyclones(
-    cyclones, parcel_gdf.to_crs(in_crs)
-)
+parcel_gdf = parcel_gdf.to_crs(in_crs)
+tornadoes_gdf = tornadoes.get_tornadoes(parcel_gdf)
+hazards_dict["tornadoes"] = tornadoes.process_tornadoes(tornadoes_gdf,
+                                                        parcel_gdf)
+cyclones = tropical_cyclones.get_cyclones(parcel_gdf)
+hazards_dict["cyclones"] = tropical_cyclones.process_cyclones(cyclones,
+                                                              parcel_gdf)
 
 # Wind event hazards cover large areas and likely impact a household when
 # the parcel is in their path. Here we used the parcel, but because the path is
 # buffered based on wind speed, using centroids shouldn't impact most results.
-parcel_results = parcel_gdf.sjon(hazards_dict["tropical_cyclones"], how="left")
-parcel_results = parcel_results.sjon(hazards_dict["tornadoes"], how="left")
+parcel_results = parcel_gdf.sjoin(hazards_dict["tornadoes"], how="left")
+parcel_results = parcel_results.sjoin(hazards_dict["cyclones"], how="left")
+
+# Back to original GCS for queries
+parcel_gdf = parcel_gdf.to_crs(4326)
 
 # Get weather hazards
 hazards_dict["heat"] = weather.get_heat_events(parcel_gdf)
@@ -124,14 +130,30 @@ for key in ["superfund", "brownfields", "landfills", "tri"]:
     households = households.sjoin(**join_params)
     #households = households.rename(columns={"index_right": f"{key}_index"})
 
-# TODO: aggregate?
+# Aggregating - of the results above we expect:
 # NOTE: superfund result wasn't in range (ACCOMACK county, VA)
-# NOTE:some 5700 parcel points fall in range of multiple brownfields,
-# REGISTRY_ID '110038762416' & '110002476614'
-# Multiple tech hazards can be in range of each parcel centroid
 # NOTE: landfills didnt generate more duplicate parcel points (all one-to-one)
 # NOTE: TRI didn't generate more duplciate parcel points, OBJECTID_left warning
-len(households)
+# NOTE: 5700 parcel points fall in range of multiple brownfields,
+# REGISTRY_ID '110038762416' & '110002476614'
+# Multiple tech hazards can be in range of each parcel centroid, ideally some
+# aggregation method would be used for each field. Luckily it's just the one
+# dataset that isn't one-to-one and we can use duplicated index to groupby.
+# the demonstrated agg method concats values into a list.
+# List fields from joined
+cols = hazards_dict["brownfields"].columns
+
+def c_suf(name):
+    return f"{name}_brownfields"  # Immitate rsuffix
+
+cols = [c_suf(col) if c_suf(col) in households else col for col in cols]
+cols.pop(cols.index('geometry'))  # drop geometry (not joined)
+
+for col in cols:
+    households[col] = households.groupby(households.index)[col].apply(list)
+
+# drop duplicates beyond first occurance (based on index)
+households = households[~households.index.duplicated()]
 
 # Get community level characteristics
 # Note: these will be accessed by networks, for now just get nearest
@@ -166,15 +188,14 @@ assets_dict["hospitals"] = health.get_hospitals(parcel_gdf)
 # assets_dict["providers"] = health.provider_address(providers)
 
 households = households.to_crs("ESRI:102005")
-
 for key, df in assets_dict.items():
     #route?
-    households.sjoin_nearest(df.to_crs(households.crs),
-                             how="left",
-                             rsuffix=f"{key}",
-                             distance_col=f"{key}_dist"
-                             )
-#len 30730 vs 32242 - if two points exactly nearest both will be joined?
+    households = households.sjoin_nearest(df.to_crs(households.crs),
+                                          how="left",
+                                          rsuffix=f"{key}",
+                                          distance_col=f"{key}_dist"
+                                          )
+# 30730 vs 32242 (historic_sites) - if two points exactly nearest both joined?
 
 # NOTE: Ecosystem services characteristics may be access by other networks
 # Get hazard infrastructure assets
