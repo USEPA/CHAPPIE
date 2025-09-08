@@ -133,6 +133,7 @@ actual = hazard_infrastructure.get_dams(aoi_gdf)
 actual.drop(columns=['OBJECTID', "primaryPurposeId"], inplace=True)
 # Note: "primaryPurposeId"==None is problematic
 actual.sort_values(by=['id', 'name'], inplace=True, ignore_index=True)
+actual = actual.sort_index(axis=1)  # sort columns alphabetically
 
 expected_file = os.path.join(EXPECTED_DIR, 'dams.parquet')
 expected = geopandas.read_parquet(expected_file)
