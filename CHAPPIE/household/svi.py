@@ -368,7 +368,7 @@ def get_SVI_by_aoi(aoi, level="block group", year=2020):
 
     Parameters
     ----------
-    geoid : geopandas.GeoDataFrame
+    aoi : geopandas.GeoDataFrame
         Area to return metrics for (entire overlapping county).
     level : str, optional
         Census level to calculate SVI (default "block group" or "tract")
