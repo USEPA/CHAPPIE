@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Test tropical cyclones
+Module to query and process tornadoe hazards
 
 @author: jbousqui
 """

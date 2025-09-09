@@ -19,6 +19,21 @@ aoi_bank_gdf = geopandas.read_file(AOI_BANK)
 
 # assets
 ## Cultural
+from CHAPPIE.assets import cultural
+
+### test_get_worship()
+actual = cultural.get_worship(aoi_gdf)
+actual.drop(columns=['FID'], inplace=True)
+actual.sort_values(by=['EIN', 'NAME'], inplace=True, ignore_index=True)
+
+expected_file = os.path.join(EXPECTED_DIR, 'cultural_worship.parquet')
+expected = geopandas.read_parquet(expected_file)
+try:
+    assert_geodataframe_equal(actual, expected)
+except AssertionError as ae:
+    print(ae)
+    actual.to_parquet(expected_file)
+
 ## Emergency
 from CHAPPIE.assets import emergency
 
@@ -118,6 +133,7 @@ actual = hazard_infrastructure.get_dams(aoi_gdf)
 actual.drop(columns=['OBJECTID', "primaryPurposeId"], inplace=True)
 # Note: "primaryPurposeId"==None is problematic
 actual.sort_values(by=['id', 'name'], inplace=True, ignore_index=True)
+actual = actual.sort_index(axis=1)  # sort columns alphabetically
 
 expected_file = os.path.join(EXPECTED_DIR, 'dams.parquet')
 expected = geopandas.read_parquet(expected_file)
@@ -173,7 +189,8 @@ from CHAPPIE.assets import transit
 
 #test_get_air()
 actual = transit.get_air(aoi_gdf)
-actual.drop(columns=["OBJECTID", "EFF_DATE"], inplace=True)
+drop_cols = ["OBJECTID", "EFF_DATE", "LAST_INFO_RESPONSE"]
+actual.drop(columns=drop_cols, inplace=True)
 # Drop geometry redundant columns that cause trouble
 actual.drop(columns=["LAT_DEG", "LONG_DEG", 'LAT_MIN', 'LONG_MIN'],
             inplace=True)
