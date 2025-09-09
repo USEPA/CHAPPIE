@@ -7,8 +7,9 @@ import os
 from datetime import datetime
 from tempfile import TemporaryDirectory
 
+#import rioxarray
+import rasterio
 import requests
-import rioxarray
 
 from CHAPPIE import layer_query
 
@@ -88,25 +89,23 @@ def get_NLCD(aoi, year, dataset="Land_Cover"):
     res.raise_for_status()  # Check response
 
     # # Save result to TempDir
-    with TemporaryDirectory as temp_dir:
+    with TemporaryDirectory() as temp_dir:
         out_file = os.path.join(temp_dir, f"NLCD_{year}_{dataset}.tif")
         with open(out_file, "wb") as f:
             f.write(res.content)
         # Read in raster using rioxarray
-        rds = rioxarray.open_rasterio(out_file)
-
-    if not rds.rio.crs:
-        # TODO: confirm is none and make more robust?
-        rds.rio.set_crs(f"EPSG:{out_crs}")
-    cell = rds.rio.resolution()
-    rds_prj = rds.rio.reproject(f"EPSG:{3857}", resolution=cell)  # Reproject
-    band1 = rds_prj.to_series()  # numpy array
-
-        # # save it to D2 (drop after testing?)
-        # rds_prj.rio.to_raster(f"{self.D2}{os.sep}{os.path.basename(out_file)}")
-        # # set it
-        # self.set_NLCD(out_file, in_memory=band1)
-    return band1
+        #rds = rioxarray.open_rasterio(out_file)
+        # Read in raster using rasterio
+        with rasterio.open(out_file) as src:
+            if src.crs:
+                raster_crs = src.crs
+            else:
+                raster_crs = out_crs  # From query
+            # clip by aoi
+            #geos = aoi.geometry.to_crs(raster_crs, invert=False
+            #out_image, out_transform = rasterio.mask.mask(src, geos, crop=True))
+            image = src.read(1)  # Read first band as array
+    return image
 
 
 def check_year_NLCD(year, dataset):
