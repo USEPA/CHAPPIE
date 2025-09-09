@@ -125,6 +125,7 @@ try:
     assert_frame_equal(actual, expected)
 except AssertionError as ae:
     print(ae)
+    print([len(actual[actual['zip5']==zip]) for zip in ['32405', '32466']])
     actual.to_parquet(expected_file)
 
 ##Infrastructure
