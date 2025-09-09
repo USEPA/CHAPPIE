@@ -12,7 +12,10 @@ Created on Mon Sep 25 14:41:17 2023
 from warnings import warn
 
 import pygris
+from pandas import concat
 from pygris.data import get_census
+
+from CHAPPIE.layer_query import get_county
 
 
 # SVI dict
@@ -360,17 +363,39 @@ def preprocess(df_in, year=2020):
     return df
 
 
-def get_SVI(geo, level="block group", year=2020):
-    """Get geograhpies and a table of SVI indicators for a given geoid
+def get_SVI_by_aoi(aoi, level="block group", year=2020):
+    """Get Social Vulnerability metrics and geographies for a given area
 
     Parameters
     ----------
-    geo : str
+    aoi : geopandas.GeoDataFrame
+        Area to return metrics for (entire overlapping county).
+    level : str, optional
+        Census level to calculate SVI (default "block group" or "tract")
+    year : int, optional
+        ACS vintage (5-year), by default 2020
+
+    Returns
+    -------
+    geopandas.GeoDataFrame
+        Table of SVI results and associated polygons
+    """
+    # List 5-digist geoid from intersecting counties
+    geoids = get_county(aoi)["GEOID"].to_list()
+    return concat([get_SVI(geoid, level, year) for geoid in geoids])
+
+
+def get_SVI(geoid, level="block group", year=2020):
+    """Get Social Vulnerability metrics and geograhpies for a given geoid
+
+    Parameters
+    ----------
+    geoid : str
         GEOID/FIPs code representing an area. Must be 5 or more digits.
     level : str, optional
         Census level to calculate SVI (default "block group" or "tract")
     year : int, optional
-        5-year ACS vintage year, by default 2020
+        ACS vintage (5-year), by default 2020
 
     Returns
     -------
@@ -379,9 +404,9 @@ def get_SVI(geo, level="block group", year=2020):
     """
     assert level in ["tract", "block group"], f"{level} not a recognized level"
     # format params from geo (query census BGs) or id?
-    assert len(geo) >= 5, "Currently requires GEOID/FIP of 5 or more digits"
-    state, county = geo[:2], geo[2:5]
-    geo_id_str = f"state:{geo[:2]};county:{geo[2:5]}"
+    assert len(geoid) >= 5, "Currently requires GEOID/FIP of 5 or more digits"
+    state, county = geoid[:2], geoid[2:5]
+    geo_id_str = f"state:{geoid[:2]};county:{geoid[2:5]}"
 
     svi_data = get_census(
         dataset="acs/acs5",
@@ -397,13 +422,12 @@ def get_SVI(geo, level="block group", year=2020):
         # Get track geos (2020)
         tract_geos = pygris.tracts(state=state, county=county, year=year)
         # Combine with geos
-        svi_results_gdf = tract_geos.merge(svi_results, on="GEOID")
+        return tract_geos.merge(svi_results, on="GEOID")
     elif level == "block group":
         # Get block group geos (2020)
         bg_geos = pygris.block_groups(state=state, county=county, year=year)
         # Combine with geos
-        svi_results_gdf = bg_geos.merge(svi_results, on="GEOID")
-    return svi_results_gdf
+        return bg_geos.merge(svi_results, on="GEOID")
 
 
 def infer_bg_from_tract(bg_geoid, metric_col, year=2020, method="uniform"):
