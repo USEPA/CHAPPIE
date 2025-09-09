@@ -364,7 +364,7 @@ def preprocess(df_in, year=2020):
 
 
 def get_SVI_by_aoi(aoi, level="block group", year=2020):
-    """Get Social Vulnerability metrics and geograhpies for a given area
+    """Get Social Vulnerability metrics and geographies for a given area
 
     Parameters
     ----------
