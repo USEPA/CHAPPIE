@@ -18,6 +18,8 @@ def get_regrid(aoi, api_key=None):
     ----------
     aoi : geopandas.GeoDataFrame
         Spatial definition for Area Of Interest (AOI).
+    api_key : str, optional
+        API key for regrid service. Default None uses os.environ['REGRID_API_KEY'].
 
     Returns
     -------
