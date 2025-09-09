@@ -143,7 +143,7 @@ for key in ["superfund", "brownfields", "landfills", "tri"]:
 # List fields from joined
 cols = hazards_dict["brownfields"].columns
 
-suf = "_brownfields"  # Immitate rsuffix
+suf = "_brownfields"  # Imitate rsuffix
 cols = [f"{col}{suf}" if f"{col}{suf}" in households else col for col in cols]
 cols.pop(cols.index('geometry'))  # drop geometry (not joined)
 
@@ -235,12 +235,12 @@ for key, df in assets_dict.items():
                                           distance_col=f"{key}_dist"
                                           )
 
-# Get hazard infrastructure assets (floods were assessed to houeeholds)
+# Get hazard infrastructure assets (floods were assessed to households)
 assets_dict["dams"] = hazard_infrastructure.get_dams(parcel_gdf)
 # assets_dict["levees"] = hazard_infrastructure.get_levee(parcel_gdf)  #500 error
 
 # NOTE: Ecosystem services characteristics may be accessed by other networks,
-# e.g., downatream from dams along stream networks, but here we'll keep distance
+# e.g., downstream from dams along stream networks, but here we'll keep distance
 #for key in ["dams", "levees"]:
 key = 'dams'
 join_params = {
