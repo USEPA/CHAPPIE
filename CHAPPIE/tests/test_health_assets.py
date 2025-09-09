@@ -105,22 +105,32 @@ def test_get_providers(providers: pandas.DataFrame):
     assert actual_len[0]>=1933
     assert actual_len[1]>=28
 
+    # Test for columns
+    dict_cols = ['addresses', 'practiceLocations', 'basic', 'endpoints',
+                 'other_names', 'taxonomies']
+    cols = ['created_epoch', 'enumeration_type', 'last_updated_epoch', 'number',
+            'identifiers', 'zip5']
+    for col in providers.columns:
+        assert col in dict_cols + cols, f'Unexpected column: {col}'
+    for col in dict_cols + cols:
+        assert col in providers.columns, f'Missing column: {col}'
+
     # Test result dataframes
     expected_file = os.path.join(EXPECTED_DIR, 'get_providers.parquet')
     expected = pandas.read_parquet(expected_file)  # No geo (addresses only)
-    # NOTE: dict are not ordered, drop all columns where it contains a dict
-    # 'addresses', 'practiceLocations', 'basic', 'endpoints', 'other_names',
-    # 'taxonomies',
-    cols = ['created_epoch', 'enumeration_type', 'last_updated_epoch', 'number',
-            'identifiers', 'zip5']
+
+    sort_cols = ['number', 'zip5']  # columns that can be used to sort dfs
+    # NOTE: dict are not ordered, drop all dict_columns
+    actual = providers[cols].sort_values(by=sort_cols).reset_index(drop=True)
 
     # Subset actual where number and zip5 in expected (lacking good unique id)
-    # NOTE: this should ignore rows added to actual but not expected and fail on removed
-    unique_cols = ['number', 'zip5']
-    mask = providers[unique_cols].isin(expected[unique_cols]).all(axis=1)
+    # NOTE: this should ignore rows added to actual but fail on change/removed
+    expected_idx = expected.set_index(sort_cols).index
+    mask = actual.set_index(sort_cols).index.isin(expected_idx)
 
-    assert_frame_equal(providers.loc[mask, cols].sort_values(by=unique_cols).reset_index(drop=True),
-                       expected[cols].sort_values(by=unique_cols).reset_index(drop=True))
+    # Fails when a number or zip from expected gets updated (actual<expected)
+    assert_frame_equal(actual, expected)
+
 
 @pytest.mark.integration
 def test_provider_address(static_providers: pandas.DataFrame):
