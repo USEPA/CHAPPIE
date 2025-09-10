@@ -7,8 +7,10 @@ Test nlcd functions.
 import os
 
 import geopandas
+import pandas
 
 from CHAPPIE.eco_services import nlcd
+from pandas.testing import assert_frame_equal
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -23,6 +25,12 @@ aoi_gdf = geopandas.read_file(AOI_MIT_BANK)
 
 def test_get_NLCD():
     actual = nlcd.get_NLCD(aoi_gdf, 2021, dataset="Land_Cover")
+    actual_df = pandas.DataFrame(actual)
+
+    expected_file = os.path.join(EXPECTED_DIR, 'NLCD_array.parquet')
+    expected = pandas.read_parquet(expected_file)
+
+    assert_frame_equal(actual_df, expected)
 
 #def tests_check_year_NLCD():
 # run through other datasets and failure cases
