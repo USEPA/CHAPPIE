@@ -45,8 +45,9 @@ def get_NLCD(aoi, year, dataset="Land_Cover"):
 
     # Check if we can work in the aoi.crs or have to change it
     if aoi.crs.to_authority()[0]!='EPSG':
-        gdf = aoi.to_crs(out_crs)
-        query_crs = out_crs
+        # TODO: why does web-mercator work but not 4326 or 5070?!
+        gdf = aoi.to_crs(3857)
+        query_crs = 3857
     else:
         query_crs = aoi.crs.to_epsg()  # CRS for query
         gdf = aoi.copy()
