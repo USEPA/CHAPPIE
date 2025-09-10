@@ -36,23 +36,31 @@ def get_NLCD(aoi, year, dataset="Land_Cover"):
     geopandas.GeoDataFrame or array
         Depends on dataset type, array from rasterio
     """
+    out_crs = 5070  # Service native(mrlc_display/3857, mrlc_download/5070)
     # Make sure dataset parameter is usable
     datasets = ["Land_Cover", "Impervious", "Tree_Canopy"]
     assert dataset in datasets, f"'{dataset}' not in NLCD datasets"
     # Make sure year parameter is usable
     year = check_year_NLCD(year, dataset)
 
-    bbox = aoi.total_bounds
+    # Check if we can work in the aoi.crs or have to change it
+    if aoi.crs.to_authority()[0]!='EPSG':
+        gdf = aoi.to_crs(out_crs)
+        query_crs = out_crs
+    else:
+        query_crs = aoi.crs.to_epsg()  # CRS for query
+        gdf = aoi.copy()
 
+    # Get geo info for query
+    bbox = gdf.total_bounds
     # Create subset X and Y string from extent (minx, miny, maxx, maxy)
     subset = [
         f'X("{bbox[0]}","{bbox[2]}")',
         f'Y("{bbox[1]}","{bbox[3]}")',
     ]
-    query_crs = aoi.crs.to_epsg()  # CRS for query
 
     # Determine landmass (based on FIPs state)
-    st_df = layer_query.get_state_by_aoi(aoi)
+    st_df = layer_query.get_state_by_aoi(gdf)
     if not set(st_df.STUSAB).isdisjoint(["AK", "HI", "PR"]):
         # TODO: not robust for multi: e.g., non-conus, or conus + non-conus
         landmass = set(st_df.STUSAB).intersection(["AK", "HI", "PR"]).pop()
@@ -70,7 +78,6 @@ def get_NLCD(aoi, year, dataset="Land_Cover"):
     # url = f"https://www.mrlc.gov/geoserver/mrlc_display/{coverage}/ows"
     url = f"https://www.mrlc.gov/geoserver/mrlc_download/{serviceName}/ows"
     epsg_url = "http://www.opengis.net/def/crs/EPSG/0/"
-    out_crs = 5070  # Service native(mrlc_display/3857, mrlc_download/5070)
 
     # Create params dict
     params = {
