@@ -109,7 +109,7 @@ except AssertionError as ae:
 from CHAPPIE.assets import health
 
 ###test_get_providers()
-actual = health.get_providers(aoi_gdf)
+providers = health.get_providers(aoi_gdf)
 
 expected_file = os.path.join(EXPECTED_DIR, 'get_providers.parquet')
 expected = pandas.read_parquet(expected_file)  # No geo (addresses only)
@@ -118,11 +118,14 @@ expected = pandas.read_parquet(expected_file)  # No geo (addresses only)
 # 'taxonomies',
 cols = ['created_epoch', 'enumeration_type', 'last_updated_epoch', 'number',
         'identifiers', 'zip5']
+sort_cols = ['number', 'zip5']
+actual = providers[cols].sort_values(by=sort_cols).reset_index(drop=True)
+
 try:
-    assert_frame_equal(actual[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True),
-                    expected[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True))
+    assert_frame_equal(actual, expected)
 except AssertionError as ae:
     print(ae)
+    print([len(actual[actual['zip5']==zip]) for zip in ['32405', '32466']])
     actual.to_parquet(expected_file)
 
 ##Infrastructure
