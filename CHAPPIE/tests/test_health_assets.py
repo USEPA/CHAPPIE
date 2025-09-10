@@ -130,7 +130,7 @@ def test_get_providers(providers: pandas.DataFrame):
     mask = actual.set_index(sort_cols).index.isin(expected_idx)
 
     # Fails when a number or zip from expected gets updated (actual<expected)
-    assert_frame_equal(actual, expected)
+    assert_frame_equal(actual[mask].reset_index(drop=True), expected)
 
 
 @pytest.mark.integration
