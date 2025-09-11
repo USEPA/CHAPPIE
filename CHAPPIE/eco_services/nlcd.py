@@ -46,18 +46,18 @@ def get_NLCD(aoi, year, dataset="Land_Cover"):
     # Check if we can work in the aoi.crs or have to change it
     if aoi.crs.to_authority()[0]!='EPSG':
         # TODO: why does web-mercator work but not 4326 or 5070?!
-        gdf = aoi.to_crs(3857)
-        query_crs = 3857
+        gdf = aoi.to_crs(out_crs)
     else:
-        query_crs = aoi.crs.to_epsg()  # CRS for query
         gdf = aoi.copy()
+
+    query_crs = aoi.crs.to_epsg()  # CRS for query
 
     # Get geo info for query
     bbox = gdf.total_bounds
     # Create subset X and Y string from extent (minx, miny, maxx, maxy)
     subset = [
-        f'X("{bbox[0]}","{bbox[2]}")',
-        f'Y("{bbox[1]}","{bbox[3]}")',
+        f'Long({bbox[0]},{bbox[2]})',
+        f'Lat({bbox[1]},{bbox[3]})',
     ]
 
     # Determine landmass (based on FIPs state)
@@ -78,7 +78,8 @@ def get_NLCD(aoi, year, dataset="Land_Cover"):
     # Source url (to use mrlc_display change outCRS to 3857)
     # url = f"https://www.mrlc.gov/geoserver/mrlc_display/{coverage}/ows"
     url = f"https://www.mrlc.gov/geoserver/mrlc_download/{serviceName}/ows"
-    epsg_url = "http://www.opengis.net/def/crs/EPSG/0/"
+    axis_url = "https://www.opengis.net/def/axis/OGC/0/"
+    epsg_url = "https://www.opengis.net/def/crs/EPSG/0/"
 
     # Create params dict
     params = {
@@ -86,7 +87,7 @@ def get_NLCD(aoi, year, dataset="Land_Cover"):
         "version": "2.0.1",
         "request": "GetCoverage",
         "coverageid": coverage,
-        "subset": subset,
+        "subset": [f"{axis_url}{point}" for point in subset],
         "SubsettingCRS": f"{epsg_url}{query_crs}",
         "format": "image/geotiff",
         "OutputCRS": f"{epsg_url}{out_crs}",
