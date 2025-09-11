@@ -131,7 +131,7 @@ def test_get_providers(providers: pandas.DataFrame):
     actual = actual[add_mask].reset_index(drop=True)
 
     # Subset actual and expected based on those updated (last_updated_epoch)
-    actual2 = actual[actual['last_updated_epoch']<=1752800000000]
+    actual2 = actual[actual['last_updated_epoch']<='1757400000000']
     actual_idx = actual2.set_index(sort_cols).index
     update_mask = expected.set_index(sort_cols).index.isin(actual_idx)
     expected2 = expected[update_mask].reset_index(drop=True)
