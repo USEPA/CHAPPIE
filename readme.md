@@ -43,6 +43,7 @@ The package currently helps a user gather datasets for their area of interest. T
 | &emsp; &emsp; &emsp; transit.py | Module for transit assets |
 | &emsp; &emsp; eco_services/ | |
 | &emsp; &emsp; &emsp; infiltration/ | Folder for module reference materials |
+| &emsp; &emsp; &emsp; nlcd.py | Module for National Landcover Dataset (NLCD) metrics |
 | &emsp; &emsp; &emsp; wq.py | Module for Get Assessment Total Maximum Daily Load (TMDL) Tracking and Implementation System (ATTAINS) geometry |
 | &emsp; &emsp; endpoints/ | |
 | &emsp; &emsp; &emsp; Health/ | Folder for module reference materials |

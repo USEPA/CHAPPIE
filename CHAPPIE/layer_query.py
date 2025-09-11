@@ -155,6 +155,42 @@ def get_county(aoi, in_crs=None):
     return feature_layer.query(**query_params)
 
 
+def get_state_by_aoi(aoi, in_crs=None):
+    """Get the GEOID and state intersecting polygon extent."""
+    #TODO: how much of this could leverage get_bbox()?
+    # Build ESRI layer object to query
+    baseurl = f"{_tiger_url}/tigerWMS_Census2010/MapServer"
+    layer = 98  # State
+    feature_layer = ESRILayer(baseurl, layer)
+    # NOTE: Surgo currently uses 2010 counties but may update to 2020
+    # ~'Census2020'
+    # layer = 82 # Counties ID: 82
+    # TODO: it was coming back empty so I transformed to layer CRS - EPSG 3857
+    # and dropped "inSR": aoi.CRS.to_json(),
+    # query from aoi object
+    # if geodataframe get bbox str
+    if isinstance(aoi, geopandas.GeoDataFrame):
+        bbox = ",".join(map(str, aoi.total_bounds))
+        if not in_crs:
+            in_crs = aoi.crs.to_epsg()
+    elif isinstance(aoi, list):
+        bbox = ",".join(map(str, aoi))
+    else:
+        bbox = aoi
+        # assert in_crs!=None?
+
+    query_params = {
+        "geometry": bbox,
+        "geometryType": "esriGeometryEnvelope",
+        "spatialRel": "esriSpatialRelIntersects",
+        "inSR": in_crs,
+        "returnGeometry": "false",
+        "outFields": ", ".join(["GEOID", "STUSAB"]),
+    }
+
+    return feature_layer.query(**query_params)
+
+
 def getState(geoids):
     """Get state information from aoi geoids."""
     ids = list(set(geo_id[:2] for geo_id in geoids))  # Reduce to unique
