@@ -6,9 +6,9 @@ name: test_data_services
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: ["main", "210-test_health_assetstest_get_providers-restrict-expected-to-those-before-date-in-actuallast_updated_epoch"]
+    branches: ["main"]
   pull_request:
-    branches: ["main", "210-test_health_assetstest_get_providers-restrict-expected-to-those-before-date-in-actuallast_updated_epoch"]
+    branches: ["main"]
   schedule:
     - cron: '1 2 17,1 * *'
 
