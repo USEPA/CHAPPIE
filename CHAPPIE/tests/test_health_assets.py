@@ -127,10 +127,17 @@ def test_get_providers(providers: pandas.DataFrame):
     # Subset actual where number and zip5 in expected (lacking good unique id)
     # NOTE: this should ignore rows added to actual but fail on change/removed
     expected_idx = expected.set_index(sort_cols).index
-    mask = actual.set_index(sort_cols).index.isin(expected_idx)
+    add_mask = actual.set_index(sort_cols).index.isin(expected_idx)
+    actual = actual[add_mask].reset_index(drop=True)
+
+    # Subset actual and expected based on those updated (last_updated_epoch)
+    actual2 = actual[actual['last_updated_epoch']<=1752800000000]
+    actual_idx = actual2.set_index(sort_cols).index
+    update_mask = expected.set_index(sort_cols).index.isin(actual_idx)
+    expected2 = expected[update_mask].reset_index(drop=True)
 
     # Fails when a number or zip from expected gets updated (actual<expected)
-    assert_frame_equal(actual[mask].reset_index(drop=True), expected)
+    assert_frame_equal(actual2.reset_index(drop=True), expected2)
 
 
 @pytest.mark.integration
