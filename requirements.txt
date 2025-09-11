@@ -11,4 +11,4 @@ py7zr
 openpyxl
 html5lib
 beautifulsoup4
-rioxarray
+rasterio
