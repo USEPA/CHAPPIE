@@ -4,10 +4,12 @@
 @author: tlomba01
 """
 import os
+
 from CHAPPIE import layer_query
 
 _regrid_base_url = "https://fs.regrid.com/"
 _regrid_fs_path = "/rest/services/premium/FeatureServer"
+
 
 def get_regrid(aoi, api_key=None):
     """Get Regrid parcels within AOI.
@@ -16,6 +18,8 @@ def get_regrid(aoi, api_key=None):
     ----------
     aoi : geopandas.GeoDataFrame
         Spatial definition for Area Of Interest (AOI).
+    api_key : str, optional
+        API key for regrid service. Default None uses os.environ['REGRID_API_KEY'].
 
     Returns
     -------
@@ -23,8 +27,8 @@ def get_regrid(aoi, api_key=None):
         GeoDataFrame for Regrid parcels within AOI bounding box.
 
     """
-    
-    if api_key == None:
+
+    if api_key is None:
         api_key = os.environ['REGRID_API_KEY']
     url = f"{_regrid_base_url}{api_key}{_regrid_fs_path}"
     xmin, ymin, xmax, ymax = aoi.total_bounds
@@ -35,13 +39,14 @@ def get_regrid(aoi, api_key=None):
                                 layer=0,
                                 in_crs=aoi.crs.to_epsg(),
                                 out_fields="id,geoid,parcelnumb,fema_flood_zone")
-    
+
+
 def process_regrid(regrid_gdf):
     """Convert Regrid parcel geometry from Polygon to Point centroid.
 
     Parameters
     ----------
-    aoi : geopandas.GeoDataFrame
+    regrid_gdf : geopandas.GeoDataFrame
         GeoDataFrame for Regrid parcels (polygons) within AOI bounding box.
 
     Returns
@@ -50,6 +55,7 @@ def process_regrid(regrid_gdf):
         GeoDataFrame for Regrid parcels (centroid points) within AOI bounding box.
 
     """
-    regrid_gdf.geometry = regrid_gdf.geometry.centroid
-    
-    return regrid_gdf
+    gdf_out = regrid_gdf.copy()
+    gdf_out.geometry = gdf_out.geometry.centroid
+
+    return gdf_out

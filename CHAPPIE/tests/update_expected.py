@@ -19,6 +19,21 @@ aoi_bank_gdf = geopandas.read_file(AOI_BANK)
 
 # assets
 ## Cultural
+from CHAPPIE.assets import cultural
+
+### test_get_worship()
+actual = cultural.get_worship(aoi_gdf)
+actual.drop(columns=['FID'], inplace=True)
+actual.sort_values(by=['EIN', 'NAME'], inplace=True, ignore_index=True)
+
+expected_file = os.path.join(EXPECTED_DIR, 'cultural_worship.parquet')
+expected = geopandas.read_parquet(expected_file)
+try:
+    assert_geodataframe_equal(actual, expected)
+except AssertionError as ae:
+    print(ae)
+    actual.to_parquet(expected_file)
+
 ## Emergency
 from CHAPPIE.assets import emergency
 
@@ -94,7 +109,7 @@ except AssertionError as ae:
 from CHAPPIE.assets import health
 
 ###test_get_providers()
-actual = health.get_providers(aoi_gdf)
+providers = health.get_providers(aoi_gdf)
 
 expected_file = os.path.join(EXPECTED_DIR, 'get_providers.parquet')
 expected = pandas.read_parquet(expected_file)  # No geo (addresses only)
@@ -103,11 +118,14 @@ expected = pandas.read_parquet(expected_file)  # No geo (addresses only)
 # 'taxonomies',
 cols = ['created_epoch', 'enumeration_type', 'last_updated_epoch', 'number',
         'identifiers', 'zip5']
+sort_cols = ['number', 'zip5']
+actual = providers[cols].sort_values(by=sort_cols).reset_index(drop=True)
+
 try:
-    assert_frame_equal(actual[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True),
-                    expected[cols].sort_values(by=['number', 'zip5']).reset_index(drop=True))
+    assert_frame_equal(actual, expected)
 except AssertionError as ae:
     print(ae)
+    print([len(actual[actual['zip5']==zip]) for zip in ['32405', '32466']])
     actual.to_parquet(expected_file)
 
 ##Infrastructure
@@ -118,6 +136,7 @@ actual = hazard_infrastructure.get_dams(aoi_gdf)
 actual.drop(columns=['OBJECTID', "primaryPurposeId"], inplace=True)
 # Note: "primaryPurposeId"==None is problematic
 actual.sort_values(by=['id', 'name'], inplace=True, ignore_index=True)
+actual = actual.sort_index(axis=1)  # sort columns alphabetically
 
 expected_file = os.path.join(EXPECTED_DIR, 'dams.parquet')
 expected = geopandas.read_parquet(expected_file)
@@ -173,7 +192,8 @@ from CHAPPIE.assets import transit
 
 #test_get_air()
 actual = transit.get_air(aoi_gdf)
-actual.drop(columns=["OBJECTID", "EFF_DATE"], inplace=True)
+drop_cols = ["OBJECTID", "EFF_DATE", "LAST_INFO_RESPONSE"]
+actual.drop(columns=drop_cols, inplace=True)
 # Drop geometry redundant columns that cause trouble
 actual.drop(columns=["LAT_DEG", "LONG_DEG", 'LAT_MIN', 'LONG_MIN'],
             inplace=True)

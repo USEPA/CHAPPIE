@@ -24,7 +24,8 @@ aoi_gdf = geopandas.read_file(AOI)
 def test_get_air():
     actual = transit.get_air(aoi_gdf)
     # Effective Date (EFF_DATE) is updated when info is verified
-    actual.drop(columns=['OBJECTID', "EFF_DATE"], inplace=True)
+    drop_cols = ["OBJECTID", "EFF_DATE", "LAST_INFO_RESPONSE"]
+    actual.drop(columns=drop_cols, inplace=True)
     # Drop geometry redundant columns that cause trouble
     actual.drop(columns=["LAT_DEG", "LONG_DEG", 'LAT_MIN', 'LONG_MIN'],
                 inplace=True)
