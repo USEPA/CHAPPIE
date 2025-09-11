@@ -46,11 +46,11 @@ def get_NLCD(aoi, year, dataset="Land_Cover"):
     # Check if we can work in the aoi.crs or have to change it
     if aoi.crs.to_authority()[0]!='EPSG':
         # TODO: why does web-mercator work but not 4326 or 5070?!
-        gdf = aoi.to_crs(out_crs)
+        gdf = aoi.to_crs(4326)
     else:
         gdf = aoi.copy()
 
-    query_crs = aoi.crs.to_epsg()  # CRS for query
+    query_crs = gdf.crs.to_epsg()  # CRS for query
 
     # Get geo info for query
     bbox = gdf.total_bounds
@@ -78,8 +78,8 @@ def get_NLCD(aoi, year, dataset="Land_Cover"):
     # Source url (to use mrlc_display change outCRS to 3857)
     # url = f"https://www.mrlc.gov/geoserver/mrlc_display/{coverage}/ows"
     url = f"https://www.mrlc.gov/geoserver/mrlc_download/{serviceName}/ows"
-    axis_url = "https://www.opengis.net/def/axis/OGC/0/"
-    epsg_url = "https://www.opengis.net/def/crs/EPSG/0/"
+    axis_url = "http://www.opengis.net/def/axis/OGC/0/"
+    epsg_url = "http://www.opengis.net/def/crs/EPSG/0/"
 
     # Create params dict
     params = {
