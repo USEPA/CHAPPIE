@@ -467,32 +467,77 @@ class ESRIImageService(object):
             return ""
 
     def computeStatHist(self, **kwargs):
-        # Parse args
-        kwargs = {"".join(k.split("_")): v for k, v in kwargs.items()}
+        """Run query to compute statistics and histograms from ImageServer layers.
 
-        # construct query string
+        Note: All options currently exposed.
+
+        Parameters
+        ----------
+
+        geometry : JSON geometry object
+            Geometry to compute histogram. Can be an envelope or polygon. 
+            (https://developers.arcgis.com/rest/services-reference/enterprise/geometry-objects/)
+
+        geometryType : str
+            Value can be 'esriGeometryEnvelope' or 'esriGeometryPolygon'
+        
+        mosaicRule : JSON mosaic rule
+            Specifies the mosaic rule
+
+        renderingRule : JSON raster function rule
+            Specifies the rendering rule
+
+        pixelSize : dict or list
+            The pixel level being used
+
+        time :  
+            Time instant/time extend to compute statistics and histograms
+
+        processAsMultidimensional: bool, optional
+            Default is False
+
+        Returns
+        -------
+        JSON 
+            Post request response json.
+
+        """
+
+        # # construct query string
         self._baseComputeStatisticsHistograms = copy.deepcopy(_baseComputeStatisticsHistograms)
         for k, v in kwargs.items():
             try:
                 self._baseComputeStatisticsHistograms[k] = v
             except KeyError:
                 raise KeyError("Option '{k}' not recognized, check parameters")
-        cstr = "&".join(["{}={}".format(k, v) for k, v in self._baseComputeStatisticsHistograms.items()])
-        cstr = cstr.replace(" ", "").replace("[", "%5B").replace("]", "%5D").replace("{", "%7B").replace("}", "%7D").replace("'", "%27").replace(":", "%3A").replace(",", "%2C")
-        self._last_query = self._baseurl + "/computeStatisticsHistograms?" + cstr
-        #print(self._last_query)
+        data = self._baseComputeStatisticsHistograms    
+        self._last_query = self._baseurl + "/computeStatisticsHistograms"
         while True:
-            resp = utils.post_request(self._last_query)
-            # moved this to parse in flood.py
-            #mean = datadict["statistics"][0]["mean"]
+            resp = utils.post_request(self._last_query, data)
             return resp
-        # Moved to flood.py
-        # except IndexError as e:
-            # TODO: if response is empty, provide response metadata in warning
-            # return
 
 
 def get_image_by_poly(aoi, url, row):
+    """Run query to compute statistics and histograms from ImageServer layers.
+
+    Parameters
+    ----------
+
+    aoi : geopandas.GeoDataFrame
+        Parcel polygons to be summarized for Area Of Interest (AOI).
+
+    url : str
+        Image Service url to build query.
+    
+    row : pandas.Series
+        Row of pandas dataframe
+
+    Returns
+    -------
+    JSON 
+        Post request response json.
+
+    """
     # if geodataframe, get geometry of the row
     if isinstance(aoi, geopandas.GeoDataFrame):
         try:
@@ -533,14 +578,15 @@ def get_image_by_poly(aoi, url, row):
 
         if geometry_object:
             try:
-                feature_layer = ESRIImageService(url)
+                imagery_layer = ESRIImageService(url)
                 # query
                 query_params = {
-                        "geometry": geometry_object,
+                        "geometry": json.dumps(geometry_object),
                         "geometryType": "esriGeometryPolygon",
                         "f": "json"
                         }
-                result = feature_layer.computeStatHist(**query_params)
+                # TODO: geometry objec is too large...make it less precise?
+                result = imagery_layer.computeStatHist(**query_params)
                 return result
             except Exception as e:
-                print(e)
+                warnings.warn(f"Response: {result}, Error: {e}")
