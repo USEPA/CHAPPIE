@@ -287,8 +287,8 @@ def polygon_gdf():
 
 
 @pytest.mark.unit
-#Test how 502 server error is handled, but patch the computeStatHist endpoint call
-@patch('CHAPPIE.layer_query.utils.requests.post')
+#Test how 502 server error is handled, but patch the utils request.post endpoint
+@patch('CHAPPIE.utils.requests.post')
 def test_get_image_by_poly_502_error(mock_post_request, polygon_gdf: geopandas.GeoDataFrame):
     mock_resp = MagicMock()
     mock_resp.status_code = 502
@@ -297,10 +297,13 @@ def test_get_image_by_poly_502_error(mock_post_request, polygon_gdf: geopandas.G
     url = "https://fake.org/ImageServer"
     row = polygon_gdf.iloc[[0]]
     result = flood.layer_query.get_image_by_poly(aoi=polygon_gdf, url=url, row=row)
-    assert result['data'] is None
+    assert result == {"url": "https://fake.org/ImageServer/computeStatisticsHistograms",
+                        "status": "error",
+                        "reason": f"Connection error, {2} attempts",
+                        "text": ""}
     assert mock_resp.raise_for_status.called == True
     # Ensure the mocked method was called twice (one plus a retry)
-    #assert mock_post_request.call_count == 2
+    assert mock_post_request.call_count == 2
 
 # Test mock return object {'statistics': []}, but patch the computeStatHist endpoint call
 # @patch('CHAPPIE.layer_query.ESRIImageService.computeStatHist')

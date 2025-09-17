@@ -204,10 +204,10 @@ def post_request(url, data=None, headers=None):
             r.raise_for_status()
             r_json = r.json()
             return r_json
-        except requests.exceptions.ConnectionError as e:
+        except requests.exceptions.HTTPError as e:
             count += 1
             if count < 2:
-                warn(f"Connection error, count is {count}. Error: {e}")
+                warn(f"HTTP error, count is {count}. Error: {e}")
                 time.sleep(5)
                 continue
             else:
