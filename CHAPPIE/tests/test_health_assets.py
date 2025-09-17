@@ -16,7 +16,10 @@ from pandas.testing import assert_frame_equal
 from CHAPPIE.assets import health
 
 # get key from env
-geocode_api_key = os.environ['GEOCODE_API_KEY']
+geocode_api_key = os.environ.get('GEOCODE_API_KEY')
+if not geocode_api_key:
+    pytest.skip("No GEOCODE_API_KEY set in environment.", allow_module_level=True)
+
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
