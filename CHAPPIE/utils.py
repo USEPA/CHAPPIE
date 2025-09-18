@@ -207,7 +207,7 @@ def post_request(url, data=None, headers=None):
         except requests.exceptions.ConnectionError as e:
             count += 1
             if count < 2:
-                warn(f"HTTP error, count is {count}. Error: {e}")
+                warn(f"Connection error, count is {count}. Error: {e}")
                 time.sleep(5)
                 continue
             else:
