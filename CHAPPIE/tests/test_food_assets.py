@@ -14,7 +14,9 @@ from shapely import Point
 from CHAPPIE.assets import food
 
 # get key from env
-usda_API = os.environ['usda_API']
+usda_API = os.environ.get('usda_API')
+if not usda_API:
+    pytest.skip("No usda_API set in environment.", allow_module_level=True)
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
