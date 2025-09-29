@@ -10,6 +10,7 @@ import geopandas
 from geopandas.testing import assert_geodataframe_equal
 
 from CHAPPIE.assets import cultural
+from CHAPPIE.get import run_get
 
 # CI inputs/expected
 DIRPATH = os.path.dirname(os.path.realpath(__file__))
@@ -24,6 +25,7 @@ aoi_gdf_sa = geopandas.read_file(AOI_MIT_BANK_SA)
 
 def test_get_historic():
     actual = cultural.get_historic(aoi_gdf)
+    #run_get('historic', aoi_gdf)  # seems to be having a problem...
     actual.drop(columns=['OBJECTID'], inplace=True)
     actual.sort_values(by=['CertDate', 'RESNAME', 'geometry'],
                        inplace=True,
@@ -39,7 +41,8 @@ def test_get_historic():
 
 
 def test_get_library():
-    actual = cultural.get_library(aoi_gdf)
+    #actual = cultural.get_library(aoi_gdf)
+    actual = run_get("library", aoi_gdf)  #LONGITUD instead of LONGITUDE?
     actual.sort_values(by=['LIBID', 'geometry'], inplace=True, ignore_index=True)
 
     # assert no changes
@@ -51,7 +54,8 @@ def test_get_library():
 
 
 def test_get_museums():
-    actual = cultural.get_museums(aoi_gdf)
+    #actual = cultural.get_museums(aoi_gdf)
+    actual = run_get("museums", aoi_gdf)  #LONGITUD instead of LONGITUDE?
     actual.sort_values(by=['MID', 'geometry'], inplace=True, ignore_index=True)
 
     # assert no changes
@@ -63,7 +67,8 @@ def test_get_museums():
 
 
 def test_get_worship():
-    actual = cultural.get_worship(aoi_gdf)
+    #actual = cultural.get_worship(aoi_gdf)
+    actual = run_get("worship", aoi_gdf)
     actual.drop(columns=['FID'], inplace=True)
     actual.sort_values(by=['EIN', 'NAME'], inplace=True, ignore_index=True)
     # actual.to_parquet(os.path.join(EXPECTED_DIR, 'cultural_worship.parquet'))
@@ -76,6 +81,7 @@ def test_get_worship():
 
 def test_get_recAreas():
     actual = cultural.process_recreationalArea(aoi_gdf_sa)
+    #actual = run_get("reacreationalArea", aoi_gdf_sa)
     actual.sort_values(by=['NAME', 'geometry'], inplace=True, ignore_index=True)
     actual.to_parquet(os.path.join(EXPECTED_DIR, 'recArea.parquet'))
 

@@ -23,7 +23,7 @@ URLS = {
     "library": f"{IMLS_URL}/2024-06/pls_fy2022_csv.zip",
     "museums": f"{IMLS_URL}/2018_csv_museum_data_files.zip",
     "worship": "https://services.arcgis.com/XG15cJAlne2vxtgt/ArcGIS/rest/services/All_Places_Of_Worship__HiFLD_Open_/FeatureServer",
-    "reacreationalArea": "https://epa.maps.arcgis.com/sharing/rest/content/items/4f14ea9215d1498eb022317458437d19/data",
+    "recreationalArea": "https://epa.maps.arcgis.com/sharing/rest/content/items/4f14ea9215d1498eb022317458437d19/data",
 }
 
 GET_DICT = {
@@ -104,11 +104,3 @@ def run_get(dataset, aoi):
         gdf = utils.download_unzip_lyrpkg(**params)
         gdf = gdf.to_crs(aoi.crs)  # match crs for clip
         return gdf.clip(aoi.total_bounds)
-
-
-# For tests
-#run_get('historic', aoi_gdf)  # seems to be having a problem...
-run_get("library", aoi_gdf)  #LONGITUD instead of LONGITUDE?
-run_get("museums", aoi_gdf)  #LONGITUD instead of LONGITUDE?
-run_get("worship", aoi_gdf)
-run_get("reacreationalArea", aoi_gdf)
