@@ -81,7 +81,7 @@ def test_get_worship():
 
 def test_get_recAreas():
     actual = cultural.process_recreationalArea(aoi_gdf_sa)
-    #actual = run_get("reacreationalArea", aoi_gdf_sa)
+    #actual = run_get("recreationalArea", aoi_gdf_sa)
     actual.sort_values(by=['NAME', 'geometry'], inplace=True, ignore_index=True)
     actual.to_parquet(os.path.join(EXPECTED_DIR, 'recArea.parquet'))
 

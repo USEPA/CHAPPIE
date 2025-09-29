@@ -70,13 +70,13 @@ GET_DICT = {
             42,
         ),
     },
-    "reacreationalArea": {
+    "recreationalArea": {
         "metadata": MD(
             "assets",
             "cultural",
             "Get recreational areas",
         ),
-        "args": Package(URLS["reacreationalArea"]),
+        "args": Package(URLS["recreationalArea"]),
     },
 }
 
