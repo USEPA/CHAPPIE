@@ -48,7 +48,7 @@ jobs:
           --cov=CHAPPIE | tee pytest-coverage.txt
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           # Upload test_results
           path: |
