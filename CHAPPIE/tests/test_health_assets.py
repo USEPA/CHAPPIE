@@ -105,7 +105,7 @@ def test_get_providers(providers: pandas.DataFrame):
     #expected_len = [1069, 311, 1841, 398, 149, 26, 168, 306, 44, 27]
     #expected_len = [1071, 311, 1841, 398, 149, 26, 168, 306, 44, 27]
     #expected_len = [1093, 328, 1923, 437, 162, 36, 180, 314, 47, 29]
-    expected_len = [1933, 28]
+    expected_len = [1950, 30]
     assert expected_len[0]+10>actual_len[0]>=expected_len[0]
     assert expected_len[1]+10>actual_len[1]>=expected_len[1]
 
