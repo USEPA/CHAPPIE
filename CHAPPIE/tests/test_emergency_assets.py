@@ -5,6 +5,7 @@ Test technological
 @author: tlomba01
 """
 import os
+import pytest
 
 import geopandas
 from geopandas.testing import assert_geodataframe_equal
@@ -23,6 +24,7 @@ TEST_DIR = os.path.join(DIRPATH, 'results')  # test results (have to create)
 AOI = os.path.join(DATA_DIR, "BreakfastPoint_ServiceArea.shp")
 aoi_gdf = geopandas.read_file(AOI)
 
+@pytest.mark.skip(reason="Waiting on local env updates")
 def test_get_fire_ems():
     actual = emergency.get_fire_ems(aoi_gdf)
     # Drop columns that are not needed and int (32 vs 64)
