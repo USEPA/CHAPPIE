@@ -12,4 +12,4 @@ openpyxl
 html5lib
 beautifulsoup4
 rasterio
-urllib3>=2.6
+urllib3>=2.6.3
